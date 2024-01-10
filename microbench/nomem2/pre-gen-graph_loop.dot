@@ -1,0 +1,36 @@
+digraph G {
+    const0 [opcode=const, constVal="0"];
+    i0_phi [opcode=phi];
+    i1_phi [opcode=phi];
+    const1 [opcode=const, constVal="3"];
+    i3_mul [opcode=mul];
+    const2 [opcode=const, constVal="5"];
+    i4_add [opcode=add];
+    i5_add [opcode=add];
+    const3 [opcode=const, constVal="1"];
+    i6_add [opcode=add];
+    input0 [opcode=input];
+    i7_icmp [opcode=icmp];
+    bb0 [opcode=input];
+    bb1 [opcode=input];
+    i8_br [opcode=br];
+    i5_output [opcode=output];
+    const0 -> i0_phi [operand=RHS];
+    const0 -> i1_phi [operand=RHS];
+    i0_phi -> i5_add [operand=any2input];
+    i1_phi -> i3_mul [operand=any2input];
+    i1_phi -> i6_add [operand=any2input];
+    const1 -> i3_mul [operand=any2input];
+    i3_mul -> i4_add [operand=any2input];
+    const2 -> i4_add [operand=any2input];
+    i4_add -> i5_add [operand=any2input];
+    i5_add -> i0_phi [operand=LHS];
+    i5_add -> i5_output;
+    const3 -> i6_add [operand=any2input];
+    i6_add -> i1_phi [operand=LHS];
+    i6_add -> i7_icmp [operand=LHS];
+    input0 -> i7_icmp [operand=RHS];
+    i7_icmp -> i8_br [operand=branch_cond];
+    bb0 -> i8_br [operand=branch_true];
+    bb1 -> i8_br [operand=branch_false];
+}
