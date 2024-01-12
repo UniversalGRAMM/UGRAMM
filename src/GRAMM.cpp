@@ -18,6 +18,9 @@
 #include <bitset>
 #include <algorithm>
 
+
+// NOTE: Might need to change this to account for additional components within the ARG. 
+// Might be best to create a struct within a struct for simplicity ...
 struct DotVertex {
     std::string name;
     std::string opcode;
@@ -35,7 +38,7 @@ struct RoutingTree {
 };
 
 std::vector<RoutingTree> *Trees;
-std::vector<std::list<int>> *Users;
+std::vector<std::list<int>> *Users; // UNCLEAR: What are the users
 std::vector<int> *HistoryCosts;
 std::vector<int> *TraceBack;
 
@@ -57,9 +60,9 @@ typedef boost::graph_traits<DirectedGraph>::out_edge_iterator out_edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::vertex_descriptor vertex_descriptor;
 typedef DirectedGraph::edge_descriptor Edge;
 
-typedef enum nodeT {io, alu, memport, reg, constant, wire, mux} nodeType;
+typedef enum nodeT {io, alu, memport, reg, constant, wire, mux} nodeType; // NOTE: This may need to be modified... should we have this as a parameter
 
-#define MAX_DIST 10000000
+#define MAX_DIST 10000000 // UNCLEAR: What is MAX_DIST used for ??
 #define RIKEN 0
 
 int numR;
