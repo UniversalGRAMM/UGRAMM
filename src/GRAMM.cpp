@@ -60,7 +60,7 @@ typedef DirectedGraph::edge_descriptor Edge;
 typedef enum nodeT {io, alu, memport, reg, constant, wire, mux} nodeType;
 
 #define MAX_DIST 10000000
-#define RIKEN 0
+#define RIKEN 1
 
 int numR;
 int numC;

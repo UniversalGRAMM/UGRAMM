@@ -25,5 +25,5 @@ Arguments are <filename.dot> <numRows NR> <numCols NC> <seed>
 # Argument 4: Seed for the run.
 ```
 
-### Mapping `accmulate` circuit on 8X8 ADRES CGRA using GRAMM
-> ./GRAMM microbench/accumulate/graph_loop.dot 8 8 0
+### Mapping `Conv_Balance` circuit on 8X8 ADRES CGRA using GRAMM
+> ./GRAMM Kernels/Conv_Balance/conv_nounroll_Balance.dot 8 8 0
