@@ -1231,19 +1231,66 @@ int main(int argc, char *argv[])
   std::ifstream dFile;  //Defining the input file stream for device model dot file
   dFile.open(argv[2]);  //Passing the device_Model_dot file as an argument!
   boost::read_graphviz(dFile, G, dp); //Reading the dot file
+  std::map<int, int> node_mapping;
+  std::map<int, int> reverse_node_mapping;
 
   for (int i = 0; i < num_vertices(G); i++) {
     vertex_descriptor v = vertex(i, G);
     std::string arch_type = boost::get(&DotVertex::arch_type, G, v);
     std::string arch_label = boost::get(&DotVertex::arch_label, G, v);
-    std::cout << "arch_type :: " << arch_type << " :: arch_label :: " << arch_label << "\n";
-    int gTypes_index = i; //std::stoi(arch_label);   //Arch_label is a node_id basically
+    //std::cout << "arch_type :: " << arch_type << " :: arch_label :: " << arch_label << "\n";
+    int gTypes_index = std::stoi(arch_label);   //Arch_label is a node_id basically
                                                 //Boost read_graphviz() doesn't preserve the node ordering from the read input dot file.
+    node_mapping[gTypes_index] = i;           
+    reverse_node_mapping[i] = gTypes_index;
+
     if (arch_type == "memport") gTypes[gTypes_index] = memport;
     else if (arch_type == "mux") gTypes[gTypes_index] = mux;
     else if (arch_type == "constant") gTypes[gTypes_index] = constant;
     else if (arch_type == "alu") gTypes[gTypes_index] = alu;
   }
+
+  for (int i = 0; i < num_vertices(G); i++) {
+    boost::add_vertex(G_Modified);
+  }
+  
+
+
+  for (const auto& pair : node_mapping) {
+    //std::cout << pair.first << ": " << pair.second << std::endl;
+    auto currentSource = pair.second;
+    std::pair<OutEdgeIterator, OutEdgeIterator> ei = out_edges(currentSource, G);
+    //std::cout << "Current source is : " << currentSource << "  and Edges are :  \n";
+    for (OutEdgeIterator it = ei.first; it != ei.second; ++it) {
+        Edge edge = *it;
+        vertex_descriptor target_node = target(edge, G);
+        //std::cout <<  "( " << target_node << " , " << reverse_node_mapping[target_node] << " ) ";
+        int target_node_real_id = reverse_node_mapping[target_node];
+        boost::add_edge(pair.first, reverse_node_mapping[target_node], G_Modified);
+    }
+    std::cout << " \n";
+  }
+
+  /*
+
+  for (const auto& pair : node_mapping) {
+    std::cout << pair.first << ": " << pair.second << std::endl;
+  }
+
+
+  for (int i = 0; i < num_vertices(G); i++) {
+    //Getting current node:
+    auto currentSource = node_mapping[i];
+    std::pair<OutEdgeIterator, OutEdgeIterator> ei = out_edges(currentSource, G);
+    for (OutEdgeIterator it = ei.first; it != ei.second; ++it) {
+        Edge edge = *it;
+        vertex_descriptor target_node = target(edge, G);
+        std::string arch_label = boost::get(&DotVertex::arch_label, G, target_node);
+        int target_node_real_id = std::stoi(arch_label);
+        boost::add_edge(currentSource, target_node_real_id, G_Modified);
+    }
+  }
+  */
   /* 
   std::ifstream dFile;  //Defining the input file stream for device model dot file
   dFile.open(argv[2]);  //Passing the device_Model_dot file as an argument!
@@ -1302,7 +1349,7 @@ int main(int argc, char *argv[])
   //Omkar: checking the output of manually generated model
   std::ofstream oFile;
   oFile.open("device_model_hardcode.dot");
-  boost::write_graphviz(oFile, G);
+  boost::write_graphviz(oFile, G_Modified);
   
 
   // read the DFG from a file
@@ -1355,7 +1402,7 @@ int main(int argc, char *argv[])
   // compute a topological order
   computeTopo(&H, &hTypes); // not presently used
   
-  findMinorEmbedding(&H, &G, &hTypes, &gTypes);
+  findMinorEmbedding(&H, &G_Modified, &hTypes, &gTypes);
     
   return 0;
  }
