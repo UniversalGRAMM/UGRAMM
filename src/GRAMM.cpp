@@ -63,11 +63,14 @@ typedef DirectedGraph::edge_descriptor Edge;
 typedef enum nodeT {io, alu, memport, reg, constant, wire, mux} nodeType;
 
 #define MAX_DIST 10000000
-#define RIKEN 1
-#define DEBUG 1
+#define RIKEN 1                 //Defining the architecture type
+#define DEBUG 0                 //For enbaling the print-statements (mapped-DFG)
+#define HARDCODE_DEVICE_MODEL 1 //Controls hardcoding of device model
 
 int numR;
 int numC;
+
+
 
 std::string getString(int n) {
 
@@ -103,15 +106,15 @@ std::string getString(int n) {
   }  
 }
 
-void drawEdge(int n, int m) {
+void drawEdge(int n, int m, std::ofstream& oFile) {
   std::string nodeName = getString(n);
-  std::cout << nodeName;
-  std::cout << " -> ";
+  oFile << nodeName;
+  oFile << " -> ";
   nodeName = getString(m);
-  std::cout << nodeName << "\n";
+  oFile << nodeName << "\n";
 }
 
-void printPlaceAndRoute(int y) {
+void printPlaceAndRoute(int y, std::ofstream& oFile) {
   
   struct RoutingTree *RT = &((*Trees)[y]);
 
@@ -121,17 +124,17 @@ void printPlaceAndRoute(int y) {
   int n = RT->nodes.front();
   int orign = n;
 
-  std::cout << hNames[y];
+  oFile << hNames[y];
   
   if (n < numR)
-    std::cout << " [shape=\"circle\" fontsize=6 fillcolor=\"#2ca02c\" pos=\"" << "0," << 2*(-n) << "!\"]\n"; 
+    oFile << " [shape=\"circle\" fontsize=6 fillcolor=\"#2ca02c\" pos=\"" << "0," << 2*(-n) << "!\"]\n"; 
   else if (n < 2*numR)
-    std::cout << " [shape=\"circle\" fontsize=6 fillcolor=\"#2ca02c\" pos=\"" << 2*(numC+1) << "," << 2*(-(n-numR)) << "!\"]\n";
+    oFile << " [shape=\"circle\" fontsize=6 fillcolor=\"#2ca02c\" pos=\"" << 2*(numC+1) << "," << 2*(-(n-numR)) << "!\"]\n";
   else {
     n -= 2*numR;
     int row = n/(14*numC);
     int col = (n - row*numC*14)/14;
-    std::cout << " [shape=\"circle\" fontsize=6 fillcolor=\"#1f77b4\" pos=\"" << 2*(col + 1.25) << "," << 2*(-row-0.5) << "!\"]\n";
+    oFile << " [shape=\"circle\" fontsize=6 fillcolor=\"#1f77b4\" pos=\"" << 2*(col + 1.25) << "," << 2*(-row-0.5) << "!\"]\n";
   }
   
   //  for (int i = 0; i < numR; i++)
@@ -146,16 +149,16 @@ void printPlaceAndRoute(int y) {
     if (m == orign)
       continue;
     //    std::cout << "PARENT " << RT->parent[m] << "\n";
-    drawEdge(RT->parent[m], m);
+    drawEdge(RT->parent[m], m, oFile);
   }
 
   // dirty hack for a store
   if (RT->nodes.size() == 1) {
     if (orign < numR) {
-      drawEdge(2*numR + 14*numC*orign + 2, orign);
+      drawEdge(2*numR + 14*numC*orign + 2, orign, oFile);
     }
     else if (orign < 2*numR) {
-      drawEdge(2*numR + 14*numC*(orign-numR) + (numC-1)*14+6, orign);
+      drawEdge(2*numR + 14*numC*(orign-numR) + (numC-1)*14+6, orign, oFile);
     }
   }
 }
@@ -807,29 +810,42 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, nodeTyp
     if (success) {
       if(DEBUG){
         printVertexModels(H);
-        if (RIKEN) { // print out the solution using NEATO format
-          std::cout << "digraph {\ngraph [pad=\"0.212,0.055\" bgcolor=lightgray]\nnode [style=filled]\n";
-          
-          for (int i = 0; i < numR; i++)
-            for (int j = 0; j < numC; j++) {
-              std::cout << "SB_" << i << "_" << j << " [shape=\"circle\" fontsize=6 fillcolor=\"#ff7f0e\" pos=\"" << 2*(j + 1) << "," << 2*(-i) << "!\"]\n";
-            }
-          
-          // rename some signals to be compatible with graphviz
-          for (int i = 0; i < num_vertices(*H); i++) {
-            std::replace( hNames[i].begin(), hNames[i].end(), '{', '_'); // replace all 'x' to 'y'
-            std::replace( hNames[i].begin(), hNames[i].end(), '}', '_'); // replace all 'x' to 'y'  
+      }
+
+      //Output stream for storing successful mapping:
+      std::ofstream oFile;
+      oFile.open("mapping_output.dot");
+      std::cout << "Writing the mapping output in file 'mapping_output.dot' \n";
+      if (RIKEN) { // print out the solution using NEATO format
+        oFile << "digraph {\ngraph [pad=\"0.212,0.055\" bgcolor=lightgray]\nnode [style=filled]\n";
+        
+        for (int i = 0; i < numR; i++)
+          for (int j = 0; j < numC; j++) {
+            oFile << "SB_" << i << "_" << j << " [shape=\"circle\" fontsize=6 fillcolor=\"#ff7f0e\" pos=\"" << 2*(j + 1) << "," << 2*(-i) << "!\"]\n";
           }
+        
+        // rename some signals to be compatible with graphviz
+        for (int i = 0; i < num_vertices(*H); i++) {
+          std::replace( hNames[i].begin(), hNames[i].end(), '{', '_'); // replace all 'x' to 'y'
+          std::replace( hNames[i].begin(), hNames[i].end(), '}', '_'); // replace all 'x' to 'y'  
           
-          for (int i = 0; i < num_vertices(*H); i++) {
-            
-            if ((*hTypes)[i] == constant)
-              continue;
-            
-            printPlaceAndRoute(i);
-          }
-          std::cout << "}\n";
+          //Omkar:
+          //      Changing current format of _Const_27|float32=5.00_ to Const_27_float32_5_00_
+          //      To make compatible with graphviz
+          //std::replace( hNames[i].begin(), hNames[i].end(), '_C', 'C');
+          std::replace( hNames[i].begin(), hNames[i].end(), '|', '_');
+          std::replace( hNames[i].begin(), hNames[i].end(), '=', '_');
+          std::replace( hNames[i].begin(), hNames[i].end(), '.', '_');
         }
+        
+        for (int i = 0; i < num_vertices(*H); i++) {
+          
+          if ((*hTypes)[i] == constant)
+            continue;
+          
+          printPlaceAndRoute(i, oFile);
+        }
+        oFile << "}\n";
       }
     }
 
@@ -1152,6 +1168,77 @@ void computeTopo(DirectedGraph *H, std::map<int, nodeType> *HTypes) {
   }
 }
 
+/*
+  readDeviceModle() :: Reading device model dot file
+  - DirectedGraph *G                  :: original device model read dot file
+  - DirectedGraph *G_Modified         :: Sorted device model dot file based on original intended sequence.
+  - std::map<int, nodeTsype> *gTypes  :: Store the type of each node (memport/mux/constant/alu)
+*/
+void readDeviceModle(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, nodeType> *gTypes){
+  //--------------------------------------------------------------------
+  //Omkar:  Reading device model dot file instead.
+  //--------------------------------------------------------------------
+
+  /*
+    boost::read_graphviz does not preserve the node ordering sequence from the original dot file while reading.
+    To enforce the sequence (which has an impact on run-time), the following map is used to compare the read index with the original index.
+    (Original index is in the dot file itself supplied as "Arch_label" which is nothing but the node id)
+
+    - std::map<int, int> *node_mapping         :: Key is the original_id and value is unsorted_boost_id  
+    - std::map<int, int> *reverse_node_mapping :: Key is the unsorted_boost_id and value is original_id  
+  */
+  std::map<int, int> node_mapping;
+  std::map<int, int> reverse_node_mapping;
+
+  //Iterate over all the nodes of the device model graph and assign the type of nodes:
+  for (int i = 0; i < num_vertices(*G); i++) {
+    vertex_descriptor v = vertex(i, *G);
+    std::string arch_type = boost::get(&DotVertex::arch_type, *G, v);
+    std::string arch_label = boost::get(&DotVertex::arch_label, *G, v);
+    int gTypes_index = std::stoi(arch_label);   //Arch_label is a node_id basically
+                                                //Boost read_graphviz() doesn't preserve the node ordering from the read input dot file.
+    
+    //Storing the mapping which is later used for sorting:
+    node_mapping[gTypes_index] = i;           
+    reverse_node_mapping[i] = gTypes_index;
+
+    //Deciding the gTypes based on arch_type attribute which is set in the script itself:
+    if (arch_type == "memport") (*gTypes)[gTypes_index] = memport;
+    else if (arch_type == "mux") (*gTypes)[gTypes_index] = mux;
+    else if (arch_type == "constant") (*gTypes)[gTypes_index] = constant;
+    else if (arch_type == "alu") (*gTypes)[gTypes_index] = alu;
+  }
+
+  //Adding vertices in new sorted 'G_Modified' graph equal to original 'G' graph.
+  //Now the sequence of this will be equal to original intended one:
+  // I.E. :
+  //        Left-Right IOs first followed by all PEs (Mux (SB) + Mux (PE) + Constant(PE) + ALU(PE))
+  for (int i = 0; i < num_vertices(*G); i++) {
+    boost::add_vertex(*G_Modified);
+  }
+  
+  //For the intended sequence changing the mapping of edges from unsorted_boost_read of dot file to original_sorted_IDs
+  for (const auto& pair : node_mapping) {
+      
+      //Current source is unsorted_boost_id 
+      auto currentSource = pair.second;
+      //Finding all outgoing edges of this above source
+      std::pair<OutEdgeIterator, OutEdgeIterator> ei = out_edges(currentSource, *G);
+
+      //Iterating over all outgoing edges for one source:
+      for (OutEdgeIterator it = ei.first; it != ei.second; ++it) {
+          auto target_node = target(*it, *G);  //Finding the current target node for the current source.
+          
+          //Now while adding edge in new 'G_Modified' graph we want to change the mapping:
+          //i.e Source will be "original_id" which is pair.first of node_mapping
+          //    Target will also be "original_id" which is value (original_id) of reverse_node_mapping[target_node (in unsorted format)]
+          boost::add_edge(pair.first, reverse_node_mapping[target_node], *G_Modified);
+      }
+
+  }
+
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -1189,94 +1276,50 @@ int main(int argc, char *argv[])
   
   std::map<int, nodeType> gTypes, hTypes;
 
+  //--------------------------------------------------------------------
+  //----------------- STEP 0 : READING DEVICE MODEL --------------------
+  //--------------------------------------------------------------------
 
-  //---------------------------------------------------------------------
-  // Old hardcoded device model generation:  
-  //---------------------------------------------------------------------  
+  if (HARDCODE_DEVICE_MODEL == 0){
 
-  if (!RIKEN) {   
-    // create ADRES device model
-    std::cout << "Creating ADRES Device Model" << std::endl;
-    createAdres(dim, &G, &gTypes);
+    //---------------------------------------------------------------------
+    // Old hardcoded device model generation:  
+    //---------------------------------------------------------------------  
+
+    if (!RIKEN) {   
+      // create ADRES device model
+      std::cout << "Creating ADRES Device Model" << std::endl;
+      createAdres(dim, &G_Modified, &gTypes);
+    }
+    else {
+      std::cout << "Creating RIKEN Device Model" << std::endl;
+      createRIKEN(NR, NC, &G_Modified, &gTypes); // create RIKEN architecture modle
+    }	
+
+    if (DEBUG){
+      //Omkar: checking the output of manual model for confirmation:
+      std::ofstream device_model;
+      device_model.open("device_model_hardcode.dot");
+      boost::write_graphviz(device_model, G_Modified);
+    }
   }
   else {
-    std::cout << "Creating RIKEN Device Model" << std::endl;
-    createRIKEN(NR, NC, &G, &gTypes); // create RIKEN architecture modle
-  }	
 
-  /*
-  // Print vertices
-  std::cout << "Vertices: ";
-  boost::graph_traits<DirectedGraph>::vertex_iterator vi, vi_end;
-  for (boost::tie(vi, vi_end) = boost::vertices(G); vi != vi_end; ++vi) {
-      std::cout << *vi << " " << " :: gTypes :: " << gTypes[*vi] << std::endl;
+    //--------------------------------------------------------------------
+    //Omkar:  Reading device model dot file instead.
+    //--------------------------------------------------------------------
+
+    std::ifstream dFile;                //Defining the input file stream for device model dot file
+    dFile.open(argv[2]);                //Passing the device_Model_dot file as an argument!
+    boost::read_graphviz(dFile, G, dp); //Reading the dot file
+
+
+    readDeviceModle(&G, &G_Modified, &gTypes);
   }
-  std::cout << std::endl;
 
-  // Print edges
-  std::cout << "Edges: ";
-  boost::graph_traits<DirectedGraph>::edge_iterator ei, ei_end;
-  for (boost::tie(ei, ei_end) = boost::edges(G); ei != ei_end; ++ei) {
-      std::cout << *ei << " " << std::endl;
-  }
-  std::cout << std::endl;
-  */
-
-  
   //--------------------------------------------------------------------
+  //----------------- STEP 1: READING APPLICATION DOT FILE -------------
   //--------------------------------------------------------------------
-  
-  /*
-  //--------------------------------------------------------------------
-  //Omkar:  Reading device model dot file instead.
-  //--------------------------------------------------------------------
-  std::ifstream dFile;  //Defining the input file stream for device model dot file
-  dFile.open(argv[2]);  //Passing the device_Model_dot file as an argument!
-  boost::read_graphviz(dFile, G, dp); //Reading the dot file
-  std::map<int, int> node_mapping;
-  std::map<int, int> reverse_node_mapping;
-
-  for (int i = 0; i < num_vertices(G); i++) {
-    vertex_descriptor v = vertex(i, G);
-    std::string arch_type = boost::get(&DotVertex::arch_type, G, v);
-    std::string arch_label = boost::get(&DotVertex::arch_label, G, v);
-    //std::cout << "arch_type :: " << arch_type << " :: arch_label :: " << arch_label << "\n";
-    int gTypes_index = std::stoi(arch_label);   //Arch_label is a node_id basically
-                                                //Boost read_graphviz() doesn't preserve the node ordering from the read input dot file.
-    node_mapping[gTypes_index] = i;           
-    reverse_node_mapping[i] = gTypes_index;
-
-    if (arch_type == "memport") gTypes[gTypes_index] = memport;
-    else if (arch_type == "mux") gTypes[gTypes_index] = mux;
-    else if (arch_type == "constant") gTypes[gTypes_index] = constant;
-    else if (arch_type == "alu") gTypes[gTypes_index] = alu;
-  }
-
-  for (int i = 0; i < num_vertices(G); i++) {
-    boost::add_vertex(G_Modified);
-  }
-  
-  for (const auto& pair : node_mapping) {
-    //std::cout << pair.first << ": " << pair.second << std::endl;
-    auto currentSource = pair.second;
-    std::pair<OutEdgeIterator, OutEdgeIterator> ei = out_edges(currentSource, G);
-    //std::cout << "Current source is : " << currentSource << "  and Edges are :  \n";
-    for (OutEdgeIterator it = ei.first; it != ei.second; ++it) {
-        Edge edge = *it;
-        vertex_descriptor target_node = target(edge, G);
-        //std::cout <<  "( " << target_node << " , " << reverse_node_mapping[target_node] << " ) ";
-        int target_node_real_id = reverse_node_mapping[target_node];
-        boost::add_edge(pair.first, reverse_node_mapping[target_node], G_Modified);
-    }
-    std::cout << " \n";
-  }
-  */
-
-  //Omkar: checking the output of manually generated model
-  std::ofstream oFile;
-  oFile.open("device_model_hardcode.dot");
-  boost::write_graphviz(oFile, G);
-  
 
   // read the DFG from a file
   boost::read_graphviz(iFile, H, dp);
@@ -1286,7 +1329,9 @@ int main(int argc, char *argv[])
     std::string opcode = boost::get(&DotVertex::opcode, H, v);
     std::string name = boost::get(&DotVertex::name, H, v);
     hNames[i] = name;
-    std::cout << "name " << name <<  " opcode " << opcode << "\n";
+    if (DEBUG){
+      std::cout << "name " << name <<  " opcode " << opcode << "\n";
+    }
     if (!RIKEN) {
       if (opcode == "const") hTypes[i] = constant;
       else if (opcode == "input") hTypes[i] = io;
@@ -1309,11 +1354,11 @@ int main(int argc, char *argv[])
   
 
   Trees = new std::vector<RoutingTree>(num_vertices(H)); // routing trees for every node in H
-  Users = new std::vector<std::list<int>>(num_vertices(G)); // for every node in device model G track its users 
-  HistoryCosts = new std::vector<int>(num_vertices(G)); // for history of congestion in PathFinder
-  TraceBack = new std::vector<int>(num_vertices(G));
+  Users = new std::vector<std::list<int>>(num_vertices(G_Modified)); // for every node in device model G track its users 
+  HistoryCosts = new std::vector<int>(num_vertices(G_Modified)); // for history of congestion in PathFinder
+  TraceBack = new std::vector<int>(num_vertices(G_Modified));
   
-  for (int i = 0; i < num_vertices(G); i++) {
+  for (int i = 0; i < num_vertices(G_Modified); i++) {
     (*Users)[i].clear();
     (*HistoryCosts)[i] = 0;
     (*TraceBack)[i] = -1;
@@ -1328,7 +1373,7 @@ int main(int argc, char *argv[])
   // compute a topological order
   computeTopo(&H, &hTypes); // not presently used
   
-  findMinorEmbedding(&H, &G, &hTypes, &gTypes);
+  findMinorEmbedding(&H, &G_Modified, &hTypes, &gTypes);
     
   return 0;
  }

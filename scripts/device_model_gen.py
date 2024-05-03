@@ -272,8 +272,6 @@ def create_riken(args):
     #  Writing device model graph for Riken architecture
     # -------------------------------------------------------
     output_file = "riken_" + str(args.NR) + "_" + str(args.NC) + ".dot"
-    print(f"Writing device model graph for Riken architecture in {output_file}")
-    print(G.edges(data=True))
     nx.nx_pydot.write_dot(G, output_file)
     
 # Creates device model for the ADRES architecture:

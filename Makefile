@@ -16,6 +16,6 @@ $(EXE): $(SRC_DIR)/GRAMM.cpp
 	g++ $(SRC_DIR)/GRAMM.cpp $(CXXFLAGS) -o $(EXE) 
 
 clean:
-	rm $(EXE) 
+	rm $(EXE) *.dot *.txt *.png
 
 
