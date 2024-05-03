@@ -64,7 +64,7 @@ typedef enum nodeT {io, alu, memport, reg, constant, wire, mux} nodeType;
 
 #define MAX_DIST 10000000
 #define RIKEN 1
-#define DEBUG 1
+#define DEBUG 0
 
 int numR;
 int numC;
@@ -1228,16 +1228,13 @@ int main(int argc, char *argv[])
   //--------------------------------------------------------------------
   //Omkar:  Reading device model dot file instead.
   //--------------------------------------------------------------------
-  std::ifstream dFile;  //Defining the input file stream for device model dot file
-  dFile.open(argv[2]);  //Passing the device_Model_dot file as an argument!
-  boost::read_graphviz(dFile, G, dp); //Reading the dot file
 
   for (int i = 0; i < num_vertices(G); i++) {
     vertex_descriptor v = vertex(i, G);
     std::string arch_type = boost::get(&DotVertex::arch_type, G, v);
     std::string arch_label = boost::get(&DotVertex::arch_label, G, v);
-    std::cout << "arch_type :: " << arch_type << " :: arch_label :: " << arch_label << "\n";
-    int gTypes_index = i; //std::stoi(arch_label);   //Arch_label is a node_id basically
+    //std::cout << "arch_type :: " << arch_type << " :: arch_label :: " << arch_label << "\n";
+    int gTypes_index = std::stoi(arch_label);   //Arch_label is a node_id basically
                                                 //Boost read_graphviz() doesn't preserve the node ordering from the read input dot file.
     if (arch_type == "memport") gTypes[gTypes_index] = memport;
     else if (arch_type == "mux") gTypes[gTypes_index] = mux;
@@ -1301,7 +1298,7 @@ int main(int argc, char *argv[])
 
   //Omkar: checking the output of manually generated model
   std::ofstream oFile;
-  oFile.open("device_model_hardcode.dot");
+  oFile.open("device_model_new.dot");
   boost::write_graphviz(oFile, G);
   
 

@@ -26,4 +26,4 @@ Arguments are <filename.dot> <numRows NR> <numCols NC> <seed>
 ```
 
 ### Mapping `Conv_Balance` circuit on 8X8 ADRES CGRA using GRAMM
-> ./GRAMM Kernels/Conv_Balance/conv_nounroll_Balance.dot 8 8 0
+> ./GRAMM Kernels/Conv_Balance/conv_nounroll_Balance.dot 2 2 0
