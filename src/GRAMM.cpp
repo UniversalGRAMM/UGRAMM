@@ -584,6 +584,8 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, nodeTyp
     
     if (load == y)
       continue; // JANDERS ignore feedback connections for the moment
+                // Hamas: Why ignore feedback connections
+                // Comments: route feedback to the pins
     
     if ((*Trees)[load].nodes.size() == 0)
       continue; // load is not placed                                                                                           
@@ -614,69 +616,73 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, nodeTyp
 	    
 
 int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, 
-		       std::map<int, nodeType> *HTypes, std::map<int, nodeType> *GTypes) {
+		       std::map<int, nodeType> *HTypes, std::map<int, nodeType> *GTypes) { //TODO:
 
   bool allEmpty = true;
 
-  in_edge_iterator ei, ei_end;
+  // Hamas: Basically finding the in and out edges of a perticular node in the application DFG to iterate from
+  // Hamas: As stated after, H is the application DFG and G is the Routing Resource Graph
+  in_edge_iterator ei, ei_end; // Hamas: what is the difference between in_edge_iterator vs out_edge_iterator
   vertex_descriptor yD = vertex(y, *H);
-  boost::tie(ei, ei_end) = in_edges(yD, *H);
+  boost::tie(ei, ei_end) = in_edges(yD, *H); //comment: look for the fan ins and check if any of its node is mapped
   for (; ei != ei_end; ei++) {
     if ((*Trees)[source(*ei, *G)].nodes.size())
       allEmpty=false;
   }
   out_edge_iterator eo, eo_end;
-  boost::tie(eo, eo_end) = out_edges(yD, *H);
+  boost::tie(eo, eo_end) = out_edges(yD, *H); //comment: look for the fin out and check if any of its node is mapped
   for (; eo != eo_end; eo++) {
     if ((*Trees)[target(*eo, *H)].nodes.size())
       allEmpty=false;
   }
   
   if (allEmpty) { // choose a random node of G to be the vertex model for y because NONE of its fanins or fanouts have vertex models
+                  // Hamas: Would it be better to map these last as they do not have any dependencies? --> only in the first iterations first node will not have any neighbors
     int chooseRand = (rand() % num_vertices(*G));
     do {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
-    } while (((*GTypes)[chooseRand] != (*HTypes)[y]) );
+    } while (((*GTypes)[chooseRand] != (*HTypes)[y]) ); //Hamas: Ensure that the random node the G is the correct type // originally
     //    std::cout << "Chose a random vertex model " << chooseRand << ".\n";      
-    (*Trees)[y].nodes.push_back(chooseRand);
-    (*Users)[chooseRand].push_back(y);
+    (*Trees)[y].nodes.push_back(chooseRand); // Hamas: Review what the Trees and Users vectors are again //TODO:
+    (*Users)[chooseRand].push_back(y); //push on the users nodes that uses it
     return 0;
   }   
 
-  // OK, at least one of y's fanins or fanouts have a vertex model
+  // OK, at least one of y's fanins or fanouts have a vertex model //comment: one of the vertex is mapped
   int bestCost = MAX_DIST;
   int bestIndex = -1;
   
-  int totalCosts[num_vertices(*G)];
+  int totalCosts[num_vertices(*G)]; //Hamas: Vector of the total cost, guessing for each node. Cost at each node may differe
   for (int i = 0; i < num_vertices(*G); i++) 
     totalCosts[i] = 0;  
   
-  for (int i = 0; i < num_vertices(*G); i++) {
+  for (int i = 0; i < num_vertices(*G); i++) { //Comment: walk all ndoes through the candidate graph and consider a candidate for the nodes
 
-    if ((*GTypes)[i] != (*HTypes)[y])
+    if ((*GTypes)[i] != (*HTypes)[y]) //Hamas: Ensure that the random node the G is the correct type
       continue;
 
     // first route the signal on the output of y
 
-    //    std::cout << "Trying location:\n";
-    //    printName(i);
+       std::cout << "Trying location:\n"; //Hamas: Uncommented this for experimentation purpose
+       printName(i); //Hamas: Uncommented this for experimentation purpose
 
-    ripUpRouting(y);
+    ripUpRouting(y); //comment rip up previous routing
     (*Trees)[y].nodes.push_back(i);
-    (*Users)[i].push_back(y);
+    (*Users)[i].push_back(y); //comment: y is the use of node i
 
     //    totalCosts[i] += (4 << ((*Users)[i].size()-1)); 
     //    totalCosts[i] += (4 << (*Users)[i].size()) + (1 << (*HistoryCosts)[i]);
-    totalCosts[i] +=  (1 + (*HistoryCosts)[i])*((*Users)[i].size()*PFac);
+    totalCosts[i] +=  (1 + (*HistoryCosts)[i])*((*Users)[i].size()*PFac); 
     
     //    std::cout << "INVOKING ROUTE FANOUT SIGNAL\n";
     //    printRouting(y);
     
-    totalCosts[i] += routeSignal(G, H, y, GTypes);
+    totalCosts[i] += routeSignal(G, H, y, GTypes); //Comment: assumes one output pin but may need to support multoiple output pins
+                                                  // comment: only routes the output of node y
 
     //    std::cout << "TOTAL COST " << totalCosts[i] << "\n";
     
-    if (totalCosts[i] > bestCost)
+    if (totalCosts[i] > bestCost) //comment if the output cost is high, then just skip and do not bother routing the input of node y
       continue;
     
     // now route the signals on the input of y
@@ -688,7 +694,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 	continue; // driver is not placed
 
       int driverNode = findDriver(driver);
-      ripUpRouting(driver);
+      ripUpRouting(driver); //comment, find the rip up and reroute the routing //rip up all the routing of driver even if it has multiple fan outs //need to modify the ruip up routing code
       (*Trees)[driver].nodes.push_back(driverNode);
       (*Users)[driverNode].push_back(driver);
       //      ripUpLoad(G, driver, i);
@@ -711,7 +717,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
       bestIndex = i;
       bestCost = totalCosts[i];
     }
-    else if (totalCosts[i] == bestCost) {
+    else if (totalCosts[i] == bestCost) { //flip if the did not have the best cost
       if (!(rand() % 2))
 	bestIndex = i;
     }
@@ -723,6 +729,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     exit(-1);
   }
 
+  //Comment: rip up the last placement and redo the placement of the best placement which may occur early on.
   ripUpRouting(y);
   (*Trees)[y].nodes.push_back(bestIndex);
   (*Users)[bestIndex].push_back(y);
@@ -748,29 +755,35 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 }
 
 
-int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, nodeType> *hTypes, std::map<int, nodeType> *gTypes) {
+int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, nodeType> *hTypes, std::map<int, nodeType> *gTypes) { //TODO:
   // determine if H is a minor of G
 
-  int ordering[num_vertices(*H)]; // presently unused
+  int ordering[num_vertices(*H)]; // presently unused --> Hamas: why is it not used?
   for (int i = 0; i < num_vertices(*H); i++) {
     
     ordering[i] = i;
-    //std::cout << ordering[i] << " \n";
+    //Hamas: Added output terminal stream code for experimentation purpose
+    std::cout << "List all the ordering start \n";
+    std::cout << ordering[i] << " \n"; //Note: Uncommented this out for experimation purposes
+    std::cout << "List all the ordering end \n";
   }
   
   bool done = false; bool success=false;
-  int iterCount = 0;
+  int iterCount = 0; // Hamas: iteration count
 
-  explored.reset();
-  float frac;
+  explored.reset(); // Hamas: bitset -- maybe used to bits explored --> reset the bitset
+  float frac;       // Hamas: cost function fraction 
   
   while (!done) {
 
     iterCount++;
     std::cout << "***** BEGINNING OUTER WHILE LOOP ***** ITER " << iterCount << " \n";
     
+    std::cout << "Num vertices: " << num_vertices(*H) << " \n"; //Note: Added commented this out for experimation purposes
+    
     //randomizeList(ordering, num_vertices(*H));
-    sortList(ordering, num_vertices(*H));
+    sortList(ordering, num_vertices(*H)); //Hamas: how is this sorted -- would it effect the pins initializing?
+                                          //Hamas: Is this used as earleir, it mentions that ordering is not used in GRAMM?
     
     for (int k = 0; k < num_vertices(*H); k++) {
 
@@ -1248,11 +1261,13 @@ int main(int argc, char *argv[])
   if (!RIKEN) {
     dp.property("node_id",     boost::get(&DotVertex::name, H));
     dp.property("opcode",       boost::get(&DotVertex::opcode, H));
+    /*dp.property("pin",       boost::get(&DotVertex::pin, H)); //Get the pin */
     dp.property("arch_type",       boost::get(&DotVertex::arch_type, G));
   }
   else {
     dp.property("label",     boost::get(&DotVertex::name, H));
     dp.property("type",       boost::get(&DotVertex::opcode, H));
+    /*dp.property("pin",       boost::get(&DotVertex::pin, H)); //Get the pin */
     dp.property("arch_type",       boost::get(&DotVertex::arch_type, G));
     dp.property("arch_label",       boost::get(&DotVertex::arch_label, G));
   }
