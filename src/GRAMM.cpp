@@ -19,10 +19,14 @@
 #include <algorithm>
 
 struct DotVertex {
-    std::string name;
-    std::string opcode;
-    std::string arch_type;
-    std::string arch_label;
+    // For [H] --> Application Graph
+    std::string H_Name;       //Contains name of the operation in Application graph (ex: Load_0)
+    std::string H_Opcode;     //Contains the Opcode of the operation (ex: op, const, input and output)
+
+    // For [G] --> Device Model Graph
+    std::string G_ID;         //Contains the sequence ID for the given node of Device Model Graph
+    std::string G_NodeType;   //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
+    std::string G_Opcode;     //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
 };
 
 // the routing tree for a signal
@@ -60,7 +64,31 @@ typedef boost::graph_traits<DirectedGraph>::vertex_descriptor vertex_descriptor;
 typedef boost::graph_traits<DirectedGraph>::out_edge_iterator OutEdgeIterator;
 typedef DirectedGraph::edge_descriptor Edge;
 
-typedef enum nodeT {io, alu, memport, reg, constant, wire, mux} nodeType;
+//-------------------------------------------------------------------------------------------------------------------
+
+//=========================//
+//Enumerators used in GRAMM//
+//=========================//
+
+// Primary node type enumerator where each node is distinguished between functional, routing and pin cell type.
+typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
+
+//Other configuration information of the node elements:
+// -- Opcode (requires enumerator which is defined as follows)
+// -- Latency, Width can be defined as an integer
+// -- Location of the node can be defined as an integer pair
+typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, pin} opcodeType;
+
+struct NodeConfig {
+    nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
+    opcodeType opcode;      //Opcode of the node --> io, alu, memport....
+    //As of now following configs are optional
+    int Latency = 0;                    
+    int Width   = 0;                      
+    std::pair<int, int> Location = {0,0 };   
+};
+
+//-------------------------------------------------------------------------------------------------------------------
 
 #define MAX_DIST 10000000
 #define RIKEN 1                 //Defining the architecture type
@@ -359,7 +387,7 @@ void ripUpLoad(DirectedGraph *G, int signal, int load) {
 }
 #endif
 
-int route(DirectedGraph* G, int signal, int sink, std::list<int> *route, std::map<int, nodeType> *GTypes) {
+int route(DirectedGraph* G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig) {
 
   route->clear();
 
@@ -422,7 +450,7 @@ int route(DirectedGraph* G, int signal, int sink, std::list<int> *route, std::ma
       expInt.push_back(next);
 
       // janders CHECK if a MUX, as ONLY MUXes can be used along the way
-      if ((next != sink) && ((*GTypes)[next] != mux))
+      if ((next != sink) && ((*gConfig)[next].opcode != mux))
 	continue;
       
       struct ExpNode eNodeNew;
@@ -567,7 +595,7 @@ void randomizeList(int *list, int n) {
   }
 }
 
-int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, nodeType> *GTypes) {
+int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig) {
 
   //  std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n";
   
@@ -598,7 +626,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, nodeTyp
     }
     int cost;
     std::list<int> path;
-    cost = route(G, y, loadLoc, &path, GTypes);
+    cost = route(G, y, loadLoc, &path, gConfig);
     totalCost += cost;
     if (cost < MAX_DIST) {
       path.remove(loadLoc);
@@ -614,7 +642,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, nodeTyp
 	    
 
 int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, 
-		       std::map<int, nodeType> *HTypes, std::map<int, nodeType> *GTypes) {
+		       std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig) {
 
   bool allEmpty = true;
 
@@ -636,7 +664,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     int chooseRand = (rand() % num_vertices(*G));
     do {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
-    } while (((*GTypes)[chooseRand] != (*HTypes)[y]) );
+    } while (((*gConfig)[chooseRand].opcode != (*hConfig)[y].opcode) );
     //    std::cout << "Chose a random vertex model " << chooseRand << ".\n";      
     (*Trees)[y].nodes.push_back(chooseRand);
     (*Users)[chooseRand].push_back(y);
@@ -653,7 +681,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
   
   for (int i = 0; i < num_vertices(*G); i++) {
 
-    if ((*GTypes)[i] != (*HTypes)[y])
+    if ((*gConfig)[i].opcode != (*hConfig)[y].opcode)
       continue;
 
     // first route the signal on the output of y
@@ -672,7 +700,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     //    std::cout << "INVOKING ROUTE FANOUT SIGNAL\n";
     //    printRouting(y);
     
-    totalCosts[i] += routeSignal(G, H, y, GTypes);
+    totalCosts[i] += routeSignal(G, H, y, gConfig);
 
     //    std::cout << "TOTAL COST " << totalCosts[i] << "\n";
     
@@ -694,7 +722,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
       //      ripUpLoad(G, driver, i);
       //      std::cout << "ROUTING FANIN: " << hNames[driver] << "\n";
       
-      totalCosts[i] += routeSignal(G, H, driver, GTypes);
+      totalCosts[i] += routeSignal(G, H, driver, gConfig);
 
       //      std::cout << "COSTS: " << totalCosts[i] << "\n";
       
@@ -727,7 +755,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
   (*Trees)[y].nodes.push_back(bestIndex);
   (*Users)[bestIndex].push_back(y);
   
-  routeSignal(G, H, y, GTypes);
+  routeSignal(G, H, y, gConfig);
   
   boost::tie(ei, ei_end) = in_edges(yD, *H);
   for (; ei != ei_end; ei++) {
@@ -740,7 +768,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     (*Trees)[driver].nodes.push_back(driverNode);
     (*Users)[driverNode].push_back(driver);
     //    ripUpLoad(G, driver, bestIndex);
-    routeSignal(G, H, driver, GTypes);
+    routeSignal(G, H, driver, gConfig);
   }
   
   
@@ -748,7 +776,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 }
 
 
-int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, nodeType> *hTypes, std::map<int, nodeType> *gTypes) {
+int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig) {
   // determine if H is a minor of G
 
   int ordering[num_vertices(*H)]; // presently unused
@@ -775,7 +803,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, nodeTyp
     for (int k = 0; k < num_vertices(*H); k++) {
 
       int y = ordering[k];
-      if (RIKEN && ((*hTypes)[y] == constant)) continue;
+      if (RIKEN && ((*hConfig)[y].opcode == constant)) continue;
       //      std::cout << "Finding vertex model for: " << y << " " << hNames[y] << "\n";
       //      std::cout << "SIZE: " << (*Trees)[y].nodes.size() << "\n";
       //      std::cout << "TOPO ORDER: " << (*TopoOrder)[y] << "\n";
@@ -783,7 +811,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, nodeTyp
       //      if ((iterCount >= 3) && !hasOverlap(y)) // everything should be routed by 3rd iter
       //	continue; // skip signals with no overlap
       
-      findMinVertexModel(G, H, y, hTypes, gTypes);
+      findMinVertexModel(G, H, y, hConfig, gConfig);
       //      printVertexModels(H);
       
     } // for k
@@ -840,7 +868,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, nodeTyp
         
         for (int i = 0; i < num_vertices(*H); i++) {
           
-          if ((*hTypes)[i] == constant)
+          if ((*hConfig)[i].opcode == constant)
             continue;
           
           printPlaceAndRoute(i, oFile);
@@ -857,7 +885,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, nodeTyp
   return 0;
 }
 
-void createRIKEN(int NR, int NC, DirectedGraph *G, std::map<int, nodeType> *nodeTypes) {
+void createRIKEN(int NR, int NC, DirectedGraph *G, std::map<int, NodeConfig> *nodeTypes) {
 
   nodeTypes->clear();
   //Add total vertices into the graph:
@@ -869,8 +897,11 @@ void createRIKEN(int NR, int NC, DirectedGraph *G, std::map<int, nodeType> *node
 
   // add the connections to the LS units on the left and right side#
   for (int i = 0; i < NR; i++) {
-    (*nodeTypes)[i] = memport; // left column
-    (*nodeTypes)[i+NR] = memport; // right column
+    (*nodeTypes)[i].opcode    = memport;  // left column
+    (*nodeTypes)[i+NR].opcode = memport;  // right column
+
+    (*nodeTypes)[i].type    = FuncCell;  // left column
+    (*nodeTypes)[i+NR].type = FuncCell;  // right column
 
     // connectivity to the left-most column
     for (int j = 0; j < 10; j++) {
@@ -1004,19 +1035,23 @@ void createRIKEN(int NR, int NC, DirectedGraph *G, std::map<int, nodeType> *node
 
       int PEindex = PEstart + i*NC*PEstep + j*PEstep;
 
-      for (int k = 0; k < 12; k++)
-        (*nodeTypes)[PEindex + k] = mux;
+      for (int k = 0; k < 12; k++){
+        (*nodeTypes)[PEindex + k].opcode = mux;
+        (*nodeTypes)[PEindex + k].type   = RouteCell;
+      }
 
-      (*nodeTypes)[PEindex + 12] = constant;
-      (*nodeTypes)[PEindex + 13] = alu;
+      (*nodeTypes)[PEindex + 12].opcode = constant;
+      (*nodeTypes)[PEindex + 13].opcode = alu;
 
+      (*nodeTypes)[PEindex + 12].type = FuncCell;
+      (*nodeTypes)[PEindex + 13].type = FuncCell;
     }
   }
 
 }
 
 
-void createAdres(int dim, DirectedGraph *G, std::map<int, nodeType> *nodeTypes) {
+void createAdres(int dim, DirectedGraph *G, std::map<int, NodeConfig> *nodeTypes) {
 
   nodeTypes->clear();
   
@@ -1030,7 +1065,8 @@ void createAdres(int dim, DirectedGraph *G, std::map<int, nodeType> *nodeTypes) 
 
   // add the IO connections to the top row
   for (int i = 0; i < dim; i++) {
-    (*nodeTypes)[IOstart + i] = io;
+    (*nodeTypes)[IOstart + i].opcode = io;
+    (*nodeTypes)[IOstart + i].type   = FuncCell;
     boost::add_edge(IOstart + i, PEstart + i*PEstep, *G);
     boost::add_edge(IOstart + i, PEstart + i*PEstep + 1, *G);
     boost::add_edge(PEstart + i*PEstep + 4, IOstart + i, *G);
@@ -1038,7 +1074,8 @@ void createAdres(int dim, DirectedGraph *G, std::map<int, nodeType> *nodeTypes) 
 
   // add the memory port connections to the rows
   for (int i = 0; i < dim; i++) { // rows
-    (*nodeTypes)[MPstart + i] = memport;
+    (*nodeTypes)[MPstart + i].opcode = memport;
+    (*nodeTypes)[MPstart + i].type   = FuncCell;
     for (int j = 0; j < dim; j++) { // cols
       boost::add_edge(MPstart + i, PEstart + i*dim*PEstep + j*PEstep, *G);
       boost::add_edge(MPstart + i, PEstart + i*dim*PEstep + j*PEstep + 1, *G);
@@ -1090,12 +1127,18 @@ void createAdres(int dim, DirectedGraph *G, std::map<int, nodeType> *nodeTypes) 
 
       int PEindex = PEstart + i*dim*PEstep + j*PEstep;
 
-      (*nodeTypes)[PEindex] = mux;
-      (*nodeTypes)[PEindex+1] = mux;
-      (*nodeTypes)[PEindex+2] = constant;
-      (*nodeTypes)[PEindex+3] = alu;
-      (*nodeTypes)[PEindex+4] = mux;
-      
+      (*nodeTypes)[PEindex].opcode   = mux;
+      (*nodeTypes)[PEindex+1].opcode = mux;
+      (*nodeTypes)[PEindex+2].opcode = constant;
+      (*nodeTypes)[PEindex+3].opcode = alu;
+      (*nodeTypes)[PEindex+4].opcode = mux;
+
+      (*nodeTypes)[PEindex].type   = RouteCell;
+      (*nodeTypes)[PEindex+1].type = RouteCell;
+      (*nodeTypes)[PEindex+2].type = FuncCell;
+      (*nodeTypes)[PEindex+3].type = FuncCell;
+      (*nodeTypes)[PEindex+4].type = RouteCell;
+
       boost::add_edge(PEindex, PEindex + 3, *G); // mux A to ALU
       boost::add_edge(PEindex + 1, PEindex + 3, *G); // mux B to ALU
       boost::add_edge(PEindex + 2, PEindex, *G); // const to mux A
@@ -1129,7 +1172,7 @@ void createAdres(int dim, DirectedGraph *G, std::map<int, nodeType> *nodeTypes) 
   
 }
 
-void computeTopo(DirectedGraph *H, std::map<int, nodeType> *HTypes) {
+void computeTopo(DirectedGraph *H, std::map<int, NodeConfig> *hConfig) {
   
   std::queue<int> fifo;
 
@@ -1137,7 +1180,7 @@ void computeTopo(DirectedGraph *H, std::map<int, nodeType> *HTypes) {
   
   for (int i = 0; i < num_vertices(*H); i++) {
     (*TopoOrder)[i] = -1;
-    if ((*HTypes)[i] == io || (*HTypes)[i] == memport) {
+    if ((*hConfig)[i].opcode == io || (*hConfig)[i].opcode == memport) {
       fifo.push(i);
       (*TopoOrder)[i] = 0; // IOs and memport are at level 0 in the topological ordering
     }
@@ -1152,8 +1195,8 @@ void computeTopo(DirectedGraph *H, std::map<int, nodeType> *HTypes) {
     for (; eo != eo_end; eo++) {
       int next = target(*eo, *H);
       if ((*TopoOrder)[next] == -1) {
-	(*TopoOrder)[next] = (*TopoOrder)[pop]+1;
-	fifo.push(next);
+        (*TopoOrder)[next] = (*TopoOrder)[pop]+1;
+        fifo.push(next);
       }
     }
     in_edge_iterator ei, ei_end;
@@ -1161,7 +1204,7 @@ void computeTopo(DirectedGraph *H, std::map<int, nodeType> *HTypes) {
     for (; ei != ei_end; ei++) {
       int next = source(*ei, *H);
       if ((*TopoOrder)[next] == -1) {
-	(*TopoOrder)[next] = (*TopoOrder)[pop]+1;
+        (*TopoOrder)[next] = (*TopoOrder)[pop]+1;
         fifo.push(next);
       }
     }
@@ -1169,12 +1212,12 @@ void computeTopo(DirectedGraph *H, std::map<int, nodeType> *HTypes) {
 }
 
 /*
-  readDeviceModle() :: Reading device model dot file
+  readDeviceModle() => Reading device model dot file
   - DirectedGraph *G                  :: original device model read dot file
   - DirectedGraph *G_Modified         :: Sorted device model dot file based on original intended sequence.
-  - std::map<int, nodeTsype> *gTypes  :: Store the type of each node (memport/mux/constant/alu)
+  - std::map<int, NodeConfig> *gConfig  :: Store the configuration of each node (type,opcode, latenct etc.)
 */
-void readDeviceModle(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, nodeType> *gTypes){
+void readDeviceModle(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, NodeConfig> *gConfig){
   //--------------------------------------------------------------------
   //Omkar:  Reading device model dot file instead.
   //--------------------------------------------------------------------
@@ -1193,20 +1236,34 @@ void readDeviceModle(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
   //Iterate over all the nodes of the device model graph and assign the type of nodes:
   for (int i = 0; i < num_vertices(*G); i++) {
     vertex_descriptor v = vertex(i, *G);
-    std::string arch_type = boost::get(&DotVertex::arch_type, *G, v);
-    std::string arch_label = boost::get(&DotVertex::arch_label, *G, v);
-    int gTypes_index = std::stoi(arch_label);   //Arch_label is a node_id basically
-                                                //Boost read_graphviz() doesn't preserve the node ordering from the read input dot file.
+
+    std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v); //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
+    std::string arch_Opcode   = boost::get(&DotVertex::G_Opcode, *G, v);   //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+
+    std::string arch_ID = boost::get(&DotVertex::G_ID, *G, v); //Contains the sequence ID for the given node of Device Model Graph
+    int gTypes_index = std::stoi(arch_ID);   //Boost read_graphviz() doesn't preserve the node ordering from the read input dot file.
     
     //Storing the mapping which is later used for sorting:
     node_mapping[gTypes_index] = i;           
     reverse_node_mapping[i] = gTypes_index;
 
-    //Deciding the gTypes based on arch_type attribute which is set in the script itself:
-    if (arch_type == "memport") (*gTypes)[gTypes_index] = memport;
-    else if (arch_type == "mux") (*gTypes)[gTypes_index] = mux;
-    else if (arch_type == "constant") (*gTypes)[gTypes_index] = constant;
-    else if (arch_type == "alu") (*gTypes)[gTypes_index] = alu;
+    //Deciding the configuration based on attributes defined in the script:
+    if (arch_NodeType == "memport") {
+      (*gConfig)[gTypes_index].type   = FuncCell;  // memport is part  of FuncCell
+      (*gConfig)[gTypes_index].opcode = memport;   // Saving the opcode in the config array.
+    }
+    else if (arch_NodeType == "mux") {
+      (*gConfig)[gTypes_index].type   = RouteCell; // mux is part of RouteCell
+      (*gConfig)[gTypes_index].opcode = mux;       // Saving the opcode in the config array.
+    }
+    else if (arch_NodeType == "constant") {
+      (*gConfig)[gTypes_index].type   = FuncCell;  // constant is part of FuncCell
+      (*gConfig)[gTypes_index].opcode = constant;  // Saving the opcode in the config array.
+    }
+    else if (arch_NodeType == "alu") {
+      (*gConfig)[gTypes_index].type   = FuncCell;  // alu is part of FuncCell
+      (*gConfig)[gTypes_index].opcode = alu;       // Saving the opcode in the config array.
+    }
   }
 
   //Adding vertices in new sorted 'G_Modified' graph equal to original 'G' graph.
@@ -1246,15 +1303,32 @@ int main(int argc, char *argv[])
 
   boost::dynamic_properties dp(boost::ignore_other_properties);
   if (!RIKEN) {
-    dp.property("node_id",     boost::get(&DotVertex::name, H));
-    dp.property("opcode",       boost::get(&DotVertex::opcode, H));
-    dp.property("arch_type",       boost::get(&DotVertex::arch_type, G));
+    // H --> Application Graph
+    dp.property("node_id",      boost::get(&DotVertex::H_Name, H));
+    dp.property("opcode",       boost::get(&DotVertex::H_Opcode, H));
+
+    // For [G] --> Device Model Graph
+    //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
+    //DotVertex::G_NodeType --> Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
+    //DotVertex::G_Opcode --> Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    dp.property("ID",           boost::get(&DotVertex::G_ID, G));
+    dp.property("NodeType",     boost::get(&DotVertex::G_NodeType, G));
+    dp.property("opcode",       boost::get(&DotVertex::G_Opcode, G));
   }
   else {
-    dp.property("label",     boost::get(&DotVertex::name, H));
-    dp.property("type",       boost::get(&DotVertex::opcode, H));
-    dp.property("arch_type",       boost::get(&DotVertex::arch_type, G));
-    dp.property("arch_label",       boost::get(&DotVertex::arch_label, G));
+    // For [H] --> Application Graph
+    //DotVertex::H_Name   --> Contains name of the operation in Application graph (ex: Load_0)
+    //DotVertex::H_Opcode --> Contains the Opcode of the operation (ex: op, const, input and output)
+    dp.property("label",        boost::get(&DotVertex::H_Name, H));   
+    dp.property("type",         boost::get(&DotVertex::H_Opcode, H));
+
+    // For [G] --> Device Model Graph
+    //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
+    //DotVertex::G_NodeType --> Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
+    //DotVertex::G_Opcode --> Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    dp.property("ID",           boost::get(&DotVertex::G_ID, G));
+    dp.property("NodeType",     boost::get(&DotVertex::G_NodeType, G));
+    dp.property("opcode",       boost::get(&DotVertex::G_Opcode, G));
   }
   
   if (argc < 5) {
@@ -1274,7 +1348,11 @@ int main(int argc, char *argv[])
 
   srand(atoi(argv[5])); //Seed
   
-  std::map<int, nodeType> gTypes, hTypes;
+  //removed:: std::map<int, nodeType> gTypes, hTypes;
+  //Added type along with other config
+
+  //gConfig and hConfig contains the configuration information about that particular node.
+  std::map<int, NodeConfig> gConfig, hConfig;
 
   //--------------------------------------------------------------------
   //----------------- STEP 0 : READING DEVICE MODEL --------------------
@@ -1289,11 +1367,11 @@ int main(int argc, char *argv[])
     if (!RIKEN) {   
       // create ADRES device model
       std::cout << "Creating ADRES Device Model" << std::endl;
-      createAdres(dim, &G_Modified, &gTypes);
+      createAdres(dim, &G_Modified, &gConfig);
     }
     else {
       std::cout << "Creating RIKEN Device Model" << std::endl;
-      createRIKEN(NR, NC, &G_Modified, &gTypes); // create RIKEN architecture modle
+      createRIKEN(NR, NC, &G_Modified, &gConfig); // create RIKEN architecture modle
     }	
 
     if (DEBUG){
@@ -1314,7 +1392,7 @@ int main(int argc, char *argv[])
     boost::read_graphviz(dFile, G, dp); //Reading the dot file
 
 
-    readDeviceModle(&G, &G_Modified, &gTypes);
+    readDeviceModle(&G, &G_Modified, &gConfig);
   }
 
   //--------------------------------------------------------------------
@@ -1326,30 +1404,74 @@ int main(int argc, char *argv[])
 
   for (int i = 0; i < num_vertices(H); i++) {
     vertex_descriptor v = vertex(i, H);
-    std::string opcode = boost::get(&DotVertex::opcode, H, v);
-    std::string name = boost::get(&DotVertex::name, H, v);
+    std::string opcode = boost::get(&DotVertex::H_Opcode, H, v);
+    std::string name   = boost::get(&DotVertex::H_Name, H, v);
+
     hNames[i] = name;
+
     if (DEBUG){
       std::cout << "name " << name <<  " opcode " << opcode << "\n";
     }
-    if (!RIKEN) {
-      if (opcode == "const") hTypes[i] = constant;
-      else if (opcode == "input") hTypes[i] = io;
-      else if (opcode == "output") hTypes[i] = io;
-      else if (opcode == "load") hTypes[i] = memport;
-      else if (opcode == "store") hTypes[i] = memport;
+
+    /*
+      Translating the Opcodes from Application grpah into common NodeTypes
+      -- We have three common NodeTypes
+        1. FuncCell  (ALU, Constant, MemPort, IO)
+        2. RouteCell (MUX, Reg)
+        3. PinCell   (In, Out)
+      -- Also storing the other important information such as opcode..
+    */
+    if (!RIKEN) { 
+      //==========================//
+      //---------- ADRES ---------//
+      //==========================//
+      if (opcode == "const") {
+        hConfig[i].type   = FuncCell; // constant is part of FuncCell
+        hConfig[i].opcode = constant; //Saving Opcode in the config map.
+      }
+      else if (opcode == "input") {
+        hConfig[i].type   = FuncCell; // io is part of FuncCell
+        hConfig[i].opcode = io;       //Saving Opcode in the config map.
+      }
+      else if (opcode == "output") { 
+        hConfig[i].type   = FuncCell; // io is part of FuncCell
+        hConfig[i].opcode = io;       //Saving Opcode in the config map.
+      }
+      else if (opcode == "load") { 
+        hConfig[i].type   = FuncCell; // memport is part of FuncCell
+        hConfig[i].opcode = memport;  //Saving Opcode in the config map.
+      }
+      else if (opcode == "store") {  
+        hConfig[i].type   = FuncCell; // memport is part of FuncCell
+        hConfig[i].opcode = memport;  //Saving Opcode in the config map.
+      }
       else {
-        hTypes[i] = alu;
+        hConfig[i].type   = FuncCell; // ALU is part of FuncCell
+        hConfig[i].opcode = alu;      //Saving Opcode in the config map.
       }
     }
-    else { // RIKEN CGRA
-      if (opcode == "const") hTypes[i] = constant;
-      else if (opcode == "input") hTypes[i] = memport;
-      else if (opcode == "output") hTypes[i] = memport;
+    else { 
+      //==========================//
+      //---------- RIKEN ---------//
+      //==========================//
+      if (opcode == "const") {
+        hConfig[i].type   = FuncCell; // constant is part of FuncCell
+        hConfig[i].opcode = constant; //Saving Opcode in the config map.
+      }
+      else if (opcode == "input") {
+        hConfig[i].type   = FuncCell; // memport is part of FuncCell
+        hConfig[i].opcode = memport;  //Saving Opcode in the config map.
+      }
+      else if (opcode == "output") { 
+        hConfig[i].type   = FuncCell; // memport is part of FuncCell
+        hConfig[i].opcode = memport;  //Saving Opcode in the config map.
+      }
       else {
-        hTypes[i] = alu;
+        hConfig[i].type   = FuncCell; // ALU is part of FuncCell
+        hConfig[i].opcode = alu;      //Saving Opcode in the config map.
       }
     }
+
   }
   
 
@@ -1370,10 +1492,13 @@ int main(int argc, char *argv[])
     (*Trees)[i].nodes.clear();
   }
 
-  // compute a topological order
-  computeTopo(&H, &hTypes); // not presently used
+  /*
+   ** compute a topological order
+    -->  We also experimented with sorting the nodes of H according to their topological distancwe from a CGRA I/O or memory port; however, we found that this technique did not improve results beyond the ordering by the size of the vertex models.
+  */
+  //computeTopo(&H, &hConfig); // not presently used
   
-  findMinorEmbedding(&H, &G_Modified, &hTypes, &gTypes);
+  findMinorEmbedding(&H, &G_Modified, &hConfig, &gConfig);
     
   return 0;
  }
