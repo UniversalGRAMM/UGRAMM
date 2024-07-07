@@ -20,8 +20,8 @@
 
 struct DotVertex {
     // For [H] --> Application Graph
-    std::string H_Name;       //Contains name of the operation in Application graph (ex: Load_0)
-    std::string H_Opcode;     //Contains the Opcode of the operation (ex: op, const, input and output)
+    std::string name;       //Contains name of the operation in Application graph (ex: Load_0)
+    std::string opcode;     //Contains the Opcode of the operation (ex: op, const, input and output)
 
     // For [G] --> Device Model Graph
     std::string G_ID;         //Contains the sequence ID for the given node of Device Model Graph
@@ -92,7 +92,7 @@ struct NodeConfig {
 
 #define MAX_DIST 10000000
 #define RIKEN 1                 //Defining the architecture type
-#define DEBUG 0                 //For enbaling the print-statements (mapped-DFG)
+#define DEBUG 1                 //For enbaling the print-statements (mapped-DFG)
 #define HARDCODE_DEVICE_MODEL 1 //Controls hardcoding of device model
 
 int numR;
@@ -387,7 +387,7 @@ void ripUpLoad(DirectedGraph *G, int signal, int load) {
 }
 #endif
 
-int route(DirectedGraph* G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig) {
+int route(DirectedGraph* G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig ) {
 
   route->clear();
 
@@ -804,7 +804,8 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
       int y = ordering[k];
       if (RIKEN && ((*hConfig)[y].opcode == constant)) continue;
-      //      std::cout << "Finding vertex model for: " << y << " " << hNames[y] << "\n";
+
+      std::cout << "Finding vertex model for: " << y << " " << (*hConfig)[y].opcode << "\n";
       //      std::cout << "SIZE: " << (*Trees)[y].nodes.size() << "\n";
       //      std::cout << "TOPO ORDER: " << (*TopoOrder)[y] << "\n";
 
@@ -1247,20 +1248,25 @@ void readDeviceModle(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
     node_mapping[gTypes_index] = i;           
     reverse_node_mapping[i] = gTypes_index;
 
+    if (DEBUG){
+      //std::cout << "[G] arch_ID " << arch_ID << " ::  arch_NodeType " << arch_NodeType <<  " :: arch_Opcode " << arch_Opcode << "\n";
+    }
+
     //Deciding the configuration based on attributes defined in the script:
-    if (arch_NodeType == "memport") {
+    //arch_Opcode described in the device model graph file: MemPort, Mux, Constant, and ALU.
+    if (arch_Opcode == "MemPort") {
       (*gConfig)[gTypes_index].type   = FuncCell;  // memport is part  of FuncCell
       (*gConfig)[gTypes_index].opcode = memport;   // Saving the opcode in the config array.
     }
-    else if (arch_NodeType == "mux") {
+    else if (arch_Opcode == "Mux") {
       (*gConfig)[gTypes_index].type   = RouteCell; // mux is part of RouteCell
       (*gConfig)[gTypes_index].opcode = mux;       // Saving the opcode in the config array.
     }
-    else if (arch_NodeType == "constant") {
+    else if (arch_Opcode == "Constant") {
       (*gConfig)[gTypes_index].type   = FuncCell;  // constant is part of FuncCell
       (*gConfig)[gTypes_index].opcode = constant;  // Saving the opcode in the config array.
     }
-    else if (arch_NodeType == "alu") {
+    else if (arch_Opcode == "ALU") {
       (*gConfig)[gTypes_index].type   = FuncCell;  // alu is part of FuncCell
       (*gConfig)[gTypes_index].opcode = alu;       // Saving the opcode in the config array.
     }
@@ -1304,31 +1310,31 @@ int main(int argc, char *argv[])
   boost::dynamic_properties dp(boost::ignore_other_properties);
   if (!RIKEN) {
     // H --> Application Graph
-    dp.property("node_id",      boost::get(&DotVertex::H_Name, H));
-    dp.property("opcode",       boost::get(&DotVertex::H_Opcode, H));
+    dp.property("node_id",      boost::get(&DotVertex::name, H));
+    dp.property("opcode",       boost::get(&DotVertex::opcode, H));
 
     // For [G] --> Device Model Graph
     //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
     //DotVertex::G_NodeType --> Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     //DotVertex::G_Opcode --> Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
-    dp.property("ID",           boost::get(&DotVertex::G_ID, G));
-    dp.property("NodeType",     boost::get(&DotVertex::G_NodeType, G));
-    dp.property("opcode",       boost::get(&DotVertex::G_Opcode, G));
+    dp.property("G_ID",           boost::get(&DotVertex::G_ID, G));
+    dp.property("G_NodeType",     boost::get(&DotVertex::G_NodeType, G));
+    dp.property("G_opcode",       boost::get(&DotVertex::G_Opcode, G));
   }
   else {
     // For [H] --> Application Graph
-    //DotVertex::H_Name   --> Contains name of the operation in Application graph (ex: Load_0)
+    //DotVertex::name   --> Contains name of the operation in Application graph (ex: Load_0)
     //DotVertex::H_Opcode --> Contains the Opcode of the operation (ex: op, const, input and output)
-    dp.property("label",        boost::get(&DotVertex::H_Name, H));   
-    dp.property("type",         boost::get(&DotVertex::H_Opcode, H));
+    dp.property("label",        boost::get(&DotVertex::name, H));   
+    dp.property("opcode",         boost::get(&DotVertex::opcode, H));
 
     // For [G] --> Device Model Graph
     //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
     //DotVertex::G_NodeType --> Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     //DotVertex::G_Opcode --> Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
-    dp.property("ID",           boost::get(&DotVertex::G_ID, G));
-    dp.property("NodeType",     boost::get(&DotVertex::G_NodeType, G));
-    dp.property("opcode",       boost::get(&DotVertex::G_Opcode, G));
+    dp.property("G_ID",           boost::get(&DotVertex::G_ID, G));
+    dp.property("G_NodeType",     boost::get(&DotVertex::G_NodeType, G));
+    dp.property("G_opcode",       boost::get(&DotVertex::G_Opcode, G));
   }
   
   if (argc < 5) {
@@ -1404,13 +1410,13 @@ int main(int argc, char *argv[])
 
   for (int i = 0; i < num_vertices(H); i++) {
     vertex_descriptor v = vertex(i, H);
-    std::string opcode = boost::get(&DotVertex::H_Opcode, H, v);
-    std::string name   = boost::get(&DotVertex::H_Name, H, v);
+    std::string opcode = boost::get(&DotVertex::opcode, H, v);
+    std::string name   = boost::get(&DotVertex::name, H, v);
 
     hNames[i] = name;
 
     if (DEBUG){
-      std::cout << "name " << name <<  " opcode " << opcode << "\n";
+      std::cout << "[H] name " << name <<  " opcode " << opcode << "\n";
     }
 
     /*

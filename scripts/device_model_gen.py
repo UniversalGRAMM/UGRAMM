@@ -58,14 +58,14 @@ def create_riken(args):
     #Step 1: Add the connection to the Load/Store units on both side
     #----------------------------------------------------------------
     for i in range(args.NR):
-        G.nodes[i]["NodeType"]         = "FuncCell"    #Left-IOs
-        G.nodes[i+args.NR]["NodeType"] = "FuncCell"    #Right-IOs
+        G.nodes[i]["G_NodeType"]         = "FuncCell"    #Left-IOs
+        G.nodes[i+args.NR]["G_NodeType"] = "FuncCell"    #Right-IOs
 
-        G.nodes[i]["opcode"]         = "MemPort"    #Left-IOs
-        G.nodes[i+args.NR]["opcode"] = "MemPort"    #Right-IOs
+        G.nodes[i]["G_opcode"]         = "MemPort"    #Left-IOs
+        G.nodes[i+args.NR]["G_opcode"] = "MemPort"    #Right-IOs
 
-        G.nodes[i]["ID"]         = str(i)    #Left-IOs
-        G.nodes[i+args.NR]["ID"] = str(i+args.NR)    #Right-IOs
+        G.nodes[i]["G_ID"]         = str(i)    #Left-IOs
+        G.nodes[i+args.NR]["G_ID"] = str(i+args.NR)    #Right-IOs
         
         #----------------------------------
         #Connectivity of IO ports and SBs:
@@ -259,19 +259,19 @@ def create_riken(args):
             # Assigning mux type:
             # We have total 12 muxes, 10 from SB and 2 from PE:
             for k in range(sb_max+2):       
-                G.nodes[PEindex + k]["NodeType"]     = "RouteCell";
-                G.nodes[PEindex + k]["opcode"] = "Mux";
-                G.nodes[PEindex + k]["ID"]       = str(PEindex + k) 
+                G.nodes[PEindex + k]["G_NodeType"]     = "RouteCell";
+                G.nodes[PEindex + k]["G_opcode"] = "Mux";
+                G.nodes[PEindex + k]["G_ID"]       = str(PEindex + k) 
 
             # Assigning the constant type:
-            G.nodes[PEindex + 12]["NodeType"]     = "FuncCell";
-            G.nodes[PEindex + 12]["opcode"] = "Constant";
-            G.nodes[PEindex + 12]["ID"]       = str(PEindex + 12)  
+            G.nodes[PEindex + 12]["G_NodeType"]     = "FuncCell";
+            G.nodes[PEindex + 12]["G_opcode"] = "Constant";
+            G.nodes[PEindex + 12]["G_ID"]       = str(PEindex + 12)  
 
             # Assigning the ALU type:
-            G.nodes[PEindex + 13]["NodeType"]     = "FuncCell";
-            G.nodes[PEindex + 13]["opcode"] = "ALU";
-            G.nodes[PEindex + 13]["ID"]       = str(PEindex + 13) 
+            G.nodes[PEindex + 13]["G_NodeType"]     = "FuncCell";
+            G.nodes[PEindex + 13]["G_opcode"] = "ALU";
+            G.nodes[PEindex + 13]["G_ID"]       = str(PEindex + 13) 
 
 
     # -------------------------------------------------------
