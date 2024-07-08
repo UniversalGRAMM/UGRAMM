@@ -1,0 +1,1510 @@
+List all the ordering start 
+0 
+List all the ordering end 
+List all the ordering start 
+1 
+List all the ordering end 
+List all the ordering start 
+2 
+List all the ordering end 
+List all the ordering start 
+3 
+List all the ordering end 
+List all the ordering start 
+4 
+List all the ordering end 
+List all the ordering start 
+5 
+List all the ordering end 
+List all the ordering start 
+6 
+List all the ordering end 
+List all the ordering start 
+7 
+List all the ordering end 
+List all the ordering start 
+8 
+List all the ordering end 
+List all the ordering start 
+9 
+List all the ordering end 
+List all the ordering start 
+10 
+List all the ordering end 
+List all the ordering start 
+11 
+List all the ordering end 
+List all the ordering start 
+12 
+List all the ordering end 
+List all the ordering start 
+13 
+List all the ordering end 
+List all the ordering start 
+14 
+List all the ordering end 
+List all the ordering start 
+15 
+List all the ordering end 
+List all the ordering start 
+16 
+List all the ordering end 
+List all the ordering start 
+17 
+List all the ordering end 
+List all the ordering start 
+18 
+List all the ordering end 
+List all the ordering start 
+19 
+List all the ordering end 
+List all the ordering start 
+20 
+List all the ordering end 
+List all the ordering start 
+21 
+List all the ordering end 
+List all the ordering start 
+22 
+List all the ordering end 
+List all the ordering start 
+23 
+List all the ordering end 
+List all the ordering start 
+24 
+List all the ordering end 
+List all the ordering start 
+25 
+List all the ordering end 
+List all the ordering start 
+26 
+List all the ordering end 
+List all the ordering start 
+27 
+List all the ordering end 
+List all the ordering start 
+28 
+List all the ordering end 
+List all the ordering start 
+29 
+List all the ordering end 
+List all the ordering start 
+30 
+List all the ordering end 
+List all the ordering start 
+31 
+List all the ordering end 
+List all the ordering start 
+32 
+List all the ordering end 
+List all the ordering start 
+33 
+List all the ordering end 
+List all the ordering start 
+34 
+List all the ordering end 
+List all the ordering start 
+35 
+List all the ordering end 
+***** BEGINNING OUTER WHILE LOOP ***** ITER 1 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 3 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 3 ON  SB_INP_B row 0 col 0
+OVERUSE 2 ON  SB_INP_A row 0 col 0
+OVERUSE 2 ON  SB_MUX2_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_B row 0 col 0
+OVERUSE 9 ON  ALU row 0 col 0
+OVERUSE 1 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 5 ON  SB_INP_B row 0 col 1
+OVERUSE 5 ON  SB_INP_A row 0 col 1
+OVERUSE 5 ON  SB_MUX2_A row 0 col 1
+OVERUSE 5 ON  SB_MUX2_B row 0 col 1
+OVERUSE 7 ON  ALU row 0 col 1
+OVERUSE 1 ON  SB_N row 1 col 0
+OVERUSE 3 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 3 ON  SB_N row 1 col 1
+OVERUSE 3 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 2 
+Num vertices: 36 
+OVERUSE 1 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 3 ON  SB_INP_B row 0 col 0
+OVERUSE 3 ON  SB_INP_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_B row 0 col 0
+OVERUSE 7 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 3 ON  SB_SW row 0 col 1
+OVERUSE 1 ON  SB_W row 0 col 1
+OVERUSE 4 ON  SB_INP_B row 0 col 1
+OVERUSE 4 ON  SB_INP_A row 0 col 1
+OVERUSE 4 ON  SB_MUX2_A row 0 col 1
+OVERUSE 4 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 2 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 9 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 1 ON  SB_NW row 1 col 1
+OVERUSE 3 ON  SB_N row 1 col 1
+OVERUSE 3 ON  SB_INP_B row 1 col 1
+OVERUSE 4 ON  SB_INP_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+FRACTION OVERLAP: 1
+***** BEGINNING OUTER WHILE LOOP ***** ITER 3 
+Num vertices: 36 
+OVERUSE 1 ON  SB_S row 0 col 0
+OVERUSE 3 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 3 ON  SB_INP_B row 0 col 0
+OVERUSE 3 ON  SB_INP_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 3 ON  SB_SW row 0 col 1
+OVERUSE 1 ON  SB_W row 0 col 1
+OVERUSE 4 ON  SB_INP_B row 0 col 1
+OVERUSE 4 ON  SB_INP_A row 0 col 1
+OVERUSE 4 ON  SB_MUX2_A row 0 col 1
+OVERUSE 4 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 1 ON  SB_NW row 1 col 1
+OVERUSE 3 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 4 
+Num vertices: 36 
+OVERUSE 1 ON  SB_S row 0 col 0
+OVERUSE 3 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 3 ON  SB_INP_B row 0 col 0
+OVERUSE 3 ON  SB_INP_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 3 ON  SB_SW row 0 col 1
+OVERUSE 1 ON  SB_W row 0 col 1
+OVERUSE 4 ON  SB_INP_B row 0 col 1
+OVERUSE 4 ON  SB_INP_A row 0 col 1
+OVERUSE 4 ON  SB_MUX2_A row 0 col 1
+OVERUSE 4 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 1 ON  SB_NW row 1 col 1
+OVERUSE 3 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 5 
+Num vertices: 36 
+OVERUSE 1 ON  SB_S row 0 col 0
+OVERUSE 3 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 3 ON  SB_INP_B row 0 col 0
+OVERUSE 3 ON  SB_INP_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 3 ON  SB_SW row 0 col 1
+OVERUSE 1 ON  SB_W row 0 col 1
+OVERUSE 4 ON  SB_INP_B row 0 col 1
+OVERUSE 4 ON  SB_INP_A row 0 col 1
+OVERUSE 4 ON  SB_MUX2_A row 0 col 1
+OVERUSE 4 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 1 ON  SB_NW row 1 col 1
+OVERUSE 3 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 6 
+Num vertices: 36 
+OVERUSE 1 ON  SB_S row 0 col 0
+OVERUSE 3 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 3 ON  SB_INP_B row 0 col 0
+OVERUSE 3 ON  SB_INP_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_A row 0 col 0
+OVERUSE 3 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 3 ON  SB_SW row 0 col 1
+OVERUSE 1 ON  SB_W row 0 col 1
+OVERUSE 4 ON  SB_INP_B row 0 col 1
+OVERUSE 4 ON  SB_INP_A row 0 col 1
+OVERUSE 4 ON  SB_MUX2_A row 0 col 1
+OVERUSE 4 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 1 ON  SB_NW row 1 col 1
+OVERUSE 3 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 7 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 3 ON  SB_INP_B row 1 col 1
+OVERUSE 4 ON  SB_INP_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 8 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 9 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 10 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 11 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 12 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 13 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 14 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 15 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 16 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 17 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 18 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 19 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 20 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 21 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 22 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 23 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 24 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 25 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 26 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 27 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 28 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 29 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 30 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 31 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 32 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 33 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 34 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 35 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 36 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 3 ON  SB_INP_B row 1 col 1
+OVERUSE 4 ON  SB_INP_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 37 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 38 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 39 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+***** BEGINNING OUTER WHILE LOOP ***** ITER 40 
+Num vertices: 36 
+OVERUSE 2 ON  SB_S row 0 col 0
+OVERUSE 2 ON  SB_E row 0 col 0
+OVERUSE 2 ON  SB_SE row 0 col 0
+OVERUSE 4 ON  SB_INP_B row 0 col 0
+OVERUSE 4 ON  SB_INP_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_A row 0 col 0
+OVERUSE 4 ON  SB_MUX2_B row 0 col 0
+OVERUSE 8 ON  ALU row 0 col 0
+OVERUSE 2 ON  SB_S row 0 col 1
+OVERUSE 2 ON  SB_SW row 0 col 1
+OVERUSE 2 ON  SB_W row 0 col 1
+OVERUSE 3 ON  SB_INP_B row 0 col 1
+OVERUSE 3 ON  SB_INP_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_A row 0 col 1
+OVERUSE 3 ON  SB_MUX2_B row 0 col 1
+OVERUSE 8 ON  ALU row 0 col 1
+OVERUSE 3 ON  SB_N row 1 col 0
+OVERUSE 1 ON  SB_NE row 1 col 0
+OVERUSE 2 ON  SB_E row 1 col 0
+OVERUSE 3 ON  SB_INP_B row 1 col 0
+OVERUSE 3 ON  SB_INP_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_A row 1 col 0
+OVERUSE 3 ON  SB_MUX2_B row 1 col 0
+OVERUSE 8 ON  ALU row 1 col 0
+OVERUSE 1 ON  SB_W row 1 col 1
+OVERUSE 2 ON  SB_NW row 1 col 1
+OVERUSE 2 ON  SB_N row 1 col 1
+OVERUSE 4 ON  SB_INP_B row 1 col 1
+OVERUSE 3 ON  SB_INP_A row 1 col 1
+OVERUSE 3 ON  SB_MUX2_A row 1 col 1
+OVERUSE 4 ON  SB_MUX2_B row 1 col 1
+OVERUSE 8 ON  ALU row 1 col 1
+TOTAL OVERUSE: 32
+FAILURE. OVERUSED: 32 USED: 32

@@ -60,7 +60,7 @@ typedef boost::graph_traits<DirectedGraph>::vertex_descriptor vertex_descriptor;
 typedef boost::graph_traits<DirectedGraph>::out_edge_iterator OutEdgeIterator;
 typedef DirectedGraph::edge_descriptor Edge;
 
-typedef enum nodeT {io, alu, memport, reg, constant, wire, mux} nodeType;
+typedef enum nodeT {io, alu, memport, reg, constant, wire, mux, pinA, pinB} nodeType; //Pin Modification: Added PinA and PinB pins
 
 #define MAX_DIST 10000000
 #define RIKEN 1                 //Defining the architecture type
@@ -1220,6 +1220,8 @@ void readDeviceModle(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
     else if (arch_type == "mux") (*gTypes)[gTypes_index] = mux;
     else if (arch_type == "constant") (*gTypes)[gTypes_index] = constant;
     else if (arch_type == "alu") (*gTypes)[gTypes_index] = alu;
+    else if (arch_type == "pinA") (*gTypes)[gTypes_index] = pinA; //Pin Modification: Added PinA in the nodes
+    else if (arch_type == "pinB") (*gTypes)[gTypes_index] = pinB; //Pin Modification: Added PinA in the nodes
   }
 
   //Adding vertices in new sorted 'G_Modified' graph equal to original 'G' graph.
