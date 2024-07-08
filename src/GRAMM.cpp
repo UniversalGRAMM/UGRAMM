@@ -1,103 +1,30 @@
+//===================================================================//
+// GRAap Minor Mapping (GRAMM) method for CGRA                       //
+// file : GRAMM.cpp                                                  //
+// description: contains primary functions                           //
+//===================================================================//
 
-// GRAMM prototype
-// author: janders
+#include "../lib/GRAMM.h"
 
-#include <boost/config.hpp>
-//#include <boost/graph/graphviz.hpp>
-#include <iostream>
-#include <fstream>
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/dijkstra_shortest_paths.hpp>
-#include <boost/property_map/property_map.hpp>
-#include <boost/graph/graphviz.hpp>
-#include <boost/graph/copy.hpp>
-#include <queue>
-#include <map>
-#include <list>
-#include <bitset>
-#include <algorithm>
+//Declartion of variables:
 
-struct DotVertex {
-    // For [H] --> Application Graph
-    std::string name;       //Contains name of the operation in Application graph (ex: Load_0)
-    std::string opcode;     //Contains the Opcode of the operation (ex: op, const, input and output)
+//CGRA device model parameters:
+int numR;       //Number of rows in the CGRA architecture
+int numC;       //Number of columns in the CGRA architecture
+int CGRAdim;    //CGRA architecture dimension (3 means --> 3x3)
 
-    // For [G] --> Device Model Graph
-    std::string G_ID;         //Contains the sequence ID for the given node of Device Model Graph
-    std::string G_NodeType;   //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
-    std::string G_Opcode;     //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
-};
+//Pathefinder cost parameters:
+float PFac = 1;  //Congestion cost factor
+float HFac = 1;  //History cost factor
 
-// the routing tree for a signal
-// explanation for the three fields:
-// for each node in the tree, we have a map that returns a list of its child nodes (i.e. the nodes it drives)
-// for each node in the tree, we have a map that returns its parent node (i.e., the unique node that drives it)
-// we also keep track of the list of all nodes in the routing tree
-struct RoutingTree {
-  std::map<int, std::list<int>> children;
-  std::map<int, int> parent;
-  std::list<int> nodes;
-};
-
+//Mapping related variables:
 std::vector<RoutingTree> *Trees;
 std::vector<std::list<int>> *Users;
 std::vector<int> *HistoryCosts;
 std::vector<int> *TraceBack;
-
 std::vector<int> *TopoOrder;
-  
-static float PFac = 1;
-static float HFac = 1;
-
 std::map<int, std::string> hNames; 
-int CGRAdim;
-
 std::bitset<100000> explored;
-
-typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
-typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeWeightProperty > DirectedGraph;
-typedef boost::graph_traits<DirectedGraph>::edge_iterator edge_iterator;
-typedef boost::graph_traits<DirectedGraph>::in_edge_iterator in_edge_iterator;
-typedef boost::graph_traits<DirectedGraph>::out_edge_iterator out_edge_iterator;
-typedef boost::graph_traits<DirectedGraph>::vertex_descriptor vertex_descriptor;
-typedef boost::graph_traits<DirectedGraph>::out_edge_iterator OutEdgeIterator;
-typedef DirectedGraph::edge_descriptor Edge;
-
-//-------------------------------------------------------------------------------------------------------------------
-
-//=========================//
-//Enumerators used in GRAMM//
-//=========================//
-
-// Primary node type enumerator where each node is distinguished between functional, routing and pin cell type.
-typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
-
-//Other configuration information of the node elements:
-// -- Opcode (requires enumerator which is defined as follows)
-// -- Latency, Width can be defined as an integer
-// -- Location of the node can be defined as an integer pair
-typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, pin} opcodeType;
-
-struct NodeConfig {
-    nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
-    opcodeType opcode;      //Opcode of the node --> io, alu, memport....
-    //As of now following configs are optional
-    int Latency = 0;                    
-    int Width   = 0;                      
-    std::pair<int, int> Location = {0,0 };   
-};
-
-//-------------------------------------------------------------------------------------------------------------------
-
-#define MAX_DIST 10000000
-#define RIKEN 1                 //Defining the architecture type
-#define DEBUG 1                 //For enbaling the print-statements (mapped-DFG)
-#define HARDCODE_DEVICE_MODEL 1 //Controls hardcoding of device model
-
-int numR;
-int numC;
-
 
 
 std::string getString(int n) {
@@ -805,7 +732,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       int y = ordering[k];
       if (RIKEN && ((*hConfig)[y].opcode == constant)) continue;
 
-      std::cout << "Finding vertex model for: " << y << " " << (*hConfig)[y].opcode << "\n";
+      //std::cout << "Finding vertex model for: " << y << " " << (*hConfig)[y].opcode << "\n";
       //      std::cout << "SIZE: " << (*Trees)[y].nodes.size() << "\n";
       //      std::cout << "TOPO ORDER: " << (*TopoOrder)[y] << "\n";
 

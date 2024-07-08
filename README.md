@@ -53,8 +53,8 @@ Arguments are <application.dot> <device_model.dot> <numRows NR> <numCols NC> <se
 ## Hardcoded mapping version:
 
 
-<img src="assets/images/mapping_output_hardcoded_version.png" alt="mapping_output_hardcoded_version" width="600"/>
+<img src="assets/images/mapping_output_hardcoded.png" alt="mapping_output_hardcoded" width="600"/>
 
 ## External script-based version [Identical to hardcoded version]:
 
-<img src="assets/images/mapping_output_script_version.png" alt="mapping_output_script_version" width="600"/>
+<img src="assets/images/mapping_output_dot_input.png" alt="mapping_output_dot_input" width="600"/>
