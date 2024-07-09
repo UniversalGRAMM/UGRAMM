@@ -27,6 +27,7 @@
 #define MAX_DIST 10000000
 #define RIKEN 1                 //Defining the architecture type (1 --> Riken, 0 --> Adres)
 #define DEBUG 0                 //For enbaling the print-statements 
+#define DEBUG_H_GRAPH 1         //Tempory debug for the H_GRAPH modification
 #define HARDCODE_DEVICE_MODEL 0 //Controls hardcoding of device model (1 --> Reads device model, 0 --> Hardcoded version)
 //-------------------------------------------------------------------//
 
@@ -50,15 +51,18 @@ typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 // -- Opcode (requires enumerator which is defined as follows)
 // -- Latency, Width can be defined as an integer
 // -- Location of the node can be defined as an integer pair
-typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, pin} opcodeType;
+typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux} opcodeType;
+// inPinA, inPinB, inPinAny, outPinO
+
+//Need some sort of PE ID in the pins
 
 struct NodeConfig {
     nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
     opcodeType opcode;      //Opcode of the node --> io, alu, memport....
-    //As of now following configs are optional
+    //As of now following configs are optiona
     int Latency = 0;                    
     int Width   = 0;                      
-    std::pair<int, int> Location = {0,0 };   
+    std::pair<int, int> Location = {0,0};   
 };
 
 

@@ -1232,7 +1232,7 @@ void readDeviceModle(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
 int main(int argc, char *argv[])
 {
 
-  DirectedGraph H, G, G_Modified;
+  DirectedGraph H, G, H_Modified, G_Modified;
 
   boost::dynamic_properties dp(boost::ignore_other_properties);
   if (!RIKEN) {
