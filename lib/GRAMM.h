@@ -78,6 +78,10 @@ struct DotVertex {
     std::string G_Opcode;     //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
 };
 
+//Struct for defining the edge types in the H graph to determine the pin layout
+struct PinEdgeProperty {
+    std::string pinType;
+};
 // the routing tree for a signal
 // explanation for the three fields:
 // for each node in the tree, we have a map that returns a list of its child nodes (i.e. the nodes it drives)
@@ -99,7 +103,7 @@ extern std::bitset<100000> explored;
 
 //Properties of the application and device model graph:
 typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
-typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeWeightProperty > DirectedGraph;
+typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, PinEdgeProperty, EdgeWeightProperty> DirectedGraph;
 typedef boost::graph_traits<DirectedGraph>::edge_iterator edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::in_edge_iterator in_edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::out_edge_iterator out_edge_iterator;

@@ -543,25 +543,25 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     if ((*Trees)[load].nodes.size() == 0)
       continue; // load is not placed                                                                                           
     
-    int loadLoc = findDriver(load);
+    int sink = findDriver(load);
     //    std::cout << "ROUTING LOAD: ";
-    //    printName(loadLoc);
+    //    printName(sink);
     
-    if (loadLoc < 0) {
+    if (sink < 0) {
       std::cout << "SIGNAL WITHOUT A DRIVER.\n";
       exit(-1);
     }
     int cost;
     std::list<int> path;
-    cost = route(G, y, loadLoc, &path, gConfig);
+    cost = route(G, y, sink, &path, gConfig);
     totalCost += cost;
     if (cost < MAX_DIST) {
-      path.remove(loadLoc);
+      path.remove(sink);
       depositRoute(y, &path);
     }
     else {
       //      std::cout << "NAME :" << hNames[y] << " LOAD: \n";
-      //      printName(loadLoc);
+      //      printName(sink);
     }
   }
   return totalCost;
@@ -1229,6 +1229,99 @@ void readDeviceModle(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
 
 }
 
+void readApplicationModel(DirectedGraph *H, DirectedGraph *H_Modified, std::map<int, NodeConfig> *hConfig){
+  
+  vertex_descriptor v;
+  for (int i = 0; i < num_vertices(*H); i++) {
+    v = vertex(i, *H);
+    std::string opcode = boost::get(&DotVertex::opcode, *H, v);
+    std::string name   = boost::get(&DotVertex::name, *H, v);
+
+    hNames[i] = name;
+
+    if (DEBUG_H_GRAPH){ //Change from DEBUG to DEBUG_H_GRAPH to help debug the Application graph
+      std::cout << "[H] name " << name <<  " opcode " << opcode << "\n";
+    }
+
+    /*
+      Translating the Opcodes from Application grpah into common NodeTypes
+      -- We have three common NodeTypes
+        1. FuncCell  (ALU, Constant, MemPort, IO)
+        2. RouteCell (MUX, Reg)
+        3. PinCell   (In, Out)
+      -- Also storing the other important information such as opcode..
+    */
+    if (!RIKEN) { 
+      //==========================//
+      //---------- ADRES ---------//
+      //==========================//
+      if (opcode == "const") {
+        (*hConfig)[i].type   = FuncCell; // constant is part of FuncCell
+        (*hConfig)[i].opcode = constant; //Saving Opcode in the config map.
+      }
+      else if (opcode == "input") {
+        (*hConfig)[i].type   = FuncCell; // io is part of FuncCell
+        (*hConfig)[i].opcode = io;       //Saving Opcode in the config map.
+      }
+      else if (opcode == "output") { 
+        (*hConfig)[i].type   = FuncCell; // io is part of FuncCell
+        (*hConfig)[i].opcode = io;       //Saving Opcode in the config map.
+      }
+      else if (opcode == "load") { 
+        (*hConfig)[i].type   = FuncCell; // memport is part of FuncCell
+        (*hConfig)[i].opcode = memport;  //Saving Opcode in the config map.
+      }
+      else if (opcode == "store") {  
+        (*hConfig)[i].type   = FuncCell; // memport is part of FuncCell
+        (*hConfig)[i].opcode = memport;  //Saving Opcode in the config map.
+      }
+      else {
+        (*hConfig)[i].type   = FuncCell; // ALU is part of FuncCell
+        (*hConfig)[i].opcode = alu;      //Saving Opcode in the config map.
+      }
+    }
+    else { 
+      //==========================//
+      //---------- RIKEN ---------//
+      //==========================//
+      if (opcode == "const") {
+        (*hConfig)[i].type   = FuncCell; // constant is part of FuncCell
+        (*hConfig)[i].opcode = constant; //Saving Opcode in the config map.
+      }
+      else if (opcode == "input") {
+        (*hConfig)[i].type   = FuncCell; // memport is part of FuncCell
+        (*hConfig)[i].opcode = memport;  //Saving Opcode in the config map.
+      }
+      else if (opcode == "output") { 
+        (*hConfig)[i].type   = FuncCell; // memport is part of FuncCell
+        (*hConfig)[i].opcode = memport;  //Saving Opcode in the config map.
+      }
+      else {
+        (*hConfig)[i].type   = FuncCell; // ALU is part of FuncCell
+        (*hConfig)[i].opcode = alu;      //Saving Opcode in the config map.
+      }
+     }
+
+  }
+
+  vertex_descriptor edgeLoad;
+  vertex_descriptor edgeSink;
+  int j;
+  for (int i = 0; i < num_vertices(*H); i++) {
+    v = vertex(i, *H);
+    
+    //Find all the out edges
+    out_edge_iterator eo, eo_end;
+    boost::tie(eo, eo_end) = out_edges(v, *H);
+    for (; eo != eo_end; eo++) {
+      edgeLoad = target(*eo, *H);
+      edgeSink = v;
+      std::cout << "Edge (" << boost::get(&DotVertex::name, *H, edgeSink) << " -> " << boost::get(&DotVertex::name, *H, edgeLoad)  << "), edgeType: " << boost::get(&PinEdgeProperty::pinType, *H, *eo) << std::endl; //<< boost::get(&EdgeProperties::edgeType, g, e)
+    }
+  }
+
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -1239,6 +1332,7 @@ int main(int argc, char *argv[])
     // H --> Application Graph
     dp.property("node_id",      boost::get(&DotVertex::name, H));
     dp.property("opcode",       boost::get(&DotVertex::opcode, H));
+    dp.property("operand",      boost::get(&PinEdgeProperty::pinType, H));
 
     // For [G] --> Device Model Graph
     //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
@@ -1253,7 +1347,8 @@ int main(int argc, char *argv[])
     //DotVertex::name   --> Contains name of the operation in Application graph (ex: Load_0)
     //DotVertex::H_Opcode --> Contains the Opcode of the operation (ex: op, const, input and output)
     dp.property("label",        boost::get(&DotVertex::name, H));   
-    dp.property("opcode",         boost::get(&DotVertex::opcode, H));
+    dp.property("opcode",       boost::get(&DotVertex::opcode, H));
+    dp.property("operand",      boost::get(&PinEdgeProperty::pinType, H));
 
     // For [G] --> Device Model Graph
     //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
@@ -1335,78 +1430,7 @@ int main(int argc, char *argv[])
   // read the DFG from a file
   boost::read_graphviz(iFile, H, dp);
 
-  for (int i = 0; i < num_vertices(H); i++) {
-    vertex_descriptor v = vertex(i, H);
-    std::string opcode = boost::get(&DotVertex::opcode, H, v);
-    std::string name   = boost::get(&DotVertex::name, H, v);
-
-    hNames[i] = name;
-
-    if (DEBUG){
-      std::cout << "[H] name " << name <<  " opcode " << opcode << "\n";
-    }
-
-    /*
-      Translating the Opcodes from Application grpah into common NodeTypes
-      -- We have three common NodeTypes
-        1. FuncCell  (ALU, Constant, MemPort, IO)
-        2. RouteCell (MUX, Reg)
-        3. PinCell   (In, Out)
-      -- Also storing the other important information such as opcode..
-    */
-    if (!RIKEN) { 
-      //==========================//
-      //---------- ADRES ---------//
-      //==========================//
-      if (opcode == "const") {
-        hConfig[i].type   = FuncCell; // constant is part of FuncCell
-        hConfig[i].opcode = constant; //Saving Opcode in the config map.
-      }
-      else if (opcode == "input") {
-        hConfig[i].type   = FuncCell; // io is part of FuncCell
-        hConfig[i].opcode = io;       //Saving Opcode in the config map.
-      }
-      else if (opcode == "output") { 
-        hConfig[i].type   = FuncCell; // io is part of FuncCell
-        hConfig[i].opcode = io;       //Saving Opcode in the config map.
-      }
-      else if (opcode == "load") { 
-        hConfig[i].type   = FuncCell; // memport is part of FuncCell
-        hConfig[i].opcode = memport;  //Saving Opcode in the config map.
-      }
-      else if (opcode == "store") {  
-        hConfig[i].type   = FuncCell; // memport is part of FuncCell
-        hConfig[i].opcode = memport;  //Saving Opcode in the config map.
-      }
-      else {
-        hConfig[i].type   = FuncCell; // ALU is part of FuncCell
-        hConfig[i].opcode = alu;      //Saving Opcode in the config map.
-      }
-    }
-    else { 
-      //==========================//
-      //---------- RIKEN ---------//
-      //==========================//
-      if (opcode == "const") {
-        hConfig[i].type   = FuncCell; // constant is part of FuncCell
-        hConfig[i].opcode = constant; //Saving Opcode in the config map.
-      }
-      else if (opcode == "input") {
-        hConfig[i].type   = FuncCell; // memport is part of FuncCell
-        hConfig[i].opcode = memport;  //Saving Opcode in the config map.
-      }
-      else if (opcode == "output") { 
-        hConfig[i].type   = FuncCell; // memport is part of FuncCell
-        hConfig[i].opcode = memport;  //Saving Opcode in the config map.
-      }
-      else {
-        hConfig[i].type   = FuncCell; // ALU is part of FuncCell
-        hConfig[i].opcode = alu;      //Saving Opcode in the config map.
-      }
-    }
-
-  }
-  
+  readApplicationModel(&H, &H_Modified, &hConfig); 
 
   Trees = new std::vector<RoutingTree>(num_vertices(H)); // routing trees for every node in H
   Users = new std::vector<std::list<int>>(num_vertices(G_Modified)); // for every node in device model G track its users 
@@ -1431,6 +1455,7 @@ int main(int argc, char *argv[])
   */
   //computeTopo(&H, &hConfig); // not presently used
   
+  //Disabling the findMinorEmbedding to help debug the Application graph
   findMinorEmbedding(&H, &G_Modified, &hConfig, &gConfig);
     
   return 0;

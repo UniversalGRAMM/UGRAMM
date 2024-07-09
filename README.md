@@ -7,6 +7,12 @@
 G. Zhou, M. Stojilović and J. H. Anderson, "GRAMM: Fast CGRA Application Mapping Based on A Heuristic for Finding Graph Minors," 2023 33rd International Conference on Field-Programmable Logic and Applications (FPL), Gothenburg, Sweden, 2023, pp. 305-310, doi: 10.1109/FPL60245.2023.00052.
 ```
 
+
+## Install Dependencies:
+1. python3
+2. matplotlib
+3. pydot
+
 ## How to Use:
 
 ### Config according to the need:
@@ -32,8 +38,8 @@ Arguments are <application.dot> <device_model.dot> <numRows NR> <numCols NC> <se
 # Argument 5: Seed for the run.
 ```
 
-### Mapping `Conv_Balance` circuit on 8X8 ADRES CGRA using GRAMM
-> ./GRAMM Kernels/Conv_Balance/conv_nounroll_Balance.dot 2 2 0
+### Mapping `Conv_Balance` circuit on 8X8 Riken CGRA using GRAMM
+> ./GRAMM Kernels/Conv_Balance/conv_nounroll_Balance.dot ./scripts/riken_8_8.dot 8 8 0
 
 ---
 
