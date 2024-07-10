@@ -1337,8 +1337,8 @@ void readApplicationModel(DirectedGraph *H, DirectedGraph *H_Modified, std::map<
 
   //Replacing the nodes with the Pins
 
-  //Vector to store the load nodes of an output edge for a a sink node
-  std::vector<vertex_descriptor> loadVertices;
+  //Vector to store output edges for a a sink node
+  std::vector<edge_descriptor> outputEdges;
 
   for (int i = 0; i < num_vertices(*H); i++) {
     v = vertex(i, *H_Modified);
@@ -1359,48 +1359,46 @@ void readApplicationModel(DirectedGraph *H, DirectedGraph *H_Modified, std::map<
 
     //First, we need to store the current output edges of the node in the vector
     //to be called agained. 
-    loadVertices.clear();
+    outputEdges.clear();
     srcVertex = source(*eo, *H_Modified);
     for (; eo != eo_end; eo++) {
-      dstVertex = target(*eo, *H_Modified);
-      loadVertices.push_back(dstVertex);
+      outputEdges.push_back(*eo);
     }
 
     //Adding the output pin of the PE/Node
     vertex_descriptor outputPin = boost::add_vertex(*H_Modified);
-    vertex_descriptor inputPin = boost::add_vertex(*H_Modified);
-
+    
     (*H_Modified)[outputPin].name   = (*H_Modified)[v].name + "_outPin0";
     (*H_Modified)[outputPin].opcode = "outPin0";
     boost::add_edge(srcVertex, outputPin, *H_Modified);
     //boost::add_edge(outputPin, dstVertex, *H_Modified);
 
     //Scan through all the output edges to create the input pin for the next PE
-    edge_descriptor outputEdge;
-    for (const vertex_descriptor&  targetVertex: loadVertices) {
-        inputPin = boost::add_vertex(*H_Modified);
-        boost::add_edge(outputPin, inputPin, *H_Modified);
-        boost::add_edge(inputPin, targetVertex, *H_Modified);
-        boost::edge(srcVertex, targetVertex, *H_Modified);
+    for (int i = 0; i < outputEdges.size(); i++) {
+      srcVertex = source(outputEdges[i], *H_Modified);
+      dstVertex = target(outputEdges[i], *H_Modified);
+      vertex_descriptor inputPin = boost::add_vertex(*H_Modified);
+      
+    
+      if (boost::get(&PinEdgeProperty::pinType, *H_Modified, outputEdges[i]) == "inPinA"){
+        (*H_Modified)[inputPin].name   = (*H_Modified)[dstVertex].name + "_inPinA";
+        (*H_Modified)[inputPin].opcode = "inPinA";
+      } else if (boost::get(&PinEdgeProperty::pinType, *H_Modified, outputEdges[i]) == "inPinB"){
+        (*H_Modified)[inputPin].name   = (*H_Modified)[dstVertex].name + "_inPinB";
+        (*H_Modified)[inputPin].opcode = "inPinB";
+      } else if (boost::get(&PinEdgeProperty::pinType, *H_Modified, outputEdges[i]) == "any2input"){
+        (*H_Modified)[inputPin].name   = (*H_Modified)[dstVertex].name + "_inPinAny";
+        (*H_Modified)[inputPin].opcode = "inPinAny";
+      }
 
-        if (boost::get(&PinEdgeProperty::pinType, *H_Modified, outputEdge) == "inPinA"){
-          (*H_Modified)[inputPin].name   = (*H_Modified)[targetVertex].name + "_inPinA";
-          (*H_Modified)[inputPin].opcode = "inPinA";
-        } else if (boost::get(&PinEdgeProperty::pinType, *H_Modified, outputEdge) == "inPinB"){
-          (*H_Modified)[inputPin].name   = (*H_Modified)[targetVertex].name + "_inPinB";
-          (*H_Modified)[inputPin].opcode = "inPinB";
-        } else if (boost::get(&PinEdgeProperty::pinType, *H_Modified, outputEdge) == "inPinAny"){
-          (*H_Modified)[inputPin].name   = (*H_Modified)[targetVertex].name + "_inPinAny";
-          (*H_Modified)[inputPin].opcode = "inPinAny";
-        }
-
-        //remove the old edge that bypasses the pis
-        boost::remove_edge(srcVertex, targetVertex, *H_Modified);
+      boost::add_edge(outputPin, inputPin, *H_Modified);
+      boost::add_edge(inputPin, dstVertex, *H_Modified);
+      boost::remove_edge(srcVertex, dstVertex, *H_Modified);
     }
     
   }
 
-  // Printing
+  // // Printing
   for (int i = 0; i < num_vertices(*H_Modified); i++) {
     v = vertex(i, *H_Modified);
     std::string opcode = boost::get(&DotVertex::opcode, *H_Modified, v);
@@ -1418,18 +1416,14 @@ void readApplicationModel(DirectedGraph *H, DirectedGraph *H_Modified, std::map<
     out_edge_iterator eo, eo_end;
     boost::tie(eo, eo_end) = out_edges(v, *H_Modified);
     for (; eo != eo_end; eo++) {
-      srcVertex = target(*eo, *H_Modified);
-      dstVertex = v;
+      srcVertex = source(*eo, *H_Modified);
+      dstVertex = target(*eo, *H_Modified);
       
       if (DEBUG_H_GRAPH){ //Change from DEBUG to DEBUG_H_GRAPH to help debug the Application graph
-        std::cout << "[H_Modified] Edge (" << boost::get(&DotVertex::name, *H_Modified, srcVertex) << " -> " << boost::get(&DotVertex::name, *H_Modified, dstVertex)  << "), edgeType: " << boost::get(&PinEdgeProperty::pinType, *H_Modified, *eo) << std::endl;
+        std::cout << "[H_Modified] Edge (" << boost::get(&DotVertex::name, *H_Modified, srcVertex) << " -> " << boost::get(&DotVertex::name, *H_Modified, dstVertex)  << ") " << std::endl;
       }
     }
-  }
-  
-
-
-  
+  } 
 
 }
 
