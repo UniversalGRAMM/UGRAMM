@@ -1398,6 +1398,7 @@ void readApplicationModel(DirectedGraph *H, DirectedGraph *H_Modified, std::map<
     
   }
 
+  //////////////
   // // Printing
   for (int i = 0; i < num_vertices(*H_Modified); i++) {
     v = vertex(i, *H_Modified);
@@ -1424,6 +1425,50 @@ void readApplicationModel(DirectedGraph *H, DirectedGraph *H_Modified, std::map<
       }
     }
   } 
+
+  // Printing the H graph on neeto 
+  std::ofstream oFile;
+  oFile.open("h_modified.dot");
+  std::cout << "Writing the mapping output in file 'h_modified.dot' \n";
+  oFile << "digraph {\n";
+
+  std::string nodeName;
+  std::string srcName;
+  std::string dstName;
+
+  for (int i = 0; i < num_vertices(*H_Modified); i++) {
+    v = vertex(i, *H_Modified);
+    std::string opcode = boost::get(&DotVertex::opcode, *H_Modified, v);
+    std::string name   = boost::get(&DotVertex::name, *H_Modified, v);
+
+    nodeName = std::regex_replace(name, std::regex("[{}]"), "");
+    nodeName = std::regex_replace(nodeName, std::regex("[|.=]"), "_");
+
+    name = std::regex_replace(name, std::regex("[{}]"), "");
+
+    oFile << nodeName << " [shape=record,opcode=" << opcode <<",label=\"{" << name << "}\"];\n";
+  }
+
+  for (int i = 0; i < num_vertices(*H_Modified); i++) {
+    v = vertex(i, *H_Modified);
+    
+    //Find all the out edges
+    out_edge_iterator eo, eo_end;
+    boost::tie(eo, eo_end) = out_edges(v, *H_Modified);
+    for (; eo != eo_end; eo++) {
+      srcVertex = source(*eo, *H_Modified);
+      dstVertex = target(*eo, *H_Modified);
+
+      srcName = std::regex_replace(boost::get(&DotVertex::name, *H_Modified, srcVertex), std::regex("[{}]"), "");
+      srcName = std::regex_replace(srcName, std::regex("[|.=]"), "_");
+
+      dstName = std::regex_replace(boost::get(&DotVertex::name, *H_Modified, dstVertex), std::regex("[{}]"), "");
+      dstName = std::regex_replace(dstName, std::regex("[|.=]"), "_");
+
+       oFile << srcName << " -> " << dstName << ";\n";
+    }
+  } 
+  oFile << "}\n";
 
 }
 

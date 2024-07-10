@@ -22,6 +22,7 @@
 #include <bitset>
 #include <algorithm>
 #include <string.h>
+#include <regex>
 
 //-------------------------------------------------------------------//
 //------------------------ GRAMM Configuration ----------------------//
