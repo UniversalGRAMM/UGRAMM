@@ -21,6 +21,7 @@
 #include <list>
 #include <bitset>
 #include <algorithm>
+#include <string.h>
 
 //-------------------------------------------------------------------//
 //------------------------ GRAMM Configuration ----------------------//
@@ -51,7 +52,7 @@ typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 // -- Opcode (requires enumerator which is defined as follows)
 // -- Latency, Width can be defined as an integer
 // -- Location of the node can be defined as an integer pair
-typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux} opcodeType;
+typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, inPinA, inPinB, inPinAny, outPinO} opcodeType;   
 // inPinA, inPinB, inPinAny, outPinO
 
 //Need some sort of PE ID in the pins
@@ -109,6 +110,6 @@ typedef boost::graph_traits<DirectedGraph>::in_edge_iterator in_edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::out_edge_iterator out_edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::vertex_descriptor vertex_descriptor;
 typedef boost::graph_traits<DirectedGraph>::out_edge_iterator OutEdgeIterator;
-typedef DirectedGraph::edge_descriptor Edge;
+typedef DirectedGraph::edge_descriptor edge_descriptor;
 
 #endif //GRAMM header

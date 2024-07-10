@@ -1140,12 +1140,12 @@ void computeTopo(DirectedGraph *H, std::map<int, NodeConfig> *hConfig) {
 }
 
 /*
-  readDeviceModle() => Reading device model dot file
+  readDeviceModel() => Reading device model dot file
   - DirectedGraph *G                  :: original device model read dot file
   - DirectedGraph *G_Modified         :: Sorted device model dot file based on original intended sequence.
   - std::map<int, NodeConfig> *gConfig  :: Store the configuration of each node (type,opcode, latenct etc.)
 */
-void readDeviceModle(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, NodeConfig> *gConfig){
+void readDeviceModel(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, NodeConfig> *gConfig){
   //--------------------------------------------------------------------
   //Omkar:  Reading device model dot file instead.
   //--------------------------------------------------------------------
@@ -1231,7 +1231,12 @@ void readDeviceModle(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
 
 void readApplicationModel(DirectedGraph *H, DirectedGraph *H_Modified, std::map<int, NodeConfig> *hConfig){
   
+  
   vertex_descriptor v;
+  vertex_descriptor srcVertex;
+  vertex_descriptor dstVertex;
+
+
   for (int i = 0; i < num_vertices(*H); i++) {
     v = vertex(i, *H);
     std::string opcode = boost::get(&DotVertex::opcode, *H, v);
@@ -1304,21 +1309,127 @@ void readApplicationModel(DirectedGraph *H, DirectedGraph *H_Modified, std::map<
 
   }
 
-  vertex_descriptor edgeLoad;
-  vertex_descriptor edgeSink;
-  int j;
+  //-------------------------------------------------------------------------//
+  // Copy the directed graph H to the directired graoh H_Modified
+  //-------------------------------------------------------------------------//
+
+  // Map to store the correspondence between vertices in H and vertices in H_Modified
+  std::map<vertex_descriptor, vertex_descriptor> vertexMap;
+
+  // Copy vertices from H to H_Modified
+  auto vertices = boost::vertices(*H);
+  for (auto it = vertices.first; it != vertices.second; ++it) {
+      vertex_descriptor newVertex = boost::add_vertex(*H_Modified);
+      (*H_Modified)[newVertex] = (*H)[*it];  // Copy the properties
+      vertexMap[*it] = newVertex;  // Record the correspondence
+  }
+
+  // Copy edges from H to H_Modified
+  auto edges = boost::edges(*H);
+  edge_descriptor newEdge;
+  bool inserted;
+  for (auto it = edges.first; it != edges.second; ++it) {
+      srcVertex = boost::source(*it, *H);
+      dstVertex = boost::target(*it, *H);
+      boost::tie(newEdge, inserted) = boost::add_edge(vertexMap[srcVertex], vertexMap[dstVertex], *H_Modified);  // Use the map to find corresponding vertices in H_Modified
+      (*H_Modified)[newEdge] = (*H)[*it];
+  }
+
+  //Replacing the nodes with the Pins
+
+  //Vector to store the load nodes of an output edge for a a sink node
+  std::vector<vertex_descriptor> loadVertices;
+
   for (int i = 0; i < num_vertices(*H); i++) {
-    v = vertex(i, *H);
+    v = vertex(i, *H_Modified);
+
+    //Ok, lets check if the vertex does not have any output
+    //edges. If so, we can continue as no output pin is needed
+    if (boost::out_degree(v, *H_Modified) == 0) continue;
+
+    //Now lets find all the output edges of the perticular node
+    out_edge_iterator eo, eo_end;
+    boost::tie(eo, eo_end) = out_edges(v, *H_Modified);
+
+
+    //For each of the output edges, we are going to 
+    //(1) add an output pin for the current PE 
+    //(2) add the respective input pins for the next PE
+    // Note that the default pin configuration is inPinA, inPinB, outPinO
+
+    //First, we need to store the current output edges of the node in the vector
+    //to be called agained. 
+    loadVertices.clear();
+    srcVertex = source(*eo, *H_Modified);
+    for (; eo != eo_end; eo++) {
+      dstVertex = target(*eo, *H_Modified);
+      loadVertices.push_back(dstVertex);
+    }
+
+    //Adding the output pin of the PE/Node
+    vertex_descriptor outputPin = boost::add_vertex(*H_Modified);
+    vertex_descriptor inputPin = boost::add_vertex(*H_Modified);
+
+    (*H_Modified)[outputPin].name   = (*H_Modified)[v].name + "_outPin0";
+    (*H_Modified)[outputPin].opcode = "outPin0";
+    boost::add_edge(srcVertex, outputPin, *H_Modified);
+    //boost::add_edge(outputPin, dstVertex, *H_Modified);
+
+    //Scan through all the output edges to create the input pin for the next PE
+    edge_descriptor outputEdge;
+    for (const vertex_descriptor&  targetVertex: loadVertices) {
+        inputPin = boost::add_vertex(*H_Modified);
+        boost::add_edge(outputPin, inputPin, *H_Modified);
+        boost::add_edge(inputPin, targetVertex, *H_Modified);
+        boost::edge(srcVertex, targetVertex, *H_Modified);
+
+        if (boost::get(&PinEdgeProperty::pinType, *H_Modified, outputEdge) == "inPinA"){
+          (*H_Modified)[inputPin].name   = (*H_Modified)[targetVertex].name + "_inPinA";
+          (*H_Modified)[inputPin].opcode = "inPinA";
+        } else if (boost::get(&PinEdgeProperty::pinType, *H_Modified, outputEdge) == "inPinB"){
+          (*H_Modified)[inputPin].name   = (*H_Modified)[targetVertex].name + "_inPinB";
+          (*H_Modified)[inputPin].opcode = "inPinB";
+        } else if (boost::get(&PinEdgeProperty::pinType, *H_Modified, outputEdge) == "inPinAny"){
+          (*H_Modified)[inputPin].name   = (*H_Modified)[targetVertex].name + "_inPinAny";
+          (*H_Modified)[inputPin].opcode = "inPinAny";
+        }
+
+        //remove the old edge that bypasses the pis
+        boost::remove_edge(srcVertex, targetVertex, *H_Modified);
+    }
+    
+  }
+
+  // Printing
+  for (int i = 0; i < num_vertices(*H_Modified); i++) {
+    v = vertex(i, *H_Modified);
+    std::string opcode = boost::get(&DotVertex::opcode, *H_Modified, v);
+    std::string name   = boost::get(&DotVertex::name, *H_Modified, v);
+
+    if (DEBUG_H_GRAPH){ //Change from DEBUG to DEBUG_H_GRAPH to help debug the Application graph
+      std::cout << "[H_Modified] name " << name <<  " opcode " << opcode << "\n";
+    }
+  }
+
+  for (int i = 0; i < num_vertices(*H_Modified); i++) {
+    v = vertex(i, *H_Modified);
     
     //Find all the out edges
     out_edge_iterator eo, eo_end;
-    boost::tie(eo, eo_end) = out_edges(v, *H);
+    boost::tie(eo, eo_end) = out_edges(v, *H_Modified);
     for (; eo != eo_end; eo++) {
-      edgeLoad = target(*eo, *H);
-      edgeSink = v;
-      std::cout << "Edge (" << boost::get(&DotVertex::name, *H, edgeSink) << " -> " << boost::get(&DotVertex::name, *H, edgeLoad)  << "), edgeType: " << boost::get(&PinEdgeProperty::pinType, *H, *eo) << std::endl; //<< boost::get(&EdgeProperties::edgeType, g, e)
+      srcVertex = target(*eo, *H_Modified);
+      dstVertex = v;
+      
+      if (DEBUG_H_GRAPH){ //Change from DEBUG to DEBUG_H_GRAPH to help debug the Application graph
+        std::cout << "[H_Modified] Edge (" << boost::get(&DotVertex::name, *H_Modified, srcVertex) << " -> " << boost::get(&DotVertex::name, *H_Modified, dstVertex)  << "), edgeType: " << boost::get(&PinEdgeProperty::pinType, *H_Modified, *eo) << std::endl;
+      }
     }
   }
+  
+
+
+  
 
 }
 
@@ -1420,7 +1531,7 @@ int main(int argc, char *argv[])
     boost::read_graphviz(dFile, G, dp); //Reading the dot file
 
 
-    readDeviceModle(&G, &G_Modified, &gConfig);
+    readDeviceModel(&G, &G_Modified, &gConfig);
   }
 
   //--------------------------------------------------------------------
@@ -1456,7 +1567,7 @@ int main(int argc, char *argv[])
   //computeTopo(&H, &hConfig); // not presently used
   
   //Disabling the findMinorEmbedding to help debug the Application graph
-  findMinorEmbedding(&H, &G_Modified, &hConfig, &gConfig);
+  //findMinorEmbedding(&H, &G_Modified, &hConfig, &gConfig);
     
   return 0;
  }
