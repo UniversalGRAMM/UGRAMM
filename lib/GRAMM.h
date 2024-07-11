@@ -52,6 +52,8 @@ typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 // -- Location of the node can be defined as an integer pair
 typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, pin} opcodeType;
 
+typedef enum pinT {inPinA, inPinB, Any2Pins} pinType;
+
 struct NodeConfig {
     nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
     opcodeType opcode;      //Opcode of the node --> io, alu, memport....
@@ -72,6 +74,11 @@ struct DotVertex {
     std::string G_ID;         //Contains the sequence ID for the given node of Device Model Graph
     std::string G_NodeType;   //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     std::string G_Opcode;     //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+};
+
+//Struct for defining the edge types in the H graph to determine the pin layout
+struct EdgeProperty {
+    std::string pin;
 };
 
 // the routing tree for a signal
@@ -95,7 +102,7 @@ extern std::bitset<100000> explored;
 
 //Properties of the application and device model graph:
 typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
-typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeWeightProperty > DirectedGraph;
+typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeProperty, EdgeWeightProperty > DirectedGraph;
 typedef boost::graph_traits<DirectedGraph>::edge_iterator edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::in_edge_iterator in_edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::out_edge_iterator out_edge_iterator;
