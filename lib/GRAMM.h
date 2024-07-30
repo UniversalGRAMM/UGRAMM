@@ -52,7 +52,11 @@ typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 // -- Location of the node can be defined as an integer pair
 typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, pin} opcodeType;
 
-typedef enum pinT {inPinA, inPinB, Any2Pins} pinType;
+typedef enum inPinT {inPinA, inPinB, Any2Pins} inPinType;
+typedef enum outPinT {outPinA} outPinType;
+
+std::vector<std::string> inPin = {"inPinA", "inPinB", "Any2Pins"};
+std::vector<std::string> outPin = {"outPinA"};
 
 struct NodeConfig {
     nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
@@ -78,7 +82,8 @@ struct DotVertex {
 
 //Struct for defining the edge types in the H graph to determine the pin layout
 struct EdgeProperty {
-    std::string pin;
+    std::string loadPin;
+    std::string driverPin;
 };
 
 // the routing tree for a signal

@@ -1241,8 +1241,6 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
     we have defined the vertices (also refered to as nodes) and edges with attributes (also refered to as properies).
     For instance, a node in GRAMM will have a attribite to define the opcode or the edges may have the attribute to 
     define the selective pins for an PE. 
-
-    This function
   */
 
   for (int i = 0; i < num_vertices(*H); i++) {
@@ -1317,15 +1315,34 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
 
   }
   
+  /*
+    Verifying the the driver and source pin names for all the output edges of the nodes.
+    If the pin names are incorrect, display a warning and exit the program
+
+  */
 
   for (int i = 0; i < num_vertices(*H); i++) {
     vertex_descriptor v = vertex(i, *H);
     
-    //Find all the out edges
     out_edge_iterator eo, eo_end;
     boost::tie(eo, eo_end) = out_edges(v, *H);
     for (; eo != eo_end; eo++) {
-      std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") Edge Property " << boost::get(&EdgeProperty::pin, *H, *eo)<< std::endl;
+
+      auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::loadPin, *H, *eo));
+      if (it_inPin != inPin.end()) {
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") Edge Property " << boost::get(&EdgeProperty::loadPin, *H, *eo)<< std::endl;
+      } else {
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") Edge Property " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " not valid" << std::endl;
+          exit(1);
+      }
+
+      auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::driverPin, *H, *eo));
+      if (it_outPin != outPin.end()) {
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") Edge Property " << boost::get(&EdgeProperty::driverPin, *H, *eo)<< std::endl;
+      } else {
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") Edge Property " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " not valid" << std::endl;
+      }
+
     }
   } 
 
@@ -1342,7 +1359,8 @@ int main(int argc, char *argv[])
     // H --> Application Graph
     dp.property("node_id",      boost::get(&DotVertex::name, H));
     dp.property("opcode",       boost::get(&DotVertex::opcode, H));
-    dp.property("operand",      boost::get(&EdgeProperty::pin, H));
+    dp.property("load",         boost::get(&EdgeProperty::loadPin, H));
+    dp.property("driver",         boost::get(&EdgeProperty::driverPin, H));
 
     // For [G] --> Device Model Graph
     //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
@@ -1357,8 +1375,9 @@ int main(int argc, char *argv[])
     //DotVertex::name   --> Contains name of the operation in Application graph (ex: Load_0)
     //DotVertex::H_Opcode --> Contains the Opcode of the operation (ex: op, const, input and output)
     dp.property("label",        boost::get(&DotVertex::name, H));   
-    dp.property("opcode",         boost::get(&DotVertex::opcode, H));
-    dp.property("operand",      boost::get(&EdgeProperty::pin, H));
+    dp.property("opcode",       boost::get(&DotVertex::opcode, H));
+    dp.property("load",         boost::get(&EdgeProperty::loadPin, H));
+    dp.property("driver",         boost::get(&EdgeProperty::driverPin, H));
 
     // For [G] --> Device Model Graph
     //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
