@@ -118,6 +118,29 @@ void printPlaceAndRoute(int y, std::ofstream& oFile) {
   }
 }
 
+
+//-------------------------------------------------------//
+// The following functions are added to simplify the pins
+// convention
+//-------------------------------------------------------//
+int getRikenElement (int n) {
+  n -= 2*numR;
+  return n % 14;
+}
+ 
+bool isRikenPinA (int n){
+  return (getRikenElement(n) == 9);
+}
+
+bool isRikenPinB (int n){
+  return (getRikenElement(n) == 8);
+}
+
+//-------------------------------------------------------//
+// pin function end
+//-------------------------------------------------------//
+
+
 void printNameRIKEN(int n) {
   if (n < numR)
     std::cout << " memport LEFT row " << n;
@@ -314,7 +337,10 @@ void ripUpLoad(DirectedGraph *G, int signal, int load) {
 }
 #endif
 
-int route(DirectedGraph* G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig ) {
+
+// For reference, got this from routeSignal function
+// route(G, H, y, loadLoc, &path, gConfig); 
+int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig ) {
 
   route->clear();
 
@@ -338,20 +364,25 @@ int route(DirectedGraph* G, int signal, int sink, std::list<int> *route, std::ma
     struct ExpNode eNode;
     eNode.cost = 0;
     eNode.i = rNode;
-    //    std::cout << "EXPANSION SOURCE : ";
-    //    printName(rNode);
+    //Uncomment this
+       std::cout << "EXPANSION SOURCE : ";
+       printName(rNode);
     explored.set(rNode);
     expInt.push_back(rNode);
     PRQ.push(eNode);
   }
 
+  // //Uncommenting this
+  //  std::cout << "Routing Start >>>>> \n";
   //  std::cout << "EXPANSION TARGET: \n";
   //  printName(sink);
   //  std::cout << "SINK USERS: \n";
   //  std::list<int>::iterator sit = (*Users)[sink].begin();
   //  for (; sit != (*Users)[sink].end(); sit++)
   //    std::cout << "\t" << hNames[*sit] << "\n";
+  //  std::cout << ">>>>> Routing End\n";
   
+  //Hamas: For pins addition, we may need to have it here as checking if the pins is correct
   struct ExpNode popped;
   bool hit = false;
   while (!PRQ.empty() && !hit) {
@@ -365,20 +396,58 @@ int route(DirectedGraph* G, int signal, int sink, std::list<int> *route, std::ma
       break;
     }
 
+
     vertex_descriptor vPopped = vertex(popped.i, *G);
-    out_edge_iterator eo, eo_end;
-    boost::tie(eo, eo_end) = out_edges(vPopped, *G);
-    for (; eo != eo_end; eo++) {
-      vertex_descriptor next = target(*eo, *G);
+    out_edge_iterator eo_G, eo_end_G;
+    boost::tie(eo_G, eo_end_G) = out_edges(vPopped, *G);
+    for (; eo_G != eo_end_G; eo_G++) {
+      vertex_descriptor next = target(*eo_G, *G);
       if (explored.test(next))
-	continue;
+	      continue;
 
       explored.set(next);
       expInt.push_back(next);
 
+      //  std::cout << "USERS: " << (*Users)[prev].size() << " ";
+      // std::cout << "Route G: ";
+      // printName(next);
+
+      // if (isRikenPinA(next)){
+      //     std::cout << "PinA detecteds: ";
+      //     printName(next);
+      //   }
+
+      //   if (isRikenPinB(next)){
+      //     std::cout << "PinB detecteds: ";
+      //     printName(next);
+      //   }
+
+      //Hamas: For pins, maybe do something along the lines of the mux, check if the pins are
+      //correct, if not, continue
+      bool pinInvalid = false;
+      //Hamas: Following block was added by Hamas
+      vertex_descriptor signalD = vertex(signal, *H);
+      out_edge_iterator eo_H, eo_end_H;
+      boost::tie(eo_H, eo_end_H) = out_edges(signalD, *H);
+      for (; eo_H != eo_end_H; eo_H++){
+        //Need to figure out how to get data that indicate the pin name
+        if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinA") && (isRikenPinB(next)))
+          pinInvalid = true;
+        
+
+        if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinB") && (isRikenPinA(next)))
+          pinInvalid = true;
+        
+      }
+
+      //Wrong pin is being used
+      if (pinInvalid)
+        continue;
+
+
       // janders CHECK if a MUX, as ONLY MUXes can be used along the way
       if ((next != sink) && ((*gConfig)[next].opcode != mux))
-	continue;
+	      continue;
       
       struct ExpNode eNodeNew;
       eNodeNew.i = next;
@@ -523,8 +592,8 @@ void randomizeList(int *list, int n) {
 }
 
 int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig) {
-
-  //  std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n";
+   //uncommenting this
+   std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n";
   
   vertex_descriptor yD = vertex(y, *H);
   int  totalCost = 0;
@@ -535,7 +604,8 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
   for (; eo != eo_end; eo++) {
     int load = target(*eo, *H);
 
-    //    std::cout << "SOURCE : " << hNames[y] << " TARGET : " << hNames[load] << "\n";
+    //uncommenting this
+       std::cout << "SOURCE : " << hNames[y] << " TARGET : " << hNames[load] << "\n";
     
     if (load == y)
       continue; // JANDERS ignore feedback connections for the moment
@@ -543,9 +613,10 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     if ((*Trees)[load].nodes.size() == 0)
       continue; // load is not placed                                                                                           
     
-    int loadLoc = findDriver(load);
-    //    std::cout << "ROUTING LOAD: ";
-    //    printName(loadLoc);
+    int loadLoc = findDriver(load); //Hamas: loadLoc = source of the signal
+    //uncommenting this
+       std::cout << "ROUTING LOAD: ";
+       printName(loadLoc);
     
     if (loadLoc < 0) {
       std::cout << "SIGNAL WITHOUT A DRIVER.\n";
@@ -553,15 +624,17 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     }
     int cost;
     std::list<int> path;
-    cost = route(G, y, loadLoc, &path, gConfig);
+    cost = route(G, H, y, loadLoc, &path, gConfig); //Hamas: Send to the route function to route, maybe need to add a new parameter to pass edge type for input and output pin
+                                                // Maybe need to pass the graph to the route
     totalCost += cost;
     if (cost < MAX_DIST) {
       path.remove(loadLoc);
       depositRoute(y, &path);
     }
     else {
-      //      std::cout << "NAME :" << hNames[y] << " LOAD: \n";
-      //      printName(loadLoc);
+      //uncommenting this
+           std::cout << "NAME :" << hNames[y] << " LOAD: \n";
+           printName(loadLoc);
     }
   }
   return totalCost;
@@ -732,15 +805,21 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       int y = ordering[k];
       if (RIKEN && ((*hConfig)[y].opcode == constant)) continue;
 
-      //std::cout << "Finding vertex model for: " << y << " " << (*hConfig)[y].opcode << "\n";
-      //      std::cout << "SIZE: " << (*Trees)[y].nodes.size() << "\n";
-      //      std::cout << "TOPO ORDER: " << (*TopoOrder)[y] << "\n";
+      //Uncommenting this
+      std::cout << "--------------------- New Vertices Mapping Start ---------------------------\n";
+      std::cout << "Finding vertex model for: " << y << " " << (*hConfig)[y].opcode << "\n";
+           std::cout << "SIZE: " << (*Trees)[y].nodes.size() << "\n";
+      //      std::cout << "TOPO ORDER: " << (*TopoOrder)[y] << "\n"; //ERROR: creating segmentation dump 
 
       //      if ((iterCount >= 3) && !hasOverlap(y)) // everything should be routed by 3rd iter
       //	continue; // skip signals with no overlap
       
       findMinVertexModel(G, H, y, hConfig, gConfig);
-      //      printVertexModels(H);
+
+      //Uncommenting this
+      std::cout << "Print Vertex Model: \n";
+           printVertexModels(H);
+      std::cout << "--------------------- New Vertices Mapping End ---------------------------\n";
       
     } // for k
 
@@ -1320,6 +1399,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
     If the pin names are incorrect, display a warning and exit the program
 
   */
+  bool invalidPinNameDetected = 0;
 
   for (int i = 0; i < num_vertices(*H); i++) {
     vertex_descriptor v = vertex(i, *H);
@@ -1330,21 +1410,27 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
 
       auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::loadPin, *H, *eo));
       if (it_inPin != inPin.end()) {
-          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") Edge Property " << boost::get(&EdgeProperty::loadPin, *H, *eo)<< std::endl;
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification:  " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name verified" << std::endl;
       } else {
-          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") Edge Property " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " not valid" << std::endl;
-          exit(1);
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification: " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name not valid" << std::endl;
+          invalidPinNameDetected = 1;
       }
 
       auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::driverPin, *H, *eo));
       if (it_outPin != outPin.end()) {
-          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") Edge Property " << boost::get(&EdgeProperty::driverPin, *H, *eo)<< std::endl;
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name verified" << std::endl;
       } else {
-          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") Edge Property " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " not valid" << std::endl;
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name not valid" << std::endl;
+          invalidPinNameDetected = 1;
       }
 
     }
   } 
+
+  if (invalidPinNameDetected){
+    std::cout << "Invalid pin names detected, exiting the program\n";
+    exit(1);
+  }
 
 
 }

@@ -3,7 +3,7 @@ digraph "omp.inner.for.body" {
 	//Graph Properties
 
 	Load_0 [shape=record,opcode=input,label="{Load_0}"];
-	Load_0 -> FMUL_9[driver=outPinA,load=inPinC];
+	Load_0 -> FMUL_9[driver=outPinA,load=inPinA];
 	Load_1 [shape=record,opcode=input,label="{Load_1}"];
 	Load_1 -> FMUL_10[driver=outPinA,load=Any2Pins];
 	Load_2 [shape=record,opcode=input,label="{Load_2}"];
@@ -62,13 +62,13 @@ digraph "omp.inner.for.body" {
 	FADD_24 [shape=record,type=op,opcode=FADD,label="{FADD_24}"];
 	FADD_24 -> FADD_20[driver=outPinA,load=Any2Pins];
 	FADD_23 [shape=record,type=op,opcode=FADD,label="{FADD_23}"];
-	FADD_23 -> FADD_19[driver=outPinA,load=inPinB];
+	FADD_23 -> FADD_19[driver=outPinA,load=inPinA];
 	FADD_22 [shape=record,type=op,opcode=FADD,label="{FADD_22}"];
 	FADD_22 -> FADD_18[driver=outPinA,load=Any2Pins];
 	FADD_21 [shape=record,type=op,opcode=FADD,label="{FADD_21}"];
 	FADD_21 -> FADD_19[driver=outPinA,load=Any2Pins];
 	FADD_20 [shape=record,type=op,opcode=FADD,label="{FADD_20}"];
-	FADD_20 -> FADD_18[driver=outPinA,load=inPinB];
+	FADD_20 -> FADD_18[driver=outPinA,load=inPinA];
 	FADD_19 [shape=record,type=op,opcode=FADD,label="{FADD_19}"];
 	FADD_19 -> FADD_25[driver=outPinA,load=inPinA];
 	FADD_18 [shape=record,type=op,opcode=FADD,label="{FADD_18}"];
