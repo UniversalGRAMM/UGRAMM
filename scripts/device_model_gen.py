@@ -213,7 +213,7 @@ def create_riken(args):
         for j in range(args.NC):
 
             PEindex = PEstart + i*args.NC*PEstep + j*PEstep
-            #Connecting the SB input to the MUX 
+            #Connecting the SB input pins to the MUX 
             
             #(9-->10)
             G.add_edge( PEindex + 9, PEindex + 10)
@@ -262,6 +262,16 @@ def create_riken(args):
                 G.nodes[PEindex + k]["G_NodeType"]     = "RouteCell";
                 G.nodes[PEindex + k]["G_opcode"] = "Mux";
                 G.nodes[PEindex + k]["G_ID"]       = str(PEindex + k) 
+            
+
+            # Assigning the input pins type:
+            G.nodes[PEindex + 8]["G_NodeType"]     = "PinCell";
+            G.nodes[PEindex + 8]["G_opcode"] = "InputPinA";
+            G.nodes[PEindex + 8]["G_ID"]       = str(PEindex + 8)  
+
+            G.nodes[PEindex + 9]["G_NodeType"]     = "PinCell";
+            G.nodes[PEindex + 9]["G_opcode"] = "InputPinB";
+            G.nodes[PEindex + 9]["G_ID"]       = str(PEindex + 9)  
 
             # Assigning the constant type:
             G.nodes[PEindex + 12]["G_NodeType"]     = "FuncCell";

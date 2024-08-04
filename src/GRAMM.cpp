@@ -129,11 +129,11 @@ int getRikenElement (int n) {
 }
  
 bool isRikenPinA (int n){
-  return (getRikenElement(n) == 9);
+  return (getRikenElement(n) == 8);
 }
 
 bool isRikenPinB (int n){
-  return (getRikenElement(n) == 8);
+  return (getRikenElement(n) == 9);
 }
 
 //-------------------------------------------------------//
@@ -160,8 +160,8 @@ void printNameRIKEN(int n) {
     case 5: std::cout << " SB_NE "; break;
     case 6: std::cout << " SB_E "; break;
     case 7: std::cout << " SB_SE "; break;
-    case 8: std::cout << " SB_INP_B "; break;
-    case 9: std::cout << " SB_INP_A "; break;
+    case 8: std::cout << " SB_INP_A "; break;
+    case 9: std::cout << " SB_INP_B "; break;
     case 10: std::cout << " SB_MUX2_A "; break;
     case 11: std::cout << " SB_MUX2_B "; break;
     case 12: std::cout << " CONST "; break;
@@ -372,17 +372,13 @@ int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<in
     PRQ.push(eNode);
   }
 
-  // //Uncommenting this
-  //  std::cout << "Routing Start >>>>> \n";
   //  std::cout << "EXPANSION TARGET: \n";
   //  printName(sink);
   //  std::cout << "SINK USERS: \n";
   //  std::list<int>::iterator sit = (*Users)[sink].begin();
   //  for (; sit != (*Users)[sink].end(); sit++)
   //    std::cout << "\t" << hNames[*sit] << "\n";
-  //  std::cout << ">>>>> Routing End\n";
   
-  //Hamas: For pins addition, we may need to have it here as checking if the pins is correct
   struct ExpNode popped;
   bool hit = false;
   while (!PRQ.empty() && !hit) {
@@ -396,7 +392,7 @@ int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<in
       break;
     }
 
-
+    //Hamas: For pins addition, we may need to have it here as checking if the pins is correct
     vertex_descriptor vPopped = vertex(popped.i, *G);
     out_edge_iterator eo_G, eo_end_G;
     boost::tie(eo_G, eo_end_G) = out_edges(vPopped, *G);
@@ -412,16 +408,6 @@ int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<in
       // std::cout << "Route G: ";
       // printName(next);
 
-      // if (isRikenPinA(next)){
-      //     std::cout << "PinA detecteds: ";
-      //     printName(next);
-      //   }
-
-      //   if (isRikenPinB(next)){
-      //     std::cout << "PinB detecteds: ";
-      //     printName(next);
-      //   }
-
       //Hamas: For pins, maybe do something along the lines of the mux, check if the pins are
       //correct, if not, continue
       bool pinInvalid = false;
@@ -431,13 +417,21 @@ int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<in
       boost::tie(eo_H, eo_end_H) = out_edges(signalD, *H);
       for (; eo_H != eo_end_H; eo_H++){
         //Need to figure out how to get data that indicate the pin name
-        if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinA") && (isRikenPinB(next)))
-          pinInvalid = true;
+        // if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinA") && (isRikenPinB(next)))
+        //   pinInvalid = true;
         
+        // if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinB") && (isRikenPinA(next)))
+        //   pinInvalid = true;  
 
-        if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinB") && (isRikenPinA(next)))
-          pinInvalid = true;
-        
+        if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinB") && ((*gConfig)[next].opcode == inPinA)){
+          pinInvalid = 1;
+          break;
+        }
+
+        if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinA") && ((*gConfig)[next].opcode == inPinB)){
+          pinInvalid = 1;
+          break;
+        }
       }
 
       //Wrong pin is being used
@@ -1267,6 +1261,14 @@ void readDeviceModel(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
     else if (arch_Opcode == "Mux") {
       (*gConfig)[gTypes_index].type   = RouteCell; // mux is part of RouteCell
       (*gConfig)[gTypes_index].opcode = mux;       // Saving the opcode in the config array.
+    }
+    else if (arch_Opcode == "InputPinA") {
+      (*gConfig)[gTypes_index].type   = PinCell;  // constant is part of FuncCell
+      (*gConfig)[gTypes_index].opcode = inPinA;  // Saving the opcode in the config array.
+    }
+    else if (arch_Opcode == "InputPinB") {
+      (*gConfig)[gTypes_index].type   = PinCell;  // constant is part of FuncCell
+      (*gConfig)[gTypes_index].opcode = inPinB;  // Saving the opcode in the config array.
     }
     else if (arch_Opcode == "Constant") {
       (*gConfig)[gTypes_index].type   = FuncCell;  // constant is part of FuncCell
