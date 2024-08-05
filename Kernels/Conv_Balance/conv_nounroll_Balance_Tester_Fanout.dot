@@ -20,6 +20,7 @@ digraph "omp.inner.for.body" {
 	Load_7 -> FMUL_16[driver=outPinA,load=anyPins];
 	Load_8 [shape=record,opcode=input,label="{Load_8}"];
 	Load_8 -> FMUL_17[driver=outPinA,load=anyPins];
+	Load_8 -> FMUL_15[driver=outPinA,load=inPinB];
 	FMUL_9 [shape=record,type=op,opcode=FMUL,label="{FMUL_9}"];
 	FMUL_9 -> FADD_22[driver=outPinA,load=inPinA];
 	FMUL_10 [shape=record,type=op,opcode=FMUL,label="{FMUL_10}"];
@@ -51,8 +52,6 @@ digraph "omp.inner.for.body" {
 	Const_30 -> FMUL_13[driver=outPinA,load=anyPins];
 	Const_31 [shape=record,opcode=const,constVal="1",float32=3.00,label="{Const_31|float32=3.00}"];
 	Const_31 -> FMUL_9[driver=outPinA,load=anyPins];
-	Const_32 [shape=record,opcode=const,constVal="1",float32=15.00,label="{Const_32|float32=15.00}"];
-	Const_32 -> FMUL_15[driver=outPinA,load=inPinB];
 	Const_33 [shape=record,opcode=const,constVal="1",float32=17.00,label="{Const_33|float32=17.00}"];
 	Const_33 -> FMUL_16[driver=outPinA,load=anyPins];
 	Const_34 [shape=record,opcode=const,constVal="1",float32=7.00,label="{Const_34|float32=7.00}"];

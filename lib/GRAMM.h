@@ -50,12 +50,12 @@ typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 // -- Opcode (requires enumerator which is defined as follows)
 // -- Latency, Width can be defined as an integer
 // -- Location of the node can be defined as an integer pair
-typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, inPinA, inPinB, outPinA} opcodeType;
+typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, inPinA, inPinB, outPinA, outPinB} opcodeType;
 
-// typedef enum inPinT {inPinA, inPinB, Any2Pins} inPinType;
+// typedef enum inPinT {inPinA, inPinB, anyPins} inPinType;
 // typedef enum outPinT {outPinA} outPinType;
 
-std::vector<std::string> inPin = {"inPinA", "inPinB", "Any2Pins"};
+std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
 std::vector<std::string> outPin = {"outPinA"};
 
 struct NodeConfig {

@@ -162,8 +162,8 @@ void printNameRIKEN(int n) {
     case 7: std::cout << " SB_SE "; break;
     case 8: std::cout << " SB_INP_A "; break;
     case 9: std::cout << " SB_INP_B "; break;
-    case 10: std::cout << " SB_MUX2_A "; break;
-    case 11: std::cout << " SB_MUX2_B "; break;
+    case 10: std::cout << " SB_MUX2_B "; break;
+    case 11: std::cout << " SB_MUX2_A "; break;
     case 12: std::cout << " CONST "; break;
     case 13: std::cout << " ALU "; break;
     }
@@ -340,7 +340,7 @@ void ripUpLoad(DirectedGraph *G, int signal, int load) {
 
 // For reference, got this from routeSignal function
 // route(G, H, y, loadLoc, &path, gConfig); 
-int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig ) {
+int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig, std::string loadPin, std::string driverPin) {
 
   route->clear();
 
@@ -392,7 +392,6 @@ int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<in
       break;
     }
 
-    //Hamas: For pins addition, we may need to have it here as checking if the pins is correct
     vertex_descriptor vPopped = vertex(popped.i, *G);
     out_edge_iterator eo_G, eo_end_G;
     boost::tie(eo_G, eo_end_G) = out_edges(vPopped, *G);
@@ -404,29 +403,16 @@ int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<in
       explored.set(next);
       expInt.push_back(next);
 
-     //Hamas: For pins, maybe do something along the lines of the mux, check if the pins are
-      //correct, if not, continue
-      bool pinInvalid = false;
-      //Hamas: Following block was added by Hamas
-      vertex_descriptor signalD = vertex(signal, *H);
-      out_edge_iterator eo_H, eo_end_H;
-      boost::tie(eo_H, eo_end_H) = out_edges(signalD, *H);
-      for (; eo_H != eo_end_H; eo_H++){
-        if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinB") && ((*gConfig)[next].opcode == inPinA)){
-          pinInvalid = true;
-          break;
-        }
-        if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinA") && ((*gConfig)[next].opcode == inPinB)){
-          pinInvalid = true;
-          break;
-        }
+      //Verifying if the node is mapping to the correct pin type in the device model graph
+      if ((loadPin == "inPinB") && ((*gConfig)[next].opcode != inPinB) && ((*gConfig)[next].type == PinCell)){
+        continue;
       }
 
-      //Wrong pin is being used
-      if (pinInvalid)
+      if ((loadPin == "inPinA") && ((*gConfig)[next].opcode != inPinA) && ((*gConfig)[next].type == PinCell)){
         continue;
+      }
 
-      //Verifying if the node is type RouteCell or PinCells as ONLY they can be used along the way for routing
+      //Verifying if the node is type RouteCell or PinCell as ONLY they can be used along the way for routing
       if ((next != sink) && (*gConfig)[next].type != RouteCell && (*gConfig)[next].type != PinCell)
 	      continue;
  
@@ -606,7 +592,10 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     }
     int cost;
     std::list<int> path;
-    cost = route(G, H, y, loadLoc, &path, gConfig); //Hamas: Send to the route function to route, maybe need to add a new parameter to pass edge type for input and output pin
+
+    std::string loadPin = boost::get(&EdgeProperty::loadPin, *H, *eo);
+    std::string driverPin = boost::get(&EdgeProperty::driverPin, *H, *eo);
+    cost = route(G, y, loadLoc, &path, gConfig, loadPin, driverPin); //Hamas: Send to the route function to route, maybe need to add a new parameter to pass edge type for input and output pin
                                                 // Maybe need to pass the graph to the route
     totalCost += cost;
     if (cost < MAX_DIST) {
@@ -828,6 +817,8 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       if(DEBUG){
         printVertexModels(H);
       }
+
+      printVertexModels(H);
 
       //Output stream for storing successful mapping:
       std::ofstream oFile;
