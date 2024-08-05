@@ -27,7 +27,7 @@
 #define MAX_DIST 10000000
 #define RIKEN 1                 //Defining the architecture type (1 --> Riken, 0 --> Adres)
 #define DEBUG 0                 //For enbaling the print-statements 
-#define HARDCODE_DEVICE_MODEL 0 //Controls hardcoding of device model (1 --> Reads device model, 0 --> Hardcoded version)
+#define HARDCODE_DEVICE_MODEL 1 //Controls hardcoding of device model (1 --> Reads device model, 0 --> Hardcoded version)
 //-------------------------------------------------------------------//
 
 //CGRA device model parameters:

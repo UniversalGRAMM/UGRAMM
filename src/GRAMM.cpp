@@ -404,11 +404,7 @@ int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<in
       explored.set(next);
       expInt.push_back(next);
 
-      //  std::cout << "USERS: " << (*Users)[prev].size() << " ";
-      // std::cout << "Route G: ";
-      // printName(next);
-
-      //Hamas: For pins, maybe do something along the lines of the mux, check if the pins are
+     //Hamas: For pins, maybe do something along the lines of the mux, check if the pins are
       //correct, if not, continue
       bool pinInvalid = false;
       //Hamas: Following block was added by Hamas
@@ -416,20 +412,12 @@ int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<in
       out_edge_iterator eo_H, eo_end_H;
       boost::tie(eo_H, eo_end_H) = out_edges(signalD, *H);
       for (; eo_H != eo_end_H; eo_H++){
-        //Need to figure out how to get data that indicate the pin name
-        // if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinA") && (isRikenPinB(next)))
-        //   pinInvalid = true;
-        
-        // if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinB") && (isRikenPinA(next)))
-        //   pinInvalid = true;  
-
         if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinB") && ((*gConfig)[next].opcode == inPinA)){
-          pinInvalid = 1;
+          pinInvalid = true;
           break;
         }
-
         if ((boost::get(&EdgeProperty::loadPin, *H, *eo_H) == "inPinA") && ((*gConfig)[next].opcode == inPinB)){
-          pinInvalid = 1;
+          pinInvalid = true;
           break;
         }
       }
@@ -438,10 +426,10 @@ int route(DirectedGraph *G, DirectedGraph *H, int signal, int sink, std::list<in
       if (pinInvalid)
         continue;
 
-
-      // janders CHECK if a MUX, as ONLY MUXes can be used along the way
-      if ((next != sink) && ((*gConfig)[next].opcode != mux))
+      //Verifying if the node is type RouteCell or PinCells as ONLY they can be used along the way for routing
+      if ((next != sink) && (*gConfig)[next].type != RouteCell && (*gConfig)[next].type != PinCell)
 	      continue;
+ 
       
       struct ExpNode eNodeNew;
       eNodeNew.i = next;
@@ -1448,7 +1436,7 @@ int main(int argc, char *argv[])
     dp.property("node_id",      boost::get(&DotVertex::name, H));
     dp.property("opcode",       boost::get(&DotVertex::opcode, H));
     dp.property("load",         boost::get(&EdgeProperty::loadPin, H));
-    dp.property("driver",         boost::get(&EdgeProperty::driverPin, H));
+    dp.property("driver",       boost::get(&EdgeProperty::driverPin, H));
 
     // For [G] --> Device Model Graph
     //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
