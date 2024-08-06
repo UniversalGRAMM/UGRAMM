@@ -50,7 +50,7 @@ typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 // -- Opcode (requires enumerator which is defined as follows)
 // -- Latency, Width can be defined as an integer
 // -- Location of the node can be defined as an integer pair
-typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, inPinA, inPinB, outPinA, outPinB} opcodeType;
+typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, in, out} opcodeType;
 
 // typedef enum inPinT {inPinA, inPinB, anyPins} inPinType;
 // typedef enum outPinT {outPinA} outPinType;

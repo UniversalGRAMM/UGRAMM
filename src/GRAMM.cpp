@@ -160,12 +160,16 @@ void printNameRIKEN(int n) {
     case 5: std::cout << " SB_NE "; break;
     case 6: std::cout << " SB_E "; break;
     case 7: std::cout << " SB_SE "; break;
-    case 8: std::cout << " SB_INP_A "; break;
-    case 9: std::cout << " SB_INP_B "; break;
-    case 10: std::cout << " SB_MUX2_B "; break;
-    case 11: std::cout << " SB_MUX2_A "; break;
+    case 8: std::cout << " SB_PE_A "; break;
+    case 9: std::cout << " SB_PE_B "; break;
+    case 10: std::cout << " PE_MUX_A "; break;
+    case 11: std::cout << " PE_MUX_B "; break;
     case 12: std::cout << " CONST "; break;
-    case 13: std::cout << " ALU "; break;
+    case 13: std::cout << " CONST_PIN_O "; break;
+    case 14: std::cout << " ALU "; break;
+    case 15: std::cout << " ALU_PIN_A "; break;
+    case 16: std::cout << " ALU_PIN_B "; break;
+    case 17: std::cout << " ALU_PIN_O "; break;
     }
     std::cout << "row " << row << " col " << col;
   }
@@ -404,13 +408,13 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
       expInt.push_back(next);
 
       //Verifying if the node is mapping to the correct pin type in the device model graph
-      if ((loadPin == "inPinB") && ((*gConfig)[next].opcode != inPinB) && ((*gConfig)[next].type == PinCell)){
-        continue;
-      }
+      // if ((loadPin == "inPinB") && ((*gConfig)[next].opcode != inPinB) && ((*gConfig)[next].type == PinCell)){
+      //   continue;
+      // }
 
-      if ((loadPin == "inPinA") && ((*gConfig)[next].opcode != inPinA) && ((*gConfig)[next].type == PinCell)){
-        continue;
-      }
+      // if ((loadPin == "inPinA") && ((*gConfig)[next].opcode != inPinA) && ((*gConfig)[next].type == PinCell)){
+      //   continue;
+      // }
 
       //Verifying if the node is type RouteCell or PinCell as ONLY they can be used along the way for routing
       if ((next != sink) && (*gConfig)[next].type != RouteCell && (*gConfig)[next].type != PinCell)
@@ -1241,13 +1245,13 @@ void readDeviceModel(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
       (*gConfig)[gTypes_index].type   = RouteCell; // mux is part of RouteCell
       (*gConfig)[gTypes_index].opcode = mux;       // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "InputPinA") {
+    else if (arch_Opcode == "in") {
       (*gConfig)[gTypes_index].type   = PinCell;  // constant is part of FuncCell
-      (*gConfig)[gTypes_index].opcode = inPinA;  // Saving the opcode in the config array.
+      (*gConfig)[gTypes_index].opcode = in;  // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "InputPinB") {
+    else if (arch_Opcode == "out") {
       (*gConfig)[gTypes_index].type   = PinCell;  // constant is part of FuncCell
-      (*gConfig)[gTypes_index].opcode = inPinB;  // Saving the opcode in the config array.
+      (*gConfig)[gTypes_index].opcode = out;  // Saving the opcode in the config array.
     }
     else if (arch_Opcode == "Constant") {
       (*gConfig)[gTypes_index].type   = FuncCell;  // constant is part of FuncCell
@@ -1410,7 +1414,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
 
   if (invalidPinNameDetected){
     std::cout << "Invalid pin names detected, exiting the program\n";
-    exit(1);
+    //exit(1);
   }
 
 
