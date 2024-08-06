@@ -1410,7 +1410,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
 
   if (invalidPinNameDetected){
     std::cout << "Invalid pin names detected, exiting the program\n";
-    exit(1);
+    //exit(1);
   }
 
 

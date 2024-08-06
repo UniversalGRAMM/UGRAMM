@@ -41,7 +41,7 @@ digraph "omp.inner.for.body" {
 	FMUL_17 -> FADD_24[driver=outPinA,load=inPinA];
 	FADD_25 [shape=record,type=op,opcode=FADD,label="{FADD_25}"];
 	FADD_25 -> Store_26[driver=outPinA,load=inPinA];
-	Store_26 [shape=record,opcode=outPinAput,label="{Store_26}"];
+	Store_26 [shape=record,opcode=output,label="{Store_26}"];
 	Const_27 [shape=record,opcode=const,constVal="1",float32=5.00,label="{Const_27|float32=5.00}"];
 	Const_27 -> FMUL_10[driver=outPinA,load=inPinB];
 	Const_28 [shape=record,opcode=const,constVal="1",float32=13.00,label="{Const_28|float32=13.00}"];
