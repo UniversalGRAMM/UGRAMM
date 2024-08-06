@@ -3,7 +3,7 @@
 #######################################################
 
 CXX = g++
-CXXFLAGS = -lboost_graph
+CXXFLAGS = -I$(LIB_DIR) -lboost_graph
 
 # Directories
 SRC_DIR = src
@@ -12,10 +12,11 @@ BUILD_DIR = build
 
 EXE = GRAMM
 
-$(EXE): $(SRC_DIR)/GRAMM.cpp
-	g++ $(SRC_DIR)/GRAMM.cpp $(CXXFLAGS) -o $(EXE) 
+# Target for the executable
+$(EXE): $(SRC_DIR)/GRAMM.cpp $(LIB_DIR)/GRAMM.h
+	$(CXX) $(SRC_DIR)/GRAMM.cpp $(CXXFLAGS) -o $(EXE) 
 
+# Clean target to remove generated files
 clean:
-	rm $(EXE) 
-
+	rm -f $(EXE) *.dot *.txt *.png
 
