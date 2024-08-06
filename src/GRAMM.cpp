@@ -148,9 +148,9 @@ void printNameRIKEN(int n) {
     std::cout << " memport RIGHT row " << n-numR;
   else {
     n -= 2*numR;
-    int row = n/(14*numC);
-    int col = (n - row*numC*14)/14;
-    int elem = n % 14;
+    int row = n/(18*numC);
+    int col = (n - row*numC*18)/18;
+    int elem = n % 18;
     switch(elem) {
     case 0: std::cout << " SB_S "; break;
     case 1: std::cout << " SB_SW "; break;

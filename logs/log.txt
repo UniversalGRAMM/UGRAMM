@@ -1,74 +1,73 @@
-[H] Edge ({Const_27|float32=5.00} -> {FMUL_10}) | load pin name verification:  pin name not valid
-[H] Edge ({Const_27|float32=5.00} -> {FMUL_10}) | driver pin name verification:   pin name not valid
-[H] Edge ({Const_28|float32=13.00} -> {FMUL_14}) | load pin name verification:  pin name not valid
-[H] Edge ({Const_28|float32=13.00} -> {FMUL_14}) | driver pin name verification:   pin name not valid
-[H] Edge ({Const_29|float32=9.00} -> {FMUL_12}) | load pin name verification:  pin name not valid
-[H] Edge ({Const_29|float32=9.00} -> {FMUL_12}) | driver pin name verification:   pin name not valid
-[H] Edge ({Const_30|float32=11.00} -> {FMUL_13}) | load pin name verification:  pin name not valid
-[H] Edge ({Const_30|float32=11.00} -> {FMUL_13}) | driver pin name verification:   pin name not valid
-[H] Edge ({Const_31|float32=3.00} -> {FMUL_9}) | load pin name verification:  pin name not valid
-[H] Edge ({Const_31|float32=3.00} -> {FMUL_9}) | driver pin name verification:   pin name not valid
-[H] Edge ({Const_32|float32=15.00} -> {FMUL_15}) | load pin name verification:  pin name not valid
-[H] Edge ({Const_32|float32=15.00} -> {FMUL_15}) | driver pin name verification:   pin name not valid
-[H] Edge ({Const_33|float32=17.00} -> {FMUL_16}) | load pin name verification:  pin name not valid
-[H] Edge ({Const_33|float32=17.00} -> {FMUL_16}) | driver pin name verification:   pin name not valid
-[H] Edge ({Const_34|float32=7.00} -> {FMUL_11}) | load pin name verification:  pin name not valid
-[H] Edge ({Const_34|float32=7.00} -> {FMUL_11}) | driver pin name verification:   pin name not valid
-[H] Edge ({Const_35|float32=19.00} -> {FMUL_17}) | load pin name verification:  pin name not valid
-[H] Edge ({Const_35|float32=19.00} -> {FMUL_17}) | driver pin name verification:   pin name not valid
-[H] Edge ({FADD_18} -> {FADD_25}) | load pin name verification:  pin name not valid
-[H] Edge ({FADD_18} -> {FADD_25}) | driver pin name verification:   pin name not valid
-[H] Edge ({FADD_19} -> {FADD_25}) | load pin name verification:  pin name not valid
-[H] Edge ({FADD_19} -> {FADD_25}) | driver pin name verification:   pin name not valid
-[H] Edge ({FADD_20} -> {FADD_18}) | load pin name verification:  pin name not valid
-[H] Edge ({FADD_20} -> {FADD_18}) | driver pin name verification:   pin name not valid
-[H] Edge ({FADD_21} -> {FADD_19}) | load pin name verification:  pin name not valid
-[H] Edge ({FADD_21} -> {FADD_19}) | driver pin name verification:   pin name not valid
-[H] Edge ({FADD_22} -> {FADD_18}) | load pin name verification:  pin name not valid
-[H] Edge ({FADD_22} -> {FADD_18}) | driver pin name verification:   pin name not valid
-[H] Edge ({FADD_23} -> {FADD_19}) | load pin name verification:  pin name not valid
-[H] Edge ({FADD_23} -> {FADD_19}) | driver pin name verification:   pin name not valid
-[H] Edge ({FADD_24} -> {FADD_20}) | load pin name verification:  pin name not valid
-[H] Edge ({FADD_24} -> {FADD_20}) | driver pin name verification:   pin name not valid
-[H] Edge ({FADD_25} -> {Store_26}) | load pin name verification:  pin name not valid
-[H] Edge ({FADD_25} -> {Store_26}) | driver pin name verification:   pin name not valid
-[H] Edge ({FMUL_10} -> {FADD_23}) | load pin name verification:  pin name not valid
-[H] Edge ({FMUL_10} -> {FADD_23}) | driver pin name verification:   pin name not valid
-[H] Edge ({FMUL_11} -> {FADD_23}) | load pin name verification:  pin name not valid
-[H] Edge ({FMUL_11} -> {FADD_23}) | driver pin name verification:   pin name not valid
-[H] Edge ({FMUL_12} -> {FADD_22}) | load pin name verification:  pin name not valid
-[H] Edge ({FMUL_12} -> {FADD_22}) | driver pin name verification:   pin name not valid
-[H] Edge ({FMUL_13} -> {FADD_21}) | load pin name verification:  pin name not valid
-[H] Edge ({FMUL_13} -> {FADD_21}) | driver pin name verification:   pin name not valid
-[H] Edge ({FMUL_14} -> {FADD_20}) | load pin name verification:  pin name not valid
-[H] Edge ({FMUL_14} -> {FADD_20}) | driver pin name verification:   pin name not valid
-[H] Edge ({FMUL_15} -> {FADD_24}) | load pin name verification:  pin name not valid
-[H] Edge ({FMUL_15} -> {FADD_24}) | driver pin name verification:   pin name not valid
-[H] Edge ({FMUL_16} -> {FADD_21}) | load pin name verification:  pin name not valid
-[H] Edge ({FMUL_16} -> {FADD_21}) | driver pin name verification:   pin name not valid
-[H] Edge ({FMUL_17} -> {FADD_24}) | load pin name verification:  pin name not valid
-[H] Edge ({FMUL_17} -> {FADD_24}) | driver pin name verification:   pin name not valid
-[H] Edge ({FMUL_9} -> {FADD_22}) | load pin name verification:  pin name not valid
-[H] Edge ({FMUL_9} -> {FADD_22}) | driver pin name verification:   pin name not valid
-[H] Edge ({Load_0} -> {FMUL_9}) | load pin name verification:  pin name not valid
-[H] Edge ({Load_0} -> {FMUL_9}) | driver pin name verification:   pin name not valid
-[H] Edge ({Load_1} -> {FMUL_10}) | load pin name verification:  pin name not valid
-[H] Edge ({Load_1} -> {FMUL_10}) | driver pin name verification:   pin name not valid
-[H] Edge ({Load_2} -> {FMUL_11}) | load pin name verification:  pin name not valid
-[H] Edge ({Load_2} -> {FMUL_11}) | driver pin name verification:   pin name not valid
-[H] Edge ({Load_3} -> {FMUL_12}) | load pin name verification:  pin name not valid
-[H] Edge ({Load_3} -> {FMUL_12}) | driver pin name verification:   pin name not valid
-[H] Edge ({Load_4} -> {FMUL_13}) | load pin name verification:  pin name not valid
-[H] Edge ({Load_4} -> {FMUL_13}) | driver pin name verification:   pin name not valid
-[H] Edge ({Load_5} -> {FMUL_14}) | load pin name verification:  pin name not valid
-[H] Edge ({Load_5} -> {FMUL_14}) | driver pin name verification:   pin name not valid
-[H] Edge ({Load_6} -> {FMUL_15}) | load pin name verification:  pin name not valid
-[H] Edge ({Load_6} -> {FMUL_15}) | driver pin name verification:   pin name not valid
-[H] Edge ({Load_7} -> {FMUL_16}) | load pin name verification:  pin name not valid
-[H] Edge ({Load_7} -> {FMUL_16}) | driver pin name verification:   pin name not valid
-[H] Edge ({Load_8} -> {FMUL_17}) | load pin name verification:  pin name not valid
-[H] Edge ({Load_8} -> {FMUL_17}) | driver pin name verification:   pin name not valid
-Invalid pin names detected, exiting the program
+[H] Edge ({Const_27|float32=5.00} -> {FMUL_10}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Const_27|float32=5.00} -> {FMUL_10}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_28|float32=13.00} -> {FMUL_14}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Const_28|float32=13.00} -> {FMUL_14}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_29|float32=9.00} -> {FMUL_12}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Const_29|float32=9.00} -> {FMUL_12}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_30|float32=11.00} -> {FMUL_13}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Const_30|float32=11.00} -> {FMUL_13}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_31|float32=3.00} -> {FMUL_9}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Const_31|float32=3.00} -> {FMUL_9}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_32|float32=15.00} -> {FMUL_15}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Const_32|float32=15.00} -> {FMUL_15}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_33|float32=17.00} -> {FMUL_16}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Const_33|float32=17.00} -> {FMUL_16}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_34|float32=7.00} -> {FMUL_11}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Const_34|float32=7.00} -> {FMUL_11}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_35|float32=19.00} -> {FMUL_17}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Const_35|float32=19.00} -> {FMUL_17}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_18} -> {FADD_25}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FADD_18} -> {FADD_25}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_19} -> {FADD_25}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FADD_19} -> {FADD_25}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_20} -> {FADD_18}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({FADD_20} -> {FADD_18}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_21} -> {FADD_19}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({FADD_21} -> {FADD_19}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_22} -> {FADD_18}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({FADD_22} -> {FADD_18}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_23} -> {FADD_19}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({FADD_23} -> {FADD_19}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_24} -> {FADD_20}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({FADD_24} -> {FADD_20}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_25} -> {Store_26}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FADD_25} -> {Store_26}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_10} -> {FADD_23}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FMUL_10} -> {FADD_23}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_11} -> {FADD_23}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({FMUL_11} -> {FADD_23}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_12} -> {FADD_22}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({FMUL_12} -> {FADD_22}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_13} -> {FADD_21}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FMUL_13} -> {FADD_21}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_14} -> {FADD_20}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({FMUL_14} -> {FADD_20}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_15} -> {FADD_24}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FMUL_15} -> {FADD_24}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_16} -> {FADD_21}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({FMUL_16} -> {FADD_21}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_17} -> {FADD_24}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FMUL_17} -> {FADD_24}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_9} -> {FADD_22}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FMUL_9} -> {FADD_22}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_0} -> {FMUL_9}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Load_0} -> {FMUL_9}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_1} -> {FMUL_10}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Load_1} -> {FMUL_10}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_2} -> {FMUL_11}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Load_2} -> {FMUL_11}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_3} -> {FMUL_12}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Load_3} -> {FMUL_12}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_4} -> {FMUL_13}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Load_4} -> {FMUL_13}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_5} -> {FMUL_14}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Load_5} -> {FMUL_14}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_6} -> {FMUL_15}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Load_6} -> {FMUL_15}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_7} -> {FMUL_16}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Load_7} -> {FMUL_16}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_8} -> {FMUL_17}) | load pin name verification:  anyPins pin name verified
+[H] Edge ({Load_8} -> {FMUL_17}) | driver pin name verification:  outPinA pin name verified
 ***** BEGINNING OUTER WHILE LOOP ***** ITER 1 
 --------------------- New Vertices Mapping Start ---------------------------
 Finding vertex model for: 9 1
@@ -84,7 +83,7 @@ Print Vertex Model:
 ** routing for signal: 7 {Const_34|float32=7.00}
 ** routing for signal: 8 {Const_35|float32=19.00}
 ** routing for signal: 9 {FADD_18}
-	 244 SB_N row 2 col 0
+	 244 CONST row 1 col 4
 ** routing for signal: 10 {FADD_19}
 ** routing for signal: 11 {FADD_20}
 ** routing for signal: 12 {FADD_21}
@@ -126,7 +125,7 @@ Print Vertex Model:
 ** routing for signal: 7 {Const_34|float32=7.00}
 ** routing for signal: 8 {Const_35|float32=19.00}
 ** routing for signal: 9 {FADD_18}
-	 244 SB_N row 2 col 0
+	 244 CONST row 1 col 4
 ** routing for signal: 10 {FADD_19}
 ** routing for signal: 11 {FADD_20}
 ** routing for signal: 12 {FADD_21}
@@ -169,7 +168,7 @@ Print Vertex Model:
 ** routing for signal: 7 {Const_34|float32=7.00}
 ** routing for signal: 8 {Const_35|float32=19.00}
 ** routing for signal: 9 {FADD_18}
-	 244 SB_N row 2 col 0
+	 244 CONST row 1 col 4
 ** routing for signal: 10 {FADD_19}
 ** routing for signal: 11 {FADD_20}
 ** routing for signal: 12 {FADD_21}
@@ -185,7 +184,7 @@ Print Vertex Model:
 ** routing for signal: 22 {FMUL_15}
 ** routing for signal: 23 {FMUL_16}
 ** routing for signal: 24 {FMUL_17}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 25 {FMUL_9}
 ** routing for signal: 26 {Load_0}
 ** routing for signal: 27 {Load_1}
@@ -213,7 +212,7 @@ Print Vertex Model:
 ** routing for signal: 7 {Const_34|float32=7.00}
 ** routing for signal: 8 {Const_35|float32=19.00}
 ** routing for signal: 9 {FADD_18}
-	 244 SB_N row 2 col 0
+	 244 CONST row 1 col 4
 ** routing for signal: 10 {FADD_19}
 ** routing for signal: 11 {FADD_20}
 ** routing for signal: 12 {FADD_21}
@@ -228,9 +227,9 @@ Print Vertex Model:
 ** routing for signal: 21 {FMUL_14}
 ** routing for signal: 22 {FMUL_15}
 ** routing for signal: 23 {FMUL_16}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 24 {FMUL_17}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 25 {FMUL_9}
 ** routing for signal: 26 {Load_0}
 ** routing for signal: 27 {Load_1}
@@ -258,7 +257,7 @@ Print Vertex Model:
 ** routing for signal: 7 {Const_34|float32=7.00}
 ** routing for signal: 8 {Const_35|float32=19.00}
 ** routing for signal: 9 {FADD_18}
-	 244 SB_N row 2 col 0
+	 244 CONST row 1 col 4
 ** routing for signal: 10 {FADD_19}
 ** routing for signal: 11 {FADD_20}
 ** routing for signal: 12 {FADD_21}
@@ -271,12 +270,12 @@ Print Vertex Model:
 ** routing for signal: 19 {FMUL_12}
 ** routing for signal: 20 {FMUL_13}
 ** routing for signal: 21 {FMUL_14}
-	 316 SB_E row 2 col 5
+	 316 CONST row 2 col 0
 ** routing for signal: 22 {FMUL_15}
 ** routing for signal: 23 {FMUL_16}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 24 {FMUL_17}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 25 {FMUL_9}
 ** routing for signal: 26 {Load_0}
 ** routing for signal: 27 {Load_1}
@@ -304,7 +303,7 @@ Print Vertex Model:
 ** routing for signal: 7 {Const_34|float32=7.00}
 ** routing for signal: 8 {Const_35|float32=19.00}
 ** routing for signal: 9 {FADD_18}
-	 244 SB_N row 2 col 0
+	 244 CONST row 1 col 4
 ** routing for signal: 10 {FADD_19}
 ** routing for signal: 11 {FADD_20}
 ** routing for signal: 12 {FADD_21}
@@ -317,12 +316,12 @@ Print Vertex Model:
 ** routing for signal: 19 {FMUL_12}
 ** routing for signal: 20 {FMUL_13}
 ** routing for signal: 21 {FMUL_14}
-	 316 SB_E row 2 col 5
+	 316 CONST row 2 col 0
 ** routing for signal: 22 {FMUL_15}
 ** routing for signal: 23 {FMUL_16}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 24 {FMUL_17}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 25 {FMUL_9}
 ** routing for signal: 26 {Load_0}
 ** routing for signal: 27 {Load_1}
@@ -351,9 +350,9 @@ Print Vertex Model:
 ** routing for signal: 7 {Const_34|float32=7.00}
 ** routing for signal: 8 {Const_35|float32=19.00}
 ** routing for signal: 9 {FADD_18}
-	 244 SB_N row 2 col 0
+	 244 CONST row 1 col 4
 ** routing for signal: 10 {FADD_19}
-	 298 SB_W row 2 col 4
+	 298 CONST row 1 col 7
 ** routing for signal: 11 {FADD_20}
 ** routing for signal: 12 {FADD_21}
 ** routing for signal: 13 {FADD_22}
@@ -365,12 +364,12 @@ Print Vertex Model:
 ** routing for signal: 19 {FMUL_12}
 ** routing for signal: 20 {FMUL_13}
 ** routing for signal: 21 {FMUL_14}
-	 316 SB_E row 2 col 5
+	 316 CONST row 2 col 0
 ** routing for signal: 22 {FMUL_15}
 ** routing for signal: 23 {FMUL_16}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 24 {FMUL_17}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 25 {FMUL_9}
 ** routing for signal: 26 {Load_0}
 ** routing for signal: 27 {Load_1}
@@ -390,524 +389,524 @@ Finding vertex model for: 11 1
 SIZE: 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 0 col 2
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 0 col 1
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 0 col 2
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 0 col 1
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_E row 0 col 3
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 0 col 2
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_E row 0 col 3
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 0 col 2
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_MUX2_B row 0 col 4
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 0 col 3
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_MUX2_B row 0 col 4
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 0 col 3
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_S row 0 col 6
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 0 col 4
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_S row 0 col 6
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 0 col 4
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_N row 0 col 7
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 0 col 5
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_N row 0 col 7
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 0 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_INP_A row 1 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 0 col 6
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_INP_A row 1 col 0
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 0 col 6
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 0 col 7
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 0 col 7
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 1 col 0
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 1 col 0
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
 EXPANSION SOURCE :  CONST row 1 col 1
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
 ROUTING LOAD:  CONST row 1 col 1
-EXPANSION SOURCE :  SB_E row 2 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 1 col 3
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 1 col 2
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 1 col 3
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 1 col 2
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_E row 1 col 4
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 1 col 3
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_E row 1 col 4
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 1 col 3
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_MUX2_B row 1 col 5
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_MUX2_B row 1 col 5
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_S row 1 col 7
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_S row 1 col 7
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_N row 2 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 1 col 4
 NAME :{FADD_20} LOAD: 
- SB_N row 2 col 0
+ CONST row 1 col 4
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_INP_A row 2 col 1
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 1 col 5
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_INP_A row 2 col 1
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 1 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 1 col 6
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 1 col 6
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 1 col 7
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 1 col 7
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 2 col 0
+EXPANSION SOURCE :  CONST row 2 col 0
+NAME :{FMUL_14} LOAD: 
+ CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 2 col 1
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 2 col 1
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
 EXPANSION SOURCE :  CONST row 2 col 2
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
 ROUTING LOAD:  CONST row 2 col 2
-EXPANSION SOURCE :  SB_E row 2 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 2 col 4
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 2 col 3
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 2 col 4
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 2 col 3
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 2 col 4
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_E row 2 col 5
-EXPANSION SOURCE :  SB_E row 2 col 5
-NAME :{FMUL_14} LOAD: 
- SB_E row 2 col 5
+ROUTING LOAD:  CONST row 2 col 4
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_MUX2_B row 2 col 6
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 2 col 5
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_MUX2_B row 2 col 6
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 2 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_S row 3 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 2 col 6
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_S row 3 col 0
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 2 col 6
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_N row 3 col 1
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_N row 3 col 1
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 2 col 7
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_INP_A row 3 col 2
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 3 col 0
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_INP_A row 3 col 2
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 3 col 0
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 3 col 1
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 3 col 1
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 3 col 2
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 3 col 2
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
 EXPANSION SOURCE :  CONST row 3 col 3
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
 ROUTING LOAD:  CONST row 3 col 3
-EXPANSION SOURCE :  SB_E row 2 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 3 col 5
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 3 col 4
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 3 col 5
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 3 col 4
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 3 col 5
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_E row 3 col 6
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 3 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_MUX2_B row 3 col 7
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 3 col 6
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_MUX2_B row 3 col 7
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 3 col 6
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_S row 4 col 1
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 3 col 7
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_S row 4 col 1
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 3 col 7
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_N row 4 col 2
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 4 col 0
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_N row 4 col 2
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 4 col 0
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_INP_A row 4 col 3
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 4 col 1
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_INP_A row 4 col 3
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 4 col 1
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 4 col 2
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 4 col 2
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 4 col 3
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 4 col 3
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
 EXPANSION SOURCE :  CONST row 4 col 4
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
 ROUTING LOAD:  CONST row 4 col 4
-EXPANSION SOURCE :  SB_E row 2 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 4 col 6
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 4 col 5
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 4 col 6
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 4 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_E row 4 col 7
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 4 col 6
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_E row 4 col 7
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 4 col 6
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_MUX2_B row 5 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 4 col 7
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_MUX2_B row 5 col 0
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 4 col 7
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_S row 5 col 2
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 5 col 0
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_S row 5 col 2
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 5 col 0
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_N row 5 col 3
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 5 col 1
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_N row 5 col 3
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 5 col 1
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_INP_A row 5 col 4
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 5 col 2
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_INP_A row 5 col 4
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 5 col 2
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 5 col 3
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 5 col 3
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 5 col 4
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 5 col 4
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
 EXPANSION SOURCE :  CONST row 5 col 5
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
 ROUTING LOAD:  CONST row 5 col 5
-EXPANSION SOURCE :  SB_E row 2 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 5 col 7
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 5 col 6
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 5 col 7
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 5 col 6
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_E row 6 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 5 col 7
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_E row 6 col 0
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 5 col 7
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_MUX2_B row 6 col 1
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 6 col 0
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_MUX2_B row 6 col 1
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 6 col 0
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_S row 6 col 3
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 6 col 1
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_S row 6 col 3
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 6 col 1
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_N row 6 col 4
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 6 col 2
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_N row 6 col 4
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 6 col 2
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_INP_A row 6 col 5
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 6 col 3
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_INP_A row 6 col 5
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 6 col 3
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 6 col 4
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 6 col 4
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 6 col 5
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 6 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
 EXPANSION SOURCE :  CONST row 6 col 6
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
 ROUTING LOAD:  CONST row 6 col 6
-EXPANSION SOURCE :  SB_E row 2 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 7 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 6 col 7
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 7 col 0
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 6 col 7
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_E row 7 col 1
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 7 col 0
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_E row 7 col 1
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 7 col 0
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_MUX2_B row 7 col 2
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 7 col 1
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_MUX2_B row 7 col 2
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 7 col 1
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_S row 7 col 4
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 7 col 2
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_S row 7 col 4
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 7 col 2
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_N row 7 col 5
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 7 col 3
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_N row 7 col 5
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 7 col 3
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_INP_A row 7 col 6
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 7 col 4
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_INP_A row 7 col 6
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 7 col 4
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 7 col 5
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 7 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 7 col 6
+BEGINNING ROUTE OF NAME :{FMUL_14}
+SOURCE : {FMUL_14} TARGET : {FADD_20}
+ROUTING LOAD:  CONST row 7 col 6
+EXPANSION SOURCE :  CONST row 2 col 0
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+ROUTING LOAD:  CONST row 1 col 4
 EXPANSION SOURCE :  CONST row 7 col 7
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
 ROUTING LOAD:  CONST row 7 col 7
-EXPANSION SOURCE :  SB_E row 2 col 5
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 8 col 1
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 8 col 0
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 8 col 1
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 8 col 0
+EXPANSION SOURCE :  CONST row 2 col 0
 BEGINNING ROUTE OF NAME :{FADD_20}
 SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_E row 8 col 2
+ROUTING LOAD:  CONST row 1 col 4
+EXPANSION SOURCE :  CONST row 2 col 6
 BEGINNING ROUTE OF NAME :{FMUL_14}
 SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_E row 8 col 2
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_MUX2_B row 8 col 3
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_MUX2_B row 8 col 3
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_S row 8 col 5
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_S row 8 col 5
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_N row 8 col 6
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_N row 8 col 6
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_INP_A row 8 col 7
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_INP_A row 8 col 7
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  CONST row 9 col 0
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  CONST row 9 col 0
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 9 col 2
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 9 col 2
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_E row 9 col 3
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_E row 9 col 3
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_MUX2_B row 9 col 4
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_MUX2_B row 9 col 4
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_S row 9 col 6
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_S row 9 col 6
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_N row 9 col 7
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_N row 9 col 7
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_INP_A row 10 col 0
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_INP_A row 10 col 0
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  CONST row 10 col 1
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  CONST row 10 col 1
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 10 col 3
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 10 col 3
-EXPANSION SOURCE :  SB_E row 2 col 5
-BEGINNING ROUTE OF NAME :{FADD_20}
-SOURCE : {FADD_20} TARGET : {FADD_18}
-ROUTING LOAD:  SB_N row 2 col 0
-EXPANSION SOURCE :  SB_W row 3 col 5
-BEGINNING ROUTE OF NAME :{FMUL_14}
-SOURCE : {FMUL_14} TARGET : {FADD_20}
-ROUTING LOAD:  SB_W row 3 col 5
-EXPANSION SOURCE :  SB_E row 2 col 5
+ROUTING LOAD:  CONST row 2 col 6
+EXPANSION SOURCE :  CONST row 2 col 0
 Print Vertex Model: 
 ** routing for signal: 0 {Const_27|float32=5.00}
 ** routing for signal: 1 {Const_28|float32=13.00}
@@ -919,17 +918,17 @@ Print Vertex Model:
 ** routing for signal: 7 {Const_34|float32=7.00}
 ** routing for signal: 8 {Const_35|float32=19.00}
 ** routing for signal: 9 {FADD_18}
-	 244 SB_N row 2 col 0
+	 244 CONST row 1 col 4
 ** routing for signal: 10 {FADD_19}
-	 298 SB_W row 2 col 4
+	 298 CONST row 1 col 7
 ** routing for signal: 11 {FADD_20}
-	 424 SB_W row 3 col 5
-	 427 SB_NE row 3 col 5
-	 413 SB_NE row 3 col 4
-	 250 SB_MUX2_B row 2 col 0
-	 239 ALU row 1 col 7
-	 241 SB_SW row 2 col 0
-	 246 SB_E row 2 col 0
+	 424 CONST row 2 col 6
+	 427 ALU_PIN_A row 2 col 6
+	 413 SB_SW row 2 col 6
+	 250 SB_S row 1 col 5
+	 239 SB_SE row 1 col 4
+	 241 SB_PE_B row 1 col 4
+	 246 ALU row 1 col 4
 ** routing for signal: 12 {FADD_21}
 ** routing for signal: 13 {FADD_22}
 ** routing for signal: 14 {FADD_23}
@@ -940,18 +939,18 @@ Print Vertex Model:
 ** routing for signal: 19 {FMUL_12}
 ** routing for signal: 20 {FMUL_13}
 ** routing for signal: 21 {FMUL_14}
-	 316 SB_E row 2 col 5
-	 319 SB_INP_B row 2 col 5
-	 303 SB_SE row 2 col 4
-	 430 SB_INP_A row 3 col 5
-	 418 SB_MUX2_B row 3 col 4
-	 420 CONST row 3 col 4
-	 425 SB_NW row 3 col 5
+	 316 CONST row 2 col 0
+	 319 ALU_PIN_A row 2 col 0
+	 303 ALU_PIN_O row 1 col 7
+	 430 SB_S row 2 col 7
+	 418 SB_E row 2 col 6
+	 420 SB_PE_A row 2 col 6
+	 425 CONST_PIN_O row 2 col 6
 ** routing for signal: 22 {FMUL_15}
 ** routing for signal: 23 {FMUL_16}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 24 {FMUL_17}
-	 442 SB_E row 3 col 6
+	 442 CONST row 2 col 7
 ** routing for signal: 25 {FMUL_9}
 ** routing for signal: 26 {Load_0}
 ** routing for signal: 27 {Load_1}
@@ -971,98 +970,98 @@ Finding vertex model for: 33 2
 SIZE: 0
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  memport LEFT row 0
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  memport LEFT row 2
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  memport LEFT row 4
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  memport LEFT row 6
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  memport RIGHT row 0
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  memport RIGHT row 2
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  memport RIGHT row 4
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  memport RIGHT row 6
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  SB_S row 0 col 0
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  SB_W row 0 col 0
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  SB_N row 0 col 0
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  SB_E row 0 col 0
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
-EXPANSION SOURCE :  SB_INP_A row 0 col 0
+ROUTING LOAD:  CONST row 2 col 7
+EXPANSION SOURCE :  SB_PE_A row 0 col 0
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
-EXPANSION SOURCE :  SB_MUX2_B row 0 col 0
+ROUTING LOAD:  CONST row 2 col 7
+EXPANSION SOURCE :  PE_MUX_A row 0 col 0
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
+ROUTING LOAD:  CONST row 2 col 7
 EXPANSION SOURCE :  CONST row 0 col 0
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 BEGINNING ROUTE OF NAME :{Load_7}
 SOURCE : {Load_7} TARGET : {FMUL_16}
-ROUTING LOAD:  SB_E row 3 col 6
-EXPANSION SOURCE :  SB_S row 0 col 1
+ROUTING LOAD:  CONST row 2 col 7
+EXPANSION SOURCE :  ALU row 0 col 0
 NAME :{Load_7} LOAD: 
- SB_E row 3 col 6
+ CONST row 2 col 7
 FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX 33 {Load_7}
