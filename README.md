@@ -7,41 +7,18 @@
 G. Zhou, M. Stojilović and J. H. Anderson, "GRAMM: Fast CGRA Application Mapping Based on A Heuristic for Finding Graph Minors," 2023 33rd International Conference on Field-Programmable Logic and Applications (FPL), Gothenburg, Sweden, 2023, pp. 305-310, doi: 10.1109/FPL60245.2023.00052.
 ```
 
-## How to Use:
-
-### Config according to the need:
-
-```
-#define RIKEN 1                 //Defining the architecture type [TODO: get rid of this in future, making GRAMM universal!!]
-#define DEBUG 0                 //For enbaling the print-statements (mapped-DFG)
-#define HARDCODE_DEVICE_MODEL 1 //Controls hardcoding of device model
-```
-### Compile:
-
-```
-make #Generates a binary called GRAMM in the root directory
-```
-
-### Running a circuit on GRAMM:
-```
-[bhilareo@p181 GRAMM]$ ./GRAMM --help
-Arguments are <application.dot> <device_model.dot> <numRows NR> <numCols NC> <seed>
-
-# Argument 1 & 2: Dot file for application and device model
-# Argument 3 & 4: Size of the CGRA (NR  & NC)
-# Argument 5: Seed for the run.
-```
-
-### Mapping `Conv_Balance` circuit on 8X8 ADRES CGRA using GRAMM
-> ./GRAMM Kernels/Conv_Balance/conv_nounroll_Balance.dot 2 2 0
-
----
 
 ## Helper Script usage:
 
-> ./run_gramm.sh Kernels/Conv_Balance/conv_nounroll_Balance.dot 8 8   
+> ./run_gramm.sh Kernels/Conv_Balance/conv_nounroll_Balance.dot 8 8 RIKEN 
 
 - run_gramm.sh script:
+    - Arugment info:
+        - $1 [Kernel]: Kernels/Conv_Balance/conv_nounroll_Balance.dot 
+        - $2 [NR] = 8
+        - $3 [NC] = 8
+        - 4 [Arch_Type for device model] = RIKEN_with_pins or RIKEN
+            - "RIKEN" Argument produces device model without pins meanwhile "RIKEN_with_pins" produce architecture for RIKEN with pins
     - Generating device model using external script
         - `cd scripts && ./device_model_gen.py -NR $2 -NC $3 -Arch RIKEN && cd ..`
     - Executes GRAMM and produces mapping result in mapping_output.dot

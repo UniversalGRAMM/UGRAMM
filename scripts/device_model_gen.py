@@ -279,27 +279,28 @@ def create_riken(args):
             current_pe_number = int((PEindex - PEstart)/PEstep)
             x_coordinate = int(current_pe_number/args.NR)
             y_coordinate = current_pe_number%args.NR  
+            base_name = "pe" + ".w" + str(width)  + ".c" + str(x_coordinate) + ".r" + str(y_coordinate) 
 
             for k in range(sb_max+2):       
                 if (k == sb_max):
-                    G.nodes[PEindex + k]["G_Name"]         = "pe_c" + str(x_coordinate) + "_r" + str(y_coordinate) + ".mux_a"   + ".w_" + str(width)
+                    G.nodes[PEindex + k]["G_Name"]         = base_name + ".mux_a"   
                 elif (k == (sb_max+1)):
-                    G.nodes[PEindex + k]["G_Name"]         = "pe_c" + str(x_coordinate) + "_r" + str(y_coordinate) + ".mux_b"   + ".w_" + str(width)
+                    G.nodes[PEindex + k]["G_Name"]         = base_name + ".mux_b"
                 else:
-                    G.nodes[PEindex + k]["G_Name"]         = "pe_c" + str(x_coordinate) + "_r" + str(y_coordinate) + ".crossbar_mux_" + str(k)  + ".w_" + str(width)
+                    G.nodes[PEindex + k]["G_Name"]         = base_name + ".crossbar_mux_" + str(k) 
 
                 G.nodes[PEindex + k]["G_NodeType"]     = "RouteCell";
                 G.nodes[PEindex + k]["G_opcode"]       = "Mux";
                 G.nodes[PEindex + k]["G_ID"]           = str(PEindex + k) 
 
             # Assigning the constant type:
-            G.nodes[PEindex + pe_const_offset]["G_Name"]         = "pe_c" + str(x_coordinate) + "_r" + str(y_coordinate) + ".const" + ".w_" + str(width)
+            G.nodes[PEindex + pe_const_offset]["G_Name"]         =  base_name + ".const"
             G.nodes[PEindex + pe_const_offset]["G_NodeType"]     = "FuncCell";
             G.nodes[PEindex + pe_const_offset]["G_opcode"]       = "Constant";
             G.nodes[PEindex + pe_const_offset]["G_ID"]           = str(PEindex + pe_const_offset)  
 
             # Assigning the ALU type:
-            G.nodes[PEindex + pe_alu_offset]["G_Name"]         = "pe_c" + str(x_coordinate) + "_r" + str(y_coordinate) + ".alu" + ".w_" + str(width)
+            G.nodes[PEindex + pe_alu_offset]["G_Name"]         =  base_name + ".alu"
             G.nodes[PEindex + pe_alu_offset]["G_NodeType"]     = "FuncCell";
             G.nodes[PEindex + pe_alu_offset]["G_opcode"]       = "ALU";
             G.nodes[PEindex + pe_alu_offset]["G_ID"]           = str(PEindex + pe_alu_offset) 
@@ -309,36 +310,6 @@ def create_riken(args):
     #   Visualizing a PE
     #
     #--------------------------------------------------------
-    #PEstart
-
-    # Create a new graph
-    new_G = nx.Graph()
-
-    # Add nodes with the specified G_opcode values to the new graph
-    for n in G.nodes():
-        if G.nodes[n]["G_opcode"] in {"ALU", "MemPort"}:
-            new_G.add_node(n, G_opcode=G.nodes[n]["G_opcode"])
-
-    # Create a grid layout
-    def create_grid_layout(graph):
-        pos = {}
-        nodes = list(graph.nodes())
-        num_nodes = len(nodes)
-        grid_size = math.ceil(math.sqrt(num_nodes))
-        
-        for i, node in enumerate(nodes):
-            row = i // grid_size
-            col = i % grid_size
-            pos[node] = (col, -row)  # (col, row) to make it look like a grid
-        
-        return pos
-
-    # Get grid layout for new_G
-    pos = create_grid_layout(new_G)
-    plt.figure(figsize=(8, 8))
-    nx.draw(new_G, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=2000, font_size=10)
-    nx.draw_networkx_edge_labels(new_G, pos, edge_labels={(u, v): f'{u}-{v}' for u, v in new_G.edges()})
-    plt.show()
 
     PE_end = PEstart + PEstep
     H = G.subgraph(list(G.nodes)[PEstart:PE_end])
@@ -381,8 +352,6 @@ def create_riken(args):
     nx.draw(H, pos, node_color=colors, edge_color='gray', node_size=500)
     nx.draw_networkx_labels(H, label_pos, labels=labels, font_size=12, font_weight='bold', verticalalignment='top', horizontalalignment='center')
     plt.show()
-
-
 
     # -------------------------------------------------------
     #  Writing device model graph for Riken architecture
@@ -703,7 +672,7 @@ def create_riken_with_pins(args):
             x_coordinate = int(current_pe_number/args.NR)
             y_coordinate = current_pe_number%args.NR  
 
-            base_name = "pe_w32.c" + ".w" + str(width)  + ".c" + str(x_coordinate) + ".r" + str(y_coordinate) 
+            base_name = "pe" + ".w" + str(width)  + ".c" + str(x_coordinate) + ".r" + str(y_coordinate) 
 
             for k in range(sb_max+2):       
                 if (k == sb_max):
