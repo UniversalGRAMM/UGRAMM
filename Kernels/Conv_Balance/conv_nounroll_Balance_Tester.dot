@@ -3,23 +3,23 @@ digraph "omp.inner.for.body" {
 	//Graph Properties
 
 	Load_0 [shape=record,opcode=input,label="{Load_0}"];
-	Load_0 -> FMUL_9[driver=outPinA,load=inPinA];
+	Load_0 -> FMUL_9[load=inPinA];
 	Load_1 [shape=record,opcode=input,label="{Load_1}"];
-	Load_1 -> FMUL_10[driver=outPinA,load=anyPins];
+	Load_1 -> FMUL_10[load=anyPins];
 	Load_2 [shape=record,opcode=input,label="{Load_2}"];
-	Load_2 -> FMUL_11[driver=outPinA,load=anyPins];
+	Load_2 -> FMUL_11[load=anyPins];
 	Load_3 [shape=record,opcode=input,label="{Load_3}"];
-	Load_3 -> FMUL_12[driver=outPinA,load=inPinB];
+	Load_3 -> FMUL_12[load=inPinB];
 	Load_4 [shape=record,opcode=input,label="{Load_4}"];
-	Load_4 -> FMUL_13[driver=outPinA,load=anyPins];
+	Load_4 -> FMUL_13[load=anyPins];
 	Load_5 [shape=record,opcode=input,label="{Load_5}"];
-	Load_5 -> FMUL_14[driver=outPinA,load=anyPins];
+	Load_5 -> FMUL_14[load=anyPins];
 	Load_6 [shape=record,opcode=input,label="{Load_6}"];
-	Load_6 -> FMUL_15[driver=outPinA,load=anyPins];
+	Load_6 -> FMUL_15[load=anyPins];
 	Load_7 [shape=record,opcode=input,label="{Load_7}"];
-	Load_7 -> FMUL_16[driver=outPinA,load=anyPins];
+	Load_7 -> FMUL_16[load=anyPins];
 	Load_8 [shape=record,opcode=input,label="{Load_8}"];
-	Load_8 -> FMUL_17[driver=outPinA,load=anyPins];
+	Load_8 -> FMUL_17[load=anyPins];
 	FMUL_9 [shape=record,type=op,opcode=FMUL,label="{FMUL_9}"];
 	FMUL_9 -> FADD_22[driver=outPinA,load=inPinA];
 	FMUL_10 [shape=record,type=op,opcode=FMUL,label="{FMUL_10}"];
@@ -39,7 +39,7 @@ digraph "omp.inner.for.body" {
 	FMUL_17 [shape=record,type=op,opcode=FMUL,label="{FMUL_17}"];
 	FMUL_17 -> FADD_24[driver=outPinA,load=inPinA];
 	FADD_25 [shape=record,type=op,opcode=FADD,label="{FADD_25}"];
-	FADD_25 -> Store_26[driver=outPinA,load=inPinA];
+	FADD_25 -> Store_26[driver=outPinA];
 	Store_26 [shape=record,opcode=output,label="{Store_26}"];
 	Const_27 [shape=record,opcode=const,constVal="1",float32=5.00,label="{Const_27|float32=5.00}"];
 	Const_27 -> FMUL_10[driver=outPinA,load=inPinB];
