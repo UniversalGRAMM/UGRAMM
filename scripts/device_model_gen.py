@@ -386,7 +386,7 @@ def create_riken_with_pins(args):
     PEstep  = 18
     
     #The first PE index number starts after the left and right most IO connection.
-    PEstart =  args.NC + (args.NR*3)
+    PEstart =  (args.NC*6)  # x2 --> Right and Left IOs, x2 --> Input port of IOs, x2 --> Out port of IOs 
 
     total_nodes_riken = (args.NR + args.NR + (PEstep*args.NR*args.NC)) 
     
@@ -409,51 +409,64 @@ def create_riken_with_pins(args):
         #---------------------------------------------------------------
         #Left-IO:
         #---------------------------------------------------------------
-        left_io_index        = i + (1*i)
-        left_io_PinA_index = left_io_index + 1
-        
+        left_io_index        = i*3
+        left_io_inPin_index  = left_io_index + 1
+        left_io_outPin_index = left_io_index + 2
+
         #Left-IO:
         G.nodes[left_io_index]["G_Name"]             = "LS_" + str(i)  
         G.nodes[left_io_index]["G_NodeType"]         = "FuncCell"     
         G.nodes[left_io_index]["G_opcode"]           = "MemPort"     
         G.nodes[left_io_index]["G_ID"]               = str(left_io_index)          
 
+        #Left-IO-input-Pin :
+        G.nodes[left_io_inPin_index]["G_Name"]             = "LS_" + str(i) + ".inPinA"
+        G.nodes[left_io_inPin_index]["G_NodeType"]         = "PinCell"   
+        G.nodes[left_io_inPin_index]["G_opcode"]           = "in"      
+        G.nodes[left_io_inPin_index]["G_ID"]               = str(left_io_inPin_index)      
 
-        #Left-IO-bidirection-Pin :
-        G.nodes[left_io_PinA_index]["G_Name"]             = "LS_" + str(i) + ".inPinA"
-        G.nodes[left_io_PinA_index]["G_NodeType"]         = "PinCell"   
-        G.nodes[left_io_PinA_index]["G_opcode"]           = "bidirectional"      
-        G.nodes[left_io_PinA_index]["G_ID"]               = str(left_io_PinA_index)          
+        #Left-IO-output-Pin :
+        G.nodes[left_io_outPin_index]["G_Name"]             = "LS_" + str(i) + ".outPinA"
+        G.nodes[left_io_outPin_index]["G_NodeType"]         = "PinCell"   
+        G.nodes[left_io_outPin_index]["G_opcode"]           = "out"      
+        G.nodes[left_io_outPin_index]["G_ID"]               = str(left_io_outPin_index)          
 
         #----------------------------------
         #Connectivity of Left IO port and Pin cell:
         #----------------------------------
         #bi-directional edge between left io and the pin cell
-        G.add_edge(left_io_index, left_io_PinA_index)
-        G.add_edge(left_io_PinA_index, left_io_index)
+        G.add_edge(left_io_index, left_io_outPin_index)
+        G.add_edge(left_io_inPin_index, left_io_index)
 
         #---------------------------------------------------------------
         #Right-IO:
         #---------------------------------------------------------------
-        right_io_index        = i + (1*i) + (args.NR*2)
-        right_io_PinA_index   = right_io_index + 1
-
+        right_io_index          = (i*3) + (args.NR*3)
+        right_io_inPin_index    = right_io_index + 1
+        right_io_outPin_index   = right_io_index + 2
+        
         G.nodes[right_io_index]["G_Name"]     = "LS_" + str(i+args.NR)  #Right-IOs       
         G.nodes[right_io_index]["G_NodeType"] = "FuncCell"              #Right-IOs
         G.nodes[right_io_index]["G_opcode"]   = "MemPort"               #Right-IOs
         G.nodes[right_io_index]["G_ID"]       = str(right_io_index)     #Right-IOs
 
-        #Right-IO-bidirection-Pin :
-        G.nodes[right_io_PinA_index]["G_Name"]             = "LS_" + str(i) + ".inPinA"
-        G.nodes[right_io_PinA_index]["G_NodeType"]         = "PinCell"   
-        G.nodes[right_io_PinA_index]["G_opcode"]           = "bidirectional"      
-        G.nodes[right_io_PinA_index]["G_ID"]               = str(right_io_PinA_index)     
- 
+        #Right-IO-input-Pin :
+        G.nodes[right_io_inPin_index]["G_Name"]             = "LS_" + str(i) + ".inPinA"
+        G.nodes[right_io_inPin_index]["G_NodeType"]         = "PinCell"   
+        G.nodes[right_io_inPin_index]["G_opcode"]           = "in"      
+        G.nodes[right_io_inPin_index]["G_ID"]               = str(right_io_inPin_index)     
+
+        #Right-IO-output-Pin :
+        G.nodes[right_io_outPin_index]["G_Name"]             = "LS_" + str(i) + ".inPinA"
+        G.nodes[right_io_outPin_index]["G_NodeType"]         = "PinCell"   
+        G.nodes[right_io_outPin_index]["G_opcode"]           = "in"      
+        G.nodes[right_io_outPin_index]["G_ID"]               = str(right_io_outPin_index)   
+
         #----------------------------------
         #Connectivity of Right IO port and Pin cell:
         #----------------------------------
-        G.add_edge(right_io_index, right_io_PinA_index)
-        G.add_edge(right_io_PinA_index, right_io_index)
+        G.add_edge(right_io_index, right_io_outPin_index)
+        G.add_edge(right_io_inPin_index, right_io_index)
 
         #----------------------------------
         #Connectivity of IO ports and SBs:
@@ -463,18 +476,33 @@ def create_riken_with_pins(args):
         for j in range(sb_max):
             if (j == left_sb):
                 continue
-            G.add_edge(left_io_PinA_index, PEstart+ i*args.NC*PEstep + j)    #Edge from current IO port-pin to adjacent SB's pins
+            #Edge from current IO out-pin to adjacent SB's pins
+            G.add_edge(left_io_outPin_index, PEstart+ i*args.NC*PEstep + j)  
 
-        G.add_edge(PEstart+ i*args.NC*PEstep + left_sb, left_io_PinA_index)  #Edge from adjacent closest SB port to IO port-pin
+            #Edge from current IO input-pin to adjacent SB's pins  
+            G.add_edge(PEstart+ i*args.NC*PEstep + j, left_io_inPin_index) 
+
+        #Edge from adjacent closest SB port to IO input-pin
+        G.add_edge(PEstart+ i*args.NC*PEstep + left_sb, left_io_inPin_index)  
+
+        #Edge from adjacent closest SB port to IO output-pin
+        G.add_edge(left_io_outPin_index, PEstart+ i*args.NC*PEstep + left_sb) 
 
         #Right-most column:
         for j in range(sb_max):
             if (j == right_sb):
                 continue
-            G.add_edge(right_io_PinA_index, PEstart+ i*args.NC*PEstep + (args.NC-1)*PEstep + j)    #Edge from current IO port to adjacent SB's pins
- 
-        G.add_edge(PEstart+ i*args.NC*PEstep + (args.NC-1)*PEstep + right_sb, right_io_PinA_index)   #Edge from adjacent closest SB port to IO port
+            #Edge from current IO out-pin to adjacent SB's pins
+            G.add_edge(right_io_outPin_index, PEstart+ i*args.NC*PEstep + (args.NC-1)*PEstep + j)    
 
+            #Edge from current IO input-pin to adjacent SB's pins  
+            G.add_edge(PEstart+ i*args.NC*PEstep + (args.NC-1)*PEstep + j, right_io_inPin_index) 
+
+        #Edge from adjacent closest SB port to IO input-pin
+        G.add_edge(PEstart+ i*args.NC*PEstep + (args.NC-1)*PEstep + right_sb, right_io_inPin_index)   
+
+        #Edge from adjacent closest SB port to IO output-pin
+        G.add_edge(right_io_outPin_index, PEstart+ i*args.NC*PEstep + (args.NC-1)*PEstep + right_sb)   
 
     #--------------------------------------------------------
     #Step 2: Add connection between Switch Blocks
@@ -742,24 +770,24 @@ def create_riken_with_pins(args):
 
     # Apply the neato layout using graphviz_layout
     pos = {
-        32: (13, 2),           #Mux-0
-        33: (12, 2.5),         #Mux-1
-        34: (11, 3),           #Mux-2
-        35: (12, 3.5),         #Mux-3
-        36: (13, 4),           #Mux-4
-        37: (14, 3.5),         #Mux-5
-        38: (15, 3),           #Mux-6
-        39: (14, 2.5),         #Mux-7
-        40: (0, 4),            #Mux-8
-        41: (0, 2),            #Mux-9
-        42: (3.5,4),           #Mux-A
-        43: (3.5, 2),          #Mux-B
-        44: (1, 3),            #Constant
-        45: (3, 3),            #Constant-Output
-        46: (7,3),             #ALU 
-        47: (5.5, 4),          #PinA
-        48: (5.5,2),           #PinB
-        49: (9,3)              #PinC
+        PEstart: (13, 2),           #Mux-0
+        PEstart+1: (12, 2.5),         #Mux-1
+        PEstart+2: (11, 3),           #Mux-2
+        PEstart+3: (12, 3.5),         #Mux-3
+        PEstart+4: (13, 4),           #Mux-4
+        PEstart+5: (14, 3.5),         #Mux-5
+        PEstart+6: (15, 3),           #Mux-6
+        PEstart+7: (14, 2.5),         #Mux-7
+        PEstart+8: (0, 4),            #Mux-8
+        PEstart+9: (0, 2),            #Mux-9
+        PEstart+10: (3.5,4),           #Mux-A
+        PEstart+11: (3.5, 2),          #Mux-B
+        PEstart+12: (1, 3),            #Constant
+        PEstart+13: (3, 3),            #Constant-Output
+        PEstart+14: (7,3),             #ALU 
+        PEstart+15: (5.5, 4),          #PinA
+        PEstart+16: (5.5,2),           #PinB
+        PEstart+17: (9,3)              #PinC
     }   
 
     # Draw the graph with the specified positions

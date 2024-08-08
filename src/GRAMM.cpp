@@ -27,19 +27,44 @@ std::map<int, std::string> hNames;
 std::bitset<100000> explored;
 
 
-std::string getString(int n) {
+//-------------------------------------------------------//
+// The following functions are added to simplify the pins
+// convention
+//-------------------------------------------------------//
+int getRikenElement (int n) {
+  n -= 2*numR;
+  return n % 14;
+}
+ 
+bool isRikenPinA (int n){
+  return (getRikenElement(n) == 8);
+}
 
+bool isRikenPinB (int n){
+  return (getRikenElement(n) == 9);
+}
+
+//-------------------------------------------------------//
+// pin function end
+//-------------------------------------------------------//
+
+
+//-------------------------------------------------------//
+// Utilities function start := Printing purpose etc.
+//-------------------------------------------------------//
+
+std::string getString(int n) {
   int orign = n;
   
-  if (n < numR)
+  if (n < 3*numR)
     return hNames[(*Users)[n].front()];
-  else if (n < 2*numR)
+  else if (n < 6*numR)
     return hNames[(*Users)[n].front()];
   else {
-    n -= 2*numR;
-    int row = n/(14*numC);
-    int col = (n - row*numC*14)/14;
-    int elem = n % 14;
+    n -= 6*numR;
+    int row = n/(18*numC);
+    int col = (n - row*numC*18)/18;
+    int elem = n % 18;
 
     if (elem < 10) {
       std::string ret = std::string("SB_") + std::to_string(row) + "_" + std::to_string(col);
@@ -118,36 +143,13 @@ void printPlaceAndRoute(int y, std::ofstream& oFile) {
   }
 }
 
-
-//-------------------------------------------------------//
-// The following functions are added to simplify the pins
-// convention
-//-------------------------------------------------------//
-int getRikenElement (int n) {
-  n -= 2*numR;
-  return n % 14;
-}
- 
-bool isRikenPinA (int n){
-  return (getRikenElement(n) == 8);
-}
-
-bool isRikenPinB (int n){
-  return (getRikenElement(n) == 9);
-}
-
-//-------------------------------------------------------//
-// pin function end
-//-------------------------------------------------------//
-
-
 void printNameRIKEN(int n) {
-  if (n < numR)
+  if (n < 3*numR)
     std::cout << " memport LEFT row " << n;
-  else if (n < 2*numR)
+  else if (n < 6*numR)
     std::cout << " memport RIGHT row " << n-numR;
   else {
-    n -= 2*numR;
+    n -= 6*numR;
     int row = n/(18*numC);
     int col = (n - row*numC*18)/18;
     int elem = n % 18;
@@ -201,6 +203,32 @@ void printName(int n) {
   }
   std::cout << "\n";
 }
+
+void printRouting(int signal) {
+  
+  struct RoutingTree *RT = &((*Trees)[signal]);
+  
+  std::cout << "** routing for signal: " << signal << " " << hNames[signal] << "\n";
+  
+  std::list<int>::iterator it = RT->nodes.begin();
+  for (; it != RT->nodes.end(); it++) {
+    std::cout << "\t " << *it;
+    // for ADRES                                                                                                                
+    int n = *it;
+    printName(n);
+  }
+}
+
+void printVertexModels(DirectedGraph *H) {
+
+  for (int i = 0; i < num_vertices(*H); i++) {
+    printRouting(i);
+  }
+}
+
+//-------------------------------------------------------//
+// Utilities function end := Printing purpose etc.
+//-------------------------------------------------------//
 
 
 void depositRoute(int signal, std::list<int> *nodes) {
@@ -341,7 +369,6 @@ void ripUpLoad(DirectedGraph *G, int signal, int load) {
 }
 #endif
 
-
 // For reference, got this from routeSignal function
 // route(G, H, y, loadLoc, &path, gConfig); 
 int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig, std::string loadPin, std::string driverPin) {
@@ -369,8 +396,8 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     eNode.cost = 0;
     eNode.i = rNode;
     //Uncomment this
-       std::cout << "EXPANSION SOURCE : ";
-       printName(rNode);
+      // OB:  std::cout << "EXPANSION SOURCE : ";
+      // OB:  printName(rNode);
     explored.set(rNode);
     expInt.push_back(rNode);
     PRQ.push(eNode);
@@ -465,29 +492,6 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
   return retVal;
 }
 
-void printRouting(int signal) {
-  
-  struct RoutingTree *RT = &((*Trees)[signal]);
-  
-  std::cout << "** routing for signal: " << signal << " " << hNames[signal] << "\n";
-  
-  std::list<int>::iterator it = RT->nodes.begin();
-  for (; it != RT->nodes.end(); it++) {
-    std::cout << "\t " << *it;
-    
-    // for ADRES                                                                                                                
-    int n = *it;
-    printName(n);
-  }
-}
-
-void printVertexModels(DirectedGraph *H) {
-
-  for (int i = 0; i < num_vertices(*H); i++) {
-    printRouting(i);
-  }
-}
-
 int totalUsed(DirectedGraph *G) {
 
   int total = 0;
@@ -565,7 +569,7 @@ void randomizeList(int *list, int n) {
 
 int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig) {
    //uncommenting this
-   std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n";
+   // OB: std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n";
   
   vertex_descriptor yD = vertex(y, *H);
   int  totalCost = 0;
@@ -577,7 +581,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     int load = target(*eo, *H);
 
     //uncommenting this
-       std::cout << "SOURCE : " << hNames[y] << " TARGET : " << hNames[load] << "\n";
+    // OB:    std::cout << "SOURCE : " << hNames[y] << " TARGET : " << hNames[load] << "\n";
     
     if (load == y)
       continue; // JANDERS ignore feedback connections for the moment
@@ -587,11 +591,11 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     
     int loadLoc = findDriver(load); //Hamas: loadLoc = source of the signal
     //uncommenting this
-       std::cout << "ROUTING LOAD: ";
-       printName(loadLoc);
+    // OB:    std::cout << "ROUTING LOAD: ";
+    // OB:    printName(loadLoc);
     
     if (loadLoc < 0) {
-      std::cout << "SIGNAL WITHOUT A DRIVER.\n";
+    // OB:   std::cout << "SIGNAL WITHOUT A DRIVER.\n";
       exit(-1);
     }
     int cost;
@@ -608,14 +612,13 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     }
     else {
       //uncommenting this
-           std::cout << "NAME :" << hNames[y] << " LOAD: \n";
-           printName(loadLoc);
+      // OB:  std::cout << "NAME :" << hNames[y] << " LOAD: \n";
+      // OB:      printName(loadLoc);
     }
   }
   return totalCost;
 }
 	    
-
 int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, 
 		       std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig) {
 
@@ -750,7 +753,6 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
   return 0;
 }
 
-
 int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig) {
   // determine if H is a minor of G
 
@@ -781,9 +783,9 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       if (RIKEN && ((*hConfig)[y].opcode == constant)) continue;
 
       //Uncommenting this
-      std::cout << "--------------------- New Vertices Mapping Start ---------------------------\n";
-      std::cout << "Finding vertex model for: " << y << " " << (*hConfig)[y].opcode << "\n";
-           std::cout << "SIZE: " << (*Trees)[y].nodes.size() << "\n";
+      //OB: std::cout << "--------------------- New Vertices Mapping Start ---------------------------\n";
+      //OB: std::cout << "Finding vertex model for: " << y << " " << (*hConfig)[y].opcode << "\n";
+      //OB:  std::cout << "SIZE: " << (*Trees)[y].nodes.size() << "\n";
       //      std::cout << "TOPO ORDER: " << (*TopoOrder)[y] << "\n"; //ERROR: creating segmentation dump 
 
       //      if ((iterCount >= 3) && !hasOverlap(y)) // everything should be routed by 3rd iter
@@ -792,9 +794,9 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       findMinVertexModel(G, H, y, hConfig, gConfig);
 
       //Uncommenting this
-      std::cout << "Print Vertex Model: \n";
-           printVertexModels(H);
-      std::cout << "--------------------- New Vertices Mapping End ---------------------------\n";
+      //OB: std::cout << "Print Vertex Model: \n";
+      //OB: printVertexModels(H);
+      //OB: std::cout << "--------------------- New Vertices Mapping End ---------------------------\n";
       
     } // for k
 
@@ -1033,7 +1035,6 @@ void createRIKEN(int NR, int NC, DirectedGraph *G, std::map<int, NodeConfig> *no
   }
 
 }
-
 
 void createAdres(int dim, DirectedGraph *G, std::map<int, NodeConfig> *nodeTypes) {
 
@@ -1296,7 +1297,7 @@ void readDeviceModel(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
 
 /*
   readDeviceModel() => Reading device model dot file
-  - DirectedGraph *H                  :: original device model read dot file
+  - DirectedGraph *H                    :: original device model read dot file
   - std::map<int, NodeConfig> *hConfig  :: Store the configuration of each node (type,opcode, latenct etc.)
 */
 void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
@@ -1395,17 +1396,17 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
 
       auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::loadPin, *H, *eo));
       if (it_inPin != inPin.end()) {
-          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification:  " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name verified" << std::endl;
+          // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification:  " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name verified" << std::endl;
       } else {
-          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification: " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name not valid" << std::endl;
+          // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification: " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name not valid" << std::endl;
           invalidPinNameDetected = 1;
       }
 
       auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::driverPin, *H, *eo));
       if (it_outPin != outPin.end()) {
-          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name verified" << std::endl;
+          // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name verified" << std::endl;
       } else {
-          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name not valid" << std::endl;
+          // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name not valid" << std::endl;
           invalidPinNameDetected = 1;
       }
 
