@@ -24,6 +24,7 @@ std::vector<int> *HistoryCosts;
 std::vector<int> *TraceBack;
 std::vector<int> *TopoOrder;
 std::map<int, std::string> hNames; 
+std::map<int, std::string> gNames; 
 std::bitset<100000> explored;
 
 
@@ -52,6 +53,8 @@ bool isRikenPinB (int n){
 //-------------------------------------------------------//
 // Utilities function start := Printing purpose etc.
 //-------------------------------------------------------//
+
+// Aim: print the mapped output in a Grid layout.
 
 std::string getString(int n) {
   int orign = n;
@@ -103,7 +106,8 @@ void printPlaceAndRoute(int y, std::ofstream& oFile) {
 
   int n = RT->nodes.front();
   int orign = n;
-
+  std::cout << "For hNames[y] :: " << hNames[y] << " :: gNames[n] :: " << gNames[n] << "\n" ;
+  /*
   oFile << hNames[y];
   
   if (n < numR)
@@ -116,7 +120,7 @@ void printPlaceAndRoute(int y, std::ofstream& oFile) {
     int col = (n - row*numC*14)/14;
     oFile << " [shape=\"circle\" fontsize=6 fillcolor=\"#1f77b4\" pos=\"" << 2*(col + 1.25) << "," << 2*(-row-0.5) << "!\"]\n";
   }
-  
+  */
   //  for (int i = 0; i < numR; i++)
   //    for (int j = 0; j < numC; j++) {
   //      std::cout << "SB_" << i << "_" << j << " [shape=\"circle\" fontsize=6 fillcolor=\"#1f77b4\" pos=\"" << j + 1.5 << "," << -i-0.5 << "!\"]\n";
@@ -129,101 +133,126 @@ void printPlaceAndRoute(int y, std::ofstream& oFile) {
     if (m == orign)
       continue;
     //    std::cout << "PARENT " << RT->parent[m] << "\n";
-    drawEdge(RT->parent[m], m, oFile);
+    //drawEdge(RT->parent[m], m, oFile);
   }
 
   // dirty hack for a store
   if (RT->nodes.size() == 1) {
     if (orign < numR) {
-      drawEdge(2*numR + 14*numC*orign + 2, orign, oFile);
+      //drawEdge(2*numR + 14*numC*orign + 2, orign, oFile);
     }
     else if (orign < 2*numR) {
-      drawEdge(2*numR + 14*numC*(orign-numR) + (numC-1)*14+6, orign, oFile);
+     //drawEdge(2*numR + 14*numC*(orign-numR) + (numC-1)*14+6, orign, oFile);
     }
   }
 }
 
-void printNameRIKEN(int n) {
-  if (n < 3*numR)
-    std::cout << " memport LEFT row " << n;
-  else if (n < 6*numR)
-    std::cout << " memport RIGHT row " << n-numR;
-  else {
-    n -= 6*numR;
-    int row = n/(18*numC);
-    int col = (n - row*numC*18)/18;
-    int elem = n % 18;
-    switch(elem) {
-    case 0: std::cout << " SB_S "; break;
-    case 1: std::cout << " SB_SW "; break;
-    case 2: std::cout << " SB_W "; break;
-    case 3: std::cout << " SB_NW "; break;
-    case 4: std::cout << " SB_N "; break;
-    case 5: std::cout << " SB_NE "; break;
-    case 6: std::cout << " SB_E "; break;
-    case 7: std::cout << " SB_SE "; break;
-    case 8: std::cout << " SB_PE_A "; break;
-    case 9: std::cout << " SB_PE_B "; break;
-    case 10: std::cout << " PE_MUX_A "; break;
-    case 11: std::cout << " PE_MUX_B "; break;
-    case 12: std::cout << " CONST "; break;
-    case 13: std::cout << " CONST_PIN_O "; break;
-    case 14: std::cout << " ALU "; break;
-    case 15: std::cout << " ALU_PIN_A "; break;
-    case 16: std::cout << " ALU_PIN_B "; break;
-    case 17: std::cout << " ALU_PIN_O "; break;
+/*
+  printMappedResults --> Objective: print the mapped results in the neato format.
+*/
+
+void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig){
+
+    //Output stream for storing successful mapping:
+    std::ofstream oFile;
+    oFile.open("mapping_output.dot");
+    std::cout << "Writing the mapping output in file 'mapping_output.dot' \n";
+
+    //Printing the start of the dot file:
+    oFile << "digraph {\ngraph [pad=\"0.212,0.055\" bgcolor=lightgray]\nnode [style=filled]\n";
+    
+    for (auto hElement : gNames) {
+      int gNumber = hElement.first;
+      std::string gName   = hElement.second;
+
+      //Draw_Layout:
+      if (boost::algorithm::contains(gName, "Pin")){
+        
+        std::vector<std::string> parts; //Contains the sub-parts of the current string
+        std::string part;               //Used while parsing the sub-string.
+        std::stringstream ss(gName);    //Creating string stream input
+
+        while (std::getline(ss, part, '.')) {
+            parts.push_back(part);
+        }
+        
+
+        // '0' subtraction is used to convert Char into Integer!!
+        int x = parts[2][1] - '0';      //parts[2] --> 'cX' :: X will contain the column location of the node
+        int y = parts[3][1] - '0';      //parts[3] --> 'rX' :: Y will contain the row location of the node
+
+        /*
+        // Print the parts
+        for (const std::string& p : parts) {
+            std::cout << p << " :: ";
+        }
+
+
+        std::cout << " X : " << x << " :: y ::" << y << std::endl;
+        */
+
+        if ( parts[4] == "const") {
+          continue;
+        }
+
+        int scale = 3;
+        if (parts[5] == "inPinA") {
+          if (parts[0] == "LS"){
+            oFile << parts[0] << "_" << parts[2] << "_" << parts[3] << "_" << parts[4] << " [shape=\"circle\" width=0.5 fontsize=6 fillcolor=\"#ffff00\" pos=\"" << scale*x << "," << scale*y << "!\"]\n";
+          } else {
+            oFile << parts[0] << "_" << parts[2] << "_" << parts[3] << "_" << parts[4] << " [shape=\"circle\" width=0.5 fontsize=6 fillcolor=\"#ff7f0e\" pos=\"" << scale*x << "," << scale*y << "!\"]\n";
+          }
+          oFile << parts[0] << "_" << parts[2] << "_" << parts[3] << "_" << parts[5] << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"#0000ff\" pos=\"" << scale*x - 0.60 << "," << scale*y + 0.60 << "!\"]\n";
+        } 
+        else if (parts[5] == "inPinB") {
+          oFile << parts[0] << "_" << parts[2] << "_" << parts[3] << "_" << parts[5] << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"#0000ff\" pos=\"" << scale*x + 0.60 << "," << scale*y + 0.60 << "!\"]\n";
+        }
+        else if (parts[5] == "outPinA") {
+          oFile << parts[0] << "_" << parts[2] << "_" << parts[3] << "_" << parts[5] << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"#ff0000\" pos=\"" << scale*x << "," << scale*y - 0.75 << "!\"]\n";
+        }
+        
+      }
+      
+      //Draw_Edges:
     }
-    std::cout << "row " << row << " col " << col;
-  }
-  std::cout << "\n";
+
+    // Draw Edges:
+    for (int i = 0; i < num_vertices(*H); i++) {
+          
+      if ((*hConfig)[i].opcode == constant)
+        continue;
+      
+      printPlaceAndRoute(i, oFile);
+    }
+    oFile << "}\n";
+
 }
+
+/* OB: Following functions removed and generalized the way of printing the names of the cell:
+void printNameRIKEN(int n) 
+void printName(int n) 
+*/
 
 void printName(int n) {
-  if (RIKEN) {
-    printNameRIKEN(n);
-    return;
-  }
-  if (n < CGRAdim)
-    std::cout << " io" << n;
-  else if (n < CGRAdim*2)
-    std::cout << " mp" << n-CGRAdim;
-  else {
-    n -= 2*CGRAdim;
-    int row = n/(5*CGRAdim);
-    int col = (n - row*CGRAdim*5)/(5);
-    int elem = n%5;
-    switch(elem) {
-    case 0: std::cout << " muxA "; break;
-    case 1: std::cout << " muxB "; break;
-    case 2: std::cout << " const "; break;
-    case 3: std::cout << " ALU "; break;
-    case 4: std::cout << " muxOUT "; break;
-    }
-    std::cout << "row " << row << " col " << col;
-  }
-  std::cout << "\n";
+  std::cout << gNames[n] << "\n";
 }
 
-void printRouting(int signal) {
-  
-  struct RoutingTree *RT = &((*Trees)[signal]);
-  
-  std::cout << "** routing for signal: " << signal << " " << hNames[signal] << "\n";
-  
-  std::list<int>::iterator it = RT->nodes.begin();
-  for (; it != RT->nodes.end(); it++) {
-    std::cout << "\t " << *it;
-    // for ADRES                                                                                                                
-    int n = *it;
-    printName(n);
-  }
-}
-
-void printVertexModels(DirectedGraph *H) {
+void printVertexModels(DirectedGraph *H, DirectedGraph *G) {
 
   for (int i = 0; i < num_vertices(*H); i++) {
-    printRouting(i);
+    struct RoutingTree *RT = &((*Trees)[i]);
+
+    std::cout << "** routing for i: " << i << " " << hNames[i] << "\n";
+    
+    std::list<int>::iterator it = RT->nodes.begin();
+
+    for (; it != RT->nodes.end(); it++) {
+      std::cout << "\t " << *it  << "\t " ; // for ADRES                                                                                                                
+      int n = *it;
+      std::cout << gNames[n] << std::endl;
+    }
   }
+
 }
 
 //-------------------------------------------------------//
@@ -418,7 +447,7 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     //    printName(popped.i);
     //    std::cout << "PRQ POP COST: " << popped.cost << "\n";
     if ((popped.cost > 0) &&
-	(popped.i == sink)) { // cost must be higher than 0 (otherwise sink was part of initial expansion list)
+	    (popped.i == sink)) { // cost must be higher than 0 (otherwise sink was part of initial expansion list)
       hit = true;
       break;
     }
@@ -513,7 +542,7 @@ int totalOveruse(DirectedGraph *G) {
     
     if (temp > 0) {
       std::cout << "OVERUSE " << temp << " ON ";
-      printName(i);
+      //printName(i);
     }
     
   }
@@ -820,47 +849,12 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       done = true;
     }    
     if (success) {
-      if(DEBUG){
-        printVertexModels(H);
-      }
 
-      printVertexModels(H);
+      // Printing vertex model:
+      printVertexModels(H, G);
 
-      //Output stream for storing successful mapping:
-      std::ofstream oFile;
-      oFile.open("mapping_output.dot");
-      std::cout << "Writing the mapping output in file 'mapping_output.dot' \n";
-      if (RIKEN) { // print out the solution using NEATO format
-        oFile << "digraph {\ngraph [pad=\"0.212,0.055\" bgcolor=lightgray]\nnode [style=filled]\n";
-        
-        for (int i = 0; i < numR; i++)
-          for (int j = 0; j < numC; j++) {
-            oFile << "SB_" << i << "_" << j << " [shape=\"circle\" fontsize=6 fillcolor=\"#ff7f0e\" pos=\"" << 2*(j + 1) << "," << 2*(-i) << "!\"]\n";
-          }
-        
-        // rename some signals to be compatible with graphviz
-        for (int i = 0; i < num_vertices(*H); i++) {
-          std::replace( hNames[i].begin(), hNames[i].end(), '{', '_'); // replace all 'x' to 'y'
-          std::replace( hNames[i].begin(), hNames[i].end(), '}', '_'); // replace all 'x' to 'y'  
-          
-          //Omkar:
-          //      Changing current format of _Const_27|float32=5.00_ to Const_27_float32_5_00_
-          //      To make compatible with graphviz
-          //std::replace( hNames[i].begin(), hNames[i].end(), '_C', 'C');
-          std::replace( hNames[i].begin(), hNames[i].end(), '|', '_');
-          std::replace( hNames[i].begin(), hNames[i].end(), '=', '_');
-          std::replace( hNames[i].begin(), hNames[i].end(), '.', '_');
-        }
-        
-        for (int i = 0; i < num_vertices(*H); i++) {
-          
-          if ((*hConfig)[i].opcode == constant)
-            continue;
-          
-          printPlaceAndRoute(i, oFile);
-        }
-        oFile << "}\n";
-      }
+      // Visualizing mapping result in neato:
+      printMappedResults(H, G, hConfig);
     }
 
     PFac *= 1.1; // adjust present congestion penalty
@@ -1225,6 +1219,11 @@ void readDeviceModel(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
     std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v); //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     std::string arch_Opcode   = boost::get(&DotVertex::G_Opcode, *G, v);   //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
 
+    //OB: DEBUG: std::string node_name = (*G)[i].G_Name;
+    //OB: DEBUG: std::cout << " i :: " << i << " :: " << node_name << std::endl;
+    std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v); 
+    gNames[i] = arch_NodeName;
+
     std::string arch_ID = boost::get(&DotVertex::G_ID, *G, v); //Contains the sequence ID for the given node of Device Model Graph
     int gTypes_index = std::stoi(arch_ID);   //Boost read_graphviz() doesn't preserve the node ordering from the read input dot file.
     
@@ -1455,6 +1454,7 @@ int main(int argc, char *argv[])
     //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
     //DotVertex::G_NodeType --> Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     //DotVertex::G_Opcode --> Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    dp.property("G_Name",         boost::get(&DotVertex::G_Name, G));
     dp.property("G_ID",           boost::get(&DotVertex::G_ID, G));
     dp.property("G_NodeType",     boost::get(&DotVertex::G_NodeType, G));
     dp.property("G_opcode",       boost::get(&DotVertex::G_Opcode, G));
@@ -1519,8 +1519,6 @@ int main(int argc, char *argv[])
     std::ifstream dFile;                //Defining the input file stream for device model dot file
     dFile.open(argv[2]);                //Passing the device_Model_dot file as an argument!
     boost::read_graphviz(dFile, G, dp); //Reading the dot file
-
-
     readDeviceModel(&G, &G_Modified, &gConfig);
   }
 
@@ -1530,10 +1528,8 @@ int main(int argc, char *argv[])
 
   // read the DFG from a file
   boost::read_graphviz(iFile, H, dp);
-
   readApplicationGraph(&H, &hConfig);
 
-  
 
   Trees = new std::vector<RoutingTree>(num_vertices(H)); // routing trees for every node in H
   Users = new std::vector<std::list<int>>(num_vertices(G_Modified)); // for every node in device model G track its users 
@@ -1559,6 +1555,6 @@ int main(int argc, char *argv[])
   //computeTopo(&H, &hConfig); // not presently used
   
   findMinorEmbedding(&H, &G_Modified, &hConfig, &gConfig);
-    
+
   return 0;
  }

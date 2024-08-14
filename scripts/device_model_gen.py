@@ -414,19 +414,20 @@ def create_riken_with_pins(args):
         left_io_outPin_index = left_io_index + 2
 
         #Left-IO:
-        G.nodes[left_io_index]["G_Name"]             = "LS_" + str(i)  
+        left_io_base_name = "LS.w32.c0.r" + str(i)  + ".mem"
+        G.nodes[left_io_index]["G_Name"]             = left_io_base_name
         G.nodes[left_io_index]["G_NodeType"]         = "FuncCell"     
         G.nodes[left_io_index]["G_opcode"]           = "MemPort"     
         G.nodes[left_io_index]["G_ID"]               = str(left_io_index)          
 
         #Left-IO-input-Pin :
-        G.nodes[left_io_inPin_index]["G_Name"]             = "LS_" + str(i) + ".inPinA"
+        G.nodes[left_io_inPin_index]["G_Name"]             = left_io_base_name + ".inPinA"
         G.nodes[left_io_inPin_index]["G_NodeType"]         = "PinCell"   
         G.nodes[left_io_inPin_index]["G_opcode"]           = "in"      
         G.nodes[left_io_inPin_index]["G_ID"]               = str(left_io_inPin_index)      
 
         #Left-IO-output-Pin :
-        G.nodes[left_io_outPin_index]["G_Name"]             = "LS_" + str(i) + ".outPinA"
+        G.nodes[left_io_outPin_index]["G_Name"]             = left_io_base_name + ".outPinA"
         G.nodes[left_io_outPin_index]["G_NodeType"]         = "PinCell"   
         G.nodes[left_io_outPin_index]["G_opcode"]           = "out"      
         G.nodes[left_io_outPin_index]["G_ID"]               = str(left_io_outPin_index)          
@@ -445,19 +446,20 @@ def create_riken_with_pins(args):
         right_io_inPin_index    = right_io_index + 1
         right_io_outPin_index   = right_io_index + 2
         
-        G.nodes[right_io_index]["G_Name"]     = "LS_" + str(i+args.NR)  #Right-IOs       
+        right_io_base_name = "LS.w32.c" + str(args.NR+1) + ".r" + str(i) + ".mem"
+        G.nodes[right_io_index]["G_Name"]     = right_io_base_name      #Right-IOs       
         G.nodes[right_io_index]["G_NodeType"] = "FuncCell"              #Right-IOs
         G.nodes[right_io_index]["G_opcode"]   = "MemPort"               #Right-IOs
         G.nodes[right_io_index]["G_ID"]       = str(right_io_index)     #Right-IOs
 
         #Right-IO-input-Pin :
-        G.nodes[right_io_inPin_index]["G_Name"]             = "LS_" + str(i) + ".inPinA"
+        G.nodes[right_io_inPin_index]["G_Name"]             = right_io_base_name + ".inPinA"
         G.nodes[right_io_inPin_index]["G_NodeType"]         = "PinCell"   
         G.nodes[right_io_inPin_index]["G_opcode"]           = "in"      
         G.nodes[right_io_inPin_index]["G_ID"]               = str(right_io_inPin_index)     
 
         #Right-IO-output-Pin :
-        G.nodes[right_io_outPin_index]["G_Name"]             = "LS_" + str(i) + ".inPinA"
+        G.nodes[right_io_outPin_index]["G_Name"]             = right_io_base_name + ".outPinA"
         G.nodes[right_io_outPin_index]["G_NodeType"]         = "PinCell"   
         G.nodes[right_io_outPin_index]["G_opcode"]           = "in"      
         G.nodes[right_io_outPin_index]["G_ID"]               = str(right_io_outPin_index)   
@@ -697,8 +699,8 @@ def create_riken_with_pins(args):
             # We have total 12 muxes, 10 from SB and 2 from PE:
             # Current PE number:
             current_pe_number = int((PEindex - PEstart)/PEstep)
-            x_coordinate = int(current_pe_number/args.NR)
-            y_coordinate = current_pe_number%args.NR  
+            x_coordinate = int(current_pe_number/args.NR) + 1
+            y_coordinate = current_pe_number%args.NR 
 
             base_name = "pe" + ".w" + str(width)  + ".c" + str(x_coordinate) + ".r" + str(y_coordinate) 
 
@@ -727,22 +729,22 @@ def create_riken_with_pins(args):
             G.nodes[PEindex + pe_alu_offset]["G_ID"]           = str(PEindex + pe_alu_offset) 
 
             # Assigning the Pin type
-            G.nodes[PEindex + pe_const_pinO_offset]["G_Name"]         = base_name + ".const.pinA" 
+            G.nodes[PEindex + pe_const_pinO_offset]["G_Name"]         = base_name + ".const.outPinA" 
             G.nodes[PEindex + pe_const_pinO_offset]["G_NodeType"]     = "PinCell";
             G.nodes[PEindex + pe_const_pinO_offset]["G_opcode"]       = "in";
             G.nodes[PEindex + pe_const_pinO_offset]["G_ID"]           = str(PEindex + pe_const_pinO_offset)         
 
-            G.nodes[PEindex + pe_alu_pinA_offset]["G_Name"]         = base_name + ".alu.pinA"  
+            G.nodes[PEindex + pe_alu_pinA_offset]["G_Name"]         = base_name + ".alu.inPinA"  
             G.nodes[PEindex + pe_alu_pinA_offset]["G_NodeType"]     = "PinCell";
             G.nodes[PEindex + pe_alu_pinA_offset]["G_opcode"]       = "in";
             G.nodes[PEindex + pe_alu_pinA_offset]["G_ID"]           = str(PEindex + pe_alu_pinA_offset)           
 
-            G.nodes[PEindex + pe_alu_pinB_offset]["G_Name"]         = base_name + ".alu.pinB" 
+            G.nodes[PEindex + pe_alu_pinB_offset]["G_Name"]         = base_name + ".alu.inPinB" 
             G.nodes[PEindex + pe_alu_pinB_offset]["G_NodeType"]     = "PinCell";
             G.nodes[PEindex + pe_alu_pinB_offset]["G_opcode"]       = "in";
             G.nodes[PEindex + pe_alu_pinB_offset]["G_ID"]           = str(PEindex + pe_alu_pinB_offset)     
 
-            G.nodes[PEindex + pe_alu_pinO_offset]["G_Name"]         = base_name + ".alu.pinO" 
+            G.nodes[PEindex + pe_alu_pinO_offset]["G_Name"]         = base_name + ".alu.outPinA" 
             G.nodes[PEindex + pe_alu_pinO_offset]["G_NodeType"]     = "PinCell";
             G.nodes[PEindex + pe_alu_pinO_offset]["G_opcode"]       = "out";
             G.nodes[PEindex + pe_alu_pinO_offset]["G_ID"]           = str(PEindex + pe_alu_pinO_offset)     
@@ -759,7 +761,7 @@ def create_riken_with_pins(args):
     colors = []
     for n in nodes:
         #print(n)
-        print(H.nodes[n]["G_Name"])
+        #print(H.nodes[n]["G_Name"])
         if (H.nodes[n]["G_NodeType"]) == "RouteCell":
             node_color = 'lightblue'
         elif (H.nodes[n]["G_NodeType"]) == "FuncCell":
@@ -797,7 +799,7 @@ def create_riken_with_pins(args):
 
     nx.draw(H, pos, node_color=colors, edge_color='gray', node_size=500)
     nx.draw_networkx_labels(H, label_pos, labels=labels, font_size=10, font_weight='bold', verticalalignment='top', horizontalalignment='center')
-    plt.show()
+    #plt.show()
 
     # -------------------------------------------------------
     #  Writing device model graph for Riken architecture

@@ -1,0 +1,207 @@
+** routing for i: 0 {Const_27|float32=5.00}
+** routing for i: 1 {Const_28|float32=13.00}
+** ruting for i: 2 {Const_29|float32=9.00}
+** routing for i: 3 {Const_30|float32=11.00}
+** routing for i: 4 {Const_31|float32=3.00}
+** routing for i: 5 {Const_32|float32=15.00}
+** routing for i: 6 {Const_33|float32=17.00}
+** routing for i: 7 {Const_34|float32=7.00}
+** routing for i: 8 {Const_35|float32=19.00}
+** routing for i: 9 {FADD_18}
+         836     pe.w32.c4.r2.mux_b
+         839     pe.w32.c4.r2.alu
+         827     pe.w32.c4.r2.crossbar_mux_3
+         704     pe.w32.c3.r4.crossbar_mux_0
+         706     pe.w32.c3.r4.crossbar_mux_2
+         711     pe.w32.c3.r4.crossbar_mux_7
+** routing for i: 10 {FADD_19}
+         854     pe.w32.c4.r3.mux_a
+         857     pe.w32.c4.r3.const
+         844     pe.w32.c4.r3.crossbar_mux_1
+         705     pe.w32.c3.r4.crossbar_mux_1
+         707     pe.w32.c3.r4.crossbar_mux_3
+         712     pe.w32.c0.r0.crossbar_mux_8
+** routing for i: 11 {FADD_20}
+         584     pe.w32.c2.r6.crossbar_mux_0
+         587     pe.w32.c2.r6.crossbar_mux_3
+         571     pe.w32.c2.r5.crossbar_mux_6
+         697     pe.w32.c3.r3.const
+         831     pe.w32.c4.r2.crossbar_mux_7
+         833     pe.w32.c4.r2.crossbar_mux_9
+         838     pe.w32.c4.r2.const.pinA
+** routing for i: 12 {FADD_21}
+         692     pe.w32.c3.r3.crossbar_mux_7
+         695     pe.w32.c3.r3.mux_a
+         685     pe.w32.c3.r3.crossbar_mux_1
+         848     pe.w32.c4.r3.crossbar_mux_4
+         850     pe.w32.c4.r3.crossbar_mux_6
+         855     pe.w32.c4.r3.mux_b
+** routing for i: 13 {FADD_22}
+         962     pe.w32.c5.r0.alu.pinO
+         965     pe.w32.c5.r1.crossbar_mux_2
+         953     pe.w32.c5.r0.crossbar_mux_9
+         830     pe.w32.c4.r2.crossbar_mux_6
+         832     pe.w32.c4.r2.crossbar_mux_8
+         837     pe.w32.c4.r2.const
+** routing for i: 14 {FADD_23}
+         728     pe.w32.c3.r5.crossbar_mux_4
+         731     pe.w32.c3.r5.crossbar_mux_7
+         715     pe.w32.c3.r4.mux_a
+         849     pe.w32.c4.r3.crossbar_mux_5
+         851     pe.w32.c4.r3.crossbar_mux_7
+         856     pe.w32.c0.r1.crossbar_mux_3
+** routing for i: 15 {FADD_24}
+         746     pe.w32.c3.r6.crossbar_mux_2
+         749     pe.w32.c3.r6.crossbar_mux_5
+         735     pe.w32.c3.r5.mux_a
+         578     pe.w32.c2.r5.const.pinA
+         580     pe.w32.c2.r5.alu
+         585     pe.w32.c2.r6.crossbar_mux_1
+** routing for i: 16 {FADD_25}
+         710     pe.w32.c3.r4.crossbar_mux_6
+         713     pe.w32.c3.r4.crossbar_mux_8
+         702     pe.w32.c3.r3.alu.pinB
+         720     pe.w32.c3.r4.alu.pinA
+         737     pe.w32.c3.r5.const
+         615     pe.w32.c2.r7.mux_a
+         34      pe.w32.c6.r6.crossbar_mux_8
+** routing for i: 17 {FMUL_10}
+         1052    pe.w32.c5.r5.crossbar_mux_8
+         1055    pe.w32.c5.r5.mux_b
+         1041    pe.w32.c5.r4.alu.pinB
+         879     pe.w32.c0.r1.crossbar_mux_5
+         722     pe.w32.c3.r4.alu.pinO
+         724     pe.w32.c3.r5.crossbar_mux_0
+         729     pe.w32.c3.r5.crossbar_mux_5
+** routing for i: 18 {FMUL_11}
+         476     pe.w32.c2.r0.mux_b
+         479     LS_3.inPinA
+         463     pe.w32.c1.r7.alu.pinO
+         589     pe.w32.c2.r6.crossbar_mux_5
+         723     pe.w32.c0.r0.crossbar_mux_9
+         725     pe.w32.c3.r5.crossbar_mux_1
+         730     pe.w32.c3.r5.crossbar_mux_6
+** routing for i: 19 {FMUL_12}
+         818     pe.w32.c4.r1.const.pinA
+         821     pe.w32.c4.r1.alu.pinB
+         804     pe.w32.c4.r1.crossbar_mux_0
+         956     pe.w32.c0.r1.const
+         958     pe.w32.c5.r0.const.pinA
+         963     pe.w32.c5.r1.crossbar_mux_0
+** routing for i: 20 {FMUL_13}
+         530     pe.w32.c2.r3.crossbar_mux_6
+         533     pe.w32.c2.r3.crossbar_mux_9
+         523     LS_13
+         687     pe.w32.c3.r3.crossbar_mux_3
+         689     pe.w32.c3.r3.crossbar_mux_5
+         694     pe.w32.c3.r3.crossbar_mux_9
+** routing for i: 21 {FMUL_14}
+         566     pe.w32.c2.r5.crossbar_mux_2
+         569     pe.w32.c2.r5.crossbar_mux_4
+         558     pe.w32.c2.r4.const
+         579     LS_6.inPinA
+         581     pe.w32.c2.r5.alu.pinA
+         586     pe.w32.c2.r6.crossbar_mux_2
+** routing for i: 22 {FMUL_15}
+         1124    pe.w32.c6.r1.crossbar_mux_0
+         1127    pe.w32.c6.r1.crossbar_mux_3
+         1115    pe.w32.c6.r0.mux_a
+         989     pe.w32.c5.r2.crossbar_mux_5
+         863     pe.w32.c4.r4.crossbar_mux_0
+         741     pe.w32.c3.r5.alu.pinB
+         743     pe.w32.c3.r6.crossbar_mux_0
+         748     pe.w32.c3.r6.crossbar_mux_4
+** routing for i: 23 {FMUL_16}
+         944     pe.w32.c5.r0.crossbar_mux_1
+         947     pe.w32.c5.r0.crossbar_mux_3
+         934     pe.w32.c0.r1.mux_a
+         791     pe.w32.c4.r0.crossbar_mux_6
+         666     pe.w32.c3.r2.crossbar_mux_2
+         686     pe.w32.c3.r3.crossbar_mux_2
+         688     pe.w32.c3.r3.crossbar_mux_4
+         693     pe.w32.c3.r3.crossbar_mux_8
+** routing for i: 24 {FMUL_17}
+         908     pe.w32.c4.r6.crossbar_mux_4
+         911     pe.w32.c4.r6.crossbar_mux_7
+         897     pe.w32.c4.r5.const
+         740     pe.w32.c3.r5.alu.pinA
+         742     pe.w32.c3.r5.alu.pinO
+         747     pe.w32.c3.r6.crossbar_mux_3
+** routing for i: 25 {FMUL_9}
+         800     pe.w32.c4.r0.alu.pinA
+         803     pe.w32.c4.r0.alu.pinO
+         793     pe.w32.c4.r0.crossbar_mux_8
+         957     pe.w32.c5.r0.const
+         959     pe.w32.c5.r0.alu
+         964     pe.w32.c5.r1.crossbar_mux_1
+** routing for i: 26 {Load_0}
+         6       pe.w32.c6.r5.crossbar_mux_0
+         8       pe.w32.c6.r5.crossbar_mux_2
+         343     pe.w32.c1.r1.alu.pinO
+         498     pe.w32.c2.r1.const.pinA
+         642     pe.w32.c3.r0.alu.pinO
+         795     pe.w32.c4.r0.mux_a
+         797     pe.w32.c4.r0.const
+         802     pe.w32.c4.r0.alu.pinB
+** routing for i: 27 {Load_1}
+         42      pe.w32.c6.r6.alu.pinA
+         44      pe.w32.c6.r6.alu.pinO
+         1047    pe.w32.c5.r5.crossbar_mux_3
+         1049    pe.w32.c5.r5.crossbar_mux_5
+         1054    pe.w32.c5.r5.mux_a
+** routing for i: 28 {Load_2}
+         27      pe.w32.c6.r6.crossbar_mux_1
+         29      pe.w32.c6.r6.crossbar_mux_3
+         318     pe.w32.c1.r0.const
+         471     pe.w32.c2.r0.crossbar_mux_6
+         473     pe.w32.c2.r0.crossbar_mux_8
+         478     pe.w32.c2.r0.const.pinA
+** routing for i: 29 {Load_3}
+         12      pe.w32.c6.r5.crossbar_mux_6
+         14      pe.w32.c0.r2.alu.pinO
+         630     pe.w32.c3.r0.crossbar_mux_6
+         649     pe.w32.c3.r1.crossbar_mux_4
+         812     pe.w32.c0.r0.alu.pinO
+         814     pe.w32.c4.r1.crossbar_mux_9
+         819     pe.w32.c4.r1.alu
+** routing for i: 30 {Load_4}
+         9       pe.w32.c6.r5.crossbar_mux_3
+         11      pe.w32.c6.r5.crossbar_mux_5
+         486     pe.w32.c2.r1.crossbar_mux_2
+         504     pe.w32.c2.r2.crossbar_mux_0
+         525     pe.w32.c2.r3.crossbar_mux_1
+         527     pe.w32.c2.r3.crossbar_mux_3
+         532     pe.w32.c2.r3.crossbar_mux_8
+** routing for i: 31 {Load_5}
+         36      pe.w32.c0.r3.crossbar_mux_1
+         38      pe.w32.c6.r6.mux_b
+         753     pe.w32.c3.r6.crossbar_mux_9
+         590     LS_15
+         572     pe.w32.c2.r5.crossbar_mux_7
+         560     pe.w32.c2.r4.alu
+         562     pe.w32.c2.r4.alu.pinB
+         567     pe.w32.c2.r5.crossbar_mux_3
+** routing for i: 32 {Load_6}
+         15      pe.w32.c6.r5.crossbar_mux_8
+         17      pe.w32.c6.r5.mux_a
+         775     pe.w32.c3.r7.mux_a
+         937     pe.w32.c4.r7.const
+         1098    pe.w32.c5.r7.const.pinA
+         1119    pe.w32.c6.r0.alu
+         1121    pe.w32.c6.r0.alu.pinB
+         1126    pe.w32.c6.r1.crossbar_mux_2
+** routing for i: 33 {Load_7}
+         21      pe.w32.c6.r5.alu
+         23      pe.w32.c6.r5.alu.pinB
+         1061    pe.w32.c5.r5.alu.pinB
+         939     pe.w32.c4.r7.alu
+         941     pe.w32.c4.r7.alu.pinB
+         946     pe.w32.c5.r0.crossbar_mux_2
+** routing for i: 34 {Load_8}
+         39      pe.w32.c6.r6.const
+         41      pe.w32.c6.r6.alu
+         902     pe.w32.c4.r5.alu.pinB
+         904     pe.w32.c4.r6.crossbar_mux_0
+         909     pe.w32.c4.r6.crossbar_mux_5
+** routing for i: 35 {Store_26}
+         33      pe.w32.c6.r6.crossbar_mux_7o

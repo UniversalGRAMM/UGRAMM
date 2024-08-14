@@ -21,6 +21,7 @@
 #include <list>
 #include <bitset>
 #include <algorithm>
+#include <boost/algorithm/string.hpp>
 
 //-------------------------------------------------------------------//
 //------------------------ GRAMM Configuration ----------------------//
@@ -75,6 +76,7 @@ struct DotVertex {
     std::string opcode;     //Contains the Opcode of the operation (ex: op, const, input and output)
 
     // For [G] --> Device Model Graph
+    std::string G_Name;       //Contains the unique name of the cell in the device model graph.
     std::string G_ID;         //Contains the sequence ID for the given node of Device Model Graph
     std::string G_NodeType;   //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     std::string G_Opcode;     //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
@@ -102,7 +104,8 @@ extern std::vector<std::list<int>> *Users;
 extern std::vector<int> *HistoryCosts;
 extern std::vector<int> *TraceBack;
 extern std::vector<int> *TopoOrder;
-extern std::map<int, std::string> hNames; 
+extern std::map<int, std::string> hNames;    //Map for storing the unique names of Application graph
+extern std::map<int, std::string> gNames;    //Map for storing the unique names of device model graph
 extern std::bitset<100000> explored;
 
 //Properties of the application and device model graph:
