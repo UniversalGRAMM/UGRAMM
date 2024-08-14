@@ -1,0 +1,218 @@
+---------------------Generating device model using external script:---------------------
+cd scripts && ./device_model_gen.py -NR 8 -NC 8 -Arch Riken && cd ..
+====================================================
+============ Universal GRAMM (UGRAMM) ==============
+======= helper script: Device Model Generator ======
+====================================================
+
+Generating device model for following CGRA configuration: 
+> Arch: Riken
+> NR: 8
+> NC: 8
+Unsupported architecture input
+---------------------Executing GRAMM and producing mapping result in mapping_output.dot---------------------
+make && ./GRAMM Kernels/Conv_Balance/modified_conv_nounroll_Balance_Tester.dot scripts/riken_8_8.dot 8 8 0
+make: 'GRAMM' is up to date.
+[H] Edge ({Const_27|float32=5.00} -> {FMUL_10}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Const_27|float32=5.00} -> {FMUL_10}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_28|float32=13.00} -> {FMUL_14}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Const_28|float32=13.00} -> {FMUL_14}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_29|float32=9.00} -> {FMUL_12}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Const_29|float32=9.00} -> {FMUL_12}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_30|float32=11.00} -> {FMUL_13}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Const_30|float32=11.00} -> {FMUL_13}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_31|float32=3.00} -> {FMUL_9}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Const_31|float32=3.00} -> {FMUL_9}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_32|float32=15.00} -> {FMUL_15}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Const_32|float32=15.00} -> {FMUL_15}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_33|float32=17.00} -> {FMUL_16}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Const_33|float32=17.00} -> {FMUL_16}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_34|float32=7.00} -> {FMUL_11}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Const_34|float32=7.00} -> {FMUL_11}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Const_35|float32=19.00} -> {FMUL_17}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Const_35|float32=19.00} -> {FMUL_17}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_18} -> {FADD_25}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FADD_18} -> {FADD_25}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_19} -> {FADD_25}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FADD_19} -> {FADD_25}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_20} -> {FADD_18}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FADD_20} -> {FADD_18}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_21} -> {FADD_19}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FADD_21} -> {FADD_19}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_22} -> {FADD_18}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FADD_22} -> {FADD_18}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_23} -> {FADD_19}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FADD_23} -> {FADD_19}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_24} -> {FADD_20}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FADD_24} -> {FADD_20}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FADD_25} -> {Store_26}) | load pin name verification: inPinC pin name not valid
+[H] Edge ({FADD_25} -> {Store_26}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_10} -> {FADD_23}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FMUL_10} -> {FADD_23}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_11} -> {FADD_23}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FMUL_11} -> {FADD_23}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_12} -> {FADD_22}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FMUL_12} -> {FADD_22}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_13} -> {FADD_21}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FMUL_13} -> {FADD_21}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_14} -> {FADD_20}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FMUL_14} -> {FADD_20}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_15} -> {FADD_24}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({FMUL_15} -> {FADD_24}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_16} -> {FADD_21}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FMUL_16} -> {FADD_21}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_17} -> {FADD_24}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FMUL_17} -> {FADD_24}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({FMUL_9} -> {FADD_22}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({FMUL_9} -> {FADD_22}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_0} -> {FMUL_9}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Load_0} -> {FMUL_9}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_1} -> {FMUL_10}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Load_1} -> {FMUL_10}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_2} -> {FMUL_11}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Load_2} -> {FMUL_11}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_3} -> {FMUL_12}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Load_3} -> {FMUL_12}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_4} -> {FMUL_13}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Load_4} -> {FMUL_13}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_5} -> {FMUL_14}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Load_5} -> {FMUL_14}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_6} -> {FMUL_15}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Load_6} -> {FMUL_15}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_7} -> {FMUL_16}) | load pin name verification:  inPinA pin name verified
+[H] Edge ({Load_7} -> {FMUL_16}) | driver pin name verification:  outPinA pin name verified
+[H] Edge ({Load_8} -> {FMUL_17}) | load pin name verification:  inPinB pin name verified
+[H] Edge ({Load_8} -> {FMUL_17}) | driver pin name verification:  outPinA pin name verified
+Invalid pin names detected, exiting the program
+***** BEGINNING OUTER WHILE LOOP ***** ITER 1 
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+BEGINNING ROUTE OF NAME :{FADD_20}
+SOURCE : {FADD_20} TARGET : {FADD_18}
+FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX 11 {FADD_20}
+---------------------Converting the mapped  mapping_output.dot file into mapping_output.png:---------------------
+neato -Tpng mapping_output.dot -o mapping_output.png

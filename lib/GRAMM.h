@@ -61,6 +61,7 @@ std::vector<std::string> outPin = {"outPinA"};
 struct NodeConfig {
     nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
     opcodeType opcode;      //Opcode of the node --> io, alu, memport....
+    std::string name;       //Name of the perticular node
     //As of now following configs are optional
     int Latency = 0;                    
     int Width   = 0;                      
@@ -75,6 +76,7 @@ struct DotVertex {
     std::string opcode;     //Contains the Opcode of the operation (ex: op, const, input and output)
 
     // For [G] --> Device Model Graph
+    std::string G_Name;
     std::string G_ID;         //Contains the sequence ID for the given node of Device Model Graph
     std::string G_NodeType;   //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     std::string G_Opcode;     //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")

@@ -395,7 +395,6 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     struct ExpNode eNode;
     eNode.cost = 0;
     eNode.i = rNode;
-    //Uncomment this
       // OB:  std::cout << "EXPANSION SOURCE : ";
       // OB:  printName(rNode);
     explored.set(rNode);
@@ -404,7 +403,7 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
   }
 
   //  std::cout << "EXPANSION TARGET: \n";
-  //  printName(sink);
+  //printName(sink);
   //  std::cout << "SINK USERS: \n";
   //  std::list<int>::iterator sit = (*Users)[sink].begin();
   //  for (; sit != (*Users)[sink].end(); sit++)
@@ -417,8 +416,7 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     PRQ.pop();
     //    printName(popped.i);
     //    std::cout << "PRQ POP COST: " << popped.cost << "\n";
-    if ((popped.cost > 0) &&
-	(popped.i == sink)) { // cost must be higher than 0 (otherwise sink was part of initial expansion list)
+    if ((popped.cost > 0) && (popped.i == sink)) { // cost must be higher than 0 (otherwise sink was part of initial expansion list)
       hit = true;
       break;
     }
@@ -434,12 +432,71 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
       explored.set(next);
       expInt.push_back(next);
 
+      if ((*gConfig)[next].type == PinCell){
+        //HW: Retriving the pin name from the node name
+        //HW: Try to figure out the following pinName and cellName earlier in execution
+        size_t pos; 
+        pos = (*gConfig)[next].name.rfind('.');
+        std::string pinName;
+        if (pos != std::string::npos) {
+            pinName = (*gConfig)[next].name.substr(pos + 1);
+        }
+      
+        pos = (*gConfig)[next].name.find('.');
+        std::string cellName;
+        if (pos != std::string::npos) {
+            cellName = (*gConfig)[next].name.substr(0, pos);
+      }
+
+      // // std::cout << "Node name:" << pinName <<"|" << (*gConfig)[next].opcode << "|\n";
+      // std::cout << "Node name:" << (*gConfig)[next].name << "|" << pinName <<"|";
+      // if ((*gConfig)[next].type == FuncCell)
+      //   std::cout << "FuncCell|";
+      // else if ((*gConfig)[next].type == RouteCell)
+      //   std::cout << "RouteCell|";
+      // else if ((*gConfig)[next].type == PinCell)
+      //   std::cout << "PinCell|";
+
+      // if ((*gConfig)[next].opcode == io)
+      //   std::cout << "io|\n";
+      // else if ((*gConfig)[next].opcode == alu)
+      //   std::cout << "alu|\n";
+      // else if ((*gConfig)[next].opcode == memport)
+      //   std::cout << "memport|\n";
+      // else if ((*gConfig)[next].opcode == reg)
+      //   std::cout << "reg|\n";
+      // else if ((*gConfig)[next].opcode == constant)
+      //   std::cout << "constant|\n";
+      // else if ((*gConfig)[next].opcode == wire)
+      //   std::cout << "wire|\n";
+      // else if ((*gConfig)[next].opcode == mux)
+      //   std::cout << "mux|\n";
+      // else if ((*gConfig)[next].opcode == in)
+      //   std::cout << "in|\n";
+      // else if ((*gConfig)[next].opcode == out)
+      //   std::cout << "out|\n";
+      
+
+      
+        // std::cout << pinName << "|" << (*gConfig)[next].name;
+        if ((cellName == "pe") && (loadPin == "inPinB") && (pinName != "pinB")){
+          // std::cout << " Enter load inPinB statement work";
+          continue;
+        } 
+        
+        if ((cellName == "pe") && (loadPin == "inPinA") && (pinName != "pinA")){
+          // std::cout << " Enter load inPinA statement work";
+          continue;
+        }
+        //std::cout << "\n";
+      }
+
       //Verifying if the node is mapping to the correct pin type in the device model graph
-      // if ((loadPin == "inPinB") && ((*gConfig)[next].opcode != inPinB) && ((*gConfig)[next].type == PinCell)){
+      // if ((loadPin == "inPinB") && (pinName != "pinB") && ((*gConfig)[next].type == PinCell)){
       //   continue;
       // }
 
-      // if ((loadPin == "inPinA") && ((*gConfig)[next].opcode != inPinA) && ((*gConfig)[next].type == PinCell)){
+      // if ((loadPin == "inPinA") && (pinName != "pinA") && ((*gConfig)[next].type == PinCell)){
       //   continue;
       // }
 
@@ -569,7 +626,7 @@ void randomizeList(int *list, int n) {
 
 int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig) {
    //uncommenting this
-   // OB: std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n";
+   std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n";
   
   vertex_descriptor yD = vertex(y, *H);
   int  totalCost = 0;
@@ -581,7 +638,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     int load = target(*eo, *H);
 
     //uncommenting this
-    // OB:    std::cout << "SOURCE : " << hNames[y] << " TARGET : " << hNames[load] << "\n";
+    std::cout << "SOURCE : " << hNames[y] << " TARGET : " << hNames[load] << "\n";
     
     if (load == y)
       continue; // JANDERS ignore feedback connections for the moment
@@ -1224,6 +1281,8 @@ void readDeviceModel(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
 
     std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v); //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     std::string arch_Opcode   = boost::get(&DotVertex::G_Opcode, *G, v);   //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);   //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+
 
     std::string arch_ID = boost::get(&DotVertex::G_ID, *G, v); //Contains the sequence ID for the given node of Device Model Graph
     int gTypes_index = std::stoi(arch_ID);   //Boost read_graphviz() doesn't preserve the node ordering from the read input dot file.
@@ -1235,6 +1294,9 @@ void readDeviceModel(DirectedGraph *G, DirectedGraph *G_Modified, std::map<int, 
     if (DEBUG){
       //std::cout << "[G] arch_ID " << arch_ID << " ::  arch_NodeType " << arch_NodeType <<  " :: arch_Opcode " << arch_Opcode << "\n";
     }
+
+    //Inserting the name of the perticular node based as described in the device model graph
+    (*gConfig)[gTypes_index].name   = arch_NodeName;
 
     //Deciding the configuration based on attributes defined in the script:
     //arch_Opcode described in the device model graph file: MemPort, Mux, Constant, and ALU.
@@ -1396,17 +1458,17 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
 
       auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::loadPin, *H, *eo));
       if (it_inPin != inPin.end()) {
-          // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification:  " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name verified" << std::endl;
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification:  " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name verified" << std::endl;
       } else {
-          // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification: " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name not valid" << std::endl;
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification: " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name not valid" << std::endl;
           invalidPinNameDetected = 1;
       }
 
       auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::driverPin, *H, *eo));
       if (it_outPin != outPin.end()) {
-          // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name verified" << std::endl;
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name verified" << std::endl;
       } else {
-          // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name not valid" << std::endl;
+          std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name not valid" << std::endl;
           invalidPinNameDetected = 1;
       }
 
@@ -1437,7 +1499,8 @@ int main(int argc, char *argv[])
     // For [G] --> Device Model Graph
     //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
     //DotVertex::G_NodeType --> Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
-    //DotVertex::G_Opcode --> Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    //DotVertex::G_Opcode --> Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell") 
+    dp.property("G_Name",           boost::get(&DotVertex::G_Name, G));
     dp.property("G_ID",           boost::get(&DotVertex::G_ID, G));
     dp.property("G_NodeType",     boost::get(&DotVertex::G_NodeType, G));
     dp.property("G_opcode",       boost::get(&DotVertex::G_Opcode, G));
@@ -1455,6 +1518,7 @@ int main(int argc, char *argv[])
     //DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
     //DotVertex::G_NodeType --> Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     //DotVertex::G_Opcode --> Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    dp.property("G_Name",           boost::get(&DotVertex::G_Name, G));
     dp.property("G_ID",           boost::get(&DotVertex::G_ID, G));
     dp.property("G_NodeType",     boost::get(&DotVertex::G_NodeType, G));
     dp.property("G_opcode",       boost::get(&DotVertex::G_Opcode, G));
