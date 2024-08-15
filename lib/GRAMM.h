@@ -52,6 +52,9 @@ typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 // -- Location of the node can be defined as an integer pair
 typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, in, out} opcodeType;
 
+typedef enum cellT {PE, LS} cellType;
+typedef enum pinT {pinA, pinB, inPinA} pinType;
+
 // typedef enum inPinT {inPinA, inPinB, anyPins} inPinType;
 // typedef enum outPinT {outPinA} outPinType;
 
@@ -62,6 +65,8 @@ struct NodeConfig {
     nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
     opcodeType opcode;      //Opcode of the node --> io, alu, memport....
     std::string name;       //Name of the perticular node
+    cellType cellName;
+    pinType pinName;
     //As of now following configs are optional
     int Latency = 0;                    
     int Width   = 0;                      

@@ -432,7 +432,7 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
       explored.set(next);
       expInt.push_back(next);
 
-      if ((*gConfig)[next].type == PinCell){
+
         //HW: Retriving the pin name from the node name
         //HW: Try to figure out the following pinName and cellName earlier in execution
         size_t pos; 
@@ -477,19 +477,19 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
       //   std::cout << "out|\n";
       
 
-      
-        // std::cout << pinName << "|" << (*gConfig)[next].name;
-        if ((cellName == "pe") && (loadPin == "inPinB") && (pinName != "pinB")){
-          // std::cout << " Enter load inPinB statement work";
-          continue;
-        } 
+      // if ((*gConfig)[next].type == PinCell){
+      //   // std::cout << pinName << "|" << (*gConfig)[next].name;
+      //   if ((cellName == "pe") && (loadPin == "inPinB") && (pinName == "pinB")){
+      //     // std::cout << " Enter load inPinB statement work";
+      //     continue;
+      //   } 
         
-        if ((cellName == "pe") && (loadPin == "inPinA") && (pinName != "pinA")){
-          // std::cout << " Enter load inPinA statement work";
-          continue;
-        }
-        //std::cout << "\n";
-      }
+      //   if ((cellName == "pe") && (loadPin == "inPinA") && (pinName == "pinA")){
+      //     // std::cout << " Enter load inPinA statement work";
+      //     continue;
+      //   }
+      //   //std::cout << "\n";
+      // }
 
       //Verifying if the node is mapping to the correct pin type in the device model graph
       // if ((loadPin == "inPinB") && (pinName != "pinB") && ((*gConfig)[next].type == PinCell)){
