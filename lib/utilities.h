@@ -55,8 +55,8 @@ std::string string_remover(std::string original_string, std::string toRemove);
  * 
  * @param gNumber A boost node id from the device-model graph.
  * @param y A boost node id from the application graph.
- * @param positionedOutputFile The ordered-output dot file stream (this contains actual co-ordinates of the node cells).
- * @param unpositionedOutputFile The unordered-output dot file stream.
+ * @param positionedOutputFile The positioned-output dot file stream (this dot-file contains actual co-ordinates of the node cells).
+ * @param unpositionedOutputFile The unpositioned-output dot file stream (this dot-file does not contain any co-ordinates of the node cells).
  */
 void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile);
 
@@ -65,8 +65,8 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
  *
  * @param gNumber A boost node id from the device-model graph.
  * @param gName An integer used in the output.
- * @param positionedOutputFile The ordered-output dot file stream (this contains actual co-ordinates of the node cells).
- * @param unpositionedOutputFile The unordered-output dot file stream.
+ * @param positionedOutputFile The positioned-output dot file stream (this dot-file contains actual co-ordinates of the node cells).
+ * @param unpositionedOutputFile The unpositioned-output dot file stream (this dot-file does not contain any co-ordinates of the node cells).
  * @param hConfig A map containing node configuration details of device-model graph.
  */
 void printPlacementResults(int gNumber, std::string gName, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig);

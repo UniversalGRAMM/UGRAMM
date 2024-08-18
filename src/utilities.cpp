@@ -167,7 +167,7 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
 
 void printPlacementResults(int gNumber, std::string gName, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig)
 {
-  //Pre-defined scale and displacement values for the ordered-dot file:
+  //Pre-defined scale and displacement values for the positioned-dot file:
   int scale = 6;
   float input_displacement = 0.65 * (scale/3);
   float out_displacement = 1.0 * (scale/3);
@@ -270,15 +270,15 @@ void printPlacementResults(int gNumber, std::string gName, std::ofstream &positi
 void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
 
-  // Output stream for storing successful mapping: The ordered-output dot file stream (this contains actual co-ordinates of the node cells).
+  // Output stream for storing successful mapping: The positioned-output dot file stream (this contains actual co-ordinates of the node cells).
   std::ofstream positionedOutputFile;
   positionedOutputFile.open("positioned_dot_output.dot");
-  std::cout << "Writing the ordered mapping output in file 'positioned_dot_output.dot' \n";
+  std::cout << "Writing the positioned mapping output in file 'positioned_dot_output.dot' \n";
 
   // Output stream for storing successful mapping:
   std::ofstream unpositionedOutputFile;
   unpositionedOutputFile.open("unpositioned_dot_output.dot");
-  std::cout << "Writing the unordered mapping output in file 'unpositioned_dot_output.dot' \n";
+  std::cout << "Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot' \n";
 
   // Printing the start of the dot file:
   positionedOutputFile << "digraph {\ngraph [bgcolor=lightgray]\nnode [style=filled]\nsplines=ortho;\n";
