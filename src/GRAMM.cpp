@@ -5,6 +5,7 @@
 //===================================================================//
 
 #include "../lib/GRAMM.h"
+#include "../lib/utilities.h"
 
 // Declartion of variables:
 
@@ -26,6 +27,9 @@ std::vector<int> *TopoOrder;
 std::map<int, std::string> hNames;
 std::map<int, std::string> gNames;
 std::bitset<100000> explored;
+
+std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
+std::vector<std::string> outPin = {"outPinA"};
 
 //-------------------------------------------------------//
 // The following functions are added to simplify the pins
@@ -49,259 +53,6 @@ bool isRikenPinB(int n)
 
 //-------------------------------------------------------//
 // pin function end
-//-------------------------------------------------------//
-
-//-------------------------------------------------------//
-// Utilities function start := Printing purpose etc.
-//-------------------------------------------------------//
-
-// Aim: print the mapped output in a Grid layout.
-
-std::string gNames_deliemter_changes(std::string gNames)
-{
-  std::string modified_string;
-
-  // Iterate through each character in the input string
-  for (char c : gNames)
-  {
-    if (c == '.')
-    {
-      // Replace '.' with '_'
-      modified_string += '_';
-    }
-    else
-    {
-      // Keep the character as it is
-      modified_string += c;
-    }
-  }
-
-  return modified_string;
-}
-
-std::string string_remover(std::string original_string, std::string toRemove){
-  
-  std::string modified_string;
-
-  // Getting the tile name:
-  size_t pos = original_string.find(toRemove);
-
-  if (pos != std::string::npos)
-  {
-    modified_string = original_string.substr(0, pos);
-  }
-  else
-  {
-    modified_string = original_string;
-  }
-
-  return modified_string;
-}
-
-void printPlaceAndRoute(int y, std::ofstream &oFile)
-{
-
-  struct RoutingTree *RT = &((*Trees)[y]);
-
-  if (RT->nodes.size() == 0)
-    return;
-
-  int n = RT->nodes.front();
-  int orign = n;
-
-  if (DEBUG)
-    std::cout << "For hNames[y] :: " << hNames[y] << " :: gNames[n] :: " << gNames[n] << "\n";
-
-  std::list<int>::iterator it = RT->nodes.begin();
-
-  for (; it != RT->nodes.end(); it++)
-  {
-    int m = *it;
-    if (m == orign)
-      continue;
-
-    std::cout << " [m] :: " << m << " :: from :: " << gNames[RT->parent[m]] << "  :: To :: " << gNames[m] << "\n";
-
-    if ((boost::algorithm::contains(gNames[RT->parent[m]], "inPin")) || (boost::algorithm::contains(gNames[m], "outPin")))
-    {
-      // OB: Right now, GRAMM does not include connection between inPin to the FunCell
-      //     That means this if loop is probably hit due to outPin connections has been found (that means FuncCell --> outPin) connection.
-      //     Adding a manual connection between inPin and FunCell.
-      // TODO: Remove this manual connection; for this routing needs to be modified to incorporate last level connections.
-
-      // parent[m] --> FunCell || m --> outPin
-      oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
-
-      // Adding the manual connection.
-      if (boost::algorithm::contains(gNames[RT->parent[m]], "alu")) {
-        // ALU cell --> Adding two inPin connections
-        oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) << "\n";
-        oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) << "\n";
-      }
-    }
-    else if (boost::algorithm::contains(gNames[RT->parent[m]], "outPin"))
-    {
-      // std::cout << "From :: " << gNames[RT->parent[m]] << "  :: To :: " << gNames[m] << "\n";
-
-      bool hit = false;
-      int current_sink = *it;
-
-      while (hit == false)
-      {
-        it++;
-        current_sink = *it;
-
-        // std::cout << "From :: " << gNames[RT->parent[current_sink]] << "  :: To :: " << gNames[current_sink] << "\n";
-
-        if (boost::algorithm::contains(gNames[current_sink], "inPin"))
-        {
-          hit = true;
-          oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
-          //std::cout << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
-
-          // Adding the manual connection.
-          if (boost::algorithm::contains(gNames[current_sink], "LS"))
-          { // LS Cell --> Adding one inPin connections (works only for Load as the output )
-            oFile << gNames_deliemter_changes(gNames[current_sink]) << " -> " << string_remover(gNames_deliemter_changes(gNames[current_sink]), "_inPinA") << "\n";
-          }
-        }
-      }
-    }
-  }
-}
-
-/*
-  printMappedResults --> Objective: print the mapped results in the neato format.
-*/
-
-void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig)
-{
-
-  // Output stream for storing successful mapping:
-  std::ofstream oFile;
-  oFile.open("mapping_output.dot");
-  std::cout << "Writing the mapping output in file 'mapping_output.dot' \n";
-
-  // Printing the start of the dot file:
-  oFile << "digraph {\ngraph [pad=\"0.212,0.055\" bgcolor=lightgray]\nnode [style=filled]\nsplines=true;\n";
-
-  // Draw_Layout:
-  for (auto hElement : gNames)
-  {
-    int gNumber = hElement.first;
-    std::string gName = hElement.second;
-
-    if (boost::algorithm::contains(gName, "Pin"))
-    {
-
-      std::vector<std::string> parts; // Contains the sub-parts of the current string
-      std::string part;               // Used while parsing the sub-string.
-      std::stringstream ss(gName);    // Creating string stream input
-
-      while (std::getline(ss, part, '.'))
-      {
-        parts.push_back(part);
-      }
-
-      // '0' subtraction is used to convert Char into Integer!!
-      int x = parts[2][1] - '0'; // parts[2] --> 'cX' :: X will contain the column location of the node
-      int y = parts[3][1] - '0'; // parts[3] --> 'rX' :: Y will contain the row location of the node
-
-      /*
-      // Print the parts
-      for (const std::string& p : parts) {
-          std::cout << p << " :: ";
-      }
-
-
-      std::cout << " X : " << x << " :: y ::" << y << std::endl;
-      */
-
-      // std::cout << gName << std::endl;
-
-      if (parts[4] == "const")
-      {
-        continue;
-      }
-
-      int scale = 3;
-      float input_displacement = 0.80;
-      float out_displacement = 1.0;
-
-      // Modified combined string:
-      std::string modified_name = gNames_deliemter_changes(gName);
-      std::string tile_name     = string_remover(modified_name, "_inPinA");
-
-      if (parts[5] == "inPinA")
-      {
-        if (parts[0] == "LS")
-        {
-          oFile << tile_name << " [shape=\"circle\" width=0.5 fontsize=4 fillcolor=\"#ffff00\" pos=\"" << scale * x << "," << scale * y << "!\"]\n";
-        }
-        else
-        {
-          oFile << tile_name << " [shape=\"circle\" width=0.5 fontsize=4 fillcolor=\"#ff7f0e\" pos=\"" << scale * x << "," << scale * y << "!\"]\n";
-        }
-
-        oFile << modified_name << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"#0000ff\" pos=\"" << scale * x - input_displacement << "," << scale * y + input_displacement << "!\"]\n";
-      }
-      else if (parts[5] == "inPinB")
-      {
-        oFile << modified_name << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"#0000ff\" pos=\"" << scale * x + input_displacement << "," << scale * y + input_displacement << "!\"]\n";
-      }
-      else if (parts[5] == "outPinA")
-      {
-        oFile << modified_name << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"#ff0000\" pos=\"" << scale * x << "," << scale * y - out_displacement << "!\"]\n";
-      }
-    }
-
-    // Draw_Edges:
-  }
-
-  // Draw Edges:
-  for (int i = 0; i < num_vertices(*H); i++)
-  {
-
-    if ((*hConfig)[i].opcode == constant)
-      continue;
-
-    printPlaceAndRoute(i, oFile);
-  }
-  oFile << "}\n";
-}
-
-/* OB: Following functions removed and generalized the way of printing the names of the cell:
-void printNameRIKEN(int n)
-void printName(int n)
-*/
-
-void printName(int n)
-{
-  std::cout << gNames[n] << "\n";
-}
-
-void printVertexModels(DirectedGraph *H, DirectedGraph *G)
-{
-
-  for (int i = 0; i < num_vertices(*H); i++)
-  {
-    struct RoutingTree *RT = &((*Trees)[i]);
-
-    std::cout << "** routing for i: " << i << " " << hNames[i] << "\n";
-
-    std::list<int>::iterator it = RT->nodes.begin();
-
-    for (; it != RT->nodes.end(); it++)
-    {
-      std::cout << "\t " << *it << "\t "; // for ADRES
-      int n = *it;
-      std::cout << gNames[n] << std::endl;
-    }
-  }
-}
-
-//-------------------------------------------------------//
-// Utilities function end := Printing purpose etc.
 //-------------------------------------------------------//
 
 void depositRoute(int signal, std::list<int> *nodes)
@@ -956,7 +707,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       printVertexModels(H, G);
 
       // Visualizing mapping result in neato:
-      printMappedResults(H, G, hConfig);
+      printMappedResults(H, G, hConfig, gConfig);
     }
 
     PFac *= 1.1; // adjust present congestion penalty
@@ -1370,7 +1121,7 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
 
     if (DEBUG)
     {
-      // std::cout << "[G] arch_ID " << arch_ID << " ::  arch_NodeType " << arch_NodeType <<  " :: arch_Opcode " << arch_Opcode << "\n";
+      std::cout << "[G] arch_ID " << arch_ID << " ::  arch_NodeType " << arch_NodeType <<  " :: arch_Opcode " << arch_Opcode << "\n";
     }
 
     // Deciding the configuration based on attributes defined in the script:

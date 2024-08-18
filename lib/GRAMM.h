@@ -56,8 +56,8 @@ typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, in, out} opcod
 // typedef enum inPinT {inPinA, inPinB, anyPins} inPinType;
 // typedef enum outPinT {outPinA} outPinType;
 
-std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
-std::vector<std::string> outPin = {"outPinA"};
+extern std::vector<std::string> inPin;
+extern std::vector<std::string> outPin;
 
 struct NodeConfig {
     nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell

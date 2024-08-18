@@ -5,14 +5,18 @@ cd scripts && ./device_model_gen.py -NR 8 -NC 8 -Arch RIKEN_with_pins && cd ..
 ======= helper script: Device Model Generator ======
 ====================================================
 
-Generating device model for following CGRA configuration: 
+Generating device model for the following CGRA configuration: 
 > Arch: RIKEN_with_pins
 > NR: 8
 > NC: 8
 Creating RIKEN_with_pins architecture!!
 ---------------------Executing GRAMM and producing mapping result in mapping_output.dot---------------------
 make && ./GRAMM Kernels/Conv_Balance/conv_nounroll_Balance.dot scripts/riken_8_8.dot 8 8 0
-g++ src/GRAMM.cpp -Ilib -lboost_graph -o GRAMM 
+mkdir -p build
+g++ -Ilib -lboost_graph -c src/GRAMM.cpp -o build/GRAMM.o
+mkdir -p build
+g++ -Ilib -lboost_graph -c src/utilities.cpp -o build/utilities.o
+g++ build/GRAMM.o build/utilities.o -Ilib -lboost_graph -o GRAMM
 Invalid pin names detected, exiting the program
 ***** BEGINNING OUTER WHILE LOOP ***** ITER 1 
 OVERUSE 1 ON OVERUSE 1 ON TOTAL OVERUSE: 2
@@ -86,7 +90,7 @@ SUCCESS! 2 0 36
 	 667	 pe.w32.c4.r2.crossbar_mux_3
 	 487	 pe.w32.c3.r1.crossbar_mux_3
 	 315	 pe.w32.c2.r0.crossbar_mux_9
-	 534	 LS.w32.c0.r1.mem.inPinA
+	 534	 LS.w32.c0.r1.memport.inPinA
 ** routing for i: 17 {FMUL_10}
 	 1099	 pe.w32.c6.r7.alu
 	 1103	 pe.w32.c6.r7.alu.outPinA
@@ -160,8 +164,8 @@ SUCCESS! 2 0 36
 	 816	 pe.w32.c5.r1.mux_b
 	 821	 pe.w32.c5.r1.alu.inPinB
 ** routing for i: 26 {Load_0}
-	 224	 LS.w32.c0.r4.mem
-	 246	 LS.w32.c0.r4.mem.outPinA
+	 224	 LS.w32.c0.r4.memport
+	 246	 LS.w32.c0.r4.memport.outPinA
 	 794	 pe.w32.c5.r0.crossbar_mux_9
 	 796	 pe.w32.c5.r0.mux_b
 	 802	 pe.w32.c5.r0.alu.inPinB
@@ -172,28 +176,28 @@ SUCCESS! 2 0 36
 	 1096	 pe.w32.c6.r7.mux_b
 	 1102	 pe.w32.c6.r7.alu.inPinB
 ** routing for i: 28 {Load_2}
-	 1089	 LS.w32.c0.r3.mem
-	 113	 LS.w32.c0.r3.mem.outPinA
+	 1089	 LS.w32.c0.r3.memport
+	 113	 LS.w32.c0.r3.memport.outPinA
 	 630	 pe.w32.c4.r0.crossbar_mux_6
 	 653	 pe.w32.c4.r1.crossbar_mux_8
 	 655	 pe.w32.c4.r1.mux_a
 	 661	 pe.w32.c4.r1.alu.inPinA
 ** routing for i: 29 {Load_3}
-	 257	 LS.w32.c0.r5.mem
-	 279	 LS.w32.c0.r5.mem.outPinA
+	 257	 LS.w32.c0.r5.memport
+	 279	 LS.w32.c0.r5.memport.outPinA
 	 950	 pe.w32.c6.r0.crossbar_mux_6
 	 973	 pe.w32.c6.r1.crossbar_mux_9
 	 975	 pe.w32.c6.r1.mux_b
 	 982	 pe.w32.c6.r1.alu.inPinB
 ** routing for i: 30 {Load_4}
-	 290	 LS.w32.c0.r6.mem
-	 313	 LS.w32.c0.r6.mem.outPinA
+	 290	 LS.w32.c0.r6.memport
+	 313	 LS.w32.c0.r6.memport.outPinA
 	 1113	 pe.w32.c7.r0.crossbar_mux_8
 	 1115	 pe.w32.c7.r0.mux_a
 	 1120	 pe.w32.c7.r0.alu.inPinA
 ** routing for i: 31 {Load_5}
-	 324	 LS.w32.c0.r7.mem
-	 346	 LS.w32.c0.r7.mem.outPinA
+	 324	 LS.w32.c0.r7.memport
+	 346	 LS.w32.c0.r7.memport.outPinA
 	 72	 pe.w32.c8.r0.crossbar_mux_6
 	 90	 pe.w32.c8.r1.crossbar_mux_5
 	 1152	 pe.w32.c7.r2.crossbar_mux_8
@@ -206,8 +210,8 @@ SUCCESS! 2 0 36
 	 935	 pe.w32.c5.r7.mux_a
 	 940	 pe.w32.c5.r7.alu.inPinA
 ** routing for i: 33 {Load_7}
-	 0	 LS.w32.c0.r0.mem
-	 312	 LS.w32.c0.r0.mem.outPinA
+	 0	 LS.w32.c0.r0.memport
+	 312	 LS.w32.c0.r0.memport.outPinA
 	 723	 pe.w32.c1.r0.crossbar_mux_9
 	 745	 pe.w32.c1.r0.mux_b
 	 801	 pe.w32.c1.r0.alu.inPinB
@@ -219,59 +223,10 @@ SUCCESS! 2 0 36
 	 916	 pe.w32.c5.r6.mux_b
 	 921	 pe.w32.c5.r6.alu.inPinB
 ** routing for i: 35 {Store_26}
-	 423	 LS.w32.c0.r1.mem
-Writing the mapping output in file 'mapping_output.dot' 
- [m] :: 842 :: from :: pe.w32.c5.r2.alu  :: To :: pe.w32.c5.r2.alu.outPinA
- [m] :: 828 :: from :: pe.w32.c5.r2.alu.outPinA  :: To :: pe.w32.c5.r2.crossbar_mux_4
- [m] :: 522 :: from :: pe.w32.c3.r2.alu  :: To :: pe.w32.c3.r2.alu.outPinA
- [m] :: 504 :: from :: pe.w32.c3.r2.alu.outPinA  :: To :: pe.w32.c3.r2.crossbar_mux_0
- [m] :: 1022 :: from :: pe.w32.c6.r3.alu  :: To :: pe.w32.c6.r3.alu.outPinA
- [m] :: 1007 :: from :: pe.w32.c6.r3.alu.outPinA  :: To :: pe.w32.c6.r3.crossbar_mux_3
- [m] :: 703 :: from :: pe.w32.c4.r3.alu  :: To :: pe.w32.c4.r3.alu.outPinA
- [m] :: 687 :: from :: pe.w32.c4.r3.alu.outPinA  :: To :: pe.w32.c4.r3.crossbar_mux_3
- [m] :: 822 :: from :: pe.w32.c5.r1.alu  :: To :: pe.w32.c5.r1.alu.outPinA
- [m] :: 810 :: from :: pe.w32.c5.r1.alu.outPinA  :: To :: pe.w32.c5.r1.crossbar_mux_6
- [m] :: 383 :: from :: pe.w32.c2.r3.alu  :: To :: pe.w32.c2.r3.alu.outPinA
- [m] :: 365 :: from :: pe.w32.c2.r3.alu.outPinA  :: To :: pe.w32.c2.r3.crossbar_mux_1
- [m] :: 1082 :: from :: pe.w32.c6.r6.alu  :: To :: pe.w32.c6.r6.alu.outPinA
- [m] :: 1066 :: from :: pe.w32.c6.r6.alu.outPinA  :: To :: pe.w32.c6.r6.crossbar_mux_3
- [m] :: 683 :: from :: pe.w32.c4.r2.alu  :: To :: pe.w32.c4.r2.alu.outPinA
- [m] :: 667 :: from :: pe.w32.c4.r2.alu.outPinA  :: To :: pe.w32.c4.r2.crossbar_mux_3
- [m] :: 1103 :: from :: pe.w32.c6.r7.alu  :: To :: pe.w32.c6.r7.alu.outPinA
- [m] :: 1086 :: from :: pe.w32.c6.r7.alu.outPinA  :: To :: pe.w32.c6.r7.crossbar_mux_3
- [m] :: 663 :: from :: pe.w32.c4.r1.alu  :: To :: pe.w32.c4.r1.alu.outPinA
- [m] :: 650 :: from :: pe.w32.c4.r1.alu.outPinA  :: To :: pe.w32.c4.r1.crossbar_mux_5
- [m] :: 983 :: from :: pe.w32.c6.r1.alu  :: To :: pe.w32.c6.r1.alu.outPinA
- [m] :: 968 :: from :: pe.w32.c6.r1.alu.outPinA  :: To :: pe.w32.c6.r1.crossbar_mux_4
- [m] :: 1122 :: from :: pe.w32.c7.r0.alu  :: To :: pe.w32.c7.r0.alu.outPinA
- [m] :: 1109 :: from :: pe.w32.c7.r0.alu.outPinA  :: To :: pe.w32.c7.r0.crossbar_mux_5
- [m] :: 1162 :: from :: pe.w32.c7.r2.alu  :: To :: pe.w32.c7.r2.alu.outPinA
- [m] :: 1149 :: from :: pe.w32.c7.r2.alu.outPinA  :: To :: pe.w32.c7.r2.crossbar_mux_5
- [m] :: 942 :: from :: pe.w32.c5.r7.alu  :: To :: pe.w32.c5.r7.alu.outPinA
- [m] :: 924 :: from :: pe.w32.c5.r7.alu.outPinA  :: To :: pe.w32.c5.r7.crossbar_mux_0
- [m] :: 812 :: from :: pe.w32.c1.r0.alu  :: To :: pe.w32.c1.r0.alu.outPinA
- [m] :: 701 :: from :: pe.w32.c1.r0.alu.outPinA  :: To :: pe.w32.c1.r0.crossbar_mux_7
- [m] :: 922 :: from :: pe.w32.c5.r6.alu  :: To :: pe.w32.c5.r6.alu.outPinA
- [m] :: 904 :: from :: pe.w32.c5.r6.alu.outPinA  :: To :: pe.w32.c5.r6.crossbar_mux_0
- [m] :: 803 :: from :: pe.w32.c5.r0.alu  :: To :: pe.w32.c5.r0.alu.outPinA
- [m] :: 791 :: from :: pe.w32.c5.r0.alu.outPinA  :: To :: pe.w32.c5.r0.crossbar_mux_6
- [m] :: 246 :: from :: LS.w32.c0.r4.mem  :: To :: LS.w32.c0.r4.mem.outPinA
- [m] :: 794 :: from :: LS.w32.c0.r4.mem.outPinA  :: To :: pe.w32.c5.r0.crossbar_mux_9
- [m] :: 546 :: from :: LS.w32.c9.r5.mem  :: To :: LS.w32.c9.r5.mem.outPinA
- [m] :: 1094 :: from :: LS.w32.c9.r5.mem.outPinA  :: To :: pe.w32.c6.r7.crossbar_mux_9
- [m] :: 113 :: from :: LS.w32.c0.r3.mem  :: To :: LS.w32.c0.r3.mem.outPinA
- [m] :: 630 :: from :: LS.w32.c0.r3.mem.outPinA  :: To :: pe.w32.c4.r0.crossbar_mux_6
- [m] :: 279 :: from :: LS.w32.c0.r5.mem  :: To :: LS.w32.c0.r5.mem.outPinA
- [m] :: 950 :: from :: LS.w32.c0.r5.mem.outPinA  :: To :: pe.w32.c6.r0.crossbar_mux_6
- [m] :: 313 :: from :: LS.w32.c0.r6.mem  :: To :: LS.w32.c0.r6.mem.outPinA
- [m] :: 1113 :: from :: LS.w32.c0.r6.mem.outPinA  :: To :: pe.w32.c7.r0.crossbar_mux_8
- [m] :: 346 :: from :: LS.w32.c0.r7.mem  :: To :: LS.w32.c0.r7.mem.outPinA
- [m] :: 72 :: from :: LS.w32.c0.r7.mem.outPinA  :: To :: pe.w32.c8.r0.crossbar_mux_6
- [m] :: 512 :: from :: LS.w32.c9.r4.mem  :: To :: LS.w32.c9.r4.mem.outPinA
- [m] :: 932 :: from :: LS.w32.c9.r4.mem.outPinA  :: To :: pe.w32.c5.r7.crossbar_mux_8
- [m] :: 312 :: from :: LS.w32.c0.r0.mem  :: To :: LS.w32.c0.r0.mem.outPinA
- [m] :: 723 :: from :: LS.w32.c0.r0.mem.outPinA  :: To :: pe.w32.c1.r0.crossbar_mux_9
- [m] :: 479 :: from :: LS.w32.c9.r3.mem  :: To :: LS.w32.c9.r3.mem.outPinA
- [m] :: 765 :: from :: LS.w32.c9.r3.mem.outPinA  :: To :: pe.w32.c4.r7.crossbar_mux_1
----------------------Converting the mapped  mapping_output.dot file into mapping_output.png:---------------------
+	 423	 LS.w32.c0.r1.memport
+Writing the ordered mapping output in file 'mapping_output.dot' 
+Writing the unordered mapping output in file 'simple_mapping_output.dot' 
+---------------------Converting the ordered-mapped  mapping_output.dot file into mapping_output.png:---------------------
 neato -Tpng mapping_output.dot -o mapping_output.png
+---------------------Converting the unordered-mapped  mapping_output.dot file into mapping_output.png:---------------------
+neato -Tpng simple_mapping_output.dot -o simple_mapping_output.png

@@ -414,7 +414,7 @@ def create_riken_with_pins(args):
         left_io_outPin_index = left_io_index + 2
 
         #Left-IO:
-        left_io_base_name = "LS.w32.c0.r" + str(i)  + ".mem"
+        left_io_base_name = "LS.w32.c0.r" + str(i)  + ".memport"
         G.nodes[left_io_index]["G_Name"]             = left_io_base_name
         G.nodes[left_io_index]["G_NodeType"]         = "FuncCell"     
         G.nodes[left_io_index]["G_opcode"]           = "MemPort"     
@@ -819,7 +819,7 @@ def main(args):
     print("====================================================\n")
 
     #Printing arguments:
-    print("Generating device model for following CGRA configuration: ")
+    print("Generating device model for the following CGRA configuration: ")
     print("> Arch:", args.Arch)
     print("> NR:", args.NR)
     print("> NC:", args.NC)

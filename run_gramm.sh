@@ -19,6 +19,11 @@ echo "make && ./GRAMM $1 $device_model_output $2 $3 0"
 make && ./GRAMM $1 $device_model_output $2 $3 0
 
 # Converting the mapped output dot file into png:
-echo "---------------------Converting the mapped  mapping_output.dot file into mapping_output.png:---------------------"
+echo "---------------------Converting the ordered-mapped  mapping_output.dot file into mapping_output.png:---------------------"
 echo "neato -Tpng mapping_output.dot -o mapping_output.png"
 neato -Tpng mapping_output.dot -o mapping_output.png
+
+# Converting the mapped output dot file into png:
+echo "---------------------Converting the unordered-mapped  mapping_output.dot file into mapping_output.png:---------------------"
+echo "neato -Tpng simple_mapping_output.dot -o simple_mapping_output.png"
+dot -Tpng simple_mapping_output.dot -o simple_mapping_output.png
