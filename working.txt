@@ -221,168 +221,57 @@ SUCCESS! 2 0 36
 ** routing for i: 35 {Store_26}
 	 423	 LS.w32.c0.r1.mem
 Writing the mapping output in file 'mapping_output.dot' 
-From :: pe.w32.c5.r2.alu  :: To :: pe.w32.c5.r2.alu.outPinA
-[FOUND] From :: pe.w32.c5.r2.alu  :: To :: pe.w32.c5.r2.alu.outPinA
-From :: pe.w32.c5.r2.alu.outPinA  :: To :: pe.w32.c5.r2.crossbar_mux_4
-From :: pe.w32.c5.r2.crossbar_mux_4  :: To :: pe.w32.c4.r2.crossbar_mux_8
-From :: pe.w32.c4.r2.crossbar_mux_8  :: To :: pe.w32.c4.r2.mux_a
-From :: pe.w32.c4.r2.mux_a  :: To :: pe.w32.c4.r2.alu.inPinA
-From :: pe.w32.c3.r2.alu  :: To :: pe.w32.c3.r2.alu.outPinA
-[FOUND] From :: pe.w32.c3.r2.alu  :: To :: pe.w32.c3.r2.alu.outPinA
-From :: pe.w32.c3.r2.alu.outPinA  :: To :: pe.w32.c3.r2.crossbar_mux_0
-From :: pe.w32.c3.r2.crossbar_mux_0  :: To :: pe.w32.c4.r2.crossbar_mux_9
-From :: pe.w32.c4.r2.crossbar_mux_9  :: To :: pe.w32.c4.r2.mux_b
-From :: pe.w32.c4.r2.mux_b  :: To :: pe.w32.c4.r2.alu.inPinB
-From :: pe.w32.c6.r3.alu  :: To :: pe.w32.c6.r3.alu.outPinA
-[FOUND] From :: pe.w32.c6.r3.alu  :: To :: pe.w32.c6.r3.alu.outPinA
-From :: pe.w32.c6.r3.alu.outPinA  :: To :: pe.w32.c6.r3.crossbar_mux_3
-From :: pe.w32.c6.r3.crossbar_mux_3  :: To :: pe.w32.c5.r2.crossbar_mux_9
-From :: pe.w32.c5.r2.crossbar_mux_9  :: To :: pe.w32.c5.r2.mux_b
-From :: pe.w32.c5.r2.mux_b  :: To :: pe.w32.c5.r2.alu.inPinB
-From :: pe.w32.c4.r3.alu  :: To :: pe.w32.c4.r3.alu.outPinA
-[FOUND] From :: pe.w32.c4.r3.alu  :: To :: pe.w32.c4.r3.alu.outPinA
-From :: pe.w32.c4.r3.alu.outPinA  :: To :: pe.w32.c4.r3.crossbar_mux_3
-From :: pe.w32.c4.r3.crossbar_mux_3  :: To :: pe.w32.c3.r2.crossbar_mux_9
-From :: pe.w32.c3.r2.crossbar_mux_9  :: To :: pe.w32.c3.r2.mux_b
-From :: pe.w32.c3.r2.mux_b  :: To :: pe.w32.c3.r2.alu.inPinB
-From :: pe.w32.c5.r1.alu  :: To :: pe.w32.c5.r1.alu.outPinA
-[FOUND] From :: pe.w32.c5.r1.alu  :: To :: pe.w32.c5.r1.alu.outPinA
-From :: pe.w32.c5.r1.alu.outPinA  :: To :: pe.w32.c5.r1.crossbar_mux_6
-From :: pe.w32.c5.r1.crossbar_mux_6  :: To :: pe.w32.c5.r2.crossbar_mux_8
-From :: pe.w32.c5.r2.crossbar_mux_8  :: To :: pe.w32.c5.r2.mux_a
-From :: pe.w32.c5.r2.mux_a  :: To :: pe.w32.c5.r2.alu.inPinA
-From :: pe.w32.c2.r3.alu  :: To :: pe.w32.c2.r3.alu.outPinA
-[FOUND] From :: pe.w32.c2.r3.alu  :: To :: pe.w32.c2.r3.alu.outPinA
-From :: pe.w32.c2.r3.alu.outPinA  :: To :: pe.w32.c2.r3.crossbar_mux_1
-From :: pe.w32.c2.r3.crossbar_mux_1  :: To :: pe.w32.c3.r2.crossbar_mux_8
-From :: pe.w32.c3.r2.crossbar_mux_8  :: To :: pe.w32.c3.r2.mux_a
-From :: pe.w32.c3.r2.mux_a  :: To :: pe.w32.c3.r2.alu.inPinA
-From :: pe.w32.c6.r6.alu  :: To :: pe.w32.c6.r6.alu.outPinA
-[FOUND] From :: pe.w32.c6.r6.alu  :: To :: pe.w32.c6.r6.alu.outPinA
-From :: pe.w32.c6.r6.alu.outPinA  :: To :: pe.w32.c6.r6.crossbar_mux_3
-From :: pe.w32.c6.r6.crossbar_mux_3  :: To :: pe.w32.c5.r5.crossbar_mux_1
-From :: pe.w32.c5.r5.crossbar_mux_1  :: To :: pe.w32.c6.r4.crossbar_mux_2
-From :: pe.w32.c6.r4.crossbar_mux_2  :: To :: pe.w32.c6.r3.crossbar_mux_8
-From :: pe.w32.c6.r3.crossbar_mux_8  :: To :: pe.w32.c6.r3.mux_a
-From :: pe.w32.c6.r3.mux_a  :: To :: pe.w32.c6.r3.alu.inPinA
-From :: pe.w32.c4.r2.alu  :: To :: pe.w32.c4.r2.alu.outPinA
-[FOUND] From :: pe.w32.c4.r2.alu  :: To :: pe.w32.c4.r2.alu.outPinA
-From :: pe.w32.c4.r2.alu.outPinA  :: To :: pe.w32.c4.r2.crossbar_mux_3
-From :: pe.w32.c4.r2.crossbar_mux_3  :: To :: pe.w32.c3.r1.crossbar_mux_3
-From :: pe.w32.c3.r1.crossbar_mux_3  :: To :: pe.w32.c2.r0.crossbar_mux_9
-From :: pe.w32.c2.r0.crossbar_mux_9  :: To :: LS.w32.c0.r1.mem.inPinA
-From :: pe.w32.c6.r7.alu  :: To :: pe.w32.c6.r7.alu.outPinA
-[FOUND] From :: pe.w32.c6.r7.alu  :: To :: pe.w32.c6.r7.alu.outPinA
-From :: pe.w32.c6.r7.alu.outPinA  :: To :: pe.w32.c6.r7.crossbar_mux_3
-From :: pe.w32.c6.r7.crossbar_mux_3  :: To :: pe.w32.c5.r6.crossbar_mux_3
-From :: pe.w32.c5.r6.crossbar_mux_3  :: To :: pe.w32.c4.r5.crossbar_mux_3
-From :: pe.w32.c4.r5.crossbar_mux_3  :: To :: pe.w32.c3.r4.crossbar_mux_3
-From :: pe.w32.c3.r4.crossbar_mux_3  :: To :: pe.w32.c2.r3.crossbar_mux_8
-From :: pe.w32.c2.r3.crossbar_mux_8  :: To :: pe.w32.c2.r3.mux_a
-From :: pe.w32.c2.r3.mux_a  :: To :: pe.w32.c2.r3.alu.inPinA
-From :: pe.w32.c4.r1.alu  :: To :: pe.w32.c4.r1.alu.outPinA
-[FOUND] From :: pe.w32.c4.r1.alu  :: To :: pe.w32.c4.r1.alu.outPinA
-From :: pe.w32.c4.r1.alu.outPinA  :: To :: pe.w32.c4.r1.crossbar_mux_5
-From :: pe.w32.c4.r1.crossbar_mux_5  :: To :: pe.w32.c3.r2.crossbar_mux_5
-From :: pe.w32.c3.r2.crossbar_mux_5  :: To :: pe.w32.c2.r3.crossbar_mux_9
-From :: pe.w32.c2.r3.crossbar_mux_9  :: To :: pe.w32.c2.r3.mux_b
-From :: pe.w32.c2.r3.mux_b  :: To :: pe.w32.c2.r3.alu.inPinB
-From :: pe.w32.c6.r1.alu  :: To :: pe.w32.c6.r1.alu.outPinA
-[FOUND] From :: pe.w32.c6.r1.alu  :: To :: pe.w32.c6.r1.alu.outPinA
-From :: pe.w32.c6.r1.alu.outPinA  :: To :: pe.w32.c6.r1.crossbar_mux_4
-From :: pe.w32.c6.r1.crossbar_mux_4  :: To :: pe.w32.c5.r1.crossbar_mux_8
-From :: pe.w32.c5.r1.crossbar_mux_8  :: To :: pe.w32.c5.r1.mux_a
-From :: pe.w32.c5.r1.mux_a  :: To :: pe.w32.c5.r1.alu.inPinA
-From :: pe.w32.c7.r0.alu  :: To :: pe.w32.c7.r0.alu.outPinA
-[FOUND] From :: pe.w32.c7.r0.alu  :: To :: pe.w32.c7.r0.alu.outPinA
-From :: pe.w32.c7.r0.alu.outPinA  :: To :: pe.w32.c7.r0.crossbar_mux_5
-From :: pe.w32.c7.r0.crossbar_mux_5  :: To :: pe.w32.c6.r1.crossbar_mux_5
-From :: pe.w32.c6.r1.crossbar_mux_5  :: To :: pe.w32.c5.r2.crossbar_mux_5
-From :: pe.w32.c5.r2.crossbar_mux_5  :: To :: pe.w32.c4.r3.crossbar_mux_9
-From :: pe.w32.c4.r3.crossbar_mux_9  :: To :: pe.w32.c4.r3.mux_b
-From :: pe.w32.c4.r3.mux_b  :: To :: pe.w32.c4.r3.alu.inPinB
-From :: pe.w32.c7.r2.alu  :: To :: pe.w32.c7.r2.alu.outPinA
-[FOUND] From :: pe.w32.c7.r2.alu  :: To :: pe.w32.c7.r2.alu.outPinA
-From :: pe.w32.c7.r2.alu.outPinA  :: To :: pe.w32.c7.r2.crossbar_mux_5
-From :: pe.w32.c7.r2.crossbar_mux_5  :: To :: pe.w32.c6.r3.crossbar_mux_9
-From :: pe.w32.c6.r3.crossbar_mux_9  :: To :: pe.w32.c6.r3.mux_b
-From :: pe.w32.c6.r3.mux_b  :: To :: pe.w32.c6.r3.alu.inPinB
-From :: pe.w32.c5.r7.alu  :: To :: pe.w32.c5.r7.alu.outPinA
-[FOUND] From :: pe.w32.c5.r7.alu  :: To :: pe.w32.c5.r7.alu.outPinA
-From :: pe.w32.c5.r7.alu.outPinA  :: To :: pe.w32.c5.r7.crossbar_mux_0
-From :: pe.w32.c5.r7.crossbar_mux_0  :: To :: pe.w32.c6.r7.crossbar_mux_2
-From :: pe.w32.c6.r7.crossbar_mux_2  :: To :: pe.w32.c6.r6.crossbar_mux_8
-From :: pe.w32.c6.r6.crossbar_mux_8  :: To :: pe.w32.c6.r6.mux_a
-From :: pe.w32.c6.r6.mux_a  :: To :: pe.w32.c6.r6.alu.inPinA
-From :: pe.w32.c1.r0.alu  :: To :: pe.w32.c1.r0.alu.outPinA
-[FOUND] From :: pe.w32.c1.r0.alu  :: To :: pe.w32.c1.r0.alu.outPinA
-From :: pe.w32.c1.r0.alu.outPinA  :: To :: pe.w32.c1.r0.crossbar_mux_7
-From :: pe.w32.c1.r0.crossbar_mux_7  :: To :: pe.w32.c2.r1.crossbar_mux_7
-From :: pe.w32.c2.r1.crossbar_mux_7  :: To :: pe.w32.c3.r2.crossbar_mux_7
-From :: pe.w32.c3.r2.crossbar_mux_7  :: To :: pe.w32.c4.r3.crossbar_mux_8
-From :: pe.w32.c4.r3.crossbar_mux_8  :: To :: pe.w32.c4.r3.mux_a
-From :: pe.w32.c4.r3.mux_a  :: To :: pe.w32.c4.r3.alu.inPinA
-From :: pe.w32.c5.r6.alu  :: To :: pe.w32.c5.r6.alu.outPinA
-[FOUND] From :: pe.w32.c5.r6.alu  :: To :: pe.w32.c5.r6.alu.outPinA
-From :: pe.w32.c5.r6.alu.outPinA  :: To :: pe.w32.c5.r6.crossbar_mux_0
-From :: pe.w32.c5.r6.crossbar_mux_0  :: To :: pe.w32.c6.r6.crossbar_mux_9
-From :: pe.w32.c6.r6.crossbar_mux_9  :: To :: pe.w32.c6.r6.mux_b
-From :: pe.w32.c6.r6.mux_b  :: To :: pe.w32.c6.r6.alu.inPinB
-From :: pe.w32.c5.r0.alu  :: To :: pe.w32.c5.r0.alu.outPinA
-[FOUND] From :: pe.w32.c5.r0.alu  :: To :: pe.w32.c5.r0.alu.outPinA
-From :: pe.w32.c5.r0.alu.outPinA  :: To :: pe.w32.c5.r0.crossbar_mux_6
-From :: pe.w32.c5.r0.crossbar_mux_6  :: To :: pe.w32.c5.r1.crossbar_mux_9
-From :: pe.w32.c5.r1.crossbar_mux_9  :: To :: pe.w32.c5.r1.mux_b
-From :: pe.w32.c5.r1.mux_b  :: To :: pe.w32.c5.r1.alu.inPinB
-From :: LS.w32.c0.r4.mem  :: To :: LS.w32.c0.r4.mem.outPinA
-[FOUND] From :: LS.w32.c0.r4.mem  :: To :: LS.w32.c0.r4.mem.outPinA
-From :: LS.w32.c0.r4.mem.outPinA  :: To :: pe.w32.c5.r0.crossbar_mux_9
-From :: pe.w32.c5.r0.crossbar_mux_9  :: To :: pe.w32.c5.r0.mux_b
-From :: pe.w32.c5.r0.mux_b  :: To :: pe.w32.c5.r0.alu.inPinB
-From :: LS.w32.c9.r5.mem  :: To :: LS.w32.c9.r5.mem.outPinA
-[FOUND] From :: LS.w32.c9.r5.mem  :: To :: LS.w32.c9.r5.mem.outPinA
-From :: LS.w32.c9.r5.mem.outPinA  :: To :: pe.w32.c6.r7.crossbar_mux_9
-From :: pe.w32.c6.r7.crossbar_mux_9  :: To :: pe.w32.c6.r7.mux_b
-From :: pe.w32.c6.r7.mux_b  :: To :: pe.w32.c6.r7.alu.inPinB
-From :: LS.w32.c0.r3.mem  :: To :: LS.w32.c0.r3.mem.outPinA
-[FOUND] From :: LS.w32.c0.r3.mem  :: To :: LS.w32.c0.r3.mem.outPinA
-From :: LS.w32.c0.r3.mem.outPinA  :: To :: pe.w32.c4.r0.crossbar_mux_6
-From :: pe.w32.c4.r0.crossbar_mux_6  :: To :: pe.w32.c4.r1.crossbar_mux_8
-From :: pe.w32.c4.r1.crossbar_mux_8  :: To :: pe.w32.c4.r1.mux_a
-From :: pe.w32.c4.r1.mux_a  :: To :: pe.w32.c4.r1.alu.inPinA
-From :: LS.w32.c0.r5.mem  :: To :: LS.w32.c0.r5.mem.outPinA
-[FOUND] From :: LS.w32.c0.r5.mem  :: To :: LS.w32.c0.r5.mem.outPinA
-From :: LS.w32.c0.r5.mem.outPinA  :: To :: pe.w32.c6.r0.crossbar_mux_6
-From :: pe.w32.c6.r0.crossbar_mux_6  :: To :: pe.w32.c6.r1.crossbar_mux_9
-From :: pe.w32.c6.r1.crossbar_mux_9  :: To :: pe.w32.c6.r1.mux_b
-From :: pe.w32.c6.r1.mux_b  :: To :: pe.w32.c6.r1.alu.inPinB
-From :: LS.w32.c0.r6.mem  :: To :: LS.w32.c0.r6.mem.outPinA
-[FOUND] From :: LS.w32.c0.r6.mem  :: To :: LS.w32.c0.r6.mem.outPinA
-From :: LS.w32.c0.r6.mem.outPinA  :: To :: pe.w32.c7.r0.crossbar_mux_8
-From :: pe.w32.c7.r0.crossbar_mux_8  :: To :: pe.w32.c7.r0.mux_a
-From :: pe.w32.c7.r0.mux_a  :: To :: pe.w32.c7.r0.alu.inPinA
-From :: LS.w32.c0.r7.mem  :: To :: LS.w32.c0.r7.mem.outPinA
-[FOUND] From :: LS.w32.c0.r7.mem  :: To :: LS.w32.c0.r7.mem.outPinA
-From :: LS.w32.c0.r7.mem.outPinA  :: To :: pe.w32.c8.r0.crossbar_mux_6
-From :: pe.w32.c8.r0.crossbar_mux_6  :: To :: pe.w32.c8.r1.crossbar_mux_5
-From :: pe.w32.c8.r1.crossbar_mux_5  :: To :: pe.w32.c7.r2.crossbar_mux_8
-From :: pe.w32.c7.r2.crossbar_mux_8  :: To :: pe.w32.c7.r2.mux_a
-From :: pe.w32.c7.r2.mux_a  :: To :: pe.w32.c7.r2.alu.inPinA
-From :: LS.w32.c9.r4.mem  :: To :: LS.w32.c9.r4.mem.outPinA
-[FOUND] From :: LS.w32.c9.r4.mem  :: To :: LS.w32.c9.r4.mem.outPinA
-From :: LS.w32.c9.r4.mem.outPinA  :: To :: pe.w32.c5.r7.crossbar_mux_8
-From :: pe.w32.c5.r7.crossbar_mux_8  :: To :: pe.w32.c5.r7.mux_a
-From :: pe.w32.c5.r7.mux_a  :: To :: pe.w32.c5.r7.alu.inPinA
-From :: LS.w32.c0.r0.mem  :: To :: LS.w32.c0.r0.mem.outPinA
-[FOUND] From :: LS.w32.c0.r0.mem  :: To :: LS.w32.c0.r0.mem.outPinA
-From :: LS.w32.c0.r0.mem.outPinA  :: To :: pe.w32.c1.r0.crossbar_mux_9
-From :: pe.w32.c1.r0.crossbar_mux_9  :: To :: pe.w32.c1.r0.mux_b
-From :: pe.w32.c1.r0.mux_b  :: To :: pe.w32.c1.r0.alu.inPinB
-From :: LS.w32.c9.r3.mem  :: To :: LS.w32.c9.r3.mem.outPinA
-[FOUND] From :: LS.w32.c9.r3.mem  :: To :: LS.w32.c9.r3.mem.outPinA
-From :: LS.w32.c9.r3.mem.outPinA  :: To :: pe.w32.c4.r7.crossbar_mux_1
-From :: pe.w32.c4.r7.crossbar_mux_1  :: To :: pe.w32.c5.r6.crossbar_mux_9
-From :: pe.w32.c5.r6.crossbar_mux_9  :: To :: pe.w32.c5.r6.mux_b
-From :: pe.w32.c5.r6.mux_b  :: To :: pe.w32.c5.r6.alu.inPinB
+ [m] :: 842 :: from :: pe.w32.c5.r2.alu  :: To :: pe.w32.c5.r2.alu.outPinA
+ [m] :: 828 :: from :: pe.w32.c5.r2.alu.outPinA  :: To :: pe.w32.c5.r2.crossbar_mux_4
+ [m] :: 522 :: from :: pe.w32.c3.r2.alu  :: To :: pe.w32.c3.r2.alu.outPinA
+ [m] :: 504 :: from :: pe.w32.c3.r2.alu.outPinA  :: To :: pe.w32.c3.r2.crossbar_mux_0
+ [m] :: 1022 :: from :: pe.w32.c6.r3.alu  :: To :: pe.w32.c6.r3.alu.outPinA
+ [m] :: 1007 :: from :: pe.w32.c6.r3.alu.outPinA  :: To :: pe.w32.c6.r3.crossbar_mux_3
+ [m] :: 703 :: from :: pe.w32.c4.r3.alu  :: To :: pe.w32.c4.r3.alu.outPinA
+ [m] :: 687 :: from :: pe.w32.c4.r3.alu.outPinA  :: To :: pe.w32.c4.r3.crossbar_mux_3
+ [m] :: 822 :: from :: pe.w32.c5.r1.alu  :: To :: pe.w32.c5.r1.alu.outPinA
+ [m] :: 810 :: from :: pe.w32.c5.r1.alu.outPinA  :: To :: pe.w32.c5.r1.crossbar_mux_6
+ [m] :: 383 :: from :: pe.w32.c2.r3.alu  :: To :: pe.w32.c2.r3.alu.outPinA
+ [m] :: 365 :: from :: pe.w32.c2.r3.alu.outPinA  :: To :: pe.w32.c2.r3.crossbar_mux_1
+ [m] :: 1082 :: from :: pe.w32.c6.r6.alu  :: To :: pe.w32.c6.r6.alu.outPinA
+ [m] :: 1066 :: from :: pe.w32.c6.r6.alu.outPinA  :: To :: pe.w32.c6.r6.crossbar_mux_3
+ [m] :: 683 :: from :: pe.w32.c4.r2.alu  :: To :: pe.w32.c4.r2.alu.outPinA
+ [m] :: 667 :: from :: pe.w32.c4.r2.alu.outPinA  :: To :: pe.w32.c4.r2.crossbar_mux_3
+ [m] :: 1103 :: from :: pe.w32.c6.r7.alu  :: To :: pe.w32.c6.r7.alu.outPinA
+ [m] :: 1086 :: from :: pe.w32.c6.r7.alu.outPinA  :: To :: pe.w32.c6.r7.crossbar_mux_3
+ [m] :: 663 :: from :: pe.w32.c4.r1.alu  :: To :: pe.w32.c4.r1.alu.outPinA
+ [m] :: 650 :: from :: pe.w32.c4.r1.alu.outPinA  :: To :: pe.w32.c4.r1.crossbar_mux_5
+ [m] :: 983 :: from :: pe.w32.c6.r1.alu  :: To :: pe.w32.c6.r1.alu.outPinA
+ [m] :: 968 :: from :: pe.w32.c6.r1.alu.outPinA  :: To :: pe.w32.c6.r1.crossbar_mux_4
+ [m] :: 1122 :: from :: pe.w32.c7.r0.alu  :: To :: pe.w32.c7.r0.alu.outPinA
+ [m] :: 1109 :: from :: pe.w32.c7.r0.alu.outPinA  :: To :: pe.w32.c7.r0.crossbar_mux_5
+ [m] :: 1162 :: from :: pe.w32.c7.r2.alu  :: To :: pe.w32.c7.r2.alu.outPinA
+ [m] :: 1149 :: from :: pe.w32.c7.r2.alu.outPinA  :: To :: pe.w32.c7.r2.crossbar_mux_5
+ [m] :: 942 :: from :: pe.w32.c5.r7.alu  :: To :: pe.w32.c5.r7.alu.outPinA
+ [m] :: 924 :: from :: pe.w32.c5.r7.alu.outPinA  :: To :: pe.w32.c5.r7.crossbar_mux_0
+ [m] :: 812 :: from :: pe.w32.c1.r0.alu  :: To :: pe.w32.c1.r0.alu.outPinA
+ [m] :: 701 :: from :: pe.w32.c1.r0.alu.outPinA  :: To :: pe.w32.c1.r0.crossbar_mux_7
+ [m] :: 922 :: from :: pe.w32.c5.r6.alu  :: To :: pe.w32.c5.r6.alu.outPinA
+ [m] :: 904 :: from :: pe.w32.c5.r6.alu.outPinA  :: To :: pe.w32.c5.r6.crossbar_mux_0
+ [m] :: 803 :: from :: pe.w32.c5.r0.alu  :: To :: pe.w32.c5.r0.alu.outPinA
+ [m] :: 791 :: from :: pe.w32.c5.r0.alu.outPinA  :: To :: pe.w32.c5.r0.crossbar_mux_6
+ [m] :: 246 :: from :: LS.w32.c0.r4.mem  :: To :: LS.w32.c0.r4.mem.outPinA
+ [m] :: 794 :: from :: LS.w32.c0.r4.mem.outPinA  :: To :: pe.w32.c5.r0.crossbar_mux_9
+ [m] :: 546 :: from :: LS.w32.c9.r5.mem  :: To :: LS.w32.c9.r5.mem.outPinA
+ [m] :: 1094 :: from :: LS.w32.c9.r5.mem.outPinA  :: To :: pe.w32.c6.r7.crossbar_mux_9
+ [m] :: 113 :: from :: LS.w32.c0.r3.mem  :: To :: LS.w32.c0.r3.mem.outPinA
+ [m] :: 630 :: from :: LS.w32.c0.r3.mem.outPinA  :: To :: pe.w32.c4.r0.crossbar_mux_6
+ [m] :: 279 :: from :: LS.w32.c0.r5.mem  :: To :: LS.w32.c0.r5.mem.outPinA
+ [m] :: 950 :: from :: LS.w32.c0.r5.mem.outPinA  :: To :: pe.w32.c6.r0.crossbar_mux_6
+ [m] :: 313 :: from :: LS.w32.c0.r6.mem  :: To :: LS.w32.c0.r6.mem.outPinA
+ [m] :: 1113 :: from :: LS.w32.c0.r6.mem.outPinA  :: To :: pe.w32.c7.r0.crossbar_mux_8
+ [m] :: 346 :: from :: LS.w32.c0.r7.mem  :: To :: LS.w32.c0.r7.mem.outPinA
+ [m] :: 72 :: from :: LS.w32.c0.r7.mem.outPinA  :: To :: pe.w32.c8.r0.crossbar_mux_6
+ [m] :: 512 :: from :: LS.w32.c9.r4.mem  :: To :: LS.w32.c9.r4.mem.outPinA
+ [m] :: 932 :: from :: LS.w32.c9.r4.mem.outPinA  :: To :: pe.w32.c5.r7.crossbar_mux_8
+ [m] :: 312 :: from :: LS.w32.c0.r0.mem  :: To :: LS.w32.c0.r0.mem.outPinA
+ [m] :: 723 :: from :: LS.w32.c0.r0.mem.outPinA  :: To :: pe.w32.c1.r0.crossbar_mux_9
+ [m] :: 479 :: from :: LS.w32.c9.r3.mem  :: To :: LS.w32.c9.r3.mem.outPinA
+ [m] :: 765 :: from :: LS.w32.c9.r3.mem.outPinA  :: To :: pe.w32.c4.r7.crossbar_mux_1
 ---------------------Converting the mapped  mapping_output.dot file into mapping_output.png:---------------------
 neato -Tpng mapping_output.dot -o mapping_output.png

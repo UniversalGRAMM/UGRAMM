@@ -57,21 +57,45 @@ bool isRikenPinB(int n)
 
 // Aim: print the mapped output in a Grid layout.
 
-std::string gNames_deliemter_changes(std::string gNames) {
-    std::string modified_string;
-    
-    // Iterate through each character in the input string
-    for (char c : gNames) {
-        if (c == '.') {
-            // Replace '.' with '_'
-            modified_string += '_';
-        } else {
-            // Keep the character as it is
-            modified_string += c;
-        }
+std::string gNames_deliemter_changes(std::string gNames)
+{
+  std::string modified_string;
+
+  // Iterate through each character in the input string
+  for (char c : gNames)
+  {
+    if (c == '.')
+    {
+      // Replace '.' with '_'
+      modified_string += '_';
     }
-    
-    return modified_string;
+    else
+    {
+      // Keep the character as it is
+      modified_string += c;
+    }
+  }
+
+  return modified_string;
+}
+
+std::string string_remover(std::string original_string, std::string toRemove){
+  
+  std::string modified_string;
+
+  // Getting the tile name:
+  size_t pos = original_string.find(toRemove);
+
+  if (pos != std::string::npos)
+  {
+    modified_string = original_string.substr(0, pos);
+  }
+  else
+  {
+    modified_string = original_string;
+  }
+
+  return modified_string;
 }
 
 void printPlaceAndRoute(int y, std::ofstream &oFile)
@@ -88,7 +112,6 @@ void printPlaceAndRoute(int y, std::ofstream &oFile)
   if (DEBUG)
     std::cout << "For hNames[y] :: " << hNames[y] << " :: gNames[n] :: " << gNames[n] << "\n";
 
-
   std::list<int>::iterator it = RT->nodes.begin();
 
   for (; it != RT->nodes.end(); it++)
@@ -97,14 +120,54 @@ void printPlaceAndRoute(int y, std::ofstream &oFile)
     if (m == orign)
       continue;
 
-    std::cout << "From :: " << gNames[RT->parent[m]] << "  :: To :: " << gNames[m] << "\n";
+    std::cout << " [m] :: " << m << " :: from :: " << gNames[RT->parent[m]] << "  :: To :: " << gNames[m] << "\n";
 
-    if ((boost::algorithm::contains(gNames[RT->parent[m]], "inPin")) || (boost::algorithm::contains(gNames[m], "outPin")) ){
+    if ((boost::algorithm::contains(gNames[RT->parent[m]], "inPin")) || (boost::algorithm::contains(gNames[m], "outPin")))
+    {
+      // OB: Right now, GRAMM does not include connection between inPin to the FunCell
+      //     That means this if loop is probably hit due to outPin connections has been found (that means FuncCell --> outPin) connection.
+      //     Adding a manual connection between inPin and FunCell.
+      // TODO: Remove this manual connection; for this routing needs to be modified to incorporate last level connections.
+
+      // parent[m] --> FunCell || m --> outPin
       oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
-    }
-    
-  }
 
+      // Adding the manual connection.
+      if (boost::algorithm::contains(gNames[RT->parent[m]], "alu")) {
+        // ALU cell --> Adding two inPin connections
+        oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) << "\n";
+        oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) << "\n";
+      }
+    }
+    else if (boost::algorithm::contains(gNames[RT->parent[m]], "outPin"))
+    {
+      // std::cout << "From :: " << gNames[RT->parent[m]] << "  :: To :: " << gNames[m] << "\n";
+
+      bool hit = false;
+      int current_sink = *it;
+
+      while (hit == false)
+      {
+        it++;
+        current_sink = *it;
+
+        // std::cout << "From :: " << gNames[RT->parent[current_sink]] << "  :: To :: " << gNames[current_sink] << "\n";
+
+        if (boost::algorithm::contains(gNames[current_sink], "inPin"))
+        {
+          hit = true;
+          oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
+          //std::cout << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
+
+          // Adding the manual connection.
+          if (boost::algorithm::contains(gNames[current_sink], "LS"))
+          { // LS Cell --> Adding one inPin connections (works only for Load as the output )
+            oFile << gNames_deliemter_changes(gNames[current_sink]) << " -> " << string_remover(gNames_deliemter_changes(gNames[current_sink]), "_inPinA") << "\n";
+          }
+        }
+      }
+    }
+  }
 }
 
 /*
@@ -120,7 +183,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   std::cout << "Writing the mapping output in file 'mapping_output.dot' \n";
 
   // Printing the start of the dot file:
-  oFile << "digraph {\ngraph [pad=\"0.212,0.055\" bgcolor=lightgray]\nnode [style=filled]\n";
+  oFile << "digraph {\ngraph [pad=\"0.212,0.055\" bgcolor=lightgray]\nnode [style=filled]\nsplines=true;\n";
 
   // Draw_Layout:
   for (auto hElement : gNames)
@@ -128,7 +191,6 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
     int gNumber = hElement.first;
     std::string gName = hElement.second;
 
-    
     if (boost::algorithm::contains(gName, "Pin"))
     {
 
@@ -151,45 +213,24 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
           std::cout << p << " :: ";
       }
 
-      
+
       std::cout << " X : " << x << " :: y ::" << y << std::endl;
       */
 
-      //std::cout << gName << std::endl;
-      
+      // std::cout << gName << std::endl;
+
       if (parts[4] == "const")
       {
         continue;
       }
 
       int scale = 3;
-      float input_displacement   = 0.6;
-      float out_displacement     = 1.0;
+      float input_displacement = 0.80;
+      float out_displacement = 1.0;
 
-      //Modified combined string:
-      std::string modified_name;
-      std::string tile_name;
-
-      for (auto name: parts){
-        if (name == parts.back()) { 
-          modified_name += name;
-        }
-        else {
-          modified_name += name + "_";
-        }
-      }
-
-      // Getting the tile name:
-      size_t pos = modified_name.find("_inPinA");
-      
-      if (pos != std::string::npos) {
-          tile_name = modified_name.substr(0, pos);
-      } else {
-          tile_name = modified_name;
-      }
-
-      //std::cout << "Tile name: " << tile_name << std::endl;
-      
+      // Modified combined string:
+      std::string modified_name = gNames_deliemter_changes(gName);
+      std::string tile_name     = string_remover(modified_name, "_inPinA");
 
       if (parts[5] == "inPinA")
       {
