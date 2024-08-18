@@ -55,21 +55,21 @@ std::string string_remover(std::string original_string, std::string toRemove);
  * 
  * @param gNumber A boost node id from the device-model graph.
  * @param y A boost node id from the application graph.
- * @param orderedFile The ordered-output dot file stream (this contains actual co-ordinates of the node cells).
- * @param unorderedFile The unordered-output dot file stream.
+ * @param positionedOutputFile The ordered-output dot file stream (this contains actual co-ordinates of the node cells).
+ * @param unpositionedOutputFile The unordered-output dot file stream.
  */
-void printRoutingResults(int y, std::ofstream &orderedFile, std::ofstream &unorderedFile);
+void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile);
 
 /**
  * @brief Prints placement information to a mapping-output file.
  *
  * @param gNumber A boost node id from the device-model graph.
  * @param gName An integer used in the output.
- * @param orderedFile The ordered-output dot file stream (this contains actual co-ordinates of the node cells).
- * @param unorderedFile The unordered-output dot file stream.
+ * @param positionedOutputFile The ordered-output dot file stream (this contains actual co-ordinates of the node cells).
+ * @param unpositionedOutputFile The unordered-output dot file stream.
  * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printPlacementResults(int gNumber, std::string gName, std::ofstream &orderedFile, std::ofstream &unorderedFile, std::map<int, NodeConfig> *gConfig);
+void printPlacementResults(int gNumber, std::string gName, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig);
 
 /**
  * @brief Prints mapping results in neato format: First displays the layout and then shows connections between the nodes.
