@@ -18,11 +18,12 @@ std::vector<std::string> colors = {
     "#FFC0CB", // Pink
     "#40E0D0", // Turquoise
     "#4B0082"  // Indigo
-};
+}; //Color code for different FunCell no
 
-std::string input_pin_color = "#0000FF";
-std::string output_pin_color = "#FF0000";
- std::map<int, std::string> funCellMapping;
+std::string input_pin_color   = "#0000FF";  //Pre-defined color-code for the input-pin cell
+std::string output_pin_color  = "#FF0000";  //Pre-defined color-code for the output-pin cell
+std::string unused_cell_color = "#A9A9A9";  //Pre-defined color-code for the unused cell
+std::map<std::string, std::string> funCellMapping; //Key-> Device-model node-name :: Value-> Mapped application name.
 
 std::string removeCurlyBrackets(const std::string& input) {
     std::string result = input;
@@ -66,7 +67,6 @@ std::string gNames_deliemter_changes(std::string gNames)
 
 std::string string_remover(std::string original_string, std::string toRemove)
 {
-
   std::string modified_string;
 
   // Getting the position of the sub_string which needs to be removed:
@@ -84,7 +84,7 @@ std::string string_remover(std::string original_string, std::string toRemove)
   return modified_string;
 }
 
-void printRoutingResults(int y, std::ofstream &oFile, std::ofstream &sFile)
+void printRoutingResults(int y, std::ofstream &orderedFile, std::ofstream &unorderedFile)
 {
 
   struct RoutingTree *RT = &((*Trees)[y]);
@@ -99,7 +99,7 @@ void printRoutingResults(int y, std::ofstream &oFile, std::ofstream &sFile)
     std::cout << "For hNames[y] :: " << hNames[y] << " :: gNames[n] :: " << gNames[n] << "\n";
 
   std::list<int>::iterator it = RT->nodes.begin();
-
+  
   for (; it != RT->nodes.end(); it++)
   {
     int m = *it;
@@ -107,31 +107,36 @@ void printRoutingResults(int y, std::ofstream &oFile, std::ofstream &sFile)
     if (m == orign)
       continue;
 
+    //Checking if either source is "inPin" or sink is "outPin"
     if ((boost::algorithm::contains(gNames[RT->parent[m]], "inPin")) || (boost::algorithm::contains(gNames[m], "outPin")))
     {
-      // OB: Right now, GRAMM does not include connection between inPin to the FunCell
-      //     That means this if loop is probably hit due to outPin connections has been found (that means FuncCell --> outPin) connection.
-      //     Adding a manual connection between inPin and FunCell.
-      // TODO: Remove this manual connection; for this routing needs to be modified to incorporate last level connections.
-
       // parent[m] --> FunCell || m --> outPin
-      oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
-      sFile << funCellMapping[RT->parent[m]] << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
+      orderedFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
+      unorderedFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
+
+      // OB: Right now, GRAMM does not include connection between inPin to the FunCell
+      //     That means this, if loop is probably will be hit due to outPin connection (FuncCell --> outPin) connection.
+      //     For the FunCell which is being used, adding a manual connection between inPin and FunCell.
+      // TODO: Remove this manual connection in future; for this routing needs to be modified to incorporate last level connections.
 
       // Adding the manual connection.
       if (boost::algorithm::contains(gNames[RT->parent[m]], "alu"))
       {
         // ALU cell --> Adding two inPin connections
-        oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) << "\n";
-        oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) << "\n";
+        orderedFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]]  << "\n";
+        orderedFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]]  << "\n";
 
-        sFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << funCellMapping[RT->parent[m]] << "\n";
-        sFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << funCellMapping[RT->parent[m]] << "\n";
+        unorderedFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << "\n";
+        unorderedFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << "\n";
       }
     }
     else if (boost::algorithm::contains(gNames[RT->parent[m]], "outPin"))
     {
-
+      /*
+        This else if loop is hit when the source is outPin and the while loop below traces the connection from the outPin and exits when found valid inPin.
+        ex: outPin -> switchblock -> switchblock_pe_input -> pe_inPin
+            This loop will trace the above connection and show a connection between outPin -> pe_inPin
+      */
       bool hit = false;
       int current_sink = *it;
 
@@ -142,15 +147,17 @@ void printRoutingResults(int y, std::ofstream &oFile, std::ofstream &sFile)
 
         if (boost::algorithm::contains(gNames[current_sink], "inPin"))
         {
-          hit = true;
-          oFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
-          sFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
+          hit = true; //Exits when a sink inPin is detected!!
+          orderedFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
+          unorderedFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
 
-          // Adding the manual connection.
+          // Adding the manual connection for the store operation.
+          // TODO: Remove this in future.
           if (boost::algorithm::contains(gNames[current_sink], "LS"))
-          { // LS Cell --> Adding one inPin connections (works only for Load as the output )
-            oFile << gNames_deliemter_changes(gNames[current_sink]) << " -> " << string_remover(gNames_deliemter_changes(gNames[current_sink]), "_inPinA") << "\n";
-            sFile <<  funCellMapping[current_sink] << " -> " << string_remover(gNames_deliemter_changes(gNames[current_sink]), "_inPinA") << "\n";
+          { // LS Cell --> Adding a inPin connections (required for Store, to connect input_pin to the Memport)
+            std::string funcCell_Index = string_remover(gNames[current_sink], ".inPinA");
+            orderedFile << gNames_deliemter_changes(gNames[current_sink]) << " -> " <<  gNames_deliemter_changes(funcCell_Index) + "_" + funCellMapping[funcCell_Index]  << "\n";
+            unorderedFile <<  gNames_deliemter_changes(gNames[current_sink]) << " -> " << gNames_deliemter_changes(funcCell_Index) + "_" + funCellMapping[funcCell_Index]   << "\n";
           }
         }
       }
@@ -158,10 +165,14 @@ void printRoutingResults(int y, std::ofstream &oFile, std::ofstream &sFile)
   }
 }
 
-void printPlacementResults(int gNumber, std::string gName, std::ofstream &oFile, std::ofstream &sFile, std::map<int, NodeConfig> *gConfig)
+void printPlacementResults(int gNumber, std::string gName, std::ofstream &orderedFile, std::ofstream &unorderedFile, std::map<int, NodeConfig> *gConfig)
 {
-  int scale = 3;
+  //Pre-defined scale and displacement values for the ordered-dot file:
+  int scale = 6;
+  float input_displacement = 0.65 * (scale/3);
+  float out_displacement = 1.0 * (scale/3);
 
+  //Parsing the sub_strings from the device model node's name:
   std::vector<std::string> parts; // Contains the sub-parts of the current string
   std::string part;               // Used while parsing the sub-string.
   std::stringstream ss(gName);    // Creating string stream input
@@ -171,6 +182,7 @@ void printPlacementResults(int gNumber, std::string gName, std::ofstream &oFile,
     parts.push_back(part);
   }
 
+  //Parsing the X & Y co-ordinates from the sub_strings
   // '0' subtraction is used to convert Char into Integer!!
   int x = parts[2][1] - '0'; // parts[2] --> 'cX' :: X will contain the column location of the node
   int y = parts[3][1] - '0'; // parts[3] --> 'rX' :: Y will contain the row location of the node
@@ -190,85 +202,113 @@ void printPlacementResults(int gNumber, std::string gName, std::ofstream &oFile,
     return;
   }
 
+  //---------------------------------------------------
+  // Case0: if the gName is FuncCell (mem/constant/alu)
+  //---------------------------------------------------
   if ((*gConfig)[gNumber].type == FuncCell)
   {
     int opcode_gNumber = (*gConfig)[gNumber].opcode;
 
-    oFile << gNames_deliemter_changes(gName) << " [shape=\"circle\" width=0.5 fontsize=4 fillcolor=\"" << colors[opcode_gNumber] << "\" pos=\"" << scale * x << "," << scale * y << "!\"]\n";
-
-    if ((*Users)[gNumber].size() >= 1)
+    if ((*Users)[gNumber].size() >= 1)  //Users list is used for determining whether the current device-model cell is used or not.
+    { 
+      unorderedFile << gNames_deliemter_changes(gName) + "_" + funCellMapping[gName]  << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\"]\n";
+      orderedFile << gNames_deliemter_changes(gName) + "_" + funCellMapping[gName] << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\" pos=\"" << scale * x << "," << scale * y << "!\"]\n";
+    }
+    else
     {
-      sFile << funCellMapping[gNumber]  << " [shape=\"circle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\"]\n";
-
-      /*
-      //OB: hardcoded
-      if (parts[4] == "alu")
-      {
-        sFile << gNames_deliemter_changes(gName) + "_inPinA" << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"" << input_pin_color << "\"]\n";
-        sFile << gNames_deliemter_changes(gName) + "_inPinB" << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"" << input_pin_color << "\"]\n";
-        sFile << gNames_deliemter_changes(gName) + "_outPinA" << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"" << output_pin_color << "\"]\n";
-      }
-      else{
-        sFile << gNames_deliemter_changes(gName) + "_inPinA" << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"" << input_pin_color << "\"]\n";
-        sFile << gNames_deliemter_changes(gName) + "_outPinA" << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"" << output_pin_color << "\"]\n";
-      }
-      */
+      orderedFile << gNames_deliemter_changes(gName) << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << unused_cell_color << "\" pos=\"" << scale * x << "," << scale * y << "!\"]\n";
     }
   }
 
+  //-------------------------------------------------------
+  // Case1: if the gName is pinCell (inPinA/inPinB/outPin)
+  //-------------------------------------------------------
   if (boost::algorithm::contains(gName, "Pin"))
   {
-
-    float input_displacement = 0.80;
-    float out_displacement = 1.0;
 
     // Modified combined string:
     std::string modified_name = gNames_deliemter_changes(gName);
 
-    if ((*Users)[gNumber].size() >= 1)
+    if ((*Users)[gNumber].size() >= 1) //Users list is used for determining whether the current device-model cell is used or not.
     {
-      if ((parts[5] == "inPinA") || (parts[5] == "inPinB"))
+      if (parts[5] == "inPinA")
       {
-        sFile << modified_name << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"" << input_pin_color << "\"]\n";
+        // Input-pin:
+        orderedFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << input_pin_color << "\" pos=\"" << scale * x - input_displacement << "," << scale * y + input_displacement << "!\"]\n";
+        unorderedFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=12 fillcolor=\"" << input_pin_color << "\"]\n";
       }
-      else
+      else if (parts[5] == "inPinB")
       {
-        sFile << modified_name << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"" << output_pin_color << "\"]\n";
+        orderedFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << input_pin_color << "\" pos=\"" << scale * x + input_displacement << "," << scale * y + input_displacement << "!\"]\n";
+        unorderedFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=12 fillcolor=\"" << input_pin_color << "\"]\n";
+      }
+      else if (parts[5] == "outPinA")
+      {
+        orderedFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << output_pin_color << "\" pos=\"" << scale * x << "," << scale * y - out_displacement << "!\"]\n";
+        unorderedFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=12 fillcolor=\"" << output_pin_color << "\"]\n";
+      }
+    }
+    else{
+      if (parts[5] == "inPinA")
+      {
+        // Input-pin:
+        orderedFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << unused_cell_color << "\" pos=\"" << scale * x - input_displacement << "," << scale * y + input_displacement << "!\"]\n";
+      }
+      else if (parts[5] == "inPinB")
+      {
+        orderedFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << unused_cell_color << "\" pos=\"" << scale * x + input_displacement << "," << scale * y + input_displacement << "!\"]\n";
+      }
+      else if (parts[5] == "outPinA")
+      {
+        orderedFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << unused_cell_color << "\" pos=\"" << scale * x << "," << scale * y - out_displacement << "!\"]\n";
       }
     }
 
-    if (parts[5] == "inPinA")
-    {
-      // Input-pin:
-      oFile << modified_name << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"" << input_pin_color << "\" pos=\"" << scale * x - input_displacement << "," << scale * y + input_displacement << "!\"]\n";
-    }
-    else if (parts[5] == "inPinB")
-    {
-      oFile << modified_name << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"" << input_pin_color << "\" pos=\"" << scale * x + input_displacement << "," << scale * y + input_displacement << "!\"]\n";
-    }
-    else if (parts[5] == "outPinA")
-    {
-      oFile << modified_name << " [shape=\"circle\" width=0.1 fontsize=1 fillcolor=\"" << output_pin_color << "\" pos=\"" << scale * x << "," << scale * y - out_displacement << "!\"]\n";
-    }
   }
 }
 
 void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
 
-  // Output stream for storing successful mapping:
-  std::ofstream oFile;
-  oFile.open("mapping_output.dot");
-  std::cout << "Writing the ordered mapping output in file 'mapping_output.dot' \n";
+  // Output stream for storing successful mapping: The ordered-output dot file stream (this contains actual co-ordinates of the node cells).
+  std::ofstream orderedFile;
+  orderedFile.open("ordered_dot_output.dot");
+  std::cout << "Writing the ordered mapping output in file 'ordered_dot_output.dot' \n";
 
   // Output stream for storing successful mapping:
-  std::ofstream sFile;
-  sFile.open("simple_mapping_output.dot");
-  std::cout << "Writing the unordered mapping output in file 'simple_mapping_output.dot' \n";
+  std::ofstream unorderedFile;
+  unorderedFile.open("unordered_dot_output.dot");
+  std::cout << "Writing the unordered mapping output in file 'unordered_dot_output.dot' \n";
 
   // Printing the start of the dot file:
-  oFile << "digraph {\ngraph [pad=\"0.212,0.055\" bgcolor=lightgray]\nnode [style=filled]\nsplines=true;\n";
-  sFile << "digraph {\ngraph [pad=\"0.212,0.055\" bgcolor=lightgray]\nnode [style=filled]\nsplines=true;\n";
+  orderedFile << "digraph {\ngraph [bgcolor=lightgray]\nnode [style=filled]\nsplines=ortho;\n";
+  unorderedFile << "digraph {\ngraph [bgcolor=lightgray]\nnode [style=filled]\nsplines=true; rankdir=LR;\n";
+
+  //---------------------------------------------------
+  //Adding nodes of kernel into simplified_file_output:
+  //---------------------------------------------------
+  unorderedFile << "subgraph cluster_1 {\n label = \"Input Kernel\"; fontsize = 40; style=dashed;\n";
+  for (int i = 0; i < num_vertices(*H); i++)
+  {
+    if ((*hConfig)[i].opcode == constant)
+      std::replace( hNames[i].begin(), hNames[i].end(), '|', '_');
+      std::replace( hNames[i].begin(), hNames[i].end(), '=', '_');
+      std::replace( hNames[i].begin(), hNames[i].end(), '.', '_');
+
+    unorderedFile << removeCurlyBrackets(hNames[i]) << ";\n";
+  }
+
+  std::pair<edge_iterator, edge_iterator> edge_pair = edges(*H);
+  for (edge_iterator e_it = edge_pair.first; e_it != edge_pair.second; ++e_it) {
+      vertex_descriptor u = source(*e_it, *H);
+      vertex_descriptor v = target(*e_it, *H);
+        
+      unorderedFile << "  " << removeCurlyBrackets(hNames[u]) << " -> " << removeCurlyBrackets(hNames[v]) << ";\n";
+  }
+
+  unorderedFile << "}\n";
+
+  unorderedFile << "subgraph cluster_0 {\n label = \"GRAMM mapping output\"; fontsize = 40; style=dashed;\n";
 
   //------------------------
   // Draw/Print placement:
@@ -277,10 +317,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   {
     int gNumber = hElement.first;
     std::string gName = hElement.second;
-
-    // OB: std::cout <<  " (*Users)[gNumber].size()  :: " << (*Users)[gNumber].size() <<  " :: gName :: " << gName << "\n";
-
-    printPlacementResults(gNumber, gName, oFile, sFile, gConfig);
+    printPlacementResults(gNumber, gName, orderedFile, unorderedFile, gConfig);
   }
 
   //------------------------
@@ -288,15 +325,16 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   //------------------------
   for (int i = 0; i < num_vertices(*H); i++)
   {
-
+    //OB: Skipping the routing of constant as of now.
     if ((*hConfig)[i].opcode == constant)
       continue;
 
-    printRoutingResults(i, oFile, sFile);
+    printRoutingResults(i, orderedFile, unorderedFile);
   }
 
-  oFile << "}\n";
-  sFile << "}\n";
+  orderedFile << "}\n"; //End of digraph
+  unorderedFile << "}\n";  //End of second cluster
+  unorderedFile << "}\n"; //End of digraph
 }
 
 void printName(int n)
@@ -321,7 +359,7 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G)
       std::cout << gNames[n] << std::endl;
 
       if(it == RT->nodes.begin()){
-        funCellMapping[n] = removeCurlyBrackets(hNames[i]);
+        funCellMapping[gNames[n]] = removeCurlyBrackets(hNames[i]);
       }
     }
   }

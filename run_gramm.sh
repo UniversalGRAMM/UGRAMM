@@ -13,17 +13,23 @@ echo "cd scripts && ./device_model_gen.py -NR $2 -NC $3 -Arch $4 && cd .."
 cd scripts && ./device_model_gen.py -NR $2 -NC $3 -Arch $4 && cd ..
 
 # Executes GRAMM and producing mapping result in mapping_output.dot
-echo "---------------------Executing GRAMM and producing mapping result in mapping_output.dot---------------------"
+echo " "
+echo " "
+echo "---------------------Executing GRAMM and producing mapping result in ordered_dot_output.dot & unordered_dot_output---------------------"
 device_model_output="scripts/riken_$2_$3.dot"
 echo "make && ./GRAMM $1 $device_model_output $2 $3 0"
 make && ./GRAMM $1 $device_model_output $2 $3 0
 
 # Converting the mapped output dot file into png:
-echo "---------------------Converting the ordered-mapped  mapping_output.dot file into mapping_output.png:---------------------"
-echo "neato -Tpng mapping_output.dot -o mapping_output.png"
-neato -Tpng mapping_output.dot -o mapping_output.png
+echo " "
+echo " "
+echo "---------------------Converting the ordered-mapped  ordered_dot_output.dot file into ordered_dot_output.png:---------------------"
+echo "neato -Tpng ordered_dot_output.dot -o ordered_dot_output.png"
+neato -Tpng ordered_dot_output.dot -o ordered_dot_output.png
 
 # Converting the mapped output dot file into png:
-echo "---------------------Converting the unordered-mapped  mapping_output.dot file into mapping_output.png:---------------------"
-echo "neato -Tpng simple_mapping_output.dot -o simple_mapping_output.png"
-dot -Tpng simple_mapping_output.dot -o simple_mapping_output.png
+echo " "
+echo " "
+echo "---------------------Converting the unordered-mapped  unordered_dot_output.dot file into unordered_dot_output.png:---------------------"
+echo "neato -Tpng unordered_dot_output.dot -o unordered_dot_output.png"
+dot -Tpng unordered_dot_output.dot -o unordered_dot_output.png

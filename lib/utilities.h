@@ -17,13 +17,15 @@
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 
-extern  std::vector<std::string> colors;
-extern  std::string input_pin_color;
-extern  std::string output_pin_color;
-extern  std::map<int, std::string> funCellMapping;
+extern  std::vector<std::string> colors;        //Color code for different FunCell nodes
+extern  std::string input_pin_color;            //Pre-defined color-code for the input-pin cell
+extern  std::string output_pin_color;           //Pre-defined color-code for the output-pin cell
+extern  std::string unused_cell_color;          //Pre-defined color-code for the unused cell
+extern  std::map<std::string, std::string> funCellMapping;  //Key-> Device-model node-name :: Value-> Mapped application name.
 
 /**
- * @brief Removes the curly brackets '{' and '}' from the given string.
+ * @brief Removes the curly brackets '{' and '}' from the given string. 
+ * The kernels present in CGRA-ME have {} included in the node names, which hinders dot visualization.
  * 
  * @param input The input string from which curly brackets should be removed.
  * @return A new string with the curly brackets removed. If no curly brackets 
@@ -53,21 +55,21 @@ std::string string_remover(std::string original_string, std::string toRemove);
  * 
  * @param gNumber A boost node id from the device-model graph.
  * @param y A boost node id from the application graph.
- * @param oFile The ordered-output dot file stream.
- * @param sFile The unordered-output dot file stream.
+ * @param orderedFile The ordered-output dot file stream (this contains actual co-ordinates of the node cells).
+ * @param unorderedFile The unordered-output dot file stream.
  */
-void printRoutingResults(int y, std::ofstream &oFile, std::ofstream &sFile);
+void printRoutingResults(int y, std::ofstream &orderedFile, std::ofstream &unorderedFile);
 
 /**
  * @brief Prints placement information to a mapping-output file.
  *
  * @param gNumber A boost node id from the device-model graph.
  * @param gName An integer used in the output.
- * @param oFile The ordered-output dot file stream.
- * @param sFile The unordered-output dot file stream.
+ * @param orderedFile The ordered-output dot file stream (this contains actual co-ordinates of the node cells).
+ * @param unorderedFile The unordered-output dot file stream.
  * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printPlacementResults(int gNumber, std::string gName, std::ofstream &oFile, std::ofstream &sFile, std::map<int, NodeConfig> *gConfig);
+void printPlacementResults(int gNumber, std::string gName, std::ofstream &orderedFile, std::ofstream &unorderedFile, std::map<int, NodeConfig> *gConfig);
 
 /**
  * @brief Prints mapping results in neato format: First displays the layout and then shows connections between the nodes.
