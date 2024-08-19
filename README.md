@@ -18,7 +18,7 @@ G. Zhou, M. Stojilović and J. H. Anderson, "GRAMM: Fast CGRA Application Mappin
         - $2 [NR] = 8
         - $3 [NC] = 8
         - 4 [Arch_Type for device model] = RIKEN_with_pins or RIKEN
-            - "RIKEN" Argument produces device model without pins meanwhile "RIKEN_with_pins" produce architecture for RIKEN with pins
+            - "RIKEN" Argument produces device model for the RIKEN architecture
     - Generating device model using external script
         - `cd scripts && ./device_model_gen.py -NR $2 -NC $3 -Arch RIKEN && cd ..`
     - Executes GRAMM and produces mapping result in mapping_output.dot

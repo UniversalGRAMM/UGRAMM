@@ -5,7 +5,7 @@
 # $1 : Kernels/Conv_Balance/conv_nounroll_Balance.dot 
 # $2 = NR = 8
 # $3 = NC = 8
-# $4 = Arch Type = RIKEN_with_pins or RIKEN <without pins>
+# $4 = Arch Type = RIKEN
 
 # Generating device model:
 echo "---------------------Generating device model using external script:---------------------"
