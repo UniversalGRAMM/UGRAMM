@@ -287,7 +287,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   //---------------------------------------------------
   //Adding nodes of kernel into simplified_file_output:
   //---------------------------------------------------
-  unpositionedOutputFile << "subgraph cluster_1 {\n label = \"Input Kernel\"; fontsize = 40; style=dashed;\n";
+  unpositionedOutputFile << "subgraph cluster_1 {\n label = \"Input Kernel\"; fontsize = 40; style=dashed; \n edge [minlen=3]\n";
   for (int i = 0; i < num_vertices(*H); i++)
   {
     if ((*hConfig)[i].opcode == constant)

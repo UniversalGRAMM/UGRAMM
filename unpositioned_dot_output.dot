@@ -3,7 +3,8 @@ graph [bgcolor=lightgray]
 node [style=filled]
 splines=true; rankdir=LR;
 subgraph cluster_1 {
- label = "Input Kernel"; fontsize = 40; style=dashed;
+ label = "Input Kernel"; fontsize = 40; style=dashed; 
+ edge [minlen=3]
 Const_27_float32_5_00;
 Const_28_float32_13_00;
 Const_29_float32_9_00;
