@@ -57,8 +57,9 @@ std::string string_remover(std::string original_string, std::string toRemove);
  * @param y A boost node id from the application graph.
  * @param positionedOutputFile The positioned-output dot file stream (this dot-file contains actual co-ordinates of the node cells).
  * @param unpositionedOutputFile The unpositioned-output dot file stream (this dot-file does not contain any co-ordinates of the node cells).
+ * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile);
+void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig);
 
 /**
  * @brief Prints placement information to a mapping-output file.
@@ -86,8 +87,9 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
  * 
  * @param H A pointer to the application graph.
  * @param G A pointer to the device-model graph.
+ * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printVertexModels(DirectedGraph *H, DirectedGraph *G);
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig);
 
 /**
  * @brief Prints the device model cell name corresponding to a given boost id number from device model graph.

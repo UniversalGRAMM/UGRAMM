@@ -702,7 +702,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
 
       // Printing vertex model:
-      printVertexModels(H, G);
+      printVertexModels(H, G, hConfig);
 
       // Visualizing mapping result in neato:
       printMappedResults(H, G, hConfig, gConfig);
