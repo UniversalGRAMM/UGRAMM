@@ -657,8 +657,6 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
 
       int y = ordering[k];
-      if (RIKEN && ((*hConfig)[y].opcode == constant))
-        continue;
 
       // Uncommenting this
       // OB: std::cout << "--------------------- New Vertices Mapping Start ---------------------------\n";

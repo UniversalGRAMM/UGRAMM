@@ -10,7 +10,9 @@ G. Zhou, M. Stojilović and J. H. Anderson, "GRAMM: Fast CGRA Application Mappin
 
 ## Helper Script usage:
 
-> ./run_gramm.sh Kernels/Conv_Balance/conv_nounroll_Balance.dot 8 8 RIKEN 
+> Old script --> ./run_gramm.sh Kernels/Conv_Balance/conv_nounroll_Balance.dot 8 8 RIKEN 
+
+> ./run_gramm.sh Kernels/Conv_Balance/conv_nounroll_Balance.dot 8 8 RIKEN_with_pins
 
 - run_gramm.sh script:
     - Arugment info:
