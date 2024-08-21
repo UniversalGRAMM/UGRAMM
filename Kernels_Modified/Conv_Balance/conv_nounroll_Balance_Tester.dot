@@ -19,7 +19,7 @@ FMUL_15 [label="{FMUL_15}", opcode=FMUL, shape=record, type=op];
 FMUL_16 [label="{FMUL_16}", opcode=FMUL, shape=record, type=op];
 FMUL_17 [label="{FMUL_17}", opcode=FMUL, shape=record, type=op];
 FADD_25 [label="{FADD_25}", opcode=FADD, shape=record, type=op];
-Store_26 [label="{Store_26}", opcode=outPinAput, shape=record];
+Store_26 [label="{Store_26}", opcode=output, shape=record];
 Const_27 [constVal="1", float32="5.00", label="{Const_27|float32=5.00}", opcode=const, shape=record];
 Const_28 [constVal="1", float32="13.00", label="{Const_28|float32=13.00}", opcode=const, shape=record];
 Const_29 [constVal="1", float32="9.00", label="{Const_29|float32=9.00}", opcode=const, shape=record];

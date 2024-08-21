@@ -20,7 +20,7 @@ std::vector<std::string> colors = {
     "#4B0082"  // Indigo
 }; // Color code for different FunCell no
 
-std::string input_pin_color = "#0000FF";           // Pre-defined color-code for the input-pin cell
+std::string input_pin_color = "#00FF7F";           // Pre-defined color-code for the input-pin cell
 std::string output_pin_color = "#FF0000";          // Pre-defined color-code for the output-pin cell
 std::string unused_cell_color = "#A9A9A9";         // Pre-defined color-code for the unused cell
 std::map<std::string, std::string> funCellMapping; // Key-> Device-model node-name :: Value-> Mapped application name.
