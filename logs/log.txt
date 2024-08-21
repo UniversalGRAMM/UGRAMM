@@ -16,6 +16,8 @@ Creating RIKEN_with_pins architecture!!
 make && ./GRAMM Kernels_Modified/Conv_Balance/conv_nounroll_Balance_Tester_Fanout.dot scripts/riken_8_8.dot 8 8 0
 mkdir -p build
 g++ -Ilib -lboost_graph -c src/GRAMM.cpp -o build/GRAMM.o
+mkdir -p build
+g++ -Ilib -lboost_graph -c src/utilities.cpp -o build/utilities.o
 g++ build/GRAMM.o build/utilities.o -Ilib -lboost_graph -o GRAMM
 ***** BEGINNING OUTER WHILE LOOP ***** ITER 1 
 OVERUSE 1 ON OVERUSE 1 ON OVERUSE 1 ON OVERUSE 1 ON TOTAL OVERUSE: 4
@@ -271,6 +273,41 @@ SUCCESS! 2 0 35
 	 324	 LS.w32.c0.r7.memport
 Writing the positioned mapping output in file 'positioned_dot_output.dot' 
 Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot' 
+pe_w32_c7_r7_const_outPinA -> pe_w32_c7_r7_alu_inPinB
+pe_w32_c4_r5_const_outPinA -> pe_w32_c4_r5_alu_inPinB
+pe_w32_c5_r6_const_outPinA -> pe_w32_c5_r6_alu_inPinA
+pe_w32_c1_r6_const_outPinA -> pe_w32_c1_r6_alu_inPinB
+pe_w32_c6_r1_const_outPinA -> pe_w32_c6_r1_alu_inPinB
+pe_w32_c3_r3_const_outPinA -> pe_w32_c3_r3_alu_inPinB
+pe_w32_c2_r0_const_outPinA -> pe_w32_c2_r0_alu_inPinB
+pe_w32_c8_r3_const_outPinA -> pe_w32_c8_r3_alu_inPinB
+pe_w32_c5_r3_alu_outPinA -> pe_w32_c7_r2_alu_inPinB
+pe_w32_c6_r4_alu_outPinA -> pe_w32_c7_r2_alu_inPinA
+pe_w32_c6_r3_alu_outPinA -> pe_w32_c5_r3_alu_inPinB
+pe_w32_c4_r3_alu_outPinA -> pe_w32_c6_r4_alu_inPinB
+pe_w32_c6_r2_alu_outPinA -> pe_w32_c5_r3_alu_inPinA
+pe_w32_c5_r5_alu_outPinA -> pe_w32_c6_r4_alu_inPinA
+pe_w32_c7_r4_alu_outPinA -> pe_w32_c6_r3_alu_inPinB
+pe_w32_c7_r2_alu_outPinA -> LS_w32_c0_r7_memport_inPinA
+pe_w32_c7_r7_alu_outPinA -> pe_w32_c5_r5_alu_inPinA
+pe_w32_c2_r0_alu_outPinA -> pe_w32_c5_r5_alu_inPinB
+pe_w32_c5_r6_alu_outPinA -> pe_w32_c6_r2_alu_inPinB
+pe_w32_c1_r6_alu_outPinA -> pe_w32_c4_r3_alu_inPinB
+pe_w32_c4_r5_alu_outPinA -> pe_w32_c6_r3_alu_inPinA
+pe_w32_c7_r6_alu_outPinA -> pe_w32_c7_r4_alu_inPinB
+pe_w32_c3_r3_alu_outPinA -> pe_w32_c4_r3_alu_inPinA
+pe_w32_c8_r3_alu_outPinA -> pe_w32_c7_r4_alu_inPinA
+pe_w32_c6_r1_alu_outPinA -> pe_w32_c6_r2_alu_inPinA
+LS_w32_c0_r5_memport_outPinA -> pe_w32_c6_r1_alu_inPinA
+LS_w32_c9_r6_mem_outPinA -> pe_w32_c7_r7_alu_inPinA
+LS_w32_c0_r1_memport_outPinA -> pe_w32_c2_r0_alu_inPinA
+LS_w32_c9_r4_mem_outPinA -> pe_w32_c5_r6_alu_inPinB
+LS_w32_c9_r1_mem_outPinA -> pe_w32_c1_r6_alu_inPinA
+LS_w32_c9_r2_mem_outPinA -> pe_w32_c4_r5_alu_inPinA
+LS_w32_c9_r7_mem_outPinA -> pe_w32_c7_r6_alu_inPinA
+LS_w32_c0_r2_memport_outPinA -> pe_w32_c3_r3_alu_inPinA
+LS_w32_c9_r5_mem_outPinA -> pe_w32_c8_r3_alu_inPinA
+LS_w32_c9_r5_mem_outPinA -> pe_w32_c7_r6_alu_inPinB
  
  
 ---------------------Converting the ordered-mapped  positioned_dot_output.dot file into ordered_dot_output.png:---------------------

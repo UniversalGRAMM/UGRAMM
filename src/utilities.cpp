@@ -8,20 +8,20 @@
 #include "../lib/utilities.h"
 
 std::vector<std::string> colors = {
-    "#FFFF00", // Yellow
-    "#40E0D0", // Turquoise
-    "#A52A2A", // Brown
-    "#00FFFF", // Cyan
-    "#FF00FF", // Magenta
-    "#FFA500", // Orange
-    "#800080", // Purple
-    "#FFC0CB", // Pink
-    "#40E0D0", // Turquoise
-    "#4B0082"  // Indigo
-}; // Color code for different FunCell no
+    "#FFFFE0", // Light Yellow
+    "#AFEEEE", // Light Turquoise
+    "#D2B48C", // Tan (Lighter Brown)
+    "#E0FFFF", // Light Cyan
+    "#FFA500", // Orange (Replaced Light Pink)
+    "#FFDAB9", // Peach Puff (Lighter Orange)
+    "#D8BFD8", // Thistle (Lighter Purple)
+    "#00FF00", // Lime (Replaced Pink)
+    "#AFEEEE", // Light Turquoise
+    "#DDA0DD"  // Plum (Lighter Indigo)
+}; // Color code for different FunCells
 
-std::string input_pin_color = "#00FF7F";           // Pre-defined color-code for the input-pin cell
-std::string output_pin_color = "#FF0000";          // Pre-defined color-code for the output-pin cell
+std::string input_pin_color = "#ADD8E6";           // Pre-defined color-code for the input-pin cell ( Light Blue)
+std::string output_pin_color = "#FFB6C1";          // Pre-defined color-code for the output-pin cell (Lighter Red/Pink)
 std::string unused_cell_color = "#A9A9A9";         // Pre-defined color-code for the unused cell
 std::map<std::string, std::string> funCellMapping; // Key-> Device-model node-name :: Value-> Mapped application name.
 
@@ -141,17 +141,12 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
         ex: outPin -> switchblock -> switchblock_pe_input -> pe_inPin
             This loop will trace the above connection and show a connection between outPin -> pe_inPin
       */
-      bool hit = false;
       int current_sink = *it;
-
-      while (hit == false)
+      while (it != RT->nodes.end())
       {
-        it++;
-        current_sink = *it;
-
         if (boost::algorithm::contains(gNames[current_sink], "inPin"))
-        {
-          hit = true; // Exits when a sink inPin is detected!!
+        {        
+          std::cout << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";  
           if ((*hConfig)[y].opcode != constant) //OB skipping the constant as of now in the positioned graph
             positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
           unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
@@ -165,7 +160,10 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
             unpositionedOutputFile << gNames_deliemter_changes(gNames[current_sink]) << " -> " << gNames_deliemter_changes(funcCell_Index) + "_" + funCellMapping[funcCell_Index] << "\n";
           }
         }
+        it++;
+        current_sink = *it;
       }
+      break;  //As the above while loop traces till the end of the connection, we have break out of the for loop iterator!!
     }
   }
 }
@@ -297,8 +295,8 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   std::cout << "Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot' \n";
 
   // Printing the start of the dot file:
-  positionedOutputFile << "digraph {\ngraph [bgcolor=lightgray]\nnode [style=filled]\nsplines=ortho;\n";
-  unpositionedOutputFile << "digraph {\ngraph [bgcolor=lightgray]\nnode [style=filled]\nsplines=true; rankdir=TB;\n";
+  positionedOutputFile << "digraph {\ngraph [bgcolor=lightgray];\n node [style=filled, fontname=\"times-bold\", penwidth=2];\n edge [penwidth=4]; \n splines=ortho;\n";
+  unpositionedOutputFile << "digraph {\ngraph [bgcolor=lightgray];\n node [style=filled, fontname=\"times-bold\", penwidth=2];\n edge [penwidth=4]; \n splines=true; rankdir=TB;\n";
 
   //---------------------------------------------------
   // Adding nodes of kernel into simplified_file_output:
@@ -360,7 +358,7 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
     std::list<int>::iterator it = RT->nodes.begin();
 
-    for (; it != RT->nodes.end(); it++)
+    while (it != RT->nodes.end())
     {
       std::cout << "\t " << *it << "\t "; // for ADRES
       int n = *it;
@@ -368,14 +366,15 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
       if (it == RT->nodes.begin())
       {
-
         if ((*hConfig)[i].opcode == constant) // Fixing the constant names:
+        {
           std::replace(hNames[i].begin(), hNames[i].end(), '|', '_');
-        std::replace(hNames[i].begin(), hNames[i].end(), '=', '_');
-        std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
-
+          std::replace(hNames[i].begin(), hNames[i].end(), '=', '_');
+          std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
+        }
         funCellMapping[gNames[n]] = removeCurlyBrackets(hNames[i]);
       }
+      it++;
     }
   }
 }
