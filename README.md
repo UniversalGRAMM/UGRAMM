@@ -59,3 +59,7 @@ During testing, we created some benchmarks that has the extension "_Tester", for
 ### benchmark_modification.py
 > ./application_graph_modification.py -Benchmark <Path_To_Benchmark_File> -OutputDir <Path_To_Output_Kernal_Directory>
 > ./application_graph_modification.py -Benchmark ../Kernels/Conv_Balance/conv_nounroll_Balance_Tester_Fanout.dot -OutputDir ../Kernels_Modified
+
+For Riken architecture, constantant can not have a fan out as they can not be routed back to the switch block. In any typical mapping, we would say that the mapping failed as the device model graph does not allow this application DFG feature. However, we have created a helper script for Riken arhcitecture that duplicated the constant nodes to give the illusion of constant fanout. One important thing to mention is that the output dot file will be called "modified_{filename}.dot". This will be fixed in the future. 
+> ./constant_duplication.py -Benchmark <Path_To_Benchmark_File> -OutputDir  <Path_To_Output_Kernal_Directory>
+> ./constant_duplication.py -Benchmark ../Kernels_Modified/Conv_Balance/conv_nounroll_Balance_Tester_Fanout_Constant.dot -OutputDir ../Kernels_Modified
