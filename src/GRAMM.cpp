@@ -31,30 +31,6 @@ std::bitset<100000> explored;
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
 std::vector<std::string> outPin = {"outPinA"};
 
-//-------------------------------------------------------//
-// The following functions are added to simplify the pins
-// convention
-//-------------------------------------------------------//
-int getRikenElement(int n)
-{
-  n -= 2 * numR;
-  return n % 14;
-}
-
-bool isRikenPinA(int n)
-{
-  return (getRikenElement(n) == 8);
-}
-
-bool isRikenPinB(int n)
-{
-  return (getRikenElement(n) == 9);
-}
-
-//-------------------------------------------------------//
-// pin function end
-//-------------------------------------------------------//
-
 void depositRoute(int signal, std::list<int> *nodes)
 {
   if (!nodes->size())

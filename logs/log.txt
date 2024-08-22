@@ -14,9 +14,7 @@ Creating RIKEN_with_pins architecture!!
  
 ---------------------Executing GRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------
 make && ./GRAMM Kernels_Modified/Conv_Balance/conv_nounroll_Balance_Tester_Fanout.dot scripts/riken_8_8.dot 8 8 0
-mkdir -p build
-g++ -Ilib -lboost_graph -c src/utilities.cpp -o build/utilities.o
-g++ build/GRAMM.o build/utilities.o -Ilib -lboost_graph -o GRAMM
+make: 'GRAMM' is up to date.
 ***** BEGINNING OUTER WHILE LOOP ***** ITER 1 
 OVERUSE 1 ON OVERUSE 1 ON OVERUSE 1 ON OVERUSE 1 ON TOTAL OVERUSE: 4
 ***** BEGINNING OUTER WHILE LOOP ***** ITER 2 
