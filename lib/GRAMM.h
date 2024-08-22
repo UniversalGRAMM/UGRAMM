@@ -53,6 +53,7 @@ typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 // -- Location of the node can be defined as an integer pair
 typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, in, out} opcodeType;
 
+
 // typedef enum inPinT {inPinA, inPinB, anyPins} inPinType;
 // typedef enum outPinT {outPinA} outPinType;
 
@@ -61,7 +62,10 @@ extern std::vector<std::string> outPin;
 
 struct NodeConfig {
     nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
-    opcodeType opcode;      //Opcode of the node --> io, alu, memport....
+    opcodeType opcode;      //Opcode of the node --> io, alu, memport, ....
+    std::string loadPin;    //Load pin of the PinCell node --> inPinA, inPinB
+    std::string tile;       //Tile of the FuncCell Node --> PE, LS, ....
+    //std::string name; gnames  // gNames[i] or gNames[next]
     //As of now following configs are optional
     int Latency = 0;                    
     int Width   = 0;                      

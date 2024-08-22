@@ -31,30 +31,6 @@ std::bitset<100000> explored;
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
 std::vector<std::string> outPin = {"outPinA"};
 
-//-------------------------------------------------------//
-// The following functions are added to simplify the pins
-// convention
-//-------------------------------------------------------//
-int getRikenElement(int n)
-{
-  n -= 2 * numR;
-  return n % 14;
-}
-
-bool isRikenPinA(int n)
-{
-  return (getRikenElement(n) == 8);
-}
-
-bool isRikenPinB(int n)
-{
-  return (getRikenElement(n) == 9);
-}
-
-//-------------------------------------------------------//
-// pin function end
-//-------------------------------------------------------//
-
 void depositRoute(int signal, std::list<int> *nodes)
 {
   if (!nodes->size())
@@ -280,14 +256,20 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
       explored.set(next);
       expInt.push_back(next);
 
-      // Verifying if the node is mapping to the correct pin type in the device model graph
-      //  if ((loadPin == "inPinB") && ((*gConfig)[next].opcode != inPinB) && ((*gConfig)[next].type == PinCell)){
-      //    continue;
-      //  }
+      
+      // Verifying the correctness of the load pins in the device model graph if the
+      // next node is of type PinCell. If pin is not correct, we will skip over the 
+      // the next node.
 
-      // if ((loadPin == "inPinA") && ((*gConfig)[next].opcode != inPinA) && ((*gConfig)[next].type == PinCell)){
-      //   continue;
-      // }
+      if ((*gConfig)[next].type == PinCell){
+        if ((loadPin != "inPinA") && ((*gConfig)[next].loadPin == "inPinA")){
+          continue;
+        }
+
+        if ((loadPin != "inPinB") && ((*gConfig)[next].loadPin == "inPinB")){
+          continue;
+        }
+      }
 
       // Verifying if the node is type RouteCell or PinCell as ONLY they can be used along the way for routing
       if ((next != sink) && (*gConfig)[next].type != RouteCell && (*gConfig)[next].type != PinCell)
@@ -657,8 +639,6 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
 
       int y = ordering[k];
-      if (RIKEN && ((*hConfig)[y].opcode == constant))
-        continue;
 
       // Uncommenting this
       // OB: std::cout << "--------------------- New Vertices Mapping Start ---------------------------\n";
@@ -704,7 +684,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
 
       // Printing vertex model:
-      printVertexModels(H, G);
+      printVertexModels(H, G, hConfig);
 
       // Visualizing mapping result in neato:
       printMappedResults(H, G, hConfig, gConfig);
@@ -1097,15 +1077,13 @@ void computeTopo(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
   - DirectedGraph *G                  :: original device model read dot file
   - std::map<int, NodeConfig> *gConfig  :: Store the configuration of each node (type,opcode, latenct etc.)
 */
-void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
-{
+void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig){
   //--------------------------------------------------------------------
   // Omkar:  Reading device model dot file instead.
   //--------------------------------------------------------------------
 
   // Iterate over all the nodes of the device model graph and assign the type of nodes:
-  for (int i = 0; i < num_vertices(*G); i++)
-  {
+  for (int i = 0; i < num_vertices(*G); i++){
     vertex_descriptor v = vertex(i, *G);
 
     std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v); // Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
@@ -1119,43 +1097,63 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     // TODO: Remove G_ID from the device model!!
     std::string arch_ID = boost::get(&DotVertex::G_ID, *G, v); // Contains the sequence ID for the given node of Device Model Graph
 
-    if (DEBUG)
-    {
+    if (DEBUG){
       std::cout << "[G] arch_ID " << arch_ID << " ::  arch_NodeType " << arch_NodeType <<  " :: arch_Opcode " << arch_Opcode << "\n";
     }
 
     // Deciding the configuration based on attributes defined in the script:
     // arch_Opcode described in the device model graph file: MemPort, Mux, Constant, and ALU.
-    if (arch_Opcode == "MemPort")
-    {
+    if (arch_Opcode == "MemPort"){
       (*gConfig)[i].type = FuncCell;  // memport is part  of FuncCell
       (*gConfig)[i].opcode = memport; // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "Mux")
-    {
+    else if (arch_Opcode == "Mux"){
       (*gConfig)[i].type = RouteCell; // mux is part of RouteCell
       (*gConfig)[i].opcode = mux;     // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "in")
-    {
+    else if (arch_Opcode == "in"){
       (*gConfig)[i].type = PinCell; // constant is part of FuncCell
       (*gConfig)[i].opcode = in;    // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "out")
-    {
+    else if (arch_Opcode == "out"){
       (*gConfig)[i].type = PinCell; // constant is part of FuncCell
       (*gConfig)[i].opcode = out;   // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "Constant")
-    {
+    else if (arch_Opcode == "Constant"){
       (*gConfig)[i].type = FuncCell;   // constant is part of FuncCell
       (*gConfig)[i].opcode = constant; // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "ALU")
-    {
+    else if (arch_Opcode == "ALU"){
       (*gConfig)[i].type = FuncCell; // alu is part of FuncCell
       (*gConfig)[i].opcode = alu;    // Saving the opcode in the config array.
     }
+
+    if ((*gConfig)[i].type == PinCell){
+      size_t pos = gNames[i].find_last_of('.');
+      if (pos != std::string::npos) {
+          (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
+      }
+    }
+
+    if ((*gConfig)[i].type == FuncCell){
+      size_t pos = gNames[i].find('.');
+      if (pos != std::string::npos) {
+        (*gConfig)[i].tile = gNames[i].substr(0, pos);
+      }
+    }
+
+    if (DEBUG){
+      std::cout << "[G] arch_ID " << arch_ID << " ::  [G] name " << gNames[i] <<  " :: Type " ;
+      if ((*gConfig)[i].type == FuncCell)
+        std::cout << "FuncCell";
+      else if ((*gConfig)[i].type == PinCell)
+        std::cout << "PinCell";
+      else if ((*gConfig)[i].type == RouteCell)
+        std::cout << "RouteCell";
+
+      std::cout <<  " :: arch_Opcode " << arch_Opcode <<  " :: load pin " << (*gConfig)[i].loadPin <<  " ::  tile " << (*gConfig)[i].tile <<  "\n";
+    }
+
   }
 }
 

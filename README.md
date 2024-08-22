@@ -10,7 +10,11 @@ G. Zhou, M. Stojilović and J. H. Anderson, "GRAMM: Fast CGRA Application Mappin
 
 ## Helper Script usage:
 
+The following command runs the maps the DFG on the Riken Device model that does not contains any pins
 > ./run_gramm.sh Kernels/Conv_Balance/conv_nounroll_Balance.dot 8 8 RIKEN 
+
+The following command runs the maps the DFG on the Riken Device model that does contains any pins. This will be the main command used for the GRAMM mapping.
+> ./run_gramm.sh Kernels/Conv_Balance/conv_nounroll_Balance.dot 8 8 RIKEN_with_pins
 
 - run_gramm.sh script:
     - Arugment info:
@@ -35,3 +39,27 @@ G. Zhou, M. Stojilović and J. H. Anderson, "GRAMM: Fast CGRA Application Mappin
 ## External script-based version [Identical to hardcoded version]:
 
 <img src="assets/images/mapping_output_dot_input.png" alt="mapping_output_dot_input" width="600"/>
+
+
+## Benchmarks conversion script
+There are two scripts used to covert the current benchmarks. There scripts are 
+- benchmark_modification.py 
+- application_graph_modification.py
+
+Most of the benchmark currently has the "Operand" property defined at the edges of the DFG graph. This property defines the load pin the DFG. Unfortunately, this convention will not be used in the GRAMM mapper. Instead, the edges will be defined through "driver" and "load" properties. These new properties will be used to define the input and output pins in the DFG path. 
+
+The main script that everyone will be using is the benchmark_modification.py. Since most benchmarks in the kernel suite has edges with "Operand" property, the benchmark_modification.py will convert the edge properties to the new convention mentioned above. In addition, some of the "Operand" property can be set as "Any2Pins", meaning that the edge can be mapped to any load pins of the PEs. This creates some confusion, so this script will automatically assign a pins while adhearing to the pins that need to be mapped to certain pins in the PE. 
+
+During testing, we created some benchmarks that has the extension "_Tester", for example "conv_nounroll_Balance_Tester". These benchmarks are already formarted their edges to have the "driver" and "load" properties. The only thing is that the "load" proporty can be set to "AnyPins, meaning that the edge can be mapped to any load pins of the PEs. This creates some confusion, so the application_graph_modification.py script will automatically assign a pins while adhearing to the pins that need to be mapped to certain pins in the PE.
+
+### benchmark_modification.py
+> ./benchmark_modification.py -Benchmark <Path_To_Benchmark_File> -OutputDir <Path_To_Output_Kernal_Directory>
+> ./benchmark_modification.py -Benchmark ../Kernels/Conv_Balance/conv_unroll3.dot -OutputDir ../Kernels_Modified
+
+### benchmark_modification.py
+> ./application_graph_modification.py -Benchmark <Path_To_Benchmark_File> -OutputDir <Path_To_Output_Kernal_Directory>
+> ./application_graph_modification.py -Benchmark ../Kernels/Conv_Balance/conv_nounroll_Balance_Tester_Fanout.dot -OutputDir ../Kernels_Modified
+
+For Riken architecture, constantant can not have a fan out as they can not be routed back to the switch block. In any typical mapping, we would say that the mapping failed as the device model graph does not allow this application DFG feature. However, we have created a helper script for Riken arhcitecture that duplicated the constant nodes to give the illusion of constant fanout. One important thing to mention is that the output dot file will be called "modified_{filename}.dot". This will be fixed in the future. 
+> ./constant_duplication.py -Benchmark <Path_To_Benchmark_File> -OutputDir  <Path_To_Output_Kernal_Directory>
+> ./constant_duplication.py -Benchmark ../Kernels_Modified/Conv_Balance/conv_nounroll_Balance_Tester_Fanout_Constant.dot -OutputDir ../Kernels_Modified
