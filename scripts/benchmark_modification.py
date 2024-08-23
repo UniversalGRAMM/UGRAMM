@@ -49,10 +49,23 @@ def modify_application(args):
         for u, v, properties in G.in_edges(node, data=True):
             desired_pin = properties.get('operand')
             currently_used_output_pins = set(valid_output_pins_name)
-            if desired_pin not in valid_input_pins_name:
-                new_pin_name = currently_used_input_pins.pop()
-                G[u][v]['driver'] = currently_used_output_pins.pop()
-                G[u][v]['load'] = new_pin_name
+            desired_pin_list = desired_pin.split('.')
+
+            for desired_load_pin in desired_pin_list:
+                # The following if statement is for the situation when Operand is describe as Any2Pins
+                if desired_load_pin not in valid_input_pins_name:
+                    new_pin_name = currently_used_input_pins.pop()
+                    G[u][v]['driver'] = currently_used_output_pins.pop()
+                    G[u][v]['load'] = new_pin_name
+                    break
+                # The following if statement is for the situation when Load has multiple Pins in can be
+                # mapped to (i.e. inPinA,inPinB,inPinC)
+                if desired_load_pin in currently_used_input_pins:
+                    G[u][v]['driver'] = currently_used_output_pins.pop()
+                    G[u][v]['load'] = desired_load_pin
+                    currently_used_input_pins.remove(desired_load_pin)
+                    break
+
 
         for u, v, properties in G.in_edges(node, data=True):
             if 'operand' in properties:

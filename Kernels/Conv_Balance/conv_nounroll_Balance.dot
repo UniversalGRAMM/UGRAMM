@@ -23,9 +23,9 @@ digraph "omp.inner.for.body" {
 	FMUL_9 [shape=record,type=op,opcode=FMUL,label="{FMUL_9}"];
 	FMUL_9 -> FADD_22[operand=any2input];
 	FMUL_10 [shape=record,type=op,opcode=FMUL,label="{FMUL_10}"];
-	FMUL_10 -> FADD_23[operand=any2input];
+	FMUL_10 -> FADD_23[operand=inPinB];
 	FMUL_11 [shape=record,type=op,opcode=FMUL,label="{FMUL_11}"];
-	FMUL_11 -> FADD_23[operand=any2input];
+	FMUL_11 -> FADD_23[operand=inPinA.inPinB];
 	FMUL_12 [shape=record,type=op,opcode=FMUL,label="{FMUL_12}"];
 	FMUL_12 -> FADD_22[operand=any2input];
 	FMUL_13 [shape=record,type=op,opcode=FMUL,label="{FMUL_13}"];

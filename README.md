@@ -48,15 +48,16 @@ There are two scripts used to covert the current benchmarks. There scripts are
 
 Most of the benchmark currently has the "Operand" property defined at the edges of the DFG graph. This property defines the load pin the DFG. Unfortunately, this convention will not be used in the GRAMM mapper. Instead, the edges will be defined through "driver" and "load" properties. These new properties will be used to define the input and output pins in the DFG path. 
 
-The main script that everyone will be using is the benchmark_modification.py. Since most benchmarks in the kernel suite has edges with "Operand" property, the benchmark_modification.py will convert the edge properties to the new convention mentioned above. In addition, some of the "Operand" property can be set as "Any2Pins", meaning that the edge can be mapped to any load pins of the PEs. This creates some confusion, so this script will automatically assign a pins while adhearing to the pins that need to be mapped to certain pins in the PE. 
+The main script that everyone will be using is the benchmark_modification.py. Since most benchmarks in the kernel suite has edges with "Operand" property, the benchmark_modification.py will convert the edge properties to the new convention mentioned above. In addition, some of the "Operand" property can be set as "Any2Pins", meaning that the edge can be mapped to any load pins of the PEs. This creates some confusion, so this script will automatically assign a pins while adhearing to the pins that need to be mapped to certain pins in the PE.  Also, if the user wishes, we can have multiple pins assigned to the operand property of the input dot file. For instance, the load property in the input dot file will look as the following: "operand=inPinA.inPinB". It is important to have a "." between each pins to help script distinguish between the pins
 
-During testing, we created some benchmarks that has the extension "_Tester", for example "conv_nounroll_Balance_Tester". These benchmarks are already formarted their edges to have the "driver" and "load" properties. The only thing is that the "load" proporty can be set to "AnyPins, meaning that the edge can be mapped to any load pins of the PEs. This creates some confusion, so the application_graph_modification.py script will automatically assign a pins while adhearing to the pins that need to be mapped to certain pins in the PE.
+During testing, we created some benchmarks that has the extension "_Tester", for example "conv_nounroll_Balance_Tester". These benchmarks are already formarted their edges to have the "driver" and "load" properties. The only thing is that the "load" proporty can be set to "AnyPins, meaning that the edge can be mapped to any load pins of the PEs. This creates some confusion, so the application_graph_modification.py script will automatically assign a pins while adhearing to the pins that need to be mapped to certain pins in the PE. Similar to the other script, if the user wishes, we can have multiple pins assigned to the load property of the input dot file. For instance, the load property in the input dot file will look as the following: "load=inPinA.inPinB". It is important to have a "." between each pins to help script distinguish between the pins
+
 
 ### benchmark_modification.py
 > ./benchmark_modification.py -Benchmark <Path_To_Benchmark_File> -OutputDir <Path_To_Output_Kernal_Directory>
 > ./benchmark_modification.py -Benchmark ../Kernels/Conv_Balance/conv_unroll3.dot -OutputDir ../Kernels_Modified
 
-### benchmark_modification.py
+### application_graph_modification.py
 > ./application_graph_modification.py -Benchmark <Path_To_Benchmark_File> -OutputDir <Path_To_Output_Kernal_Directory>
 > ./application_graph_modification.py -Benchmark ../Kernels/Conv_Balance/conv_nounroll_Balance_Tester_Fanout.dot -OutputDir ../Kernels_Modified
 

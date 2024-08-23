@@ -43,16 +43,27 @@ def modify_application(args):
         for u, v, properties in G.in_edges(node, data=True):
             # print(f"Edge from {u} to {v} has properties {properties}")
             load = properties.get('load')
-            if load in valid_input_pins_name:
+            if load in currently_used_input_pins:
                 currently_used_input_pins.remove(load)
         
 
         for u, v, properties in G.in_edges(node, data=True):
             # print(f"Edge from {u} to {v} has properties {properties}")
             load = properties.get('load')
-            if load not in valid_input_pins_name:
-                new_pin_name = currently_used_input_pins.pop()
-                G[u][v]['load'] = new_pin_name
+            load_list = load.split('.')
+
+            for load_pin in load_list:
+                # The following if statement is for the situation when Load is describe as AnyPins
+                if load_pin not in valid_input_pins_name:
+                    new_pin_name = currently_used_input_pins.pop()
+                    G[u][v]['load'] = new_pin_name
+                    break
+                # The following if statement is for the situation when Load has multiple Pins in can be
+                # mapped to (i.e. inPinA,inPinB,inPinC)
+                if load_pin in currently_used_input_pins:
+                    G[u][v]['load'] = load_pin
+                    currently_used_input_pins.remove(load_pin)
+                    break
 
 
     # -------------------------------------------------------
