@@ -13,7 +13,7 @@ Creating RIKEN_with_pins architecture!!
  
  
 ---------------------Executing GRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------
-make && ./GRAMM Kernels_Modified/Conv_Balance/conv_nounroll.dot scripts/riken_6_6.dot 6 6 0
+make && ./GRAMM Kernels_Modified/Conv_Balance/conv_nounroll_V2.dot scripts/riken_6_6.dot 6 6 0
 make: 'GRAMM' is up to date.
 ***** BEGINNING OUTER WHILE LOOP ***** ITER 1 
 FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX 20 {FMUL_13}
