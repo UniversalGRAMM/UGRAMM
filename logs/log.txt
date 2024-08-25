@@ -1,5 +1,5 @@
 ---------------------Generating device model using external script:---------------------
-cd scripts && ./device_model_gen.py -NR 8 -NC 8 -Arch RIKEN_with_pins && cd ..
+cd scripts && ./device_model_gen.py -NR 6 -NC 6 -Arch RIKEN_with_pins && cd ..
 ====================================================
 ============ Universal GRAMM (UGRAMM) ==============
 ======= helper script: Device Model Generator ======
@@ -7,21 +7,16 @@ cd scripts && ./device_model_gen.py -NR 8 -NC 8 -Arch RIKEN_with_pins && cd ..
 
 Generating device model for the following CGRA configuration: 
 > Arch: RIKEN_with_pins
-> NR: 8
-> NC: 8
+> NR: 6
+> NC: 6
 Creating RIKEN_with_pins architecture!!
  
  
 ---------------------Executing GRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------
-make && ./GRAMM Kernels/Conv_Balance/conv_nounroll.dot scripts/riken_8_8.dot 8 8 0
-mkdir -p build
-g++ -Ilib -lboost_graph -c src/GRAMM.cpp -o build/GRAMM.o
-mkdir -p build
-g++ -Ilib -lboost_graph -c src/utilities.cpp -o build/utilities.o
-g++ build/GRAMM.o build/utilities.o -Ilib -lboost_graph -o GRAMM
-Invalid pin names detected, exiting the program
+make && ./GRAMM Kernels_Modified/Conv_Balance/conv_nounroll.dot scripts/riken_6_6.dot 6 6 0
+make: 'GRAMM' is up to date.
 ***** BEGINNING OUTER WHILE LOOP ***** ITER 1 
-FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX 23 {FMUL_16}
+FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX 20 {FMUL_13}
  
  
 ---------------------Converting the ordered-mapped  positioned_dot_output.dot file into ordered_dot_output.png:---------------------
