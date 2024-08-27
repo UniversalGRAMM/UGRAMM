@@ -92,6 +92,12 @@ struct EdgeProperty {
     std::string driverPin;
 };
 
+// Struct for defining the explored nodes when routing and the relative associated cost
+struct ExpNode{
+    int i;
+    int cost;
+  };
+
 // the routing tree for a signal
 // explanation for the three fields:
 // for each node in the tree, we have a map that returns a list of its child nodes (i.e. the nodes it drives)

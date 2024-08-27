@@ -194,14 +194,7 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
 
   struct RoutingTree *RT = &((*Trees)[signal]);
 
-  struct ExpNode
-  {
-    int i;
-    int cost;
-  };
-
-  struct customLess
-  {
+  struct customLess {
     bool operator()(const struct ExpNode &l, const struct ExpNode &r) const { return l.cost > r.cost; }
   };
 
@@ -237,7 +230,7 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     PRQ.pop();
     std::cout << "\t";
     printName(popped.i);
-    //    std::cout << "PRQ POP COST: " << popped.cost << "\n";
+    std::cout << "Route Function - PRQ POP COST: " << popped.cost << "\n";
     if ((popped.cost > 0) &&
         (popped.i == sink))
     { // cost must be higher than 0 (otherwise sink was part of initial expansion list)
@@ -321,6 +314,7 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     (*TraceBack)[expInt[i]] = -1;
   }
 
+  std::cout << "Route Function - retVal COST: " << retVal << "\n";
   return retVal;
 }
 
@@ -462,6 +456,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
       //  printName(loadLoc);
     }
   }
+  std::cout << "\t\tTotal Return Cost: " << totalCost << "\n";
   return totalCost;
 }
 
@@ -526,11 +521,13 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     //    totalCosts[i] += (4 << ((*Users)[i].size()-1));
     //    totalCosts[i] += (4 << (*Users)[i].size()) + (1 << (*HistoryCosts)[i]);
     totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
+    std::cout << "\t\tTotal History Cost: " << totalCosts[i] << "\n";
 
     //    std::cout << "INVOKING ROUTE FANOUT SIGNAL\n";
     //    printRouting(y);
 
     totalCosts[i] += routeSignal(G, H, y, gConfig);
+    std::cout << "\t\tTotal Cost: " << totalCosts[i] << "\n";
 
     //    std::cout << "TOTAL COST " << totalCosts[i] << "\n";
     
