@@ -223,7 +223,7 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
   }
 
   //  std::cout << "EXPANSION TARGET: \n";
-  //  printName(sink);
+  //printName(sink);
   //  std::cout << "SINK USERS: \n";
   //  std::list<int>::iterator sit = (*Users)[sink].begin();
   //  for (; sit != (*Users)[sink].end(); sit++)
@@ -235,7 +235,8 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
   {
     popped = PRQ.top();
     PRQ.pop();
-    //    printName(popped.i);
+    std::cout << "\t";
+    printName(popped.i);
     //    std::cout << "PRQ POP COST: " << popped.cost << "\n";
     if ((popped.cost > 0) &&
         (popped.i == sink))
@@ -410,8 +411,7 @@ void randomizeList(int *list, int n)
 
 int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig)
 {
-  // uncommenting this
-  //  OB: std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n";
+  std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n"; // Uncommenting this
 
   vertex_descriptor yD = vertex(y, *H);
   int totalCost = 0;
@@ -434,8 +434,8 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
 
     int loadLoc = findDriver(load); // Hamas: loadLoc = source of the signal
     // uncommenting this
-    //  OB:    std::cout << "ROUTING LOAD: ";
-    //  OB:    printName(loadLoc);
+    std::cout << "Driver: ";
+    printName(loadLoc);
 
     if (loadLoc < 0)
     {
@@ -458,8 +458,8 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     else
     {
       // uncommenting this
-      //  OB:  std::cout << "NAME :" << hNames[y] << " LOAD: \n";
-      //  OB:      printName(loadLoc);
+      //  std::cout << "NAME :" << hNames[y] << " LOAD: \n";
+      //  printName(loadLoc);
     }
   }
   return totalCost;
@@ -516,8 +516,8 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
     // first route the signal on the output of y
 
-    //    std::cout << "Trying location:\n";
-    //    printName(i);
+       std::cout << "Trying location: ";
+       printName(i);
 
     ripUpRouting(y);
     (*Trees)[y].nodes.push_back(i);
@@ -533,9 +533,12 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     totalCosts[i] += routeSignal(G, H, y, gConfig);
 
     //    std::cout << "TOTAL COST " << totalCosts[i] << "\n";
-
-    if (totalCosts[i] > bestCost)
+    
+    std::cout << "COSTS: " << totalCosts[i] << "\n";
+    if (totalCosts[i] > bestCost){
+      std::cout << "Cost (Total Cost[i] > Best Cost) [BAD] | totalCost[" << i << "]: " << totalCosts[i] << " | Best Cost: " << bestCost << "\n";
       continue;
+    }
 
     // now route the signals on the input of y
 
@@ -555,10 +558,12 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
       totalCosts[i] += routeSignal(G, H, driver, gConfig);
 
-      //      std::cout << "COSTS: " << totalCosts[i] << "\n";
+      std::cout << "COSTS: " << totalCosts[i] << "\n";
 
-      if (totalCosts[i] > bestCost)
+      if (totalCosts[i] > bestCost){
+        std::cout << "Cost (Total Cost[i] > Best Cost) [BAD] | totalCost[" << i << "]: " << totalCosts[i] << " | Best Cost: " << bestCost << "\n";
         break;
+      }
     }
     //    std::cout << "TOTAL COST: " << totalCosts[i] << "\n";
 
@@ -568,12 +573,17 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     if (totalCosts[i] < bestCost)
     {
       bestIndex = i;
+      std::cout << "Cost (Total Cost[i] < Best Cost) | totalCost[" << i << "]: " << totalCosts[i] << " | Best Cost: " << bestCost << " | Best Index: " << bestIndex << "\n";
       bestCost = totalCosts[i];
     }
     else if (totalCosts[i] == bestCost)
     {
-      if (!(rand() % 2))
+      if (!(rand() % 2)) {
         bestIndex = i;
+        std::cout << "Cost (Total Cost[i] == Best Cost [Accepted]) | totalCost[" << i << "]: " << totalCosts[i] << " | Best Cost: " << bestCost << " | Best Index: " << bestIndex << "\n";
+      } else {
+        std::cout << "Cost (Total Cost[i] == Best Cost [Not Accepted]) | totalCost[" << i << "]: " << totalCosts[i] << " | Best Cost: " << bestCost << " | Best Index: " << bestIndex << "\n";
+      }
     }
   }
 
@@ -641,13 +651,17 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       int y = ordering[k];
 
       // Uncommenting this
-      // OB: std::cout << "--------------------- New Vertices Mapping Start ---------------------------\n";
-      // OB: std::cout << "Finding vertex model for: " << y << " " << (*hConfig)[y].opcode << "\n";
+      std::cout << "--------------------- New Vertices Mapping Start ---------------------------\n";
+      std::cout << "Finding vertex model for: " << hNames[y] << "\n";
+      //std::cout << "Finding vertex model for: " << y << " " << (*hConfig)[y].opcode << "\n";
       // OB:  std::cout << "SIZE: " << (*Trees)[y].nodes.size() << "\n";
       //       std::cout << "TOPO ORDER: " << (*TopoOrder)[y] << "\n"; //ERROR: creating segmentation dump
 
       //      if ((iterCount >= 3) && !hasOverlap(y)) // everything should be routed by 3rd iter
       //	continue; // skip signals with no overlap
+
+      // if (RIKEN && ((*hConfig)[y].opcode == constant))
+      //   continue;
 
       findMinVertexModel(G, H, y, hConfig, gConfig);
 
