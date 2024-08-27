@@ -61,7 +61,19 @@ void depositRoute(int signal, std::list<int> *nodes)
   }
 }
 
-int findDriver(int signal)
+//For the given FunCell (signal), finds the associated outputPin node from the deviceModel. 
+//Ex: FunCell(signal) -> outPin (selectedCellOutputPin)
+int findOutputPin(int signal, DirectedGraph *G)
+{
+  vertex_descriptor signalVertex = vertex(signal, *G);
+  out_edge_iterator eo, eo_end;
+  boost::tie(eo, eo_end) = out_edges(signalVertex, *G);
+  int selectedCellOutputPin = target(*eo, *G);
+
+  return selectedCellOutputPin;
+}
+
+int findDriver(int signal, std::map<int, NodeConfig> *gConfig)
 {
   struct RoutingTree *RT = &((*Trees)[signal]);
   std::list<int>::iterator it = RT->nodes.begin();
@@ -70,7 +82,14 @@ int findDriver(int signal)
   for (; it != RT->nodes.end(); it++)
   {
     if (!RT->parent.count(*it))
+    {
+      if ((*gConfig)[*it].type != PinCell)
+      {
+        GRAMM->error("FATAL ERROR -- For signal {}, driverNode is not a PinCell!!", *it);
+        exit(-1);
+      }
       return *it;
+    }
   }
   return -1;
 }
@@ -419,7 +438,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
       continue; // load should be placed for the routing purpose!!
 
     // Since driver will always be the outPin of the FunCell, the type of loadOutPinCellLoc will be "pinCell"
-    int loadOutPinCellLoc = findDriver(load);
+    int loadOutPinCellLoc = findDriver(load, gConfig);
 
     // Converting the driver(pinCell) to the actual input pin of FuncCell:
     in_edge_iterator ei, ei_end;
@@ -498,7 +517,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
   }
 
   if (allEmpty)
-  { 
+  {
     // choose a random unused node of G to be the vertex model for y because NONE of its fanins or fanouts have vertex models
 
     int selectedCellOutputPin = 0;
@@ -511,8 +530,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
       if (((*gConfig)[chooseRand].opcode == (*hConfig)[y].opcode))
       {
         // Finding the output Pin for the selected FunCell:
-        boost::tie(eo, eo_end) = out_edges(chooseRand, *G);
-        selectedCellOutputPin = target(*eo, *G);
+        selectedCellOutputPin = findOutputPin(chooseRand, G);
         if ((*Users)[selectedCellOutputPin].size() == 0)
           vertex_found = true;
       }
@@ -544,15 +562,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
       continue;
 
     // Finding the output Pin for the selected FunCell:
-    vertex_descriptor yi = vertex(i, *G);
-    boost::tie(eo, eo_end) = out_edges(yi, *G);
-    int outputPin = target(*eo, *G);
-
-    if ((*gConfig)[outputPin].type != PinCell)
-    {
-      GRAMM->error("FATAL ERROR -- driverNode is not a PinCell!! \n");
-      exit(-1);
-    }
+    int outputPin = findOutputPin(i, G);
 
     ripUpRouting(y);
     (*Trees)[y].nodes.push_back(outputPin);
@@ -562,7 +572,6 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
     if (GRAMM->level() <= spdlog::level::trace)
     {
-      // GRAMM->debug("Finding FunCell for {}", y);
       printRouting(y);
     }
 
@@ -584,20 +593,13 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
       if ((*Trees)[driver].nodes.size() == 0)
         continue; // driver is not placed
 
-      int driverNode = findDriver(driver);
-
-      if ((*gConfig)[driverNode].type != PinCell)
-      {
-        GRAMM->error("FATAL ERROR -- driverNode is not a PinCell!! \n");
-        exit(-1);
-      }
+      int driverNode = findDriver(driver, gConfig);
 
       ripUpRouting(driver);
       (*Trees)[driver].nodes.push_back(driverNode);
       (*Users)[driverNode].push_back(driver);
 
       // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
-
       totalCosts[outputPin] += routeSignal(G, H, driver, gConfig);
 
       GRAMM->debug("Routing the signals on the input of {}", hNames[y]);
@@ -646,13 +648,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     if ((*Trees)[driver].nodes.size() == 0)
       continue; // driver is not placed
 
-    int driverNode = findDriver(driver);
-
-    if ((*gConfig)[driverNode].type != PinCell)
-    {
-      GRAMM->error("FATAL ERROR -- driverNode is not a PinCell!! \n");
-      exit(-1);
-    }
+    int driverNode = findDriver(driver, gConfig);
 
     ripUpRouting(driver);
     (*Trees)[driver].nodes.push_back(driverNode);
