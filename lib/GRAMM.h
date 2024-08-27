@@ -45,12 +45,14 @@ extern float HFac;  //History cost factor
 //=========================//
 
 // Primary node type enumerator where each node is distinguished between functional, routing and pin cell type.
+//Old --> typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType
 typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 
 //Other configuration information of the node elements:
 // -- Opcode (requires enumerator which is defined as follows)
 // -- Latency, Width can be defined as an integer
 // -- Location of the node can be defined as an integer pair
+//Old --> typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, in, out} opcodeType;
 typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, in, out} opcodeType;
 
 // typedef enum inPinT {inPinA, inPinB, anyPins} inPinType;
@@ -59,9 +61,15 @@ typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, in, out} opcod
 extern std::vector<std::string> inPin;
 extern std::vector<std::string> outPin;
 
+
+//New way for node and opcode types:
+extern std::map<std::string, std::vector<std::string>> GrammConfig;    //New general way
+
 struct NodeConfig {
-    nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
-    opcodeType opcode;      //Opcode of the node --> io, alu, memport....
+    nodeType type;             //[Old way] Type of the node --> FuncCell, RouteCell, PinCell
+    opcodeType opcode;         //[Old way] Opcode of the node --> io, alu, memport....
+    std::string Type;          //[New way] Type of the node --> FuncCell, RouteCell, PinCell
+    std::string Opcode;        //[New way] Opcode of the node --> io, alu, memport....
     //As of now following configs are optional
     int Latency = 0;                    
     int Width   = 0;                      

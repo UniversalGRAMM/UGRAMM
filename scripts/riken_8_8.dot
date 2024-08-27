@@ -1,3 +1,13 @@
+ /* Device model node and opcode types:= 
+[NodeType] = {FuncCell, PinCell, RouteCell}; 
+[OpcodeType] = {MemPort, Mux, in, out, ALU, Constant}; 
+[ALU] = {FuncCell, FADD, FALU}; 
+[MemPort] = {FuncCell, input, output}; 
+[Constant] = {FuncCell}; 
+[Mux] = {RouteCell} 
+[in] = {PinCell}; 
+[out] = {PinCell}; 
+*/
 strict digraph  {
 0 [G_ID=0, G_Name="LS.w32.c0.r0.memport", G_NodeType=FuncCell, G_opcode=MemPort];
 1 [G_ID=1, G_Name="LS.w32.c0.r0.memport.inPinA", G_NodeType=PinCell, G_opcode=in];
@@ -23,30 +33,30 @@ strict digraph  {
 21 [G_ID=21, G_Name="LS.w32.c0.r7.memport", G_NodeType=FuncCell, G_opcode=MemPort];
 22 [G_ID=22, G_Name="LS.w32.c0.r7.memport.inPinA", G_NodeType=PinCell, G_opcode=in];
 23 [G_ID=23, G_Name="LS.w32.c0.r7.memport.outPinA", G_NodeType=PinCell, G_opcode=out];
-24 [G_ID=24, G_Name="LS.w32.c9.r0.mem", G_NodeType=FuncCell, G_opcode=MemPort];
-25 [G_ID=25, G_Name="LS.w32.c9.r0.mem.inPinA", G_NodeType=PinCell, G_opcode=in];
-26 [G_ID=26, G_Name="LS.w32.c9.r0.mem.outPinA", G_NodeType=PinCell, G_opcode=in];
-27 [G_ID=27, G_Name="LS.w32.c9.r1.mem", G_NodeType=FuncCell, G_opcode=MemPort];
-28 [G_ID=28, G_Name="LS.w32.c9.r1.mem.inPinA", G_NodeType=PinCell, G_opcode=in];
-29 [G_ID=29, G_Name="LS.w32.c9.r1.mem.outPinA", G_NodeType=PinCell, G_opcode=in];
-30 [G_ID=30, G_Name="LS.w32.c9.r2.mem", G_NodeType=FuncCell, G_opcode=MemPort];
-31 [G_ID=31, G_Name="LS.w32.c9.r2.mem.inPinA", G_NodeType=PinCell, G_opcode=in];
-32 [G_ID=32, G_Name="LS.w32.c9.r2.mem.outPinA", G_NodeType=PinCell, G_opcode=in];
-33 [G_ID=33, G_Name="LS.w32.c9.r3.mem", G_NodeType=FuncCell, G_opcode=MemPort];
-34 [G_ID=34, G_Name="LS.w32.c9.r3.mem.inPinA", G_NodeType=PinCell, G_opcode=in];
-35 [G_ID=35, G_Name="LS.w32.c9.r3.mem.outPinA", G_NodeType=PinCell, G_opcode=in];
-36 [G_ID=36, G_Name="LS.w32.c9.r4.mem", G_NodeType=FuncCell, G_opcode=MemPort];
-37 [G_ID=37, G_Name="LS.w32.c9.r4.mem.inPinA", G_NodeType=PinCell, G_opcode=in];
-38 [G_ID=38, G_Name="LS.w32.c9.r4.mem.outPinA", G_NodeType=PinCell, G_opcode=in];
-39 [G_ID=39, G_Name="LS.w32.c9.r5.mem", G_NodeType=FuncCell, G_opcode=MemPort];
-40 [G_ID=40, G_Name="LS.w32.c9.r5.mem.inPinA", G_NodeType=PinCell, G_opcode=in];
-41 [G_ID=41, G_Name="LS.w32.c9.r5.mem.outPinA", G_NodeType=PinCell, G_opcode=in];
-42 [G_ID=42, G_Name="LS.w32.c9.r6.mem", G_NodeType=FuncCell, G_opcode=MemPort];
-43 [G_ID=43, G_Name="LS.w32.c9.r6.mem.inPinA", G_NodeType=PinCell, G_opcode=in];
-44 [G_ID=44, G_Name="LS.w32.c9.r6.mem.outPinA", G_NodeType=PinCell, G_opcode=in];
-45 [G_ID=45, G_Name="LS.w32.c9.r7.mem", G_NodeType=FuncCell, G_opcode=MemPort];
-46 [G_ID=46, G_Name="LS.w32.c9.r7.mem.inPinA", G_NodeType=PinCell, G_opcode=in];
-47 [G_ID=47, G_Name="LS.w32.c9.r7.mem.outPinA", G_NodeType=PinCell, G_opcode=in];
+24 [G_ID=24, G_Name="LS.w32.c9.r0.memport", G_NodeType=FuncCell, G_opcode=MemPort];
+25 [G_ID=25, G_Name="LS.w32.c9.r0.memport.inPinA", G_NodeType=PinCell, G_opcode=in];
+26 [G_ID=26, G_Name="LS.w32.c9.r0.memport.outPinA", G_NodeType=PinCell, G_opcode=in];
+27 [G_ID=27, G_Name="LS.w32.c9.r1.memport", G_NodeType=FuncCell, G_opcode=MemPort];
+28 [G_ID=28, G_Name="LS.w32.c9.r1.memport.inPinA", G_NodeType=PinCell, G_opcode=in];
+29 [G_ID=29, G_Name="LS.w32.c9.r1.memport.outPinA", G_NodeType=PinCell, G_opcode=in];
+30 [G_ID=30, G_Name="LS.w32.c9.r2.memport", G_NodeType=FuncCell, G_opcode=MemPort];
+31 [G_ID=31, G_Name="LS.w32.c9.r2.memport.inPinA", G_NodeType=PinCell, G_opcode=in];
+32 [G_ID=32, G_Name="LS.w32.c9.r2.memport.outPinA", G_NodeType=PinCell, G_opcode=in];
+33 [G_ID=33, G_Name="LS.w32.c9.r3.memport", G_NodeType=FuncCell, G_opcode=MemPort];
+34 [G_ID=34, G_Name="LS.w32.c9.r3.memport.inPinA", G_NodeType=PinCell, G_opcode=in];
+35 [G_ID=35, G_Name="LS.w32.c9.r3.memport.outPinA", G_NodeType=PinCell, G_opcode=in];
+36 [G_ID=36, G_Name="LS.w32.c9.r4.memport", G_NodeType=FuncCell, G_opcode=MemPort];
+37 [G_ID=37, G_Name="LS.w32.c9.r4.memport.inPinA", G_NodeType=PinCell, G_opcode=in];
+38 [G_ID=38, G_Name="LS.w32.c9.r4.memport.outPinA", G_NodeType=PinCell, G_opcode=in];
+39 [G_ID=39, G_Name="LS.w32.c9.r5.memport", G_NodeType=FuncCell, G_opcode=MemPort];
+40 [G_ID=40, G_Name="LS.w32.c9.r5.memport.inPinA", G_NodeType=PinCell, G_opcode=in];
+41 [G_ID=41, G_Name="LS.w32.c9.r5.memport.outPinA", G_NodeType=PinCell, G_opcode=in];
+42 [G_ID=42, G_Name="LS.w32.c9.r6.memport", G_NodeType=FuncCell, G_opcode=MemPort];
+43 [G_ID=43, G_Name="LS.w32.c9.r6.memport.inPinA", G_NodeType=PinCell, G_opcode=in];
+44 [G_ID=44, G_Name="LS.w32.c9.r6.memport.outPinA", G_NodeType=PinCell, G_opcode=in];
+45 [G_ID=45, G_Name="LS.w32.c9.r7.memport", G_NodeType=FuncCell, G_opcode=MemPort];
+46 [G_ID=46, G_Name="LS.w32.c9.r7.memport.inPinA", G_NodeType=PinCell, G_opcode=in];
+47 [G_ID=47, G_Name="LS.w32.c9.r7.memport.outPinA", G_NodeType=PinCell, G_opcode=in];
 48 [G_ID=48, G_Name="pe.w32.c1.r0.crossbar_mux_0", G_NodeType=RouteCell, G_opcode=Mux];
 49 [G_ID=49, G_Name="pe.w32.c1.r0.crossbar_mux_1", G_NodeType=RouteCell, G_opcode=Mux];
 50 [G_ID=50, G_Name="pe.w32.c1.r0.crossbar_mux_2", G_NodeType=RouteCell, G_opcode=Mux];

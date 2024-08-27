@@ -51,14 +51,36 @@ std::string gNames_deliemter_changes(std::string gNames);
 std::string string_remover(std::string original_string, std::string toRemove);
 
 /**
+ * @brief Extracts the content within a multi-line comment (/_* ... *_/) from the provided file stream.
+ *
+ * @param deviceModelFile A reference to an ifstream object representing the open file to read from.
+ * @return A string containing the content within the multi-line comment, or an empty string if no comment is found.
+ */
+std::string readCommentSection(std::ifstream &deviceModelFile);
+
+void parseVectorofStrings(std::string commentSection, std::string keyword, std::vector<std::string> &Type);
+
+/**
+ * @brief Reads the device model pragmas from the specified file and updates the provided vectors with node types and opcodes.
+ *
+ * @param deviceModelFile A reference to an ifstream object representing the open file containing device model pragmas.
+ * @param NodeType A vector of strings to be populated with the node types read from the file.
+ * @param OpcodeT A vector of strings to be populated with the opcode types read from the file.
+ */
+void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &GrammConfig);
+
+void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> GrammConfig);
+
+/**
  * @brief Prints routing information to a mapping-output file.
  * 
  * @param gNumber A boost node id from the device-model graph.
  * @param y A boost node id from the application graph.
  * @param positionedOutputFile The positioned-output dot file stream (this dot-file contains actual co-ordinates of the node cells).
  * @param unpositionedOutputFile The unpositioned-output dot file stream (this dot-file does not contain any co-ordinates of the node cells).
+ * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile);
+void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig);
 
 /**
  * @brief Prints placement information to a mapping-output file.
@@ -86,8 +108,9 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
  * 
  * @param H A pointer to the application graph.
  * @param G A pointer to the device-model graph.
+ * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printVertexModels(DirectedGraph *H, DirectedGraph *G);
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig);
 
 /**
  * @brief Prints the device model cell name corresponding to a given boost id number from device model graph.
@@ -95,5 +118,7 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G);
  * @param n The boost integer id.
  */
 void printName(int n);
+
+
 
 #endif

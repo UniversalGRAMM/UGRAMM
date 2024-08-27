@@ -1,0 +1,307 @@
+---------------------Generating device model using external script:---------------------
+cd scripts && ./device_model_gen.py -NR 8 -NC 8 -Arch RIKEN && cd ..
+====================================================
+============ Universal GRAMM (UGRAMM) ==============
+======= helper script: Device Model Generator ======
+====================================================
+
+Generating device model for the following CGRA configuration: 
+> Arch: RIKEN
+> NR: 8
+> NC: 8
+Creating RIKEN architecture!!
+ 
+ 
+---------------------Executing GRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------
+make && ./GRAMM Kernels/Conv_Balance/conv_nounroll_pragma_test.dot scripts/riken_8_8.dot 8 8 0
+make: 'GRAMM' is up to date.
+Parsed Pragma: 
+[ALU] :: FuncCell :: FADD :: FALU
+[Constant] :: FuncCell
+[MemPort] :: FuncCell :: input :: output
+[Mux] :: RouteCell
+[NodeType] :: FuncCell :: PinCell :: RouteCell
+[OpcodeType] :: MemPort :: Mux :: in :: out :: ALU :: Constant
+[in] :: PinCell
+[out] :: PinCell
+Checking Application Token whether present in the device model or not: 
+The token MemPort found in [OpcodeType]
+The token ALU found in [OpcodeType]
+The token Constant found in [OpcodeType]
+The token FuncCell found in [MemPort]
+The token input found in [MemPort]
+The token output found in [MemPort]
+The token FuncCell found in [ALU]
+The token FADD found in [ALU]
+The token FALU found in [ALU]
+The token FuncCell found in [Constant]
+The token const not found in [Constant]
+
+
+Invalid pin names detected, exiting the program
+***** BEGINNING OUTER WHILE LOOP ***** ITER 1 
+OVERUSE 1 ON OVERUSE 1 ON OVERUSE 1 ON OVERUSE 1 ON OVERUSE 1 ON TOTAL OVERUSE: 5
+***** BEGINNING OUTER WHILE LOOP ***** ITER 2 
+TOTAL OVERUSE: 0
+FRACTION OVERLAP: 0
+SUCCESS! 2 0 36
+** routing for i: 0 {Const_27|float32=5.00}
+	 837	 pe.w32.c5.r2.const
+	 838	 pe.w32.c5.r2.const.outPinA
+	 835	 pe.w32.c5.r2.mux_a
+	 840	 pe.w32.c5.r2.alu.inPinA
+** routing for i: 1 {Const_28|float32=13.00}
+	 976	 pe.w32.c6.r1.const
+	 977	 pe.w32.c6.r1.const.outPinA
+	 975	 pe.w32.c6.r1.mux_b
+	 982	 pe.w32.c6.r1.alu.inPinB
+** routing for i: 2 {Const_29|float32=9.00}
+	 318	 pe.w32.c2.r0.const
+	 319	 pe.w32.c2.r0.const.outPinA
+	 317	 pe.w32.c2.r0.mux_b
+	 322	 pe.w32.c2.r0.alu.inPinB
+** routing for i: 3 {Const_30|float32=11.00}
+	 258	 pe.w32.c1.r5.const
+	 259	 pe.w32.c1.r5.const.outPinA
+	 255	 pe.w32.c1.r5.mux_a
+	 261	 pe.w32.c1.r5.alu.inPinA
+** routing for i: 4 {Const_31|float32=3.00}
+	 98	 pe.w32.c8.r1.const
+	 99	 pe.w32.c8.r1.const.outPinA
+	 97	 pe.w32.c8.r1.mux_b
+	 103	 pe.w32.c8.r1.alu.inPinB
+** routing for i: 5 {Const_32|float32=15.00}
+	 538	 pe.w32.c3.r3.const
+	 539	 pe.w32.c3.r3.const.outPinA
+	 537	 pe.w32.c3.r3.mux_b
+	 542	 pe.w32.c3.r3.alu.inPinB
+** routing for i: 6 {Const_33|float32=17.00}
+	 139	 pe.w32.c8.r3.const
+	 140	 pe.w32.c8.r3.const.outPinA
+	 138	 pe.w32.c8.r3.mux_b
+	 143	 pe.w32.c8.r3.alu.inPinB
+** routing for i: 7 {Const_34|float32=7.00}
+	 1117	 pe.w32.c7.r0.const
+	 1118	 pe.w32.c7.r0.const.outPinA
+	 1115	 pe.w32.c7.r0.mux_a
+	 1120	 pe.w32.c7.r0.alu.inPinA
+** routing for i: 8 {Const_35|float32=19.00}
+	 577	 pe.w32.c3.r5.const
+	 578	 pe.w32.c3.r5.const.outPinA
+	 575	 pe.w32.c3.r5.mux_a
+	 581	 pe.w32.c3.r5.alu.inPinA
+** routing for i: 9 {FADD_18}
+	 899	 pe.w32.c5.r5.alu
+	 903	 pe.w32.c5.r5.alu.outPinA
+	 892	 pe.w32.c5.r5.crossbar_mux_7
+	 1072	 pe.w32.c6.r6.crossbar_mux_8
+	 1074	 pe.w32.c6.r6.mux_a
+	 1080	 pe.w32.c6.r6.alu.inPinA
+** routing for i: 10 {FADD_19}
+	 1059	 pe.w32.c6.r5.alu
+	 1062	 pe.w32.c6.r5.alu.outPinA
+	 1050	 pe.w32.c6.r5.crossbar_mux_6
+	 1073	 pe.w32.c6.r6.crossbar_mux_9
+	 1075	 pe.w32.c6.r6.mux_b
+	 1081	 pe.w32.c6.r6.alu.inPinB
+** routing for i: 11 {FADD_20}
+	 880	 pe.w32.c5.r4.alu
+	 883	 pe.w32.c5.r4.alu.outPinA
+	 871	 pe.w32.c5.r4.crossbar_mux_6
+	 893	 pe.w32.c5.r5.crossbar_mux_8
+	 895	 pe.w32.c5.r5.mux_a
+	 900	 pe.w32.c5.r5.alu.inPinA
+** routing for i: 12 {FADD_21}
+	 1198	 pe.w32.c7.r4.alu
+	 5	 pe.w32.c7.r4.alu.outPinA
+	 1188	 pe.w32.c7.r4.crossbar_mux_5
+	 1053	 pe.w32.c6.r5.crossbar_mux_9
+	 1055	 pe.w32.c6.r5.mux_b
+	 1061	 pe.w32.c6.r5.alu.inPinB
+** routing for i: 13 {FADD_22}
+	 859	 pe.w32.c5.r3.alu
+	 862	 pe.w32.c5.r3.alu.outPinA
+	 849	 pe.w32.c5.r3.crossbar_mux_5
+	 711	 pe.w32.c4.r4.crossbar_mux_7
+	 894	 pe.w32.c5.r5.crossbar_mux_9
+	 896	 pe.w32.c5.r5.mux_b
+	 902	 pe.w32.c5.r5.alu.inPinB
+** routing for i: 14 {FADD_23}
+	 999	 pe.w32.c6.r2.alu
+	 1003	 pe.w32.c6.r2.alu.outPinA
+	 992	 pe.w32.c6.r2.crossbar_mux_7
+	 1169	 pe.w32.c7.r3.crossbar_mux_5
+	 1030	 pe.w32.c6.r4.crossbar_mux_6
+	 1052	 pe.w32.c6.r5.crossbar_mux_8
+	 1054	 pe.w32.c6.r5.mux_a
+	 1060	 pe.w32.c6.r5.alu.inPinA
+** routing for i: 15 {FADD_24}
+	 719	 pe.w32.c4.r4.alu
+	 722	 pe.w32.c4.r4.alu.outPinA
+	 704	 pe.w32.c4.r4.crossbar_mux_0
+	 874	 pe.w32.c5.r4.crossbar_mux_9
+	 876	 pe.w32.c5.r4.mux_b
+	 882	 pe.w32.c5.r4.alu.inPinB
+** routing for i: 16 {FADD_25}
+	 1079	 pe.w32.c6.r6.alu
+	 1082	 pe.w32.c6.r6.alu.outPinA
+	 1070	 pe.w32.c6.r6.crossbar_mux_6
+	 1088	 pe.w32.c6.r7.crossbar_mux_5
+	 535	 LS.w32.c9.r5.memport.inPinA
+** routing for i: 17 {FMUL_10}
+	 839	 pe.w32.c5.r2.alu
+	 842	 pe.w32.c5.r2.alu.outPinA
+	 824	 pe.w32.c5.r2.crossbar_mux_0
+	 994	 pe.w32.c6.r2.crossbar_mux_9
+	 996	 pe.w32.c6.r2.mux_b
+	 1002	 pe.w32.c6.r2.alu.inPinB
+** routing for i: 18 {FMUL_11}
+	 1119	 pe.w32.c7.r0.alu
+	 1122	 pe.w32.c7.r0.alu.outPinA
+	 1110	 pe.w32.c7.r0.crossbar_mux_6
+	 1129	 pe.w32.c7.r1.crossbar_mux_5
+	 993	 pe.w32.c6.r2.crossbar_mux_8
+	 995	 pe.w32.c6.r2.mux_a
+	 1000	 pe.w32.c6.r2.alu.inPinA
+** routing for i: 19 {FMUL_12}
+	 320	 pe.w32.c2.r0.alu
+	 323	 pe.w32.c2.r0.alu.outPinA
+	 311	 pe.w32.c2.r0.crossbar_mux_7
+	 492	 pe.w32.c3.r1.crossbar_mux_7
+	 672	 pe.w32.c4.r2.crossbar_mux_7
+	 853	 pe.w32.c5.r3.crossbar_mux_9
+	 855	 pe.w32.c5.r3.mux_b
+	 861	 pe.w32.c5.r3.alu.inPinB
+** routing for i: 20 {FMUL_13}
+	 260	 pe.w32.c1.r5.alu
+	 263	 pe.w32.c1.r5.alu.outPinA
+	 244	 pe.w32.c1.r5.crossbar_mux_0
+	 405	 pe.w32.c2.r5.crossbar_mux_1
+	 545	 pe.w32.c3.r4.crossbar_mux_1
+	 684	 pe.w32.c4.r3.crossbar_mux_0
+	 851	 pe.w32.c5.r3.crossbar_mux_7
+	 1024	 pe.w32.c6.r4.crossbar_mux_0
+	 1192	 pe.w32.c7.r4.crossbar_mux_8
+	 1194	 pe.w32.c7.r4.mux_a
+	 1199	 pe.w32.c7.r4.alu.inPinA
+** routing for i: 21 {FMUL_14}
+	 980	 pe.w32.c6.r1.alu
+	 983	 pe.w32.c6.r1.alu.outPinA
+	 970	 pe.w32.c6.r1.crossbar_mux_6
+	 991	 pe.w32.c6.r2.crossbar_mux_6
+	 1009	 pe.w32.c6.r3.crossbar_mux_5
+	 873	 pe.w32.c5.r4.crossbar_mux_8
+	 875	 pe.w32.c5.r4.mux_a
+	 881	 pe.w32.c5.r4.alu.inPinA
+** routing for i: 22 {FMUL_15}
+	 540	 pe.w32.c3.r3.alu
+	 543	 pe.w32.c3.r3.alu.outPinA
+	 531	 pe.w32.c3.r3.crossbar_mux_7
+	 714	 pe.w32.c4.r4.crossbar_mux_9
+	 716	 pe.w32.c4.r4.mux_b
+	 721	 pe.w32.c4.r4.alu.inPinB
+** routing for i: 23 {FMUL_16}
+	 141	 pe.w32.c8.r3.alu
+	 144	 pe.w32.c8.r3.alu.outPinA
+	 131	 pe.w32.c8.r3.crossbar_mux_5
+	 1193	 pe.w32.c7.r4.crossbar_mux_9
+	 1195	 pe.w32.c7.r4.mux_b
+	 4	 pe.w32.c7.r4.alu.inPinB
+** routing for i: 24 {FMUL_17}
+	 580	 pe.w32.c3.r5.alu
+	 583	 pe.w32.c3.r5.alu.outPinA
+	 565	 pe.w32.c3.r5.crossbar_mux_1
+	 713	 pe.w32.c4.r4.crossbar_mux_8
+	 715	 pe.w32.c4.r4.mux_a
+	 720	 pe.w32.c4.r4.alu.inPinA
+** routing for i: 25 {FMUL_9}
+	 100	 pe.w32.c8.r1.alu
+	 104	 pe.w32.c8.r1.alu.outPinA
+	 90	 pe.w32.c8.r1.crossbar_mux_5
+	 1149	 pe.w32.c7.r2.crossbar_mux_5
+	 1008	 pe.w32.c6.r3.crossbar_mux_4
+	 852	 pe.w32.c5.r3.crossbar_mux_8
+	 854	 pe.w32.c5.r3.mux_a
+	 860	 pe.w32.c5.r3.alu.inPinA
+** routing for i: 26 {Load_0}
+	 257	 LS.w32.c0.r5.memport
+	 279	 LS.w32.c0.r5.memport.outPinA
+	 951	 pe.w32.c6.r0.crossbar_mux_7
+	 1124	 pe.w32.c7.r1.crossbar_mux_0
+	 94	 pe.w32.c8.r1.crossbar_mux_8
+	 96	 pe.w32.c8.r1.mux_a
+	 101	 pe.w32.c8.r1.alu.inPinA
+** routing for i: 27 {Load_1}
+	 1089	 LS.w32.c0.r3.memport
+	 113	 LS.w32.c0.r3.memport.outPinA
+	 630	 pe.w32.c4.r0.crossbar_mux_6
+	 652	 pe.w32.c4.r1.crossbar_mux_7
+	 833	 pe.w32.c5.r2.crossbar_mux_9
+	 836	 pe.w32.c5.r2.mux_b
+	 841	 pe.w32.c5.r2.alu.inPinB
+** routing for i: 28 {Load_2}
+	 290	 LS.w32.c0.r6.memport
+	 313	 LS.w32.c0.r6.memport.outPinA
+	 1114	 pe.w32.c7.r0.crossbar_mux_9
+	 1116	 pe.w32.c7.r0.mux_b
+	 1121	 pe.w32.c7.r0.alu.inPinB
+** routing for i: 29 {Load_3}
+	 423	 LS.w32.c0.r1.memport
+	 645	 LS.w32.c0.r1.memport.outPinA
+	 314	 pe.w32.c2.r0.crossbar_mux_8
+	 316	 pe.w32.c2.r0.mux_a
+	 321	 pe.w32.c2.r0.alu.inPinA
+** routing for i: 30 {Load_4}
+	 390	 LS.w32.c9.r1.memport
+	 412	 LS.w32.c9.r1.memport.outPinA
+	 447	 pe.w32.c2.r7.crossbar_mux_2
+	 428	 pe.w32.c2.r6.crossbar_mux_3
+	 254	 pe.w32.c1.r5.crossbar_mux_9
+	 256	 pe.w32.c1.r5.mux_b
+	 262	 pe.w32.c1.r5.alu.inPinB
+** routing for i: 31 {Load_5}
+	 224	 LS.w32.c0.r4.memport
+	 246	 LS.w32.c0.r4.memport.outPinA
+	 792	 pe.w32.c5.r0.crossbar_mux_7
+	 972	 pe.w32.c6.r1.crossbar_mux_8
+	 974	 pe.w32.c6.r1.mux_a
+	 981	 pe.w32.c6.r1.alu.inPinA
+** routing for i: 32 {Load_6}
+	 0	 LS.w32.c0.r0.memport
+	 312	 LS.w32.c0.r0.memport.outPinA
+	 701	 pe.w32.c1.r0.crossbar_mux_7
+	 332	 pe.w32.c2.r1.crossbar_mux_7
+	 510	 pe.w32.c3.r2.crossbar_mux_6
+	 532	 pe.w32.c3.r3.crossbar_mux_8
+	 536	 pe.w32.c3.r3.mux_a
+	 541	 pe.w32.c3.r3.alu.inPinA
+** routing for i: 33 {Load_7}
+	 557	 LS.w32.c9.r6.memport
+	 579	 LS.w32.c9.r6.memport.outPinA
+	 46	 pe.w32.c7.r7.crossbar_mux_1
+	 187	 pe.w32.c8.r6.crossbar_mux_2
+	 167	 pe.w32.c8.r5.crossbar_mux_2
+	 148	 pe.w32.c8.r4.crossbar_mux_2
+	 134	 pe.w32.c8.r3.crossbar_mux_8
+	 137	 pe.w32.c8.r3.mux_a
+	 142	 pe.w32.c8.r3.alu.inPinA
+** routing for i: 34 {Load_8}
+	 490	 LS.w32.c9.r4.memport
+	 512	 LS.w32.c9.r4.memport.outPinA
+	 927	 pe.w32.c5.r7.crossbar_mux_3
+	 747	 pe.w32.c4.r6.crossbar_mux_3
+	 574	 pe.w32.c3.r5.crossbar_mux_9
+	 576	 pe.w32.c3.r5.mux_b
+	 582	 pe.w32.c3.r5.alu.inPinB
+** routing for i: 35 {Store_26}
+	 523	 LS.w32.c9.r5.memport
+Writing the positioned mapping output in file 'positioned_dot_output.dot' 
+Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot' 
+ 
+ 
+---------------------Converting the ordered-mapped  positioned_dot_output.dot file into ordered_dot_output.png:---------------------
+neato -Tpng positioned_dot_output.dot -o positioned_dot_output.png
+ 
+ 
+---------------------Converting the unordered-mapped  unpositioned_dot_output.dot file into unpositioned_dot_output.png:---------------------
+neato -Tpng unpositioned_dot_output.dot -o unpositioned_dot_output.png

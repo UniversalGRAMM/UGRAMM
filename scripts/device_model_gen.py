@@ -105,7 +105,7 @@ def create_riken(args):
         right_io_inPin_index    = right_io_index + 1
         right_io_outPin_index   = right_io_index + 2
         
-        right_io_base_name = "LS.w32.c" + str(args.NR+1) + ".r" + str(i) + ".mem"
+        right_io_base_name = "LS.w32.c" + str(args.NR+1) + ".r" + str(i) + ".memport"
         G.nodes[right_io_index]["G_Name"]     = right_io_base_name      #Right-IOs       
         G.nodes[right_io_index]["G_NodeType"] = "FuncCell"              #Right-IOs
         G.nodes[right_io_index]["G_opcode"]   = "MemPort"               #Right-IOs
@@ -465,7 +465,21 @@ def create_riken(args):
     # -------------------------------------------------------
     output_file = "riken_" + str(args.NR) + "_" + str(args.NC) + ".dot"
     nx.nx_pydot.write_dot(G, output_file)
-   
+
+    #--------------------------------------------------------
+    #  Writing the PRAGMA to the output file
+    #--------------------------------------------------------
+    pragma_string = " /* Device model node and opcode types:= \n[NodeType] = {FuncCell, PinCell, RouteCell}; \n[OpcodeType] = {MemPort, Mux, in, out, ALU, Constant}; \n[ALU] = {FuncCell, FADD, FALU}; \n[MemPort] = {FuncCell, input, output}; \n[Constant] = {FuncCell}; \n[Mux] = {RouteCell} \n[in] = {PinCell}; \n[out] = {PinCell}; \n*/\n"
+    #print("\n\npragma for the device model: \n")
+    #print(pragma_string)
+
+    with open(output_file,'r') as contents:
+        save = contents.read()
+    with open(output_file,'w') as contents:
+        contents.write(pragma_string)
+    with open(output_file,'a') as contents:
+        contents.write(save)
+
 # Creates device model for the ADRES architecture:
 def create_adres(args):
     pass

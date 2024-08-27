@@ -31,6 +31,8 @@ std::bitset<100000> explored;
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
 std::vector<std::string> outPin = {"outPinA"};
 
+std::map<std::string, std::vector<std::string>> GrammConfig;    //New general way
+
 //-------------------------------------------------------//
 // The following functions are added to simplify the pins
 // convention
@@ -657,8 +659,6 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
 
       int y = ordering[k];
-      if (RIKEN && ((*hConfig)[y].opcode == constant))
-        continue;
 
       // Uncommenting this
       // OB: std::cout << "--------------------- New Vertices Mapping Start ---------------------------\n";
@@ -704,7 +704,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
 
       // Printing vertex model:
-      printVertexModels(H, G);
+      printVertexModels(H, G, hConfig);
 
       // Visualizing mapping result in neato:
       printMappedResults(H, G, hConfig, gConfig);
@@ -1124,6 +1124,9 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
       std::cout << "[G] arch_ID " << arch_ID << " ::  arch_NodeType " << arch_NodeType <<  " :: arch_Opcode " << arch_Opcode << "\n";
     }
 
+    (*gConfig)[i].Type   = arch_NodeType;
+    (*gConfig)[i].Opcode = arch_Opcode;
+
     // Deciding the configuration based on attributes defined in the script:
     // arch_Opcode described in the device model graph file: MemPort, Mux, Constant, and ALU.
     if (arch_Opcode == "MemPort")
@@ -1157,6 +1160,7 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
       (*gConfig)[i].opcode = alu;    // Saving the opcode in the config array.
     }
   }
+
 }
 
 /*
@@ -1411,15 +1415,22 @@ int main(int argc, char *argv[])
 
     std::ifstream dFile;                // Defining the input file stream for device model dot file
     dFile.open(argv[2]);                // Passing the device_Model_dot file as an argument!
+
+    readDeviceModelPragma(dFile, GrammConfig);
+
     boost::read_graphviz(dFile, G, dp); // Reading the dot file
     readDeviceModel(&G, &gConfig);
   }
+
+  //OB: Debugging the exit!!
+  //exit(-1);
 
   //--------------------------------------------------------------------
   //----------------- STEP 1: READING APPLICATION DOT FILE -------------
   //--------------------------------------------------------------------
 
   // read the DFG from a file
+  readApplicationGraphPragma(iFile, GrammConfig);
   boost::read_graphviz(iFile, H, dp);
   readApplicationGraph(&H, &hConfig);
 

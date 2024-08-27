@@ -18,29 +18,32 @@ std::vector<std::string> colors = {
     "#FFC0CB", // Pink
     "#40E0D0", // Turquoise
     "#4B0082"  // Indigo
-}; //Color code for different FunCell no
+}; // Color code for different FunCell no
 
-std::string input_pin_color   = "#0000FF";  //Pre-defined color-code for the input-pin cell
-std::string output_pin_color  = "#FF0000";  //Pre-defined color-code for the output-pin cell
-std::string unused_cell_color = "#A9A9A9";  //Pre-defined color-code for the unused cell
-std::map<std::string, std::string> funCellMapping; //Key-> Device-model node-name :: Value-> Mapped application name.
+std::string input_pin_color = "#0000FF";           // Pre-defined color-code for the input-pin cell
+std::string output_pin_color = "#FF0000";          // Pre-defined color-code for the output-pin cell
+std::string unused_cell_color = "#A9A9A9";         // Pre-defined color-code for the unused cell
+std::map<std::string, std::string> funCellMapping; // Key-> Device-model node-name :: Value-> Mapped application name.
 
-std::string removeCurlyBrackets(const std::string& input) {
-    std::string result = input;
-    
-    // Find and remove the opening curly bracket
-    size_t pos = result.find('{');
-    if (pos != std::string::npos) {
-        result.erase(pos, 1);
-    }
+std::string removeCurlyBrackets(const std::string &input)
+{
+  std::string result = input;
 
-    // Find and remove the closing curly bracket
-    pos = result.find('}');
-    if (pos != std::string::npos) {
-        result.erase(pos, 1);
-    }
+  // Find and remove the opening curly bracket
+  size_t pos = result.find('{');
+  if (pos != std::string::npos)
+  {
+    result.erase(pos, 1);
+  }
 
-    return result;
+  // Find and remove the closing curly bracket
+  pos = result.find('}');
+  if (pos != std::string::npos)
+  {
+    result.erase(pos, 1);
+  }
+
+  return result;
 }
 
 std::string gNames_deliemter_changes(std::string gNames)
@@ -84,7 +87,172 @@ std::string string_remover(std::string original_string, std::string toRemove)
   return modified_string;
 }
 
-void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile)
+std::string readCommentSection(std::ifstream &deviceModelFile)
+{
+  std::string line;
+  std::string commentSection = {};
+  bool comment_started = false;
+
+  while (std::getline(deviceModelFile, line))
+  {
+    size_t startPos = line.find("/*");
+    if (startPos != std::string::npos)
+    {
+      comment_started = true;
+    }
+    else if (comment_started == true)
+    {
+      size_t endPos = line.find("*/");
+      if (endPos != std::string::npos)
+      {
+        return commentSection;
+      }
+      else
+      {
+        commentSection += line + "\n";
+      }
+    }
+  }
+
+  return commentSection;
+}
+
+void parseVectorofStrings(std::string commentSection, std::string keyword, std::vector<std::string> &Type)
+{
+  std::istringstream stream(commentSection);
+  std::string line;
+
+  while (std::getline(stream, line))
+  {
+    size_t keywordPos = line.find(keyword);
+    if (keywordPos != std::string::npos)
+    {
+      size_t startBracket = line.find("{");
+      size_t endBracket = line.find("}");
+      if ((startBracket != std::string::npos) & (endBracket != std::string::npos))
+      {
+        std::string content = line.substr(startBracket + 1, endBracket - startBracket - 1);
+        std::istringstream content_stream(content);
+        std::string token;
+        while (std::getline(content_stream, token, ','))
+        {
+          // Remove leading and/or trailing whitespaces:
+          token.erase(0, token.find_first_not_of(" \t\n\r"));
+          token.erase(token.find_last_not_of(" \t\n\r") + 1);
+          Type.push_back(token);
+        }
+      }
+    }
+  }
+}
+
+bool checkVectorofStrings(std::string commentSection, std::string keyword, std::vector<std::string> &Type)
+{
+  std::istringstream stream(commentSection);
+  std::string line;
+  bool aGraphPragmaValidity = true;
+  while (std::getline(stream, line))
+  {
+    size_t keywordPos = line.find(keyword);
+    if (keywordPos != std::string::npos)
+    {
+      size_t startBracket = line.find("{");
+      size_t endBracket = line.find("}");
+      if ((startBracket != std::string::npos) & (endBracket != std::string::npos))
+      {
+        std::string content = line.substr(startBracket + 1, endBracket - startBracket - 1);
+        std::istringstream content_stream(content);
+        std::string token;
+        while (std::getline(content_stream, token, ','))
+        {
+          // Remove leading and/or trailing whitespaces:
+          token.erase(0, token.find_first_not_of(" \t\n\r"));
+          token.erase(token.find_last_not_of(" \t\n\r") + 1);
+
+          // Checking the above token present in the device model description.
+          auto it = std::find(Type.begin(), Type.end(), token);
+          if (it != Type.end())
+          { // If iterator is not at the end, the string is present
+            std::cout << "The token " << token << " found in " << keyword << "\n";
+          }
+          else
+          {
+            std::cout << "The token " << token << " not found in " << keyword << "\n";
+            aGraphPragmaValidity = false;
+            // return aGraphPragmaValidity;
+          }
+        }
+      }
+    }
+  }
+  return aGraphPragmaValidity;
+}
+
+void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &GrammConfig)
+{
+  std::string commentSection = readCommentSection(deviceModelFile);
+
+  // std::cout << commentSection << std::endl; // OB for debug
+
+  // Parsing NodeType from the commentSection:
+  GrammConfig["NodeType"] = {};
+  parseVectorofStrings(commentSection, "[NodeType]", GrammConfig["NodeType"]);
+
+  // Parsing OpcodeType from the commentSection:
+  GrammConfig["OpcodeType"] = {};
+  parseVectorofStrings(commentSection, "[OpcodeType]", GrammConfig["OpcodeType"]);
+
+  
+  for (auto node_name : GrammConfig["OpcodeType"])
+  {
+    std::string keyword = "[" + node_name + "]";
+    size_t pos = commentSection.find(keyword);
+    if (pos != std::string::npos)
+    {
+      GrammConfig[node_name] = {};
+      parseVectorofStrings(commentSection, keyword, GrammConfig[node_name]);
+    }
+  }
+
+  // OB for debugging purpose:
+  // Printing above data structures for debugging:
+  std::cout << "Parsed Pragma: \n";
+  for (const auto &pair : GrammConfig) {
+      std::cout << "[" << pair.first << "] :: ";
+      
+      // Iterate over the vector and print elements
+      for (size_t i = 0; i < pair.second.size(); ++i) {
+          std::cout << pair.second[i];
+          if (i != pair.second.size() - 1) {
+              std::cout << " :: "; // Add " :: " only if it's not the last element
+          }
+      }
+      std::cout << std::endl;
+  }
+}
+
+void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> GrammConfig)
+{
+  std::string commentSection = readCommentSection(applicationGraphFile);
+
+  //std::cout << commentSection << std::endl; // OB for debug
+  std::cout << "Checking Application Token whether present in the device model or not: \n";
+  // Checking if OpcodeType string has correct opcodes or not in application graph:
+  checkVectorofStrings(commentSection, "[OpcodeType]", GrammConfig["OpcodeType"]);
+
+  for (auto node_name : GrammConfig["OpcodeType"])
+  {
+    std::string keyword = "[" + node_name + "]";
+    size_t pos = commentSection.find(keyword);
+    if (pos != std::string::npos)
+    {
+      checkVectorofStrings(commentSection, keyword, GrammConfig[node_name]);
+    }
+  }
+  std::cout << "\n\n";
+}
+
+void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig)
 {
 
   struct RoutingTree *RT = &((*Trees)[y]);
@@ -99,7 +267,7 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
     std::cout << "For hNames[y] :: " << hNames[y] << " :: gNames[n] :: " << gNames[n] << "\n";
 
   std::list<int>::iterator it = RT->nodes.begin();
-  
+
   for (; it != RT->nodes.end(); it++)
   {
     int m = *it;
@@ -107,11 +275,12 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
     if (m == orign)
       continue;
 
-    //Checking if either source is "inPin" or sink is "outPin"
+    // Checking if either source is "inPin" or sink is "outPin"
     if ((boost::algorithm::contains(gNames[RT->parent[m]], "inPin")) || (boost::algorithm::contains(gNames[m], "outPin")))
     {
       // parent[m] --> FunCell || m --> outPin
-      positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
+      if ((*hConfig)[y].opcode != constant) // OB skipping the constant as of now in the positioned graph
+        positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
       unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
 
       // OB: Right now, GRAMM does not include connection between inPin to the FunCell
@@ -123,8 +292,8 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
       if (boost::algorithm::contains(gNames[RT->parent[m]], "alu"))
       {
         // ALU cell --> Adding two inPin connections
-        positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]]  << "\n";
-        positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]]  << "\n";
+        positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << "\n";
+        positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << "\n";
 
         unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << "\n";
         unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << "\n";
@@ -147,8 +316,9 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
 
         if (boost::algorithm::contains(gNames[current_sink], "inPin"))
         {
-          hit = true; //Exits when a sink inPin is detected!!
-          positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
+          hit = true;                           // Exits when a sink inPin is detected!!
+          if ((*hConfig)[y].opcode != constant) // OB skipping the constant as of now in the positioned graph
+            positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
           unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
 
           // Adding the manual connection for the store operation.
@@ -156,8 +326,8 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
           if (boost::algorithm::contains(gNames[current_sink], "LS"))
           { // LS Cell --> Adding a inPin connections (required for Store, to connect input_pin to the Memport)
             std::string funcCell_Index = string_remover(gNames[current_sink], ".inPinA");
-            positionedOutputFile << gNames_deliemter_changes(gNames[current_sink]) << " -> " <<  gNames_deliemter_changes(funcCell_Index) + "_" + funCellMapping[funcCell_Index]  << "\n";
-            unpositionedOutputFile <<  gNames_deliemter_changes(gNames[current_sink]) << " -> " << gNames_deliemter_changes(funcCell_Index) + "_" + funCellMapping[funcCell_Index]   << "\n";
+            positionedOutputFile << gNames_deliemter_changes(gNames[current_sink]) << " -> " << gNames_deliemter_changes(funcCell_Index) + "_" + funCellMapping[funcCell_Index] << "\n";
+            unpositionedOutputFile << gNames_deliemter_changes(gNames[current_sink]) << " -> " << gNames_deliemter_changes(funcCell_Index) + "_" + funCellMapping[funcCell_Index] << "\n";
           }
         }
       }
@@ -167,12 +337,12 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
 
 void printPlacementResults(int gNumber, std::string gName, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig)
 {
-  //Pre-defined scale and displacement values for the positioned-dot file:
+  // Pre-defined scale and displacement values for the positioned-dot file:
   int scale = 6;
-  float input_displacement = 0.65 * (scale/3);
-  float out_displacement = 1.0 * (scale/3);
+  float input_displacement = 0.65 * (scale / 3);
+  float out_displacement = 1.0 * (scale / 3);
 
-  //Parsing the sub_strings from the device model node's name:
+  // Parsing the sub_strings from the device model node's name:
   std::vector<std::string> parts; // Contains the sub-parts of the current string
   std::string part;               // Used while parsing the sub-string.
   std::stringstream ss(gName);    // Creating string stream input
@@ -182,8 +352,8 @@ void printPlacementResults(int gNumber, std::string gName, std::ofstream &positi
     parts.push_back(part);
   }
 
-  //Parsing the X & Y co-ordinates from the sub_strings
-  // '0' subtraction is used to convert Char into Integer!!
+  // Parsing the X & Y co-ordinates from the sub_strings
+  //  '0' subtraction is used to convert Char into Integer!!
   int x = parts[2][1] - '0'; // parts[2] --> 'cX' :: X will contain the column location of the node
   int y = parts[3][1] - '0'; // parts[3] --> 'rX' :: Y will contain the row location of the node
 
@@ -196,10 +366,25 @@ void printPlacementResults(int gNumber, std::string gName, std::ofstream &positi
     std::cout << std::endl;
   }
 
-  // OB: skipping the constant as of now:
+  int opcode_gNumber = (*gConfig)[gNumber].opcode;             // Use for deciding the color of the FunCell based on the opcode
+  std::string modified_name = gNames_deliemter_changes(gName); // Modified combined string
+
+  // corner-case for showing the constant connections in the unpositioned graph (TODO: Later needs to be removed!!)
   if (parts[4] == "const")
   {
-    return;
+    // Constant hierarchy can either contain the actual FunCell describing the constant or the pincell for the output pin purpose.
+    if (((*Users)[gNumber].size() >= 1))
+    {
+      if (((*gConfig)[gNumber].type == FuncCell)) // if loop covers the FunCell:
+      {
+        unpositionedOutputFile << gNames_deliemter_changes(gName) + "_" + funCellMapping[gName] << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\"]\n";
+      }
+      else // Following statement covers the output pin:
+      {
+        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=12 fillcolor=\"" << output_pin_color << "\"]\n"; // Constant only has output pin.
+      }
+    }
+    return; // OB: skipping the constant as of now for positioned_graph
   }
 
   //---------------------------------------------------
@@ -207,11 +392,10 @@ void printPlacementResults(int gNumber, std::string gName, std::ofstream &positi
   //---------------------------------------------------
   if ((*gConfig)[gNumber].type == FuncCell)
   {
-    int opcode_gNumber = (*gConfig)[gNumber].opcode;
 
-    if ((*Users)[gNumber].size() >= 1)  //Users list is used for determining whether the current device-model cell is used or not.
-    { 
-      unpositionedOutputFile << gNames_deliemter_changes(gName) + "_" + funCellMapping[gName]  << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\"]\n";
+    if ((*Users)[gNumber].size() >= 1) // Users list is used for determining whether the current device-model cell is used or not.
+    {
+      unpositionedOutputFile << gNames_deliemter_changes(gName) + "_" + funCellMapping[gName] << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\"]\n";
       positionedOutputFile << gNames_deliemter_changes(gName) + "_" + funCellMapping[gName] << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\" pos=\"" << scale * x << "," << scale * y << "!\"]\n";
     }
     else
@@ -226,10 +410,7 @@ void printPlacementResults(int gNumber, std::string gName, std::ofstream &positi
   if (boost::algorithm::contains(gName, "Pin"))
   {
 
-    // Modified combined string:
-    std::string modified_name = gNames_deliemter_changes(gName);
-
-    if ((*Users)[gNumber].size() >= 1) //Users list is used for determining whether the current device-model cell is used or not.
+    if ((*Users)[gNumber].size() >= 1) // Users list is used for determining whether the current device-model cell is used or not.
     {
       if (parts[5] == "inPinA")
       {
@@ -248,7 +429,8 @@ void printPlacementResults(int gNumber, std::string gName, std::ofstream &positi
         unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=12 fillcolor=\"" << output_pin_color << "\"]\n";
       }
     }
-    else{
+    else
+    {
       if (parts[5] == "inPinA")
       {
         // Input-pin:
@@ -263,7 +445,6 @@ void printPlacementResults(int gNumber, std::string gName, std::ofstream &positi
         positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << unused_cell_color << "\" pos=\"" << scale * x << "," << scale * y - out_displacement << "!\"]\n";
       }
     }
-
   }
 }
 
@@ -282,28 +463,24 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
 
   // Printing the start of the dot file:
   positionedOutputFile << "digraph {\ngraph [bgcolor=lightgray]\nnode [style=filled]\nsplines=ortho;\n";
-  unpositionedOutputFile << "digraph {\ngraph [bgcolor=lightgray]\nnode [style=filled]\nsplines=true; rankdir=LR;\n";
+  unpositionedOutputFile << "digraph {\ngraph [bgcolor=lightgray]\nnode [style=filled]\nsplines=true; rankdir=TB;\n";
 
   //---------------------------------------------------
-  //Adding nodes of kernel into simplified_file_output:
+  // Adding nodes of kernel into simplified_file_output:
   //---------------------------------------------------
   unpositionedOutputFile << "subgraph cluster_1 {\n label = \"Input Kernel\"; fontsize = 40; style=dashed; \n edge [minlen=3]\n";
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    if ((*hConfig)[i].opcode == constant)
-      std::replace( hNames[i].begin(), hNames[i].end(), '|', '_');
-      std::replace( hNames[i].begin(), hNames[i].end(), '=', '_');
-      std::replace( hNames[i].begin(), hNames[i].end(), '.', '_');
-
     unpositionedOutputFile << removeCurlyBrackets(hNames[i]) << ";\n";
   }
 
   std::pair<edge_iterator, edge_iterator> edge_pair = edges(*H);
-  for (edge_iterator e_it = edge_pair.first; e_it != edge_pair.second; ++e_it) {
-      vertex_descriptor u = source(*e_it, *H);
-      vertex_descriptor v = target(*e_it, *H);
-        
-      unpositionedOutputFile << "  " << removeCurlyBrackets(hNames[u]) << " -> " << removeCurlyBrackets(hNames[v]) << ";\n";
+  for (edge_iterator e_it = edge_pair.first; e_it != edge_pair.second; ++e_it)
+  {
+    vertex_descriptor u = source(*e_it, *H);
+    vertex_descriptor v = target(*e_it, *H);
+
+    unpositionedOutputFile << "  " << removeCurlyBrackets(hNames[u]) << " -> " << removeCurlyBrackets(hNames[v]) << ";\n";
   }
 
   unpositionedOutputFile << "}\n";
@@ -325,16 +502,12 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   //------------------------
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    //OB: Skipping the routing of constant as of now.
-    if ((*hConfig)[i].opcode == constant)
-      continue;
-
-    printRoutingResults(i, positionedOutputFile, unpositionedOutputFile);
+    printRoutingResults(i, positionedOutputFile, unpositionedOutputFile, hConfig);
   }
 
-  positionedOutputFile << "}\n"; //End of digraph
-  unpositionedOutputFile << "}\n";  //End of second cluster
-  unpositionedOutputFile << "}\n"; //End of digraph
+  positionedOutputFile << "}\n";   // End of digraph
+  unpositionedOutputFile << "}\n"; // End of second cluster
+  unpositionedOutputFile << "}\n"; // End of digraph
 }
 
 void printName(int n)
@@ -342,7 +515,7 @@ void printName(int n)
   std::cout << gNames[n] << "\n";
 }
 
-void printVertexModels(DirectedGraph *H, DirectedGraph *G)
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig)
 {
   for (int i = 0; i < num_vertices(*H); i++)
   {
@@ -358,7 +531,14 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G)
       int n = *it;
       std::cout << gNames[n] << std::endl;
 
-      if(it == RT->nodes.begin()){
+      if (it == RT->nodes.begin())
+      {
+
+        if ((*hConfig)[i].opcode == constant) // Fixing the constant names:
+          std::replace(hNames[i].begin(), hNames[i].end(), '|', '_');
+        std::replace(hNames[i].begin(), hNames[i].end(), '=', '_');
+        std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
+
         funCellMapping[gNames[n]] = removeCurlyBrackets(hNames[i]);
       }
     }
