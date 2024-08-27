@@ -31,6 +31,9 @@ std::bitset<100000> explored;
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
 std::vector<std::string> outPin = {"outPinA"};
 
+// Logger global variables:
+std::shared_ptr<spdlog::logger> GRAMM = spdlog::stdout_color_mt("GRAMM");
+
 void depositRoute(int signal, std::list<int> *nodes)
 {
   if (!nodes->size())
@@ -58,7 +61,19 @@ void depositRoute(int signal, std::list<int> *nodes)
   }
 }
 
-int findDriver(int signal)
+//For the given FunCell (signal), finds the associated outputPin node from the deviceModel. 
+//Ex: FunCell(signal) -> outPin (selectedCellOutputPin)
+int findOutputPin(int signal, DirectedGraph *G)
+{
+  vertex_descriptor signalVertex = vertex(signal, *G);
+  out_edge_iterator eo, eo_end;
+  boost::tie(eo, eo_end) = out_edges(signalVertex, *G);
+  int selectedCellOutputPin = target(*eo, *G);
+
+  return selectedCellOutputPin;
+}
+
+int findDriver(int signal, std::map<int, NodeConfig> *gConfig)
 {
   struct RoutingTree *RT = &((*Trees)[signal]);
   std::list<int>::iterator it = RT->nodes.begin();
@@ -67,7 +82,14 @@ int findDriver(int signal)
   for (; it != RT->nodes.end(); it++)
   {
     if (!RT->parent.count(*it))
+    {
+      if ((*gConfig)[*it].type != PinCell)
+      {
+        GRAMM->error("FATAL ERROR -- For signal {}, driverNode is not a PinCell!!", *it);
+        exit(-1);
+      }
       return *it;
+    }
   }
   return -1;
 }
@@ -184,10 +206,10 @@ void ripUpLoad(DirectedGraph *G, int signal, int load) {
 
 // For reference, got this from routeSignal function
 // route(G, H, y, loadLoc, &path, gConfig);
-int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig, std::string loadPin, std::string driverPin)
+int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig)
 {
 
-  route->clear();
+  route->clear(); // Clearing the route list.
 
   std::vector<int> expInt;
   expInt.clear();
@@ -214,9 +236,10 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     struct ExpNode eNode;
     eNode.cost = 0;
     eNode.i = rNode;
-    // Uncomment this
-    //  OB:  std::cout << "EXPANSION SOURCE : ";
-    //  OB:  printName(rNode);
+
+    if (DEBUG)
+      std::cout << "EXPANSION SOURCE : " << gNames[rNode] << "\n";
+
     explored.set(rNode);
     expInt.push_back(rNode);
     PRQ.push(eNode);
@@ -224,10 +247,6 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
 
   //  std::cout << "EXPANSION TARGET: \n";
   //  printName(sink);
-  //  std::cout << "SINK USERS: \n";
-  //  std::list<int>::iterator sit = (*Users)[sink].begin();
-  //  for (; sit != (*Users)[sink].end(); sit++)
-  //    std::cout << "\t" << hNames[*sit] << "\n";
 
   struct ExpNode popped;
   bool hit = false;
@@ -255,21 +274,6 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
 
       explored.set(next);
       expInt.push_back(next);
-
-      
-      // Verifying the correctness of the load pins in the device model graph if the
-      // next node is of type PinCell. If pin is not correct, we will skip over the 
-      // the next node.
-
-      if ((*gConfig)[next].type == PinCell){
-        if ((loadPin != "inPinA") && ((*gConfig)[next].loadPin == "inPinA")){
-          continue;
-        }
-
-        if ((loadPin != "inPinB") && ((*gConfig)[next].loadPin == "inPinB")){
-          continue;
-        }
-      }
 
       // Verifying if the node is type RouteCell or PinCell as ONLY they can be used along the way for routing
       if ((next != sink) && (*gConfig)[next].type != RouteCell && (*gConfig)[next].type != PinCell)
@@ -348,12 +352,15 @@ int totalOveruse(DirectedGraph *G)
 
     if (temp > 0)
     {
-      std::cout << "OVERUSE " << temp << " ON ";
-      // printName(i);
+      GRAMM->debug("{} OVERUSE ON {} with following users:", temp, gNames[i]);
+      for (int value : (*Users)[i])
+      {
+        GRAMM->debug("{}", hNames[value]);
+      }
     }
   }
 
-  std::cout << "TOTAL OVERUSE: " << total << "\n";
+  GRAMM->info("TOTAL OVERUSE: {}", total);
 
   return total;
 }
@@ -410,8 +417,7 @@ void randomizeList(int *list, int n)
 
 int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig)
 {
-  // uncommenting this
-  //  OB: std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n";
+  GRAMM->trace("BEGINNING ROUTE OF NAME : {}", hNames[y]);
 
   vertex_descriptor yD = vertex(y, *H);
   int totalCost = 0;
@@ -422,37 +428,57 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
   for (; eo != eo_end; eo++)
   {
     int load = target(*eo, *H);
-
-    // uncommenting this
-    //  OB:    std::cout << "SOURCE : " << hNames[y] << " TARGET : " << hNames[load] << "\n";
+    std::string loadPin = boost::get(&EdgeProperty::loadPin, *H, *eo);
+    std::string driverPin = boost::get(&EdgeProperty::driverPin, *H, *eo);
 
     if (load == y)
       continue; // JANDERS ignore feedback connections for the moment
 
     if ((*Trees)[load].nodes.size() == 0)
-      continue; // load is not placed
+      continue; // load should be placed for the routing purpose!!
 
-    int loadLoc = findDriver(load); // Hamas: loadLoc = source of the signal
-    // uncommenting this
-    //  OB:    std::cout << "ROUTING LOAD: ";
-    //  OB:    printName(loadLoc);
+    // Since driver will always be the outPin of the FunCell, the type of loadOutPinCellLoc will be "pinCell"
+    int loadOutPinCellLoc = findDriver(load, gConfig);
 
-    if (loadLoc < 0)
+    // Converting the driver(pinCell) to the actual input pin of FuncCell:
+    in_edge_iterator ei, ei_end;
+    vertex_descriptor yD = vertex(loadOutPinCellLoc, *G);
+    boost::tie(ei, ei_end) = in_edges(yD, *G);
+
+    // Step 1: Fetching "FunCell" ID from the edge: FunCell --> OutPin
+    int loadFunCellLoc = source(*ei, *G);
+
+    // Step 2: Fetching given "inPin" ID from the edge: inPin --> FunCell (Note: there could be multiple input pins for the given FunCell)
+    yD = vertex(loadFunCellLoc, *G);
+    boost::tie(ei, ei_end) = in_edges(yD, *G);
+    int loadInPinCellLoc = 0;
+    for (; ei != ei_end; ei++)
     {
-      // OB:   std::cout << "SIGNAL WITHOUT A DRIVER.\n";
+      int source_id = source(*ei, *G);
+      if ((*gConfig)[source_id].loadPin == loadPin)
+        loadInPinCellLoc = source_id;
+    }
+
+    GRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], loadPin);
+    GRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFunCellLoc], gNames[loadInPinCellLoc]);
+
+    if (loadInPinCellLoc < 0)
+    {
+      GRAMM->error("SIGNAL WITHOUT A DRIVER.\n");
       exit(-1);
     }
+
     int cost;
     std::list<int> path;
 
-    std::string loadPin = boost::get(&EdgeProperty::loadPin, *H, *eo);
-    std::string driverPin = boost::get(&EdgeProperty::driverPin, *H, *eo);
-    cost = route(G, y, loadLoc, &path, gConfig, loadPin, driverPin); // Hamas: Send to the route function to route, maybe need to add a new parameter to pass edge type for input and output pin
-                                                                     //  Maybe need to pass the graph to the route
+    cost = route(G, y, loadInPinCellLoc, &path, gConfig);
+
     totalCost += cost;
+
     if (cost < MAX_DIST)
     {
-      path.remove(loadLoc);
+      // Earlier in Func to Func Mapping, we used to remove the driver Function:
+      // path.remove(loadPinCellLoc);
       depositRoute(y, &path);
     }
     else
@@ -468,7 +494,9 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
 int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
                        std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
-
+  //--------------------------------------
+  // Step 1: Checking all ϕ(xj) are empty
+  //--------------------------------------
   bool allEmpty = true;
 
   in_edge_iterator ei, ei_end;
@@ -479,6 +507,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     if ((*Trees)[source(*ei, *G)].nodes.size())
       allEmpty = false;
   }
+
   out_edge_iterator eo, eo_end;
   boost::tie(eo, eo_end) = out_edges(yD, *H);
   for (; eo != eo_end; eo++)
@@ -488,15 +517,32 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
   }
 
   if (allEmpty)
-  { // choose a random node of G to be the vertex model for y because NONE of its fanins or fanouts have vertex models
+  {
+    // choose a random unused node of G to be the vertex model for y because NONE of its fanins or fanouts have vertex models
+
+    int selectedCellOutputPin = 0;
     int chooseRand = (rand() % num_vertices(*G));
-    do
+    bool vertex_found = false;
+
+    while (vertex_found == false)
     {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
-    } while (((*gConfig)[chooseRand].opcode != (*hConfig)[y].opcode));
-    //    std::cout << "Chose a random vertex model " << chooseRand << ".\n";
-    (*Trees)[y].nodes.push_back(chooseRand);
-    (*Users)[chooseRand].push_back(y);
+      if (((*gConfig)[chooseRand].opcode == (*hConfig)[y].opcode))
+      {
+        // Finding the output Pin for the selected FunCell:
+        selectedCellOutputPin = findOutputPin(chooseRand, G);
+        if ((*Users)[selectedCellOutputPin].size() == 0)
+          vertex_found = true;
+      }
+    }
+
+    GRAMM->debug("For application node :: {} :: Choosing starting vertex model as :: {} :: {}", hNames[y], gNames[chooseRand], gNames[selectedCellOutputPin]);
+
+    // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell
+    //(*Trees)[y].nodes.push_back(chooseRand);
+    (*Trees)[y].nodes.push_back(selectedCellOutputPin);
+    (*Users)[selectedCellOutputPin].push_back(y);
+
     return 0;
   }
 
@@ -509,79 +555,85 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     totalCosts[i] = 0;
 
   for (int i = 0; i < num_vertices(*G); i++)
-  {
+  { // first route the signal on the output of y
 
+    // Confriming the Vertex correct type:
     if ((*gConfig)[i].opcode != (*hConfig)[y].opcode)
       continue;
 
-    // first route the signal on the output of y
-
-    //    std::cout << "Trying location:\n";
-    //    printName(i);
+    // Finding the output Pin for the selected FunCell:
+    int outputPin = findOutputPin(i, G);
 
     ripUpRouting(y);
-    (*Trees)[y].nodes.push_back(i);
-    (*Users)[i].push_back(y);
+    (*Trees)[y].nodes.push_back(outputPin);
+    (*Users)[outputPin].push_back(y);
 
-    //    totalCosts[i] += (4 << ((*Users)[i].size()-1));
-    //    totalCosts[i] += (4 << (*Users)[i].size()) + (1 << (*HistoryCosts)[i]);
-    totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
+    totalCosts[outputPin] += (1 + (*HistoryCosts)[outputPin]) * ((*Users)[outputPin].size() * PFac);
 
-    //    std::cout << "INVOKING ROUTE FANOUT SIGNAL\n";
-    //    printRouting(y);
+    if (GRAMM->level() <= spdlog::level::trace)
+    {
+      printRouting(y);
+    }
 
-    totalCosts[i] += routeSignal(G, H, y, gConfig);
+    totalCosts[outputPin] += routeSignal(G, H, y, gConfig);
+    GRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[outputPin], totalCosts[outputPin]);
 
-    //    std::cout << "TOTAL COST " << totalCosts[i] << "\n";
-
-    if (totalCosts[i] > bestCost)
+    if (totalCosts[outputPin] > bestCost)
       continue;
 
+    //----------------------------------------------
     // now route the signals on the input of y
+    //----------------------------------------------
 
     boost::tie(ei, ei_end) = in_edges(yD, *H);
     for (; (ei != ei_end); ei++)
     {
       int driver = source(*ei, *H);
+
       if ((*Trees)[driver].nodes.size() == 0)
         continue; // driver is not placed
 
-      int driverNode = findDriver(driver);
+      int driverNode = findDriver(driver, gConfig);
+
       ripUpRouting(driver);
       (*Trees)[driver].nodes.push_back(driverNode);
       (*Users)[driverNode].push_back(driver);
-      //      ripUpLoad(G, driver, i);
-      //      std::cout << "ROUTING FANIN: " << hNames[driver] << "\n";
 
-      totalCosts[i] += routeSignal(G, H, driver, gConfig);
+      // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
+      totalCosts[outputPin] += routeSignal(G, H, driver, gConfig);
 
-      //      std::cout << "COSTS: " << totalCosts[i] << "\n";
+      GRAMM->debug("Routing the signals on the input of {}", hNames[y]);
+      GRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driver], hNames[y], gNames[driverNode], gNames[outputPin], totalCosts[outputPin]);
 
-      if (totalCosts[i] > bestCost)
+      if (totalCosts[outputPin] > bestCost)
         break;
     }
-    //    std::cout << "TOTAL COST: " << totalCosts[i] << "\n";
 
-    if (totalCosts[i] >= MAX_DIST)
+    GRAMM->debug("Total cost for {} is {}\n", hNames[y], totalCosts[outputPin]);
+
+    if (totalCosts[outputPin] >= MAX_DIST)
       continue;
 
-    if (totalCosts[i] < bestCost)
+    if (totalCosts[outputPin] < bestCost)
     {
-      bestIndex = i;
-      bestCost = totalCosts[i];
+      bestIndex = outputPin;
+      bestCost = totalCosts[outputPin];
     }
-    else if (totalCosts[i] == bestCost)
+    else if (totalCosts[outputPin] == bestCost)
     {
       if (!(rand() % 2))
-        bestIndex = i;
+        bestIndex = outputPin;
     }
   }
 
   if (bestIndex == -1)
   {
-    std::cout << "FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX " << y << " " << hNames[y] << "\n";
+    GRAMM->error("FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX {} {}", y, hNames[y]);
     exit(-1);
   }
+
+  // printRouting(y);
+  GRAMM->debug("The bertIndex found for {} from the device-model is {} with cost of {}", hNames[y], gNames[bestIndex], bestCost);
 
   ripUpRouting(y);
   (*Trees)[y].nodes.push_back(bestIndex);
@@ -596,27 +648,28 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     if ((*Trees)[driver].nodes.size() == 0)
       continue; // driver is not placed
 
-    int driverNode = findDriver(driver);
+    int driverNode = findDriver(driver, gConfig);
+
     ripUpRouting(driver);
     (*Trees)[driver].nodes.push_back(driverNode);
     (*Users)[driverNode].push_back(driver);
-    //    ripUpLoad(G, driver, bestIndex);
     routeSignal(G, H, driver, gConfig);
   }
 
   return 0;
 }
 
+/*
+  findMinorEmbedding() => determine if H is a minor of G
+*/
 int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
-  // determine if H is a minor of G
 
   int ordering[num_vertices(*H)]; // presently unused
   for (int i = 0; i < num_vertices(*H); i++)
   {
-
+    GRAMM->trace("{} ", ordering[i]);
     ordering[i] = i;
-    // std::cout << ordering[i] << " \n";
   }
 
   bool done = false;
@@ -630,64 +683,53 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   {
 
     iterCount++;
-    std::cout << "***** BEGINNING OUTER WHILE LOOP ***** ITER " << iterCount << " \n";
+    GRAMM->debug("\n\n");
+    GRAMM->info("***** BEGINNING OUTER WHILE LOOP ***** ITER {}", iterCount);
 
     // randomizeList(ordering, num_vertices(*H));
     sortList(ordering, num_vertices(*H));
 
     for (int k = 0; k < num_vertices(*H); k++)
     {
-
       int y = ordering[k];
 
-      // Uncommenting this
-      // OB: std::cout << "--------------------- New Vertices Mapping Start ---------------------------\n";
-      // OB: std::cout << "Finding vertex model for: " << y << " " << (*hConfig)[y].opcode << "\n";
-      // OB:  std::cout << "SIZE: " << (*Trees)[y].nodes.size() << "\n";
-      //       std::cout << "TOPO ORDER: " << (*TopoOrder)[y] << "\n"; //ERROR: creating segmentation dump
+      // if (RIKEN && ((*hConfig)[y].opcode == constant))
+      //   continue;
 
-      //      if ((iterCount >= 3) && !hasOverlap(y)) // everything should be routed by 3rd iter
-      //	continue; // skip signals with no overlap
+      GRAMM->debug("\n");
+      GRAMM->debug("--------------------- New Vertices Mapping Start ---------------------------");
+      GRAMM->debug("Finding vertex model for: {} with Current vertex-size: {}", hNames[y], (*Trees)[y].nodes.size());
+      if (computeTopoEnable)
+        GRAMM->trace("TOPO ORDER: {}", (*TopoOrder)[y]);
 
       findMinVertexModel(G, H, y, hConfig, gConfig);
-
-      // Uncommenting this
-      // OB: std::cout << "Print Vertex Model: \n";
-      // OB: printVertexModels(H);
-      // OB: std::cout << "--------------------- New Vertices Mapping End ---------------------------\n";
-
     } // for k
 
     int TO = totalOveruse(G);
 
-    if (iterCount == 2)
+    if (iterCount >= 2)
     {
       frac = (float)TO / totalUsed(G);
-      std::cout << "FRACTION OVERLAP: " << frac << "\n";
-    }
-
-    if ((iterCount >= 2) && (TO == 0))
-    {
-      std::cout << "SUCCESS! " << iterCount << " " << frac << " " << num_vertices(*H) << "\n";
-      done = true;
-      success = true;
+      GRAMM->info("FRACTION OVERLAP: {}", frac);
+      if (TO == 0)
+      {
+        GRAMM->info("SUCCESS! :: [iterCount] :: {} :: [frac] :: {} :: [num_vertices(H)] :: {}", iterCount, frac, num_vertices(*H));
+        done = true;
+        success = true;
+      }
     }
 
     adjustHistoryCosts(G);
 
-    if (iterCount > 39)
-    { // limit the iteration count to ~40 iterations!
-      std::cout << "FAILURE. OVERUSED: " << TO << " USED: " << totalUsed(G) << "\n";
+    if (iterCount > maxIterations) // limit the iteration count to ~40 iterations!
+    {
+      GRAMM->error("FAILURE. OVERUSED: {} USED: {}", TO, totalUsed(G));
       done = true;
     }
+
     if (success)
     {
-
-      // Printing vertex model:
-      printVertexModels(H, G, hConfig);
-
-      // Visualizing mapping result in neato:
-      printMappedResults(H, G, hConfig, gConfig);
+      return 1;
     }
 
     PFac *= 1.1; // adjust present congestion penalty
@@ -696,333 +738,6 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   } // while !done
 
   return 0;
-}
-
-void createRIKEN(int NR, int NC, DirectedGraph *G, std::map<int, NodeConfig> *nodeTypes)
-{
-
-  nodeTypes->clear();
-  // Add total vertices into the graph:
-  for (int i = 0; i < (NR + NR + 14 * NR * NC); i++)
-    boost::add_vertex(*G);
-
-  int PEstep = 14;
-  int PEstart = NR + NR; // first NR + NR nodes are I/O nodes; next are the PE nodes
-
-  // add the connections to the LS units on the left and right side#
-  for (int i = 0; i < NR; i++)
-  {
-    (*nodeTypes)[i].opcode = memport;      // left column
-    (*nodeTypes)[i + NR].opcode = memport; // right column
-
-    (*nodeTypes)[i].type = FuncCell;      // left column
-    (*nodeTypes)[i + NR].type = FuncCell; // right column
-
-    // connectivity to the left-most column
-    for (int j = 0; j < 10; j++)
-    {
-      if (j == 2)
-        continue;
-      boost::add_edge(i, PEstart + i * NC * PEstep + j, *G); // edges from the LS
-    }
-    boost::add_edge(PEstart + i * NC * PEstep + 2, i, *G); // edge to the LS
-
-    // connectivity to the right-most column
-    for (int j = 0; j < 10; j++)
-    {
-      if (j == 6)
-        continue;
-      boost::add_edge(NR + i, PEstart + i * NC * PEstep + (NC - 1) * PEstep + j, *G);
-    }
-    boost::add_edge(PEstart + i * NC * PEstep + (NC - 1) * PEstep + 6, NR + i, *G);
-  }
-
-  // the connections between the SBs
-  for (int i = 0; i < NR; i++)
-  { // rows
-    for (int j = 0; j < NC; j++)
-    { // cols
-
-      int dest_row, dest_col;
-
-      // south
-      dest_row = i + 1;
-      dest_col = j;
-      if (i < (NR - 1))
-      {
-        for (int k = 0; k < 10; k++)
-        {
-          if (k == 4)
-            continue;
-          boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 0,
-                          PEstart + dest_row * NC * PEstep + dest_col * PEstep + k, *G);
-        }
-      }
-      // south west
-      dest_row = i + 1;
-      dest_col = j - 1;
-      if ((i < (NR - 1)) && (j > 0))
-      {
-        for (int k = 0; k < 10; k++)
-        {
-          if (k == 5)
-            continue;
-          boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 1,
-                          PEstart + dest_row * NC * PEstep + dest_col * PEstep + k, *G);
-        }
-      }
-      // west
-      dest_row = i;
-      dest_col = j - 1;
-      if ((j > 0))
-      {
-        for (int k = 0; k < 10; k++)
-        {
-          if (k == 6)
-            continue;
-          boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 2,
-                          PEstart + dest_row * NC * PEstep + dest_col * PEstep + k, *G);
-        }
-      }
-      // north west
-      dest_row = i - 1;
-      dest_col = j - 1;
-      if ((j > 0) && (i > 0))
-      {
-        for (int k = 0; k < 10; k++)
-        {
-          if (k == 7)
-            continue;
-          boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 3,
-                          PEstart + dest_row * NC * PEstep + dest_col * PEstep + k, *G);
-        }
-      }
-      // north
-      dest_row = i - 1;
-      dest_col = j;
-      if ((i > 0))
-      {
-        for (int k = 0; k < 10; k++)
-        {
-          if (k == 0)
-            continue;
-          boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 4,
-                          PEstart + dest_row * NC * PEstep + dest_col * PEstep + k, *G);
-        }
-      }
-      // north east
-      dest_row = i - 1;
-      dest_col = j + 1;
-      if ((i > 0) && (j < (NC - 1)))
-      {
-        for (int k = 0; k < 10; k++)
-        {
-          if (k == 1)
-            continue;
-          boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 5,
-                          PEstart + dest_row * NC * PEstep + dest_col * PEstep + k, *G);
-        }
-      }
-      // east
-      dest_row = i;
-      dest_col = j + 1;
-      if ((j < (NC - 1)))
-      {
-        for (int k = 0; k < 10; k++)
-        {
-          if (k == 2)
-            continue;
-          boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 6,
-                          PEstart + dest_row * NC * PEstep + dest_col * PEstep + k, *G);
-        }
-      }
-      // south east
-      dest_row = i + 1;
-      dest_col = j + 1;
-      if ((i < (NR - 1)) && (j < (NC - 1)))
-      {
-        for (int k = 0; k < 10; k++)
-        {
-          if (k == 3)
-            continue;
-          boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 7,
-                          PEstart + dest_row * NC * PEstep + dest_col * PEstep + k, *G);
-        }
-      }
-    }
-  }
-
-  // intra-PE connectivity
-  for (int i = 0; i < NR; i++)
-  { // rows
-    for (int j = 0; j < NC; j++)
-    { // cols
-
-      boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 9, PEstart + i * NC * PEstep + j * PEstep + 10, *G);
-      boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 8, PEstart + i * NC * PEstep + j * PEstep + 11, *G);
-
-      // the const
-      boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 12, PEstart + i * NC * PEstep + j * PEstep + 10, *G);
-      boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 12, PEstart + i * NC * PEstep + j * PEstep + 11, *G);
-
-      // ALU inputs
-      boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 10, PEstart + i * NC * PEstep + j * PEstep + 13, *G);
-      boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 11, PEstart + i * NC * PEstep + j * PEstep + 13, *G);
-
-      // ALU output to SB outputs
-      for (int k = 0; k < 10; k++) // janders -- the ALU can feed back to itself
-        boost::add_edge(PEstart + i * NC * PEstep + j * PEstep + 13, PEstart + i * NC * PEstep + j * PEstep + k, *G);
-    }
-  }
-
-  // set the types of things
-  for (int i = 0; i < NR; i++)
-  { // rows
-    for (int j = 0; j < NC; j++)
-    { // cols
-
-      int PEindex = PEstart + i * NC * PEstep + j * PEstep;
-
-      for (int k = 0; k < 12; k++)
-      {
-        (*nodeTypes)[PEindex + k].opcode = mux;
-        (*nodeTypes)[PEindex + k].type = RouteCell;
-      }
-
-      (*nodeTypes)[PEindex + 12].opcode = constant;
-      (*nodeTypes)[PEindex + 13].opcode = alu;
-
-      (*nodeTypes)[PEindex + 12].type = FuncCell;
-      (*nodeTypes)[PEindex + 13].type = FuncCell;
-    }
-  }
-}
-
-void createAdres(int dim, DirectedGraph *G, std::map<int, NodeConfig> *nodeTypes)
-{
-
-  nodeTypes->clear();
-
-  for (int i = 0; i < (dim + dim + 5 * dim * dim); i++)
-    boost::add_vertex(*G);
-
-  int IOstart = 0;
-  int MPstart = dim;
-  int PEstart = dim + dim;
-  int PEstep = 5;
-
-  // add the IO connections to the top row
-  for (int i = 0; i < dim; i++)
-  {
-    (*nodeTypes)[IOstart + i].opcode = io;
-    (*nodeTypes)[IOstart + i].type = FuncCell;
-    boost::add_edge(IOstart + i, PEstart + i * PEstep, *G);
-    boost::add_edge(IOstart + i, PEstart + i * PEstep + 1, *G);
-    boost::add_edge(PEstart + i * PEstep + 4, IOstart + i, *G);
-  }
-
-  // add the memory port connections to the rows
-  for (int i = 0; i < dim; i++)
-  { // rows
-    (*nodeTypes)[MPstart + i].opcode = memport;
-    (*nodeTypes)[MPstart + i].type = FuncCell;
-    for (int j = 0; j < dim; j++)
-    { // cols
-      boost::add_edge(MPstart + i, PEstart + i * dim * PEstep + j * PEstep, *G);
-      boost::add_edge(MPstart + i, PEstart + i * dim * PEstep + j * PEstep + 1, *G);
-      boost::add_edge(PEstart + i * dim * PEstep + j * PEstep + 4, MPstart + i, *G);
-    }
-  }
-
-  // add the inter-PE connections
-  for (int i = 0; i < dim; i++)
-  { // rows
-    for (int j = 0; j < dim; j++)
-    { // cols
-
-      int dest_row, dest_col;
-
-      // east
-      dest_row = i;
-      dest_col = (j + 1) % dim;
-
-      boost::add_edge(PEstart + i * dim * PEstep + j * PEstep + 4, PEstart + dest_row * dim * PEstep + dest_col * PEstep, *G);
-      boost::add_edge(PEstart + i * dim * PEstep + j * PEstep + 4, PEstart + dest_row * dim * PEstep + dest_col * PEstep + 1, *G);
-
-      // west
-      dest_row = i;
-      dest_col = ((j - 1) >= 0) ? j - 1 : dim - 1;
-
-      boost::add_edge(PEstart + i * dim * PEstep + j * PEstep + 4, PEstart + dest_row * dim * PEstep + dest_col * PEstep, *G);
-      boost::add_edge(PEstart + i * dim * PEstep + j * PEstep + 4, PEstart + dest_row * dim * PEstep + dest_col * PEstep + 1, *G);
-
-      // north
-      dest_row = ((i - 1) >= 0) ? i - 1 : dim - 1;
-      dest_col = j;
-
-      boost::add_edge(PEstart + i * dim * PEstep + j * PEstep + 4, PEstart + dest_row * dim * PEstep + dest_col * PEstep, *G);
-      boost::add_edge(PEstart + i * dim * PEstep + j * PEstep + 4, PEstart + dest_row * dim * PEstep + dest_col * PEstep + 1, *G);
-
-      // south
-      dest_row = (i + 1) % dim;
-      dest_col = j;
-
-      boost::add_edge(PEstart + i * dim * PEstep + j * PEstep + 4, PEstart + dest_row * dim * PEstep + dest_col * PEstep, *G);
-      boost::add_edge(PEstart + i * dim * PEstep + j * PEstep + 4, PEstart + dest_row * dim * PEstep + dest_col * PEstep + 1, *G);
-    }
-  }
-
-  // add the intra-PE connections
-  for (int i = 0; i < dim; i++)
-  { // rows
-    for (int j = 0; j < dim; j++)
-    { // cols
-
-      int PEindex = PEstart + i * dim * PEstep + j * PEstep;
-
-      (*nodeTypes)[PEindex].opcode = mux;
-      (*nodeTypes)[PEindex + 1].opcode = mux;
-      (*nodeTypes)[PEindex + 2].opcode = constant;
-      (*nodeTypes)[PEindex + 3].opcode = alu;
-      (*nodeTypes)[PEindex + 4].opcode = mux;
-
-      (*nodeTypes)[PEindex].type = RouteCell;
-      (*nodeTypes)[PEindex + 1].type = RouteCell;
-      (*nodeTypes)[PEindex + 2].type = FuncCell;
-      (*nodeTypes)[PEindex + 3].type = FuncCell;
-      (*nodeTypes)[PEindex + 4].type = RouteCell;
-
-      boost::add_edge(PEindex, PEindex + 3, *G);     // mux A to ALU
-      boost::add_edge(PEindex + 1, PEindex + 3, *G); // mux B to ALU
-      boost::add_edge(PEindex + 2, PEindex, *G);     // const to mux A
-      boost::add_edge(PEindex + 2, PEindex + 1, *G); // const to mux B
-      boost::add_edge(PEindex + 3, PEindex + 4, *G); // ALU to out MUX
-      boost::add_edge(PEindex + 0, PEindex + 4, *G); // bypass to out MUX
-      boost::add_edge(PEindex + 1, PEindex + 4, *G); // bypass to out MUX
-      boost::add_edge(PEindex + 4, PEindex + 0, *G); // feedback path
-      boost::add_edge(PEindex + 4, PEindex + 1, *G); // feedback path
-    }
-  }
-
-  //  std::cout << "NUM VERTS: " << num_vertices(*G) << "\n";
-
-  for (int y = 0; y < num_vertices(*G); y++)
-  {
-
-    in_edge_iterator ei, ei_end;
-    vertex_descriptor yD = vertex(y, *G);
-    boost::tie(ei, ei_end) = in_edges(yD, *G);
-    for (; ei != ei_end; ei++)
-    {
-      //  std::cout << "Vertex " << source(*ei, *G) << " is a FANIN of " << y << "\n";
-    }
-    out_edge_iterator eo, eo_end;
-    boost::tie(eo, eo_end) = out_edges(yD, *G);
-    for (; eo != eo_end; eo++)
-    {
-      //      std::cout << "Vertex " << target(*eo, *G) << " is a FANOUT of " << y << "\n";
-    }
-  }
 }
 
 void computeTopo(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
@@ -1077,13 +792,15 @@ void computeTopo(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
   - DirectedGraph *G                  :: original device model read dot file
   - std::map<int, NodeConfig> *gConfig  :: Store the configuration of each node (type,opcode, latenct etc.)
 */
-void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig){
+void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
+{
   //--------------------------------------------------------------------
   // Omkar:  Reading device model dot file instead.
   //--------------------------------------------------------------------
 
   // Iterate over all the nodes of the device model graph and assign the type of nodes:
-  for (int i = 0; i < num_vertices(*G); i++){
+  for (int i = 0; i < num_vertices(*G); i++)
+  {
     vertex_descriptor v = vertex(i, *G);
 
     std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v); // Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
@@ -1094,66 +811,50 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig){
     std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);
     gNames[i] = arch_NodeName;
 
-    // TODO: Remove G_ID from the device model!!
-    std::string arch_ID = boost::get(&DotVertex::G_ID, *G, v); // Contains the sequence ID for the given node of Device Model Graph
-
-    if (DEBUG){
-      std::cout << "[G] arch_ID " << arch_ID << " ::  arch_NodeType " << arch_NodeType <<  " :: arch_Opcode " << arch_Opcode << "\n";
-    }
+    GRAMM->trace("[G] i {} :: arch_NodeType {} :: arch_Opcode {}", i, arch_NodeType, arch_Opcode);
 
     // Deciding the configuration based on attributes defined in the script:
     // arch_Opcode described in the device model graph file: MemPort, Mux, Constant, and ALU.
-    if (arch_Opcode == "MemPort"){
+    if (arch_Opcode == "MemPort")
+    {
       (*gConfig)[i].type = FuncCell;  // memport is part  of FuncCell
       (*gConfig)[i].opcode = memport; // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "Mux"){
+    else if (arch_Opcode == "Mux")
+    {
       (*gConfig)[i].type = RouteCell; // mux is part of RouteCell
       (*gConfig)[i].opcode = mux;     // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "in"){
+    else if (arch_Opcode == "in")
+    {
       (*gConfig)[i].type = PinCell; // constant is part of FuncCell
       (*gConfig)[i].opcode = in;    // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "out"){
+    else if (arch_Opcode == "out")
+    {
       (*gConfig)[i].type = PinCell; // constant is part of FuncCell
       (*gConfig)[i].opcode = out;   // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "Constant"){
+    else if (arch_Opcode == "Constant")
+    {
       (*gConfig)[i].type = FuncCell;   // constant is part of FuncCell
       (*gConfig)[i].opcode = constant; // Saving the opcode in the config array.
     }
-    else if (arch_Opcode == "ALU"){
+    else if (arch_Opcode == "ALU")
+    {
       (*gConfig)[i].type = FuncCell; // alu is part of FuncCell
       (*gConfig)[i].opcode = alu;    // Saving the opcode in the config array.
     }
 
-    if ((*gConfig)[i].type == PinCell){
+    if ((*gConfig)[i].type == PinCell)
+    {
       size_t pos = gNames[i].find_last_of('.');
-      if (pos != std::string::npos) {
-          (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
+      if (pos != std::string::npos)
+      {
+        // GRAMM->info("loadPin for {} is {}", gNames[i], gNames[i].substr(pos + 1));
+        (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
       }
     }
-
-    if ((*gConfig)[i].type == FuncCell){
-      size_t pos = gNames[i].find('.');
-      if (pos != std::string::npos) {
-        (*gConfig)[i].tile = gNames[i].substr(0, pos);
-      }
-    }
-
-    if (DEBUG){
-      std::cout << "[G] arch_ID " << arch_ID << " ::  [G] name " << gNames[i] <<  " :: Type " ;
-      if ((*gConfig)[i].type == FuncCell)
-        std::cout << "FuncCell";
-      else if ((*gConfig)[i].type == PinCell)
-        std::cout << "PinCell";
-      else if ((*gConfig)[i].type == RouteCell)
-        std::cout << "RouteCell";
-
-      std::cout <<  " :: arch_Opcode " << arch_Opcode <<  " :: load pin " << (*gConfig)[i].loadPin <<  " ::  tile " << (*gConfig)[i].tile <<  "\n";
-    }
-
   }
 }
 
@@ -1179,10 +880,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 
     hNames[i] = name;
 
-    if (DEBUG)
-    {
-      std::cout << "[H] name " << name << " opcode " << opcode << "\n";
-    }
+    GRAMM->trace("[H] name {} opcode {}", name, opcode);
 
     /*
       Translating the Opcodes from Application grpah into common NodeTypes
@@ -1298,13 +996,14 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 
   if (invalidPinNameDetected)
   {
-    std::cout << "Invalid pin names detected, exiting the program\n";
-    // exit(1);
+    GRAMM->error("Invalid pin names detected, exiting the program\n");
+    exit(-1);
   }
 }
 
 int main(int argc, char *argv[])
 {
+  GRAMM->set_level(spdlog::level::info); // Set global log level to debug
 
   DirectedGraph H, G;
 
@@ -1339,16 +1038,20 @@ int main(int argc, char *argv[])
     // DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
     // DotVertex::G_NodeType --> Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     // DotVertex::G_Opcode --> Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    // DotVertex::G_VisualX --> X location for only visualization purpose.
+    // DotVertex::G_VisualX --> Y location for only visualization purpose.
     dp.property("G_Name", boost::get(&DotVertex::G_Name, G));
     dp.property("G_ID", boost::get(&DotVertex::G_ID, G));
     dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G));
     dp.property("G_opcode", boost::get(&DotVertex::G_Opcode, G));
+    dp.property("G_VisualX", boost::get(&DotVertex::G_VisualX, G));
+    dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));
   }
 
-  if (argc < 5)
+  if (argc < 6)
   {
-    std::cout << "Arguments are <application.dot> <device_model.dot> <numRows NR> <numCols NC> <seed>\n";
-    exit(-1);
+    GRAMM->error("Arguments are <application.dot> <device_model.dot> <numRows NR> <numCols NC> <seed>");
+    exit(1);
   }
 
   // Fetching NR and NC:
@@ -1363,9 +1066,6 @@ int main(int argc, char *argv[])
 
   srand(atoi(argv[5])); // Seed
 
-  // removed:: std::map<int, nodeType> gTypes, hTypes;
-  // Added type along with other config
-
   // gConfig and hConfig contains the configuration information about that particular node.
   std::map<int, NodeConfig> gConfig, hConfig;
 
@@ -1373,45 +1073,10 @@ int main(int argc, char *argv[])
   //----------------- STEP 0 : READING DEVICE MODEL --------------------
   //--------------------------------------------------------------------
 
-  if (HARDCODE_DEVICE_MODEL == 0)
-  {
-
-    //---------------------------------------------------------------------
-    // Old hardcoded device model generation:
-    //---------------------------------------------------------------------
-
-    if (!RIKEN)
-    {
-      // create ADRES device model
-      std::cout << "Creating ADRES Device Model" << std::endl;
-      createAdres(dim, &G, &gConfig);
-    }
-    else
-    {
-      std::cout << "Creating RIKEN Device Model" << std::endl;
-      createRIKEN(NR, NC, &G, &gConfig); // create RIKEN architecture modle
-    }
-
-    if (DEBUG)
-    {
-      // Omkar: checking the output of manual model for confirmation:
-      std::ofstream device_model;
-      device_model.open("device_model_hardcode.dot");
-      boost::write_graphviz(device_model, G);
-    }
-  }
-  else
-  {
-
-    //--------------------------------------------------------------------
-    // Omkar:  Reading device model dot file instead.
-    //--------------------------------------------------------------------
-
-    std::ifstream dFile;                // Defining the input file stream for device model dot file
-    dFile.open(argv[2]);                // Passing the device_Model_dot file as an argument!
-    boost::read_graphviz(dFile, G, dp); // Reading the dot file
-    readDeviceModel(&G, &gConfig);
-  }
+  std::ifstream dFile;                // Defining the input file stream for device model dot file
+  dFile.open(argv[2]);                // Passing the device_Model_dot file as an argument!
+  boost::read_graphviz(dFile, G, dp); // Reading the dot file
+  readDeviceModel(&G, &gConfig);
 
   //--------------------------------------------------------------------
   //----------------- STEP 1: READING APPLICATION DOT FILE -------------
@@ -1444,9 +1109,39 @@ int main(int argc, char *argv[])
    ** compute a topological order
     -->  We also experimented with sorting the nodes of H according to their topological distancwe from a CGRA I/O or memory port; however, we found that this technique did not improve results beyond the ordering by the size of the vertex models.
   */
-  // computeTopo(&H, &hConfig); // not presently used
+  if (computeTopoEnable)
+    computeTopo(&H, &hConfig); // not presently used
 
-  findMinorEmbedding(&H, &G, &hConfig, &gConfig);
+  //--------------- Starting timestamp -------------------------
+  /* get start timestamp */
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  uint64_t start = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+  //------------------------------------------------------------
+
+  int success = findMinorEmbedding(&H, &G, &hConfig, &gConfig);
+
+  if (success)
+  {
+    // Printing vertex model:
+    printVertexModels(&H, &G, &hConfig);
+
+    // Visualizing mapping result in neato:
+    printMappedResults(&H, &G, &hConfig, &gConfig);
+  }
+
+  //--------------- get elapsed time -------------------------
+  gettimeofday(&tv, NULL);
+  uint64_t end = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+  uint64_t elapsed = end - start;
+  double seconds = static_cast<double>(elapsed) / 1000000.0;
+  GRAMM->info("Total time taken :: {} Seconds", seconds);
+  //------------------------------------------------------------
+
+  // GRAMM->info("Welcome to spdlog!");
+  // GRAMM->debug("This message should be displayed..");
+  // GRAMM->trace("This message should be displayed..");
+  // GRAMM->error("Some error message with arg: {}", 1);
 
   return 0;
 }

@@ -7,6 +7,8 @@
 #include "../lib/GRAMM.h"
 #include "../lib/utilities.h"
 
+#define DEBUG 0
+
 std::vector<std::string> colors = {
     "#FFFFE0", // Light Yellow
     "#AFEEEE", // Light Turquoise
@@ -110,173 +112,105 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
     if (m == orign)
       continue;
 
-    // Checking if either source is "inPin" or sink is "outPin"
-    if ((boost::algorithm::contains(gNames[RT->parent[m]], "inPin")) || (boost::algorithm::contains(gNames[m], "outPin")))
+    if (boost::algorithm::contains(gNames[RT->parent[m]], "outPin"))
     {
-      // parent[m] --> FunCell || m --> outPin
-      if ((*hConfig)[y].opcode != constant) //OB skipping the constant as of now in the positioned graph
-        positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
-      unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << " -> " << gNames_deliemter_changes(gNames[m]) << "\n";
-
-      // OB: Right now, GRAMM does not include connection between inPin to the FunCell
-      //     That means this, if loop is probably will be hit due to outPin connection (FuncCell --> outPin) connection.
-      //     For the FunCell which is being used, adding a manual connection between inPin and FunCell.
-      // TODO: Remove this manual connection in future; for this routing needs to be modified to incorporate last level connections.
-
-      // Adding the manual connection.
-      if (boost::algorithm::contains(gNames[RT->parent[m]], "alu"))
-      {
-        // ALU cell --> Adding two inPin connections
-        positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << "\n";
-        positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << "\n";
-
-        unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinA" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << "\n";
-        unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_inPinB" << " -> " << gNames_deliemter_changes(gNames[RT->parent[m]]) + "_" + funCellMapping[gNames[RT->parent[m]]] << "\n";
-      }
-    }
-    else if (boost::algorithm::contains(gNames[RT->parent[m]], "outPin"))
-    {
-      /*
-        This else if loop is hit when the source is outPin and the while loop below traces the connection from the outPin and exits when found valid inPin.
-        ex: outPin -> switchblock -> switchblock_pe_input -> pe_inPin
-            This loop will trace the above connection and show a connection between outPin -> pe_inPin
-      */
+      //  This else if loop is hit when the source is outPin and the while loop below traces the connection from the outPin and exits when found valid inPin.
+      //  ex: outPin -> switchblock -> switchblock_pe_input -> pe_inPin
+      //      This loop will trace the above connection and show a connection between outPin -> pe_inPin
       int current_sink = *it;
       while (it != RT->nodes.end())
       {
         if (boost::algorithm::contains(gNames[current_sink], "inPin"))
-        {        
-          std::cout << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";  
-          if ((*hConfig)[y].opcode != constant) //OB skipping the constant as of now in the positioned graph
-            positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
+        {
+          positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
           unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
-
-          // Adding the manual connection for the store operation.
-          // TODO: Remove this in future.
-          if (boost::algorithm::contains(gNames[current_sink], "LS"))
-          { // LS Cell --> Adding a inPin connections (required for Store, to connect input_pin to the Memport)
-            std::string funcCell_Index = string_remover(gNames[current_sink], ".inPinA");
-            positionedOutputFile << gNames_deliemter_changes(gNames[current_sink]) << " -> " << gNames_deliemter_changes(funcCell_Index) + "_" + funCellMapping[funcCell_Index] << "\n";
-            unpositionedOutputFile << gNames_deliemter_changes(gNames[current_sink]) << " -> " << gNames_deliemter_changes(funcCell_Index) + "_" + funCellMapping[funcCell_Index] << "\n";
-          }
         }
         it++;
         current_sink = *it;
       }
-      break;  //As the above while loop traces till the end of the connection, we have break out of the for loop iterator!!
+      break; // As the above while loop traces till the end of the connection, we have break out of the for loop iterator!!
     }
   }
 }
 
-void printPlacementResults(int gNumber, std::string gName, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig)
+void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile)
 {
-  // Pre-defined scale and displacement values for the positioned-dot file:
-  int scale = 6;
-  float input_displacement = 0.65 * (scale / 3);
-  float out_displacement = 1.0 * (scale / 3);
 
-  // Parsing the sub_strings from the device model node's name:
-  std::vector<std::string> parts; // Contains the sub-parts of the current string
-  std::string part;               // Used while parsing the sub-string.
-  std::stringstream ss(gName);    // Creating string stream input
+  vertex_descriptor yD = vertex(gNumber, *G); // Vertex Descriptor for FunCell
 
-  while (std::getline(ss, part, '.'))
+  //--------------------------
+  // Output pin-connection:
+  //--------------------------
+  out_edge_iterator eo, eo_end;
+  boost::tie(eo, eo_end) = out_edges(yD, *G);
+  int selectedCellOutputPin = target(*eo, *G);
+
+  if (((*Users)[selectedCellOutputPin].size() >= 1))
   {
-    parts.push_back(part);
+    positionedOutputFile << FunCellName + "_" + funCellMapping[gNames[gNumber]] << " -> " << gNames_deliemter_changes(gNames[selectedCellOutputPin]) << "\n";
+    unpositionedOutputFile << FunCellName + "_" + funCellMapping[gNames[gNumber]] << " -> " << gNames_deliemter_changes(gNames[selectedCellOutputPin]) << "\n";
   }
 
-  // Parsing the X & Y co-ordinates from the sub_strings
-  //  '0' subtraction is used to convert Char into Integer!!
-  int x = parts[2][1] - '0'; // parts[2] --> 'cX' :: X will contain the column location of the node
-  int y = parts[3][1] - '0'; // parts[3] --> 'rX' :: Y will contain the row location of the node
-
-  if (DEBUG)
+  //--------------------------
+  // Input Pin-connection:
+  //--------------------------
+  in_edge_iterator ei, ei_end;
+  boost::tie(ei, ei_end) = in_edges(yD, *G);
+  for (; ei != ei_end; ei++)
   {
-    for (const std::string &p : parts)
-    { // Print the parts
-      std::cout << p << " :: ";
+    int source_id = source(*ei, *G);
+    if (((*Users)[source_id].size() >= 1))
+    {
+      positionedOutputFile << gNames_deliemter_changes(gNames[source_id]) << " -> " << FunCellName + "_" + funCellMapping[gNames[gNumber]] << "\n";
+      unpositionedOutputFile << gNames_deliemter_changes(gNames[source_id]) << " -> " << FunCellName + "_" + funCellMapping[gNames[gNumber]] << "\n";
     }
-    std::cout << std::endl;
   }
+}
+
+void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig)
+{
+  int scale = 6;
+  float G_VisualX = boost::get(&DotVertex::G_VisualX, *G, gNumber) * scale;
+  float G_VisualY = boost::get(&DotVertex::G_VisualY, *G, gNumber) * scale;
+  // std::cout << "The X,Y location of " << gName << "is " << G_VisualX << " , " << G_VisualY << "\n";
 
   int opcode_gNumber = (*gConfig)[gNumber].opcode;             // Use for deciding the color of the FunCell based on the opcode
   std::string modified_name = gNames_deliemter_changes(gName); // Modified combined string
 
-  // corner-case for showing the constant connections in the unpositioned graph (TODO: Later needs to be removed!!)
-  if (parts[4] == "const")
-  {
-    // Constant hierarchy can either contain the actual FunCell describing the constant or the pincell for the output pin purpose.
-    if (((*Users)[gNumber].size() >= 1))
-    {
-      if (((*gConfig)[gNumber].type == FuncCell)) // if loop covers the FunCell:
-      {
-        unpositionedOutputFile << gNames_deliemter_changes(gName) + "_" + funCellMapping[gName] << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\"]\n";
-      }
-      else // Following statement covers the output pin:
-      {
-        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=12 fillcolor=\"" << output_pin_color << "\"]\n"; // Constant only has output pin.
-      }
-    }
-    return; // OB: skipping the constant as of now for positioned_graph
-  }
+  //OB Debug: std::cout << gNames_deliemter_changes(gName) << " " << (*Users)[gNumber].size() << std::endl;
 
-  //---------------------------------------------------
-  // Case0: if the gName is FuncCell (mem/constant/alu)
-  //---------------------------------------------------
   if ((*gConfig)[gNumber].type == FuncCell)
   {
-
-    if ((*Users)[gNumber].size() >= 1) // Users list is used for determining whether the current device-model cell is used or not.
+    if (((*Users)[gNumber].size() >= 1))
     {
-      unpositionedOutputFile << gNames_deliemter_changes(gName) + "_" + funCellMapping[gName] << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\"]\n";
-      positionedOutputFile << gNames_deliemter_changes(gName) + "_" + funCellMapping[gName] << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\" pos=\"" << scale * x << "," << scale * y << "!\"]\n";
+      positionedOutputFile << modified_name + "_" + funCellMapping[gName] << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\" pos=\"" << G_VisualX << "," << G_VisualY << "!\"]\n";
+      unpositionedOutputFile << modified_name + "_" + funCellMapping[gName] << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << colors[opcode_gNumber] << "\"]\n";
+      // If FuncCell is used, then we have to do mandatary connections of FunCell to the input and output pins that are used.
+      mandatoryFunCellConnections(gNumber, modified_name, G, positionedOutputFile, unpositionedOutputFile);
     }
     else
     {
-      positionedOutputFile << gNames_deliemter_changes(gName) << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << unused_cell_color << "\" pos=\"" << scale * x << "," << scale * y << "!\"]\n";
+      positionedOutputFile << modified_name << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << unused_cell_color << "\" pos=\"" << G_VisualX << "," << G_VisualY << "!\"]\n";
     }
   }
-
-  //-------------------------------------------------------
-  // Case1: if the gName is pinCell (inPinA/inPinB/outPin)
-  //-------------------------------------------------------
-  if (boost::algorithm::contains(gName, "Pin"))
+  else if ((*gConfig)[gNumber].type == PinCell)
   {
-
-    if ((*Users)[gNumber].size() >= 1) // Users list is used for determining whether the current device-model cell is used or not.
+    if (((*Users)[gNumber].size() >= 1))
     {
-      if (parts[5] == "inPinA")
+      if ((*gConfig)[gNumber].opcode == in)
       {
-        // Input-pin:
-        positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << input_pin_color << "\" pos=\"" << scale * x - input_displacement << "," << scale * y + input_displacement << "!\"]\n";
-        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=12 fillcolor=\"" << input_pin_color << "\"]\n";
+        positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << input_pin_color << "\" pos=\"" << G_VisualX << "," << G_VisualY << "!\"]\n";
+        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << input_pin_color  << "\"]\n";
       }
-      else if (parts[5] == "inPinB")
+      else
       {
-        positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << input_pin_color << "\" pos=\"" << scale * x + input_displacement << "," << scale * y + input_displacement << "!\"]\n";
-        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=12 fillcolor=\"" << input_pin_color << "\"]\n";
-      }
-      else if (parts[5] == "outPinA")
-      {
-        positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << output_pin_color << "\" pos=\"" << scale * x << "," << scale * y - out_displacement << "!\"]\n";
-        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=12 fillcolor=\"" << output_pin_color << "\"]\n";
+        positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << output_pin_color << "\" pos=\"" << G_VisualX << "," << G_VisualY << "!\"]\n";
+        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << output_pin_color  << "\"]\n";
       }
     }
     else
     {
-      if (parts[5] == "inPinA")
-      {
-        // Input-pin:
-        positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << unused_cell_color << "\" pos=\"" << scale * x - input_displacement << "," << scale * y + input_displacement << "!\"]\n";
-      }
-      else if (parts[5] == "inPinB")
-      {
-        positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << unused_cell_color << "\" pos=\"" << scale * x + input_displacement << "," << scale * y + input_displacement << "!\"]\n";
-      }
-      else if (parts[5] == "outPinA")
-      {
-        positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << unused_cell_color << "\" pos=\"" << scale * x << "," << scale * y - out_displacement << "!\"]\n";
-      }
+      positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << unused_cell_color << "\" pos=\"" << G_VisualX << "," << G_VisualY << "!\"]\n";
     }
   }
 }
@@ -287,12 +221,12 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   // Output stream for storing successful mapping: The positioned-output dot file stream (this contains actual co-ordinates of the node cells).
   std::ofstream positionedOutputFile;
   positionedOutputFile.open("positioned_dot_output.dot");
-  std::cout << "Writing the positioned mapping output in file 'positioned_dot_output.dot' \n";
+  GRAMM->info("Writing the positioned mapping output in file 'positioned_dot_output.dot'");
 
   // Output stream for storing successful mapping:
   std::ofstream unpositionedOutputFile;
   unpositionedOutputFile.open("unpositioned_dot_output.dot");
-  std::cout << "Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot' \n";
+  GRAMM->info("Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot'");
 
   // Printing the start of the dot file:
   positionedOutputFile << "digraph {\ngraph [bgcolor=lightgray];\n node [style=filled, fontname=\"times-bold\", penwidth=2];\n edge [penwidth=4]; \n splines=ortho;\n";
@@ -326,8 +260,11 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   for (auto hElement : gNames)
   {
     int gNumber = hElement.first;
-    std::string gName = hElement.second;
-    printPlacementResults(gNumber, gName, positionedOutputFile, unpositionedOutputFile, gConfig);
+    if ((FunCell_Visual_Enable & ((*gConfig)[gNumber].type == FuncCell)) || (PinCell_Visual_Enable & ((*gConfig)[gNumber].type == PinCell)) || (RouteCell_Visual_Enable & ((*gConfig)[gNumber].type == RouteCell)))
+    {
+      std::string gName = hElement.second;
+      printPlacementResults(gNumber, gName, G, positionedOutputFile, unpositionedOutputFile, gConfig);
+    }
   }
 
   //------------------------
@@ -345,7 +282,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
 
 void printName(int n)
 {
-  std::cout << gNames[n] << "\n";
+  GRAMM->debug("{}", gNames[n]);
 }
 
 void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig)
@@ -354,27 +291,49 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   {
     struct RoutingTree *RT = &((*Trees)[i]);
 
-    std::cout << "** routing for i: " << i << " " << hNames[i] << "\n";
+    GRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
 
     std::list<int>::iterator it = RT->nodes.begin();
 
     while (it != RT->nodes.end())
     {
-      std::cout << "\t " << *it << "\t "; // for ADRES
       int n = *it;
-      std::cout << gNames[n] << std::endl;
+      GRAMM->info("\t {} \t {}", n, gNames[n]);
 
       if (it == RT->nodes.begin())
       {
+        // The begining node in the resource tree will be always outPin for the FunCell
+        //   - Finding the FuncCell based on this outPin ID.
+        //     - finding ID for alu_x_y from this: "alu_x_y.outPinA"
+        in_edge_iterator ei, ei_end;
+        vertex_descriptor yD = vertex(n, *G);
+        boost::tie(ei, ei_end) = in_edges(yD, *G);
+        int FunCellLoc = source(*ei, *G);
+
         if ((*hConfig)[i].opcode == constant) // Fixing the constant names:
         {
           std::replace(hNames[i].begin(), hNames[i].end(), '|', '_');
           std::replace(hNames[i].begin(), hNames[i].end(), '=', '_');
           std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
         }
-        funCellMapping[gNames[n]] = removeCurlyBrackets(hNames[i]);
+
+        funCellMapping[gNames[FunCellLoc]] = removeCurlyBrackets(hNames[i]);
+        (*Users)[FunCellLoc].push_back(i);
       }
       it++;
     }
+  }
+}
+
+void printRouting(int signal)
+{
+
+  struct RoutingTree *RT = &((*Trees)[signal]);
+  GRAMM->debug("** routing for i: {} {} ", signal, hNames[signal]);
+
+  std::list<int>::iterator it = RT->nodes.begin();
+  for (; it != RT->nodes.end(); it++)
+  {
+    GRAMM->debug("\t {} \t {}", *it, gNames[*it]);
   }
 }

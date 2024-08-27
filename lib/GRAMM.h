@@ -22,13 +22,17 @@
 #include <bitset>
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
+#include <sys/time.h>
+#include "spdlog/spdlog.h"
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 //-------------------------------------------------------------------//
 //------------------------ GRAMM Configuration ----------------------//
 #define MAX_DIST 10000000
 #define RIKEN 1                 //Defining the architecture type (1 --> Riken, 0 --> Adres)
 #define DEBUG 0                 //For enbaling the print-statements 
-#define HARDCODE_DEVICE_MODEL 1 //Controls hardcoding of device model (1 --> Reads device model, 0 --> Hardcoded version)
+#define computeTopoEnable 0     //Compute topological order and sort the graph based on it while finding the minor.
+#define maxIterations 39
 //-------------------------------------------------------------------//
 
 //CGRA device model parameters:
@@ -39,6 +43,9 @@ extern int CGRAdim;    //CGRA architecture dimension (3 means --> 3x3)
 //Pathefinder cost parameters:
 extern float PFac;  //Congestion cost factor
 extern float HFac;  //History cost factor
+
+//Logger variable:
+extern std::shared_ptr<spdlog::logger>  GRAMM;
 
 //=========================//
 //Enumerators used in GRAMM//
@@ -52,7 +59,6 @@ typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 // -- Latency, Width can be defined as an integer
 // -- Location of the node can be defined as an integer pair
 typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, in, out} opcodeType;
-
 
 // typedef enum inPinT {inPinA, inPinB, anyPins} inPinType;
 // typedef enum outPinT {outPinA} outPinType;
@@ -84,6 +90,8 @@ struct DotVertex {
     std::string G_ID;         //Contains the sequence ID for the given node of Device Model Graph
     std::string G_NodeType;   //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     std::string G_Opcode;     //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    float G_VisualX;
+    float G_VisualY;
 };
 
 //Struct for defining the edge types in the H graph to determine the pin layout

@@ -17,6 +17,10 @@
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 
+#define FunCell_Visual_Enable   1
+#define PinCell_Visual_Enable   1
+#define RouteCell_Visual_Enable 0
+
 extern  std::vector<std::string> colors;        //Color code for different FunCell nodes
 extern  std::string input_pin_color;            //Pre-defined color-code for the input-pin cell
 extern  std::string output_pin_color;           //Pre-defined color-code for the output-pin cell
@@ -66,11 +70,12 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
  *
  * @param gNumber A boost node id from the device-model graph.
  * @param gName An integer used in the output.
+ * @param G A pointer to the device-model graph.
  * @param positionedOutputFile The positioned-output dot file stream (this dot-file contains actual co-ordinates of the node cells).
  * @param unpositionedOutputFile The unpositioned-output dot file stream (this dot-file does not contain any co-ordinates of the node cells).
  * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printPlacementResults(int gNumber, std::string gName, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig);
+void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig);
 
 /**
  * @brief Prints mapping results in neato format: First displays the layout and then shows connections between the nodes.
@@ -97,5 +102,16 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
  * @param n The boost integer id.
  */
 void printName(int n);
+
+/**
+ * @brief Prints the current routing nodes for the input signal
+ * 
+ * @param n the input signal
+ */
+void printName(int n);
+
+void printRouting(int signal);
+
+void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile);
 
 #endif

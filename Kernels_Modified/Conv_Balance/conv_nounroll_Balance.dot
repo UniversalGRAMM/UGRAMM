@@ -69,6 +69,6 @@ FADD_23 -> FADD_19  [driver=outPinA, load=inPinA];
 FADD_22 -> FADD_18  [driver=outPinA, load=inPinA];
 FADD_21 -> FADD_19  [driver=outPinA, load=inPinB];
 FADD_20 -> FADD_18  [driver=outPinA, load=inPinB];
-FADD_19 -> FADD_25  [driver=outPinA, load=inPinA];
-FADD_18 -> FADD_25  [driver=outPinA, load=inPinB];
+FADD_19 -> FADD_25  [driver=outPinA, load=inPinB];
+FADD_18 -> FADD_25  [driver=outPinA, load=inPinA];
 }
