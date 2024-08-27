@@ -31,6 +31,9 @@ std::bitset<100000> explored;
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
 std::vector<std::string> outPin = {"outPinA"};
 
+// Logger global variables:
+std::shared_ptr<spdlog::logger> GRAMM = spdlog::stdout_color_mt("GRAMM");
+
 void depositRoute(int signal, std::list<int> *nodes)
 {
   if (!nodes->size())
@@ -187,7 +190,7 @@ void ripUpLoad(DirectedGraph *G, int signal, int load) {
 int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig)
 {
 
-  route->clear(); //Clearing the route list.
+  route->clear(); // Clearing the route list.
 
   std::vector<int> expInt;
   expInt.clear();
@@ -214,9 +217,9 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     struct ExpNode eNode;
     eNode.cost = 0;
     eNode.i = rNode;
-    
-    if(DEBUG)
-     std::cout << "EXPANSION SOURCE : " << gNames[rNode] << "\n";
+
+    if (DEBUG)
+      std::cout << "EXPANSION SOURCE : " << gNames[rNode] << "\n";
 
     explored.set(rNode);
     expInt.push_back(rNode);
@@ -225,7 +228,6 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
 
   //  std::cout << "EXPANSION TARGET: \n";
   //  printName(sink);
-
 
   struct ExpNode popped;
   bool hit = false;
@@ -331,12 +333,15 @@ int totalOveruse(DirectedGraph *G)
 
     if (temp > 0)
     {
-      std::cout << "OVERUSE " << temp << " ON ";
-      // printName(i);
+      GRAMM->debug("{} OVERUSE ON {} with following users:", temp, gNames[i]);
+      for (int value : (*Users)[i])
+      {
+        GRAMM->debug("{}", hNames[value]);
+      }
     }
   }
 
-  std::cout << "TOTAL OVERUSE: " << total << "\n";
+  GRAMM->info("TOTAL OVERUSE: {}", total);
 
   return total;
 }
@@ -393,8 +398,7 @@ void randomizeList(int *list, int n)
 
 int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig)
 {
-  if (DEBUG)
-    std::cout << "BEGINNING ROUTE OF NAME :" << hNames[y] << "\n";
+  GRAMM->trace("BEGINNING ROUTE OF NAME : {}", hNames[y]);
 
   vertex_descriptor yD = vertex(y, *H);
   int totalCost = 0;
@@ -405,7 +409,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
   for (; eo != eo_end; eo++)
   {
     int load = target(*eo, *H);
-    std::string loadPin   = boost::get(&EdgeProperty::loadPin, *H, *eo);
+    std::string loadPin = boost::get(&EdgeProperty::loadPin, *H, *eo);
     std::string driverPin = boost::get(&EdgeProperty::driverPin, *H, *eo);
 
     if (load == y)
@@ -417,15 +421,15 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     // Since driver will always be the outPin of the FunCell, the type of loadOutPinCellLoc will be "pinCell"
     int loadOutPinCellLoc = findDriver(load);
 
-    //Converting the driver(pinCell) to the actual input pin of FuncCell:
+    // Converting the driver(pinCell) to the actual input pin of FuncCell:
     in_edge_iterator ei, ei_end;
     vertex_descriptor yD = vertex(loadOutPinCellLoc, *G);
     boost::tie(ei, ei_end) = in_edges(yD, *G);
 
-    //Step 1: Fetching "FunCell" ID from the edge: FunCell --> OutPin
-    int loadFunCellLoc = source(*ei, *G);   
+    // Step 1: Fetching "FunCell" ID from the edge: FunCell --> OutPin
+    int loadFunCellLoc = source(*ei, *G);
 
-    //Step 2: Fetching given "inPin" ID from the edge: inPin --> FunCell (Note: there could be multiple input pins for the given FunCell)
+    // Step 2: Fetching given "inPin" ID from the edge: inPin --> FunCell (Note: there could be multiple input pins for the given FunCell)
     yD = vertex(loadFunCellLoc, *G);
     boost::tie(ei, ei_end) = in_edges(yD, *G);
     int loadInPinCellLoc = 0;
@@ -436,28 +440,26 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
         loadInPinCellLoc = source_id;
     }
 
-    if(DEBUG){
-      std::cout << "SOURCE : " << hNames[y] << " TARGET : " << hNames[load] << " TARGET-Pin : " << loadPin << "\n";
-      std::cout << "ROUTING LOAD: " << gNames[loadFunCellLoc] << " :: (InputPin) :: " << gNames[loadInPinCellLoc] << "\n";
-    }
+    GRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], loadPin);
+    GRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFunCellLoc], gNames[loadInPinCellLoc]);
 
     if (loadInPinCellLoc < 0)
     {
-      std::cout << "SIGNAL WITHOUT A DRIVER.\n";
+      GRAMM->error("SIGNAL WITHOUT A DRIVER.\n");
       exit(-1);
     }
 
     int cost;
     std::list<int> path;
 
-    cost = route(G, y, loadInPinCellLoc, &path, gConfig); 
+    cost = route(G, y, loadInPinCellLoc, &path, gConfig);
 
     totalCost += cost;
 
     if (cost < MAX_DIST)
     {
-      //Earlier in Func to Func Mapping, we used to remove the driver Function:
-      //path.remove(loadPinCellLoc);
+      // Earlier in Func to Func Mapping, we used to remove the driver Function:
+      // path.remove(loadPinCellLoc);
       depositRoute(y, &path);
     }
     else
@@ -496,25 +498,33 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
   }
 
   if (allEmpty)
-  { // choose a random node of G to be the vertex model for y because NONE of its fanins or fanouts have vertex models
+  { 
+    // choose a random unused node of G to be the vertex model for y because NONE of its fanins or fanouts have vertex models
+
+    int selectedCellOutputPin = 0;
     int chooseRand = (rand() % num_vertices(*G));
-    do
+    bool vertex_found = false;
+
+    while (vertex_found == false)
     {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
-    } while (((*gConfig)[chooseRand].opcode != (*hConfig)[y].opcode));
-
-    // Finding the output Pin for the selected FunCell:
-    boost::tie(eo, eo_end) = out_edges(chooseRand, *G);
-    int selectedCellOutputPin = target(*eo, *G);
-
-    if (DEBUG)
-    {
-      std::cout << "For application node :: " << hNames[y] << " ::Chose a random vertex model :: " << gNames[chooseRand] << " :: " << gNames[selectedCellOutputPin] << "\n";
+      if (((*gConfig)[chooseRand].opcode == (*hConfig)[y].opcode))
+      {
+        // Finding the output Pin for the selected FunCell:
+        boost::tie(eo, eo_end) = out_edges(chooseRand, *G);
+        selectedCellOutputPin = target(*eo, *G);
+        if ((*Users)[selectedCellOutputPin].size() == 0)
+          vertex_found = true;
+      }
     }
+
+    GRAMM->debug("For application node :: {} :: Choosing starting vertex model as :: {} :: {}", hNames[y], gNames[chooseRand], gNames[selectedCellOutputPin]);
+
     // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell
     //(*Trees)[y].nodes.push_back(chooseRand);
     (*Trees)[y].nodes.push_back(selectedCellOutputPin);
     (*Users)[selectedCellOutputPin].push_back(y);
+
     return 0;
   }
 
@@ -534,11 +544,13 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
       continue;
 
     // Finding the output Pin for the selected FunCell:
-    boost::tie(eo, eo_end) = out_edges(i, *G);
+    vertex_descriptor yi = vertex(i, *G);
+    boost::tie(eo, eo_end) = out_edges(yi, *G);
     int outputPin = target(*eo, *G);
 
-    if((*gConfig)[outputPin].type != PinCell){
-      std::cout << "FATAL ERROR -- driverNode is not a PinCell!! \n"; 
+    if ((*gConfig)[outputPin].type != PinCell)
+    {
+      GRAMM->error("FATAL ERROR -- driverNode is not a PinCell!! \n");
       exit(-1);
     }
 
@@ -548,17 +560,14 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
     totalCosts[outputPin] += (1 + (*HistoryCosts)[outputPin]) * ((*Users)[outputPin].size() * PFac);
 
-    if (DEBUG)
+    if (GRAMM->level() <= spdlog::level::trace)
     {
-      std::cout << "Trying location :: (selectedCell) " << gNames[i] << " :: (outputPin) :: " << gNames[outputPin] << "\n";
-      std::cout << "INVOKING ROUTE FANOUT SIGNAL\n";
+      // GRAMM->debug("Finding FunCell for {}", y);
       printRouting(y);
     }
 
     totalCosts[outputPin] += routeSignal(G, H, y, gConfig);
-
-    if (DEBUG)
-      std::cout << "TOTAL COST " << totalCosts[outputPin] << "\n";
+    GRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[outputPin], totalCosts[outputPin]);
 
     if (totalCosts[outputPin] > bestCost)
       continue;
@@ -576,9 +585,10 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
         continue; // driver is not placed
 
       int driverNode = findDriver(driver);
-      
-      if((*gConfig)[driverNode].type != PinCell){
-        std::cout << "FATAL ERROR -- driverNode is not a PinCell!! \n"; 
+
+      if ((*gConfig)[driverNode].type != PinCell)
+      {
+        GRAMM->error("FATAL ERROR -- driverNode is not a PinCell!! \n");
         exit(-1);
       }
 
@@ -590,17 +600,14 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
       totalCosts[outputPin] += routeSignal(G, H, driver, gConfig);
 
-      if(DEBUG){
-        std::cout << "ROUTING FANIN: (application_node) :: " << hNames[driver] << " :: (driver_node) :: " << gNames[driverNode] << "\n";
-        std::cout << "COSTS: " << totalCosts[outputPin] << "\n";
-      }
+      GRAMM->debug("Routing the signals on the input of {}", hNames[y]);
+      GRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driver], hNames[y], gNames[driverNode], gNames[outputPin], totalCosts[outputPin]);
 
       if (totalCosts[outputPin] > bestCost)
         break;
     }
 
-    if(DEBUG)
-      std::cout << "TOTAL COST: " << totalCosts[outputPin] << "\n";
+    GRAMM->debug("Total cost for {} is {}\n", hNames[y], totalCosts[outputPin]);
 
     if (totalCosts[outputPin] >= MAX_DIST)
       continue;
@@ -619,17 +626,17 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
   if (bestIndex == -1)
   {
-    std::cout << "FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX " << y << " " << hNames[y] << "\n";
+    GRAMM->error("FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX {} {}", y, hNames[y]);
     exit(-1);
   }
 
-  if(DEBUG)
-    std::cout << "For application_node :: " << hNames[y] << " , bertIndex found from device model is " << gNames[bestIndex] << " with cost of " << bestCost << "\n";
- 
+  // printRouting(y);
+  GRAMM->debug("The bertIndex found for {} from the device-model is {} with cost of {}", hNames[y], gNames[bestIndex], bestCost);
+
   ripUpRouting(y);
   (*Trees)[y].nodes.push_back(bestIndex);
   (*Users)[bestIndex].push_back(y);
-  
+
   routeSignal(G, H, y, gConfig);
 
   boost::tie(ei, ei_end) = in_edges(yD, *H);
@@ -641,8 +648,9 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
     int driverNode = findDriver(driver);
 
-    if((*gConfig)[driverNode].type != PinCell){
-      std::cout << "FATAL ERROR -- driverNode is not a PinCell!! \n"; 
+    if ((*gConfig)[driverNode].type != PinCell)
+    {
+      GRAMM->error("FATAL ERROR -- driverNode is not a PinCell!! \n");
       exit(-1);
     }
 
@@ -654,6 +662,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
   return 0;
 }
+
 /*
   findMinorEmbedding() => determine if H is a minor of G
 */
@@ -663,8 +672,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   int ordering[num_vertices(*H)]; // presently unused
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    if (DEBUG)
-      std::cout << ordering[i] << " \n";
+    GRAMM->trace("{} ", ordering[i]);
     ordering[i] = i;
   }
 
@@ -679,7 +687,8 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   {
 
     iterCount++;
-    std::cout << "***** BEGINNING OUTER WHILE LOOP ***** ITER " << iterCount << " \n";
+    GRAMM->debug("\n\n");
+    GRAMM->info("***** BEGINNING OUTER WHILE LOOP ***** ITER {}", iterCount);
 
     // randomizeList(ordering, num_vertices(*H));
     sortList(ordering, num_vertices(*H));
@@ -688,38 +697,37 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
       int y = ordering[k];
 
-      if (DEBUG)
-      {
-        std::cout << "--------------------- New Vertices Mapping Start ---------------------------\n";
-        std::cout << "Finding vertex model for: " << hNames[y] << "\n";
-        std::cout << "SIZE: " << (*Trees)[y].nodes.size() << "\n";
-        if (computeTopoEnable)
-          std::cout << "TOPO ORDER: " << (*TopoOrder)[y] << "\n";
-      }
+      // if (RIKEN && ((*hConfig)[y].opcode == constant))
+      //   continue;
+
+      GRAMM->debug("\n");
+      GRAMM->debug("--------------------- New Vertices Mapping Start ---------------------------");
+      GRAMM->debug("Finding vertex model for: {} with Current vertex-size: {}", hNames[y], (*Trees)[y].nodes.size());
+      if (computeTopoEnable)
+        GRAMM->trace("TOPO ORDER: {}", (*TopoOrder)[y]);
 
       findMinVertexModel(G, H, y, hConfig, gConfig);
     } // for k
 
     int TO = totalOveruse(G);
 
-    if (iterCount == 2)
+    if (iterCount >= 2)
     {
       frac = (float)TO / totalUsed(G);
-      std::cout << "FRACTION OVERLAP: " << frac << "\n";
-    }
-
-    if ((iterCount >= 2) && (TO == 0))
-    {
-      std::cout << "SUCCESS! :: [iterCount] :: " << iterCount << " :: [frac] :: " << frac << " :: [num_vertices(H)] :: " << num_vertices(*H) << "\n";
-      done = true;
-      success = true;
+      GRAMM->info("FRACTION OVERLAP: {}", frac);
+      if (TO == 0)
+      {
+        GRAMM->info("SUCCESS! :: [iterCount] :: {} :: [frac] :: {} :: [num_vertices(H)] :: {}", iterCount, frac, num_vertices(*H));
+        done = true;
+        success = true;
+      }
     }
 
     adjustHistoryCosts(G);
 
     if (iterCount > maxIterations) // limit the iteration count to ~40 iterations!
     {
-      std::cout << "FAILURE. OVERUSED: " << TO << " USED: " << totalUsed(G) << "\n";
+      GRAMM->error("FAILURE. OVERUSED: {} USED: {}", TO, totalUsed(G));
       done = true;
     }
 
@@ -807,13 +815,7 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);
     gNames[i] = arch_NodeName;
 
-    // TODO: Remove G_ID from the device model!!
-    std::string arch_ID = boost::get(&DotVertex::G_ID, *G, v); // Contains the sequence ID for the given node of Device Model Graph
-
-    if (DEBUG)
-    {
-      std::cout << "[G] arch_ID " << arch_ID << " ::  arch_NodeType " << arch_NodeType << " :: arch_Opcode " << arch_Opcode << "\n";
-    }
+    GRAMM->trace("[G] i {} :: arch_NodeType {} :: arch_Opcode {}", i, arch_NodeType, arch_Opcode);
 
     // Deciding the configuration based on attributes defined in the script:
     // arch_Opcode described in the device model graph file: MemPort, Mux, Constant, and ALU.
@@ -853,30 +855,9 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
       size_t pos = gNames[i].find_last_of('.');
       if (pos != std::string::npos)
       {
+        // GRAMM->info("loadPin for {} is {}", gNames[i], gNames[i].substr(pos + 1));
         (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
       }
-    }
-
-    if ((*gConfig)[i].type == FuncCell)
-    {
-      size_t pos = gNames[i].find('.');
-      if (pos != std::string::npos)
-      {
-        (*gConfig)[i].tile = gNames[i].substr(0, pos);
-      }
-    }
-
-    if (DEBUG)
-    {
-      std::cout << "[G] arch_ID " << arch_ID << " ::  [G] name " << gNames[i] << " :: Type ";
-      if ((*gConfig)[i].type == FuncCell)
-        std::cout << "FuncCell";
-      else if ((*gConfig)[i].type == PinCell)
-        std::cout << "PinCell";
-      else if ((*gConfig)[i].type == RouteCell)
-        std::cout << "RouteCell";
-
-      std::cout << " :: arch_Opcode " << arch_Opcode << " :: load pin " << (*gConfig)[i].loadPin << " ::  tile " << (*gConfig)[i].tile << "\n";
     }
   }
 }
@@ -903,10 +884,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 
     hNames[i] = name;
 
-    if (DEBUG)
-    {
-      std::cout << "[H] name " << name << " opcode " << opcode << "\n";
-    }
+    GRAMM->trace("[H] name {} opcode {}", name, opcode);
 
     /*
       Translating the Opcodes from Application grpah into common NodeTypes
@@ -1022,13 +1000,14 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 
   if (invalidPinNameDetected)
   {
-    std::cout << "Invalid pin names detected, exiting the program\n";
-    // exit(1);
+    GRAMM->error("Invalid pin names detected, exiting the program\n");
+    exit(-1);
   }
 }
 
 int main(int argc, char *argv[])
 {
+  GRAMM->set_level(spdlog::level::info); // Set global log level to debug
 
   DirectedGraph H, G;
 
@@ -1073,10 +1052,10 @@ int main(int argc, char *argv[])
     dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));
   }
 
-  if (argc < 5)
+  if (argc < 6)
   {
-    std::cout << "Arguments are <application.dot> <device_model.dot> <numRows NR> <numCols NC> <seed>\n";
-    exit(-1);
+    GRAMM->error("Arguments are <application.dot> <device_model.dot> <numRows NR> <numCols NC> <seed>");
+    exit(1);
   }
 
   // Fetching NR and NC:
@@ -1090,9 +1069,6 @@ int main(int argc, char *argv[])
   iFile.open(argv[1]);
 
   srand(atoi(argv[5])); // Seed
-
-  // removed:: std::map<int, nodeType> gTypes, hTypes;
-  // Added type along with other config
 
   // gConfig and hConfig contains the configuration information about that particular node.
   std::map<int, NodeConfig> gConfig, hConfig;
@@ -1141,29 +1117,35 @@ int main(int argc, char *argv[])
     computeTopo(&H, &hConfig); // not presently used
 
   //--------------- Starting timestamp -------------------------
-	/* get start timestamp */
- 	struct timeval tv;
-  gettimeofday(&tv,NULL);
-  uint64_t start = tv.tv_sec*(uint64_t)1000000+tv.tv_usec;
+  /* get start timestamp */
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  uint64_t start = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
   //------------------------------------------------------------
 
   int success = findMinorEmbedding(&H, &G, &hConfig, &gConfig);
 
-	//--------------- get elapsed time -------------------------
-  gettimeofday(&tv,NULL);
-  uint64_t end = tv.tv_sec*(uint64_t)1000000+tv.tv_usec;
-  uint64_t elapsed = end - start;
-  double seconds = static_cast<double>(elapsed) / 1000000.0;
-  std::cout << "Total time taken :: " << seconds << " Seconds"<< std::endl;
-  //------------------------------------------------------------
-
-  if(success){
+  if (success)
+  {
     // Printing vertex model:
     printVertexModels(&H, &G, &hConfig);
 
     // Visualizing mapping result in neato:
     printMappedResults(&H, &G, &hConfig, &gConfig);
   }
-  
+
+  //--------------- get elapsed time -------------------------
+  gettimeofday(&tv, NULL);
+  uint64_t end = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+  uint64_t elapsed = end - start;
+  double seconds = static_cast<double>(elapsed) / 1000000.0;
+  GRAMM->info("Total time taken :: {} Seconds", seconds);
+  //------------------------------------------------------------
+
+  // GRAMM->info("Welcome to spdlog!");
+  // GRAMM->debug("This message should be displayed..");
+  // GRAMM->trace("This message should be displayed..");
+  // GRAMM->error("Some error message with arg: {}", 1);
+
   return 0;
 }

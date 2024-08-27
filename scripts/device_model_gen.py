@@ -44,9 +44,9 @@ def create_riken(args):
     PEstep  = 18
     
     #The first PE index number starts after the left and right most IO connection.
-    PEstart =  (args.NC*6)  # x2 --> Right and Left IOs, x2 --> Input port of IOs, x2 --> Out port of IOs 
-
-    total_nodes_riken = (args.NR + args.NR + (PEstep*args.NR*args.NC)) 
+    Number_of_IOs = args.NR * 2
+    PEstart =  (Number_of_IOs*3)  # x2 --> Right and Left IOs, x2 --> Input port of IOs, x2 --> Out port of IOs 
+    total_nodes_riken = (Number_of_IOs + (PEstep*args.NR*args.NC)) 
     
     #------------------------------------------------------------------
     #------------------------------------------------------------------
@@ -126,7 +126,7 @@ def create_riken(args):
         G.nodes[right_io_index]["G_NodeType"] = "FuncCell"              #Right-IOs
         G.nodes[right_io_index]["G_opcode"]   = "MemPort"               #Right-IOs
         G.nodes[right_io_index]["G_ID"]       = str(right_io_index)     #Right-IOs
-        G.nodes[right_io_index]["G_VisualX"]          = args.NR+1
+        G.nodes[right_io_index]["G_VisualX"]          = args.NC+1
         G.nodes[right_io_index]["G_VisualY"]          = right_io_pin_scalar     
 
         #Right-IO-input-Pin :
@@ -134,7 +134,7 @@ def create_riken(args):
         G.nodes[right_io_inPin_index]["G_NodeType"]         = "PinCell"   
         G.nodes[right_io_inPin_index]["G_opcode"]           = "in"      
         G.nodes[right_io_inPin_index]["G_ID"]               = str(right_io_inPin_index)     
-        G.nodes[right_io_inPin_index]["G_VisualX"]          = args.NR+1
+        G.nodes[right_io_inPin_index]["G_VisualX"]          = args.NC+1
         G.nodes[right_io_inPin_index]["G_VisualY"]          = right_io_input_pin_scalar   
 
         #Right-IO-output-Pin :
@@ -142,7 +142,7 @@ def create_riken(args):
         G.nodes[right_io_outPin_index]["G_NodeType"]         = "PinCell"   
         G.nodes[right_io_outPin_index]["G_opcode"]           = "out"      
         G.nodes[right_io_outPin_index]["G_ID"]               = str(right_io_outPin_index)   
-        G.nodes[right_io_outPin_index]["G_VisualX"]          = args.NR+1
+        G.nodes[right_io_outPin_index]["G_VisualX"]          = args.NC+1
         G.nodes[right_io_outPin_index]["G_VisualY"]          = right_io_output_pin_scalar   
 
         #----------------------------------

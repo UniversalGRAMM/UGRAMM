@@ -23,6 +23,8 @@
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 #include <sys/time.h>
+#include "spdlog/spdlog.h"
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 //-------------------------------------------------------------------//
 //------------------------ GRAMM Configuration ----------------------//
@@ -42,6 +44,9 @@ extern int CGRAdim;    //CGRA architecture dimension (3 means --> 3x3)
 extern float PFac;  //Congestion cost factor
 extern float HFac;  //History cost factor
 
+//Logger variable:
+extern std::shared_ptr<spdlog::logger>  GRAMM;
+
 //=========================//
 //Enumerators used in GRAMM//
 //=========================//
@@ -54,7 +59,6 @@ typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
 // -- Latency, Width can be defined as an integer
 // -- Location of the node can be defined as an integer pair
 typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, in, out} opcodeType;
-
 
 // typedef enum inPinT {inPinA, inPinB, anyPins} inPinType;
 // typedef enum outPinT {outPinA} outPinType;

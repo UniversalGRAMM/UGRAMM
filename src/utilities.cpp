@@ -344,7 +344,7 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
   int opcode_gNumber = (*gConfig)[gNumber].opcode;             // Use for deciding the color of the FunCell based on the opcode
   std::string modified_name = gNames_deliemter_changes(gName); // Modified combined string
 
-  std::cout << gNames_deliemter_changes(gName) << " " << (*Users)[gNumber].size() << std::endl;
+  //OB Debug: std::cout << gNames_deliemter_changes(gName) << " " << (*Users)[gNumber].size() << std::endl;
 
   if ((*gConfig)[gNumber].type == FuncCell)
   {
@@ -388,12 +388,12 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   // Output stream for storing successful mapping: The positioned-output dot file stream (this contains actual co-ordinates of the node cells).
   std::ofstream positionedOutputFile;
   positionedOutputFile.open("positioned_dot_output.dot");
-  std::cout << "Writing the positioned mapping output in file 'positioned_dot_output.dot' \n";
+  GRAMM->info("Writing the positioned mapping output in file 'positioned_dot_output.dot'");
 
   // Output stream for storing successful mapping:
   std::ofstream unpositionedOutputFile;
   unpositionedOutputFile.open("unpositioned_dot_output.dot");
-  std::cout << "Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot' \n";
+  GRAMM->info("Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot'");
 
   // Printing the start of the dot file:
   positionedOutputFile << "digraph {\ngraph [bgcolor=lightgray];\n node [style=filled, fontname=\"times-bold\", penwidth=2];\n edge [penwidth=4]; \n splines=ortho;\n";
@@ -405,6 +405,8 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   unpositionedOutputFile << "subgraph cluster_1 {\n label = \"Input Kernel\"; fontsize = 40; style=dashed; \n edge [minlen=3]\n";
   for (int i = 0; i < num_vertices(*H); i++)
   {
+    //if (((*hConfig)[i].opcode == constant)) 
+    //  continue; 
     unpositionedOutputFile << removeCurlyBrackets(hNames[i]) << ";\n";
   }
 
@@ -413,7 +415,8 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   {
     vertex_descriptor u = source(*e_it, *H);
     vertex_descriptor v = target(*e_it, *H);
-
+    //if (((*hConfig)[u].opcode == constant)) 
+    //  continue; 
     unpositionedOutputFile << "  " << removeCurlyBrackets(hNames[u]) << " -> " << removeCurlyBrackets(hNames[v]) << ";\n";
   }
 
@@ -439,6 +442,8 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   //------------------------
   for (int i = 0; i < num_vertices(*H); i++)
   {
+    //if (((*hConfig)[i].opcode == constant)) 
+    //  continue; 
     printRoutingResults(i, positionedOutputFile, unpositionedOutputFile, hConfig);
   }
 
@@ -449,7 +454,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
 
 void printName(int n)
 {
-  std::cout << gNames[n] << "\n";
+  GRAMM->debug("{}", gNames[n]);
 }
 
 void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig)
@@ -458,15 +463,14 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   {
     struct RoutingTree *RT = &((*Trees)[i]);
 
-    std::cout << "** routing for i: " << i << " " << hNames[i] << "\n";
+    GRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
 
     std::list<int>::iterator it = RT->nodes.begin();
 
     while (it != RT->nodes.end())
     {
       int n = *it;
-      std::cout << "\t " << n << "\t ";
-      std::cout << gNames[n] << std::endl;
+      GRAMM->info("\t {} \t {}", n, gNames[n]);
 
       if (it == RT->nodes.begin())
       {
@@ -497,14 +501,11 @@ void printRouting(int signal)
 {
 
   struct RoutingTree *RT = &((*Trees)[signal]);
-
-  std::cout << "** routing for signal: (H_NodeID) ::" << signal << " (H_NodeName) :: " << hNames[signal] << "\n";
+  GRAMM->debug("** routing for i: {} {} ", signal, hNames[signal]);
 
   std::list<int>::iterator it = RT->nodes.begin();
   for (; it != RT->nodes.end(); it++)
   {
-    std::cout << "\t " << *it;
-    int n = *it;
-    printName(n);
+    GRAMM->debug("\t {} \t {}", *it, gNames[*it]);
   }
 }
