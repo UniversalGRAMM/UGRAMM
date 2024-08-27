@@ -54,7 +54,7 @@ FMUL_14 -> FADD_20  [driver=outPinA, load=inPinB];
 FMUL_15 -> FADD_24  [driver=outPinA, load=inPinB];
 FMUL_16 -> FADD_21  [driver=outPinA, load=inPinA];
 FMUL_17 -> FADD_24  [driver=outPinA, load=inPinA];
-FADD_25 -> Store_26  [driver=outPinA, load=inPinB];
+FADD_25 -> Store_26  [driver=outPinA, load=inPinA];
 Const_27 -> FMUL_10  [driver=outPinA, load=inPinA];
 Const_28 -> FMUL_14  [driver=outPinA, load=inPinA];
 Const_29 -> FMUL_12  [driver=outPinA, load=inPinA];
