@@ -34,6 +34,8 @@ std::vector<std::string> outPin = {"outPinA"};
 // Logger global variables:
 std::shared_ptr<spdlog::logger> GRAMM = spdlog::stdout_color_mt("GRAMM");
 
+std::map<std::string, std::vector<std::string>> GrammConfig;
+
 void depositRoute(int signal, std::list<int> *nodes)
 {
   if (!nodes->size())
@@ -83,7 +85,7 @@ int findDriver(int signal, std::map<int, NodeConfig> *gConfig)
   {
     if (!RT->parent.count(*it))
     {
-      if ((*gConfig)[*it].type != PinCell)
+      if ((*gConfig)[*it].Cell != "PINCELL")
       {
         GRAMM->error("FATAL ERROR -- For signal {}, driverNode is not a PinCell!!", *it);
         exit(-1);
@@ -276,7 +278,7 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
       expInt.push_back(next);
 
       // Verifying if the node is type RouteCell or PinCell as ONLY they can be used along the way for routing
-      if ((next != sink) && (*gConfig)[next].type != RouteCell && (*gConfig)[next].type != PinCell)
+      if ((next != sink) && (*gConfig)[next].Cell != "ROUTECELL" && (*gConfig)[next].Cell != "PINCELL")
         continue;
 
       struct ExpNode eNodeNew;
@@ -527,7 +529,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     while (vertex_found == false)
     {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
-      if (((*gConfig)[chooseRand].opcode == (*hConfig)[y].opcode))
+      if (((*gConfig)[chooseRand].Type == (*hConfig)[y].Type))
       {
         // Finding the output Pin for the selected FunCell:
         selectedCellOutputPin = findOutputPin(chooseRand, G);
@@ -558,7 +560,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
   { // first route the signal on the output of y
 
     // Confriming the Vertex correct type:
-    if ((*gConfig)[i].opcode != (*hConfig)[y].opcode)
+    if ((*gConfig)[i].Type != (*hConfig)[y].Type)
       continue;
 
     // Finding the output Pin for the selected FunCell:
@@ -693,9 +695,6 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
       int y = ordering[k];
 
-      // if (RIKEN && ((*hConfig)[y].opcode == constant))
-      //   continue;
-
       GRAMM->debug("\n");
       GRAMM->debug("--------------------- New Vertices Mapping Start ---------------------------");
       GRAMM->debug("Finding vertex model for: {} with Current vertex-size: {}", hNames[y], (*Trees)[y].nodes.size());
@@ -740,6 +739,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   return 0;
 }
 
+/*
 void computeTopo(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 {
 
@@ -786,6 +786,7 @@ void computeTopo(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     }
   }
 }
+*/
 
 /*
   readDeviceModel() => Reading device model dot file
@@ -803,50 +804,22 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
   {
     vertex_descriptor v = vertex(i, *G);
 
-    std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v); // Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
-    std::string arch_Opcode = boost::get(&DotVertex::G_Opcode, *G, v);     // Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    // Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
+    std::string arch_NodeCell     = boost::get(&DotVertex::G_NodeCell, *G, v);
+    std::string upperCaseNodeCell = boost::to_upper_copy(arch_NodeCell);
+    (*gConfig)[i].Cell            = upperCaseNodeCell;
 
-    // OB: DEBUG: std::string node_name = (*G)[i].G_Name;
-    // OB: DEBUG: std::cout << " i :: " << i << " :: " << node_name << std::endl;
+    // Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v);   
+    std::string upperCaseType = boost::to_upper_copy(arch_NodeType);
+    (*gConfig)[i].Type        = upperCaseType;
+
+    // Contains the node name
     std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);
     gNames[i] = arch_NodeName;
 
-    GRAMM->trace("[G] i {} :: arch_NodeType {} :: arch_Opcode {}", i, arch_NodeType, arch_Opcode);
-
-    // Deciding the configuration based on attributes defined in the script:
-    // arch_Opcode described in the device model graph file: MemPort, Mux, Constant, and ALU.
-    if (arch_Opcode == "MemPort")
-    {
-      (*gConfig)[i].type = FuncCell;  // memport is part  of FuncCell
-      (*gConfig)[i].opcode = memport; // Saving the opcode in the config array.
-    }
-    else if (arch_Opcode == "Mux")
-    {
-      (*gConfig)[i].type = RouteCell; // mux is part of RouteCell
-      (*gConfig)[i].opcode = mux;     // Saving the opcode in the config array.
-    }
-    else if (arch_Opcode == "in")
-    {
-      (*gConfig)[i].type = PinCell; // constant is part of FuncCell
-      (*gConfig)[i].opcode = in;    // Saving the opcode in the config array.
-    }
-    else if (arch_Opcode == "out")
-    {
-      (*gConfig)[i].type = PinCell; // constant is part of FuncCell
-      (*gConfig)[i].opcode = out;   // Saving the opcode in the config array.
-    }
-    else if (arch_Opcode == "Constant")
-    {
-      (*gConfig)[i].type = FuncCell;   // constant is part of FuncCell
-      (*gConfig)[i].opcode = constant; // Saving the opcode in the config array.
-    }
-    else if (arch_Opcode == "ALU")
-    {
-      (*gConfig)[i].type = FuncCell; // alu is part of FuncCell
-      (*gConfig)[i].opcode = alu;    // Saving the opcode in the config array.
-    }
-
-    if ((*gConfig)[i].type == PinCell)
+    // Obtaining the loadPin name for PinCell type:
+    if ((*gConfig)[i].Cell == "PINCELL")
     {
       size_t pos = gNames[i].find_last_of('.');
       if (pos != std::string::npos)
@@ -855,6 +828,9 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
         (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
       }
     }
+
+    GRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseNodeCell, upperCaseType);
+
   }
 }
 
@@ -875,129 +851,24 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
   for (int i = 0; i < num_vertices(*H); i++)
   {
     vertex_descriptor v = vertex(i, *H);
-    std::string opcode = boost::get(&DotVertex::opcode, *H, v);
+    
+    //Fetching node name from the application-graph:
     std::string name = boost::get(&DotVertex::name, *H, v);
-
     hNames[i] = name;
 
-    GRAMM->trace("[H] name {} opcode {}", name, opcode);
+    //Fetching opcode from the application-graph:
+    //Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
+    std::string applicationOpcode = boost::get(&DotVertex::opcode, *H, v);
+    std::string upperCaseOpcode   = boost::to_upper_copy(applicationOpcode);
+    (*hConfig)[i].Opcode = upperCaseOpcode;
 
-    /*
-      Translating the Opcodes from Application grpah into common NodeTypes
-      -- We have three common NodeTypes
-        1. FuncCell  (ALU, Constant, MemPort, IO)
-        2. RouteCell (MUX, Reg)
-        3. PinCell   (In, Out)
-      -- Also storing the other important information such as opcode..
-    */
-    if (!RIKEN)
-    {
-      //==========================//
-      //---------- ADRES ---------//
-      //==========================//
-      if (opcode == "const")
-      {
-        (*hConfig)[i].type = FuncCell;   // constant is part of FuncCell
-        (*hConfig)[i].opcode = constant; // Saving Opcode in the config map.
-      }
-      else if (opcode == "input")
-      {
-        (*hConfig)[i].type = FuncCell; // io is part of FuncCell
-        (*hConfig)[i].opcode = io;     // Saving Opcode in the config map.
-      }
-      else if (opcode == "output")
-      {
-        (*hConfig)[i].type = FuncCell; // io is part of FuncCell
-        (*hConfig)[i].opcode = io;     // Saving Opcode in the config map.
-      }
-      else if (opcode == "load")
-      {
-        (*hConfig)[i].type = FuncCell;  // memport is part of FuncCell
-        (*hConfig)[i].opcode = memport; // Saving Opcode in the config map.
-      }
-      else if (opcode == "store")
-      {
-        (*hConfig)[i].type = FuncCell;  // memport is part of FuncCell
-        (*hConfig)[i].opcode = memport; // Saving Opcode in the config map.
-      }
-      else
-      {
-        (*hConfig)[i].type = FuncCell; // ALU is part of FuncCell
-        (*hConfig)[i].opcode = alu;    // Saving Opcode in the config map.
-      }
-    }
-    else
-    {
-      //==========================//
-      //---------- RIKEN ---------//
-      //==========================//
-      if (opcode == "const")
-      {
-        (*hConfig)[i].type = FuncCell;   // constant is part of FuncCell
-        (*hConfig)[i].opcode = constant; // Saving Opcode in the config map.
-      }
-      else if (opcode == "input")
-      {
-        (*hConfig)[i].type = FuncCell;  // memport is part of FuncCell
-        (*hConfig)[i].opcode = memport; // Saving Opcode in the config map.
-      }
-      else if (opcode == "output")
-      {
-        (*hConfig)[i].type = FuncCell;  // memport is part of FuncCell
-        (*hConfig)[i].opcode = memport; // Saving Opcode in the config map.
-      }
-      else
-      {
-        (*hConfig)[i].type = FuncCell; // ALU is part of FuncCell
-        (*hConfig)[i].opcode = alu;    // Saving Opcode in the config map.
-      }
-    }
-  }
+    //Fetching type from the application-graph:
+    //Contains the type of the operation (ex: ALU, MEMPORT, CONST etc.)
+    std::string applicationType = boost::get(&DotVertex::type, *H, v);
+    std::string upperCaseType   = boost::to_upper_copy(applicationType);
+    (*hConfig)[i].Type = upperCaseType;
 
-  /*
-    Verifying the the driver and source pin names for all the output edges of the nodes.
-    If the pin names are incorrect, display a warning and exit the program
-
-  */
-  bool invalidPinNameDetected = 0;
-
-  for (int i = 0; i < num_vertices(*H); i++)
-  {
-    vertex_descriptor v = vertex(i, *H);
-
-    out_edge_iterator eo, eo_end;
-    boost::tie(eo, eo_end) = out_edges(v, *H);
-    for (; eo != eo_end; eo++)
-    {
-
-      auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::loadPin, *H, *eo));
-      if (it_inPin != inPin.end())
-      {
-        // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification:  " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name verified" << std::endl;
-      }
-      else
-      {
-        // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification: " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name not valid" << std::endl;
-        invalidPinNameDetected = 1;
-      }
-
-      auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::driverPin, *H, *eo));
-      if (it_outPin != outPin.end())
-      {
-        // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name verified" << std::endl;
-      }
-      else
-      {
-        // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name not valid" << std::endl;
-        invalidPinNameDetected = 1;
-      }
-    }
-  }
-
-  if (invalidPinNameDetected)
-  {
-    GRAMM->error("Invalid pin names detected, exiting the program\n");
-    exit(-1);
+    GRAMM->trace("[H] name {} :: applicationOpcode {} :: applicationType {}", name, upperCaseOpcode, upperCaseType);
   }
 }
 
@@ -1020,9 +891,11 @@ int main(int argc, char *argv[])
     // DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
     // DotVertex::G_NodeType --> Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     // DotVertex::G_Opcode --> Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
-    dp.property("G_ID", boost::get(&DotVertex::G_ID, G));
+    dp.property("G_Name", boost::get(&DotVertex::G_Name, G));
+    dp.property("G_NodeCell", boost::get(&DotVertex::G_NodeCell, G));
     dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G));
-    dp.property("G_opcode", boost::get(&DotVertex::G_Opcode, G));
+    dp.property("G_VisualX", boost::get(&DotVertex::G_VisualX, G));
+    dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));
   }
   else
   {
@@ -1031,6 +904,7 @@ int main(int argc, char *argv[])
     // DotVertex::H_Opcode --> Contains the Opcode of the operation (ex: op, const, input and output)
     dp.property("label", boost::get(&DotVertex::name, H));
     dp.property("opcode", boost::get(&DotVertex::opcode, H));
+    dp.property("type", boost::get(&DotVertex::type, H));
     dp.property("load", boost::get(&EdgeProperty::loadPin, H));
     dp.property("driver", boost::get(&EdgeProperty::driverPin, H));
 
@@ -1041,9 +915,8 @@ int main(int argc, char *argv[])
     // DotVertex::G_VisualX --> X location for only visualization purpose.
     // DotVertex::G_VisualX --> Y location for only visualization purpose.
     dp.property("G_Name", boost::get(&DotVertex::G_Name, G));
-    dp.property("G_ID", boost::get(&DotVertex::G_ID, G));
+    dp.property("G_NodeCell", boost::get(&DotVertex::G_NodeCell, G));
     dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G));
-    dp.property("G_opcode", boost::get(&DotVertex::G_Opcode, G));
     dp.property("G_VisualX", boost::get(&DotVertex::G_VisualX, G));
     dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));
   }
@@ -1075,6 +948,7 @@ int main(int argc, char *argv[])
 
   std::ifstream dFile;                // Defining the input file stream for device model dot file
   dFile.open(argv[2]);                // Passing the device_Model_dot file as an argument!
+  readDeviceModelPragma(dFile, GrammConfig);  // Reading the device model pragma from the device-model dot file.
   boost::read_graphviz(dFile, G, dp); // Reading the dot file
   readDeviceModel(&G, &gConfig);
 
@@ -1083,6 +957,7 @@ int main(int argc, char *argv[])
   //--------------------------------------------------------------------
 
   // read the DFG from a file
+  readApplicationGraphPragma(iFile, GrammConfig);  // Reading the application-graph pragma from the device-model dot file.
   boost::read_graphviz(iFile, H, dp);
   readApplicationGraph(&H, &hConfig);
 
@@ -1109,8 +984,8 @@ int main(int argc, char *argv[])
    ** compute a topological order
     -->  We also experimented with sorting the nodes of H according to their topological distancwe from a CGRA I/O or memory port; however, we found that this technique did not improve results beyond the ordering by the size of the vertex models.
   */
-  if (computeTopoEnable)
-    computeTopo(&H, &hConfig); // not presently used
+  //if (computeTopoEnable)
+  //  computeTopo(&H, &hConfig); // not presently used
 
   //--------------- Starting timestamp -------------------------
   /* get start timestamp */

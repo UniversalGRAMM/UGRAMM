@@ -114,4 +114,14 @@ void printRouting(int signal);
 
 void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile);
 
+std::string readCommentSection(std::ifstream &deviceModelFile);
+
+void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig);
+
+bool checkVectorofStrings(std::string commentSection, std::string keyword, std::vector<std::string> &Type);
+
+void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &GrammConfig);
+
+void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> GrammConfig);
+
 #endif

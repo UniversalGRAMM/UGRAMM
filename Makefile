@@ -3,7 +3,7 @@
 #######################################################
 
 CXX = g++
-CXXFLAGS = -I$(LIB_DIR) -lboost_graph -lspdlog -lfmt
+CXXFLAGS = -I$(LIB_DIR) -g -lboost_graph -lspdlog -lfmt
 
 
 # Directories

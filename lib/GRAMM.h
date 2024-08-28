@@ -47,35 +47,23 @@ extern float HFac;  //History cost factor
 //Logger variable:
 extern std::shared_ptr<spdlog::logger>  GRAMM;
 
-//=========================//
-//Enumerators used in GRAMM//
-//=========================//
-
-// Primary node type enumerator where each node is distinguished between functional, routing and pin cell type.
-typedef enum nodeT {FuncCell, RouteCell, PinCell} nodeType;
-
-//Other configuration information of the node elements:
-// -- Opcode (requires enumerator which is defined as follows)
-// -- Latency, Width can be defined as an integer
-// -- Location of the node can be defined as an integer pair
-typedef enum opcodeT {io, alu, memport, reg, constant, wire, mux, in, out} opcodeType;
-
-// typedef enum inPinT {inPinA, inPinB, anyPins} inPinType;
-// typedef enum outPinT {outPinA} outPinType;
-
 extern std::vector<std::string> inPin;
 extern std::vector<std::string> outPin;
 
+//New way for node and opcode types:
+extern std::map<std::string, std::vector<std::string>> GrammConfig;    //New general way
+
 struct NodeConfig {
-    nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
-    opcodeType opcode;      //Opcode of the node --> io, alu, memport, ....
-    std::string loadPin;    //Load pin of the PinCell node --> inPinA, inPinB
-    std::string tile;       //Tile of the FuncCell Node --> PE, LS, ....
-    //std::string name; gnames  // gNames[i] or gNames[next]
-    //As of now following configs are optional
-    int Latency = 0;                    
-    int Width   = 0;                      
-    std::pair<int, int> Location = {0,0 };   
+    //G:
+    std::string Cell;          //[New way] Cell-type of the node --> FuncCell, RouteCell, PinCell
+    std::string Type;          //[New way] Node-Type of the node --> io, alu, memport....
+    int Latency = 0;           //Optional            
+    int Width   = 0;           //Optional  
+
+    //H:
+    std::string Opcode;        //[New way] Opcode of the node --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
+    std::string loadPin;       //Load pin of the PinCell node --> inPinA, inPinB
+    std::pair<int, int> Location = {0,0 }; //Optional  
 };
 
 
@@ -83,13 +71,12 @@ struct NodeConfig {
 struct DotVertex {
     // For [H] --> Application Graph
     std::string name;       //Contains name of the operation in Application graph (ex: Load_0)
-    std::string opcode;     //Contains the Opcode of the operation (ex: op, const, input and output)
-
+    std::string opcode;     //Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
+    std::string type;       //Contains the type of the operation (ex: ALU, MEMPORT, CONST etc.)
     // For [G] --> Device Model Graph
     std::string G_Name;       //Contains the unique name of the cell in the device model graph.
-    std::string G_ID;         //Contains the sequence ID for the given node of Device Model Graph
-    std::string G_NodeType;   //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
-    std::string G_Opcode;     //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    std::string G_NodeCell;   //Contains the Opcode of the NodeType (FuncCell, RouteCell, PinCell)
+    std::string G_NodeType;   //Contains the Node type of Device Model Graph (For example "ALU" for NodeType "FuncCell") 
     float G_VisualX;
     float G_VisualY;
 };

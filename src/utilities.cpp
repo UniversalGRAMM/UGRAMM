@@ -89,6 +89,176 @@ std::string string_remover(std::string original_string, std::string toRemove)
   return modified_string;
 }
 
+std::string readCommentSection(std::ifstream &deviceModelFile)
+{
+  std::string line;
+  std::string commentSection = {};
+  bool comment_started = false;
+
+  while (std::getline(deviceModelFile, line))
+  {
+    size_t startPos = line.find("/*");
+    if (startPos != std::string::npos)
+    {
+      comment_started = true;
+    }
+    else if (comment_started == true)
+    {
+      size_t endPos = line.find("*/");
+      if (endPos != std::string::npos)
+      {
+        return commentSection;
+      }
+      else
+      {
+        std::string upperCaseline = boost::to_upper_copy(line);
+        commentSection += upperCaseline + "\n";
+      }
+    }
+  }
+
+  return commentSection;
+}
+
+void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig)
+{
+  std::istringstream stream(commentSection);
+  std::string line;
+
+  while (std::getline(stream, line))
+  {
+    size_t keywordPos = line.find(keyword);
+    if (keywordPos != std::string::npos) // Keyword is found
+    {
+      size_t startBracket = line.find("{");
+      size_t endBracket = line.find("}");
+      if ((startBracket != std::string::npos) & (endBracket != std::string::npos))
+      {
+        std::string content = line.substr(startBracket + 1, endBracket - startBracket - 1);
+        std::istringstream content_stream(content);
+        std::string token;
+        std::string FunCellName;
+        int token_count = 0;
+        while (std::getline(content_stream, token, ','))
+        {
+          // Remove leading and/or trailing whitespaces:
+          token.erase(0, token.find_first_not_of(" \t\n\r"));
+          token.erase(token.find_last_not_of(" \t\n\r") + 1);
+          if (token_count == 0)
+          {
+            FunCellName = token;
+            GrammConfig[token] = {};
+          }
+          GrammConfig[FunCellName].push_back(token);
+          token_count++;
+        }
+      }
+    }
+  }
+}
+
+bool checkVectorofStrings(std::string commentSection, std::string keyword, std::vector<std::string> &Type)
+{
+  std::istringstream stream(commentSection);
+  std::string line;
+
+  while (std::getline(stream, line))
+  {
+    size_t keywordPos = line.find(keyword);
+    if (keywordPos != std::string::npos)
+    {
+      size_t startBracket = line.find("{");
+      size_t endBracket = line.find("}");
+      if ((startBracket != std::string::npos) & (endBracket != std::string::npos))
+      {
+        std::string content = line.substr(startBracket + 1, endBracket - startBracket - 1);
+        std::istringstream content_stream(content);
+        std::string token;
+        int token_counter = 0;
+        while (std::getline(content_stream, token, ','))
+        {
+          // Remove leading and/or trailing whitespaces:
+          token.erase(0, token.find_first_not_of(" \t\n\r"));
+          token.erase(token.find_last_not_of(" \t\n\r") + 1);
+
+          if (token_counter == 0)
+          {
+            if (token != keyword)
+            {
+              GRAMM->error("FunCell {} from application graph not found in the device model pragma", token);
+              return false;
+            }
+          }
+          else
+          {
+            // Checking the above token present in the device model description.
+            auto it = std::find(Type.begin(), Type.end(), token);
+            if (it != Type.end())
+            { // If iterator is not at the end, the string is present
+              GRAMM->info("[PASSED] The token {} found in {}", token, keyword);
+            }
+            else
+            {
+              GRAMM->error("[FAILED] The token {} not found in {}", token, keyword);
+              return false;
+            }
+          }
+          token_counter++;
+        }
+      }
+      return true;
+    }
+  }
+  GRAMM->error("FunCell {} from device-model not found in the application graph pragma", keyword);
+  return false;
+}
+
+void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &GrammConfig)
+{
+  std::string commentSection = readCommentSection(deviceModelFile);
+  parseVectorofStrings(commentSection, "[SUPPORTEDOPS]", GrammConfig);
+
+  // OB for debug
+  GRAMM->trace(" Device model pragma READ from the dot file :: {}", commentSection);
+
+  GRAMM->info("Parsed Device-Model Pragma: ");
+  for (const auto &pair : GrammConfig)
+  {
+    std::cout << "[" << pair.first << "] :: ";
+
+    // Iterate over the vector and print elements
+    for (size_t i = 0; i < pair.second.size(); ++i)
+    {
+      std::cout << pair.second[i];
+      if (i != pair.second.size() - 1)
+      {
+        std::cout << " :: "; // Add " :: " only if it's not the last element
+      }
+    }
+    std::cout << std::endl;
+  }
+}
+
+void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> GrammConfig)
+{
+
+  std::string commentSection = readCommentSection(applicationGraphFile);
+
+  // OB for debug
+  GRAMM->trace(" Application graph pragma READ from the dot file :: {}", commentSection);
+
+  for (const auto pair : GrammConfig)
+  {
+    GRAMM->info("Checking compatibility of SupportedOps of [{}]", pair.first);
+    bool status = checkVectorofStrings(commentSection, pair.first, GrammConfig[pair.first]);
+    if (status == false)
+    {
+      GRAMM->error("FATAL ERROR -- application pragma are not compatiable with the device model pragma's");
+      exit(1);
+    }
+  }
+}
+
 void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig)
 {
 
@@ -174,12 +344,14 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
   float G_VisualY = boost::get(&DotVertex::G_VisualY, *G, gNumber) * scale;
   // std::cout << "The X,Y location of " << gName << "is " << G_VisualX << " , " << G_VisualY << "\n";
 
-  int opcode_gNumber = (*gConfig)[gNumber].opcode;             // Use for deciding the color of the FunCell based on the opcode
+   // Use for deciding the color of the FunCell based on the opcode
+  //int opcode_gNumber = (*gConfig)[gNumber].opcode;     
+  int opcode_gNumber = 2;
   std::string modified_name = gNames_deliemter_changes(gName); // Modified combined string
 
-  //OB Debug: std::cout << gNames_deliemter_changes(gName) << " " << (*Users)[gNumber].size() << std::endl;
+  // OB Debug: std::cout << gNames_deliemter_changes(gName) << " " << (*Users)[gNumber].size() << std::endl;
 
-  if ((*gConfig)[gNumber].type == FuncCell)
+  if ((*gConfig)[gNumber].Cell == "FUNCCELL")
   {
     if (((*Users)[gNumber].size() >= 1))
     {
@@ -193,19 +365,19 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
       positionedOutputFile << modified_name << " [shape=\"rectangle\" width=0.5 fontsize=12 fillcolor=\"" << unused_cell_color << "\" pos=\"" << G_VisualX << "," << G_VisualY << "!\"]\n";
     }
   }
-  else if ((*gConfig)[gNumber].type == PinCell)
+  else if ((*gConfig)[gNumber].Cell == "PINCELL")
   {
     if (((*Users)[gNumber].size() >= 1))
     {
-      if ((*gConfig)[gNumber].opcode == in)
+      if ((*gConfig)[gNumber].Type == "IN")
       {
         positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << input_pin_color << "\" pos=\"" << G_VisualX << "," << G_VisualY << "!\"]\n";
-        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << input_pin_color  << "\"]\n";
+        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << input_pin_color << "\"]\n";
       }
       else
       {
         positionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << output_pin_color << "\" pos=\"" << G_VisualX << "," << G_VisualY << "!\"]\n";
-        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << output_pin_color  << "\"]\n";
+        unpositionedOutputFile << modified_name << " [shape=\"oval\" width=0.1 fontsize=10 fillcolor=\"" << output_pin_color << "\"]\n";
       }
     }
     else
@@ -260,7 +432,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   for (auto hElement : gNames)
   {
     int gNumber = hElement.first;
-    if ((FunCell_Visual_Enable & ((*gConfig)[gNumber].type == FuncCell)) || (PinCell_Visual_Enable & ((*gConfig)[gNumber].type == PinCell)) || (RouteCell_Visual_Enable & ((*gConfig)[gNumber].type == RouteCell)))
+    if ((FunCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "FUNCCELL")) || (PinCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "PINCELL")) || (RouteCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "ROUTECELL")))
     {
       std::string gName = hElement.second;
       printPlacementResults(gNumber, gName, G, positionedOutputFile, unpositionedOutputFile, gConfig);
@@ -309,14 +481,12 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
         vertex_descriptor yD = vertex(n, *G);
         boost::tie(ei, ei_end) = in_edges(yD, *G);
         int FunCellLoc = source(*ei, *G);
-
-        if ((*hConfig)[i].opcode == constant) // Fixing the constant names:
+        if ((*hConfig)[i].Type == "CONSTANT") // Fixing the constant names:
         {
           std::replace(hNames[i].begin(), hNames[i].end(), '|', '_');
           std::replace(hNames[i].begin(), hNames[i].end(), '=', '_');
           std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
         }
-
         funCellMapping[gNames[FunCellLoc]] = removeCurlyBrackets(hNames[i]);
         (*Users)[FunCellLoc].push_back(i);
       }
