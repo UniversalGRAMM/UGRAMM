@@ -6,6 +6,7 @@
 
 #include "../lib/GRAMM.h"
 #include "../lib/utilities.h"
+#include "../lib/drc.h"
 
 // Declartion of variables:
 
@@ -1085,6 +1086,11 @@ int main(int argc, char *argv[])
   // read the DFG from a file
   boost::read_graphviz(iFile, H, dp);
   readApplicationGraph(&H, &hConfig);
+
+  //--------------------------------------------------------------------
+  //----------------- STEP 2: DRC Verification -------------------------
+  //--------------------------------------------------------------------
+  runDRC(&H, &G, &hConfig, &gConfig);
 
   Trees = new std::vector<RoutingTree>(num_vertices(H));    // routing trees for every node in H
   Users = new std::vector<std::list<int>>(num_vertices(G)); // for every node in device model G track its users
