@@ -954,52 +954,6 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
       }
     }
   }
-
-  /*
-    Verifying the the driver and source pin names for all the output edges of the nodes.
-    If the pin names are incorrect, display a warning and exit the program
-
-  */
-  bool invalidPinNameDetected = 0;
-
-  for (int i = 0; i < num_vertices(*H); i++)
-  {
-    vertex_descriptor v = vertex(i, *H);
-
-    out_edge_iterator eo, eo_end;
-    boost::tie(eo, eo_end) = out_edges(v, *H);
-    for (; eo != eo_end; eo++)
-    {
-
-      auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::loadPin, *H, *eo));
-      if (it_inPin != inPin.end())
-      {
-        // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification:  " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name verified" << std::endl;
-      }
-      else
-      {
-        // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | load pin name verification: " << boost::get(&EdgeProperty::loadPin, *H, *eo) << " pin name not valid" << std::endl;
-        invalidPinNameDetected = 1;
-      }
-
-      auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::driverPin, *H, *eo));
-      if (it_outPin != outPin.end())
-      {
-        // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name verified" << std::endl;
-      }
-      else
-      {
-        // OB: std::cout << "[H] Edge (" << boost::get(&DotVertex::name, *H, boost::source(*eo, *H)) << " -> " << boost::get(&DotVertex::name, *H, boost::target(*eo, *H))  << ") | driver pin name verification:  " << boost::get(&EdgeProperty::driverPin, *H, *eo) << " pin name not valid" << std::endl;
-        invalidPinNameDetected = 1;
-      }
-    }
-  }
-
-  if (invalidPinNameDetected)
-  {
-    GRAMM->error("Invalid pin names detected, exiting the program\n");
-    exit(-1);
-  }
 }
 
 int main(int argc, char *argv[])

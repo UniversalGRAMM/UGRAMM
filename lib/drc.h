@@ -70,7 +70,24 @@ void deviceModelDRC_CheckPinsIO(DirectedGraph *G, std::map<int, NodeConfig> *gCo
 
 
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
+/**
+ * @brief Application graph should not have any floating nodes
+ * 
+ * @param H A pointer to the device-model graph.
+ * @param hConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void applicationGraphDRC_CheckFloatingNodes(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
 
+
+/**
+ * @brief Pin names used in the application DFG must follow the names defined in inPin  and outPin vectors in GRAMM.cpp
+ * 
+ * @param H A pointer to the device-model graph.
+ * @param hConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
 
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
 /**

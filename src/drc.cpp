@@ -72,7 +72,7 @@ void deviceModelDRC_CheckFloatingNodes(DirectedGraph *G, std::map<int, NodeConfi
   for (int i = 0; i < num_vertices(*G); i++){
     // Check for floating nodes as it will have no output and input edges
     if (boost::in_degree(i, *G) == 0 && boost::out_degree(i, *G) == 0){
-        GRAMM->error("DRC Error - {} node is floating in the device model graph and is not connected", gNames[i]);
+        GRAMM->error("DRC Error - {} node is floating in the device model graph and is not connected to any other nodes", gNames[i]);
         *errorDetected  = true;
       } 
   }
@@ -116,7 +116,42 @@ void deviceModelDRC_CheckPinsIO(DirectedGraph *G, std::map<int, NodeConfig> *gCo
 }
 
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
+void applicationGraphDRC_CheckFloatingNodes(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected){
+  // Iterate over all the nodes of the device model graph and assign the type of nodes:
+  for (int i = 0; i < num_vertices(*H); i++){
+    // Check for floating nodes as it will have no output and input edges
+    if (boost::in_degree(i, *H) == 0 && boost::out_degree(i, *H) == 0){
+      GRAMM->error("DRC Error - {} node is floating in the application DFG and is not connected to any other nodes", hNames[i]);
+      *errorDetected  = true;
+    } 
+  }
+}
 
+
+void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected){
+  // Iterate over all the nodes of the device model graph and assign the type of nodes:
+  for (int i = 0; i < num_vertices(*H); i++){
+    vertex_descriptor v = vertex(i, *H);
+
+    //Get the output edges for the application DFG nodes
+    out_edge_iterator eo, eo_end;
+    boost::tie(eo, eo_end) = out_edges(v, *H);
+    for (; eo != eo_end; eo++){
+
+      auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::loadPin, *H, *eo));
+      if (it_inPin == inPin.end()){
+        GRAMM->error("DRC Error - load pin name {} for edge {} -> {} is not defined in inPin vector seen in GRAMM.cpp", boost::get(&EdgeProperty::loadPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+        *errorDetected  = true;
+      }
+
+      auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::driverPin, *H, *eo));
+      if (it_outPin == outPin.end()){
+        GRAMM->error("DRC Error - driver pin name {} for edge {} -> {} is not defined in outPin vector seen in GRAMM.cpp", boost::get(&EdgeProperty::driverPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+        *errorDetected  = true;
+      }
+    }
+  }
+}
 
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
 void runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig){
@@ -139,7 +174,8 @@ void runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConf
 
   //--------- Running DRC for the Application Model Graph -----------//
   //------ Please add any Application Model Graph DRC Rule Check Functions Below ------//
-
+  applicationGraphDRC_CheckFloatingNodes(H, hConfig, &errorDetected);
+  applicationGraphDRC_CheckPinNames(H, hConfig, &errorDetected);
 
   //--------- Error Check -----------//
   if (errorDetected){
