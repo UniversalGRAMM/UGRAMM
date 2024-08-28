@@ -18,15 +18,6 @@
 #include <boost/algorithm/string.hpp>
 
 
-//------------ Example ----//
-// /**
-//  * @brief Prints vertex models of the application graph's nodes.
-//  * 
-//  * @param H A pointer to the application graph.
-//  * @param G A pointer to the device-model graph.
-//  * @param hConfig A map containing node configuration details of device-model graph.
-//  */
-// void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig);
 
 //------------ The following sections is for DRC Rules check for Device Model Graph -----------//
 /**
@@ -37,6 +28,45 @@
  * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
  */
 void deviceModelDRC_VerifyPinNodeFanOut(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
+
+/**
+ * @brief Output Pins in the Device Model Graph must have one fanin edges that is connected to its neighnor node. In Riken aarchitecture, output pins are connected to either PE or constant node.
+ * 
+ * @param G A pointer to the device-model graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void deviceModelDRC_VerifyPinNodeFanIn(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
+
+
+/**
+ * @brief All functional cell, regardless of their operand, must be atleast connected to a input or output pin 
+ * 
+ * @param G A pointer to the device-model graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void deviceModelDRC_CheckPinsExistBeforeAndAfterFuncCell(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
+
+
+/**
+ * @brief Device model graphs should not have any floating nodes
+ * 
+ * @param G A pointer to the device-model graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void deviceModelDRC_CheckFloatingNodes(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
+
+
+/**
+ * @brief  I/O and LS ports must have one input and one output pin
+ * 
+ * @param G A pointer to the device-model graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void deviceModelDRC_CheckPinsIO(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
 
 
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
