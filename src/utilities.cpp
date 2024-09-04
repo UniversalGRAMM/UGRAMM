@@ -118,6 +118,22 @@ std::string readCommentSection(std::ifstream &deviceModelFile)
   return commentSection;
 }
 
+bool doPlacement(std::string hOpcode, std::map<std::string, std::vector<std::string>> &GrammConfig)
+{
+  std::string gType;
+  // Step 1: find what is the type of hOpcode from device-model pragma:
+  for (const auto &pair : GrammConfig)
+  {
+    if (std::find(pair.second.begin(), pair.second.end(), hOpcode) != pair.second.end())
+      gType = pair.first;
+  }
+
+  if (std::find(GrammConfig["PLACEMENT"].begin(), GrammConfig["PLACEMENT"].end(), gType) != GrammConfig["PLACEMENT"].end())
+    return true;
+  else
+    return false;
+}
+
 void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
   std::istringstream stream(commentSection);
@@ -155,6 +171,45 @@ void parseVectorofStrings(std::string commentSection, std::string keyword, std::
   }
 }
 
+void parsePlacementPragma(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig)
+{
+  std::istringstream stream(commentSection);
+  std::string line;
+
+  while (std::getline(stream, line))
+  {
+    size_t keywordPos = line.find(keyword);
+    if (keywordPos != std::string::npos) // Keyword is found
+    {
+      GRAMM->info("[PASSED] The token {} found in Placement line {} ", keyword, line);
+
+      size_t startBracket = line.find("{");
+      size_t endBracket = line.find("}");
+      if ((startBracket != std::string::npos) & (endBracket != std::string::npos))
+      {
+        std::string content = line.substr(startBracket + 1, endBracket - startBracket - 1);
+        std::istringstream content_stream(content);
+        std::string token;
+        std::string FunCellName;
+        int token_count = 0;
+        while (std::getline(content_stream, token, ','))
+        {
+          // Remove leading and/or trailing whitespaces:
+          token.erase(0, token.find_first_not_of(" \t\n\r"));
+          token.erase(token.find_last_not_of(" \t\n\r") + 1);
+          if (token_count == 0)
+          {
+            FunCellName = keyword;
+            GrammConfig[keyword] = {};
+          }
+          GrammConfig[keyword].push_back(token);
+          token_count++;
+        }
+      }
+    }
+  }
+}
+
 bool checkVectorofStrings(std::string commentSection, std::string keyword, std::vector<std::string> &Type)
 {
   std::istringstream stream(commentSection);
@@ -163,7 +218,9 @@ bool checkVectorofStrings(std::string commentSection, std::string keyword, std::
   while (std::getline(stream, line))
   {
     size_t keywordPos = line.find(keyword);
-    if (keywordPos != std::string::npos)
+    size_t PlacementLinePos = line.find("[PLACEMENT]");
+    // Confirming this is not a Placement line:
+    if ((keywordPos != std::string::npos) && (PlacementLinePos == std::string::npos))
     {
       size_t startBracket = line.find("{");
       size_t endBracket = line.find("}");
@@ -237,7 +294,7 @@ void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string,
   }
 }
 
-void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> GrammConfig)
+void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
 
   std::string commentSection = readCommentSection(applicationGraphFile);
@@ -255,6 +312,17 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<st
       exit(1);
     }
   }
+
+  // Parsing the "Placement" information:
+  parsePlacementPragma(commentSection, "PLACEMENT", GrammConfig);
+
+  // Parsed details:
+  GRAMM->info("Parsed information about [PLACEMENT]");
+  for (const auto &pair : GrammConfig["PLACEMENT"])
+  {
+    std::cout << pair << " :: ";
+  }
+  std::cout << std::endl;
 }
 
 void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig)
@@ -382,7 +450,7 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
   }
 }
 
-void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
+void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
 
   // Output stream for storing successful mapping: The positioned-output dot file stream (this contains actual co-ordinates of the node cells).
@@ -405,7 +473,9 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   unpositionedOutputFile << "subgraph cluster_1 {\n label = \"Input Kernel\"; fontsize = 40; style=dashed; \n edge [minlen=3]\n";
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    unpositionedOutputFile << removeCurlyBrackets(hNames[i]) << ";\n";
+    if (!doPlacement((*hConfig)[i].Opcode, GrammConfig))
+      continue;
+    unpositionedOutputFile << hNames[i] << ";\n";
   }
 
   std::pair<edge_iterator, edge_iterator> edge_pair = edges(*H);
@@ -414,7 +484,10 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
     vertex_descriptor u = source(*e_it, *H);
     vertex_descriptor v = target(*e_it, *H);
 
-    unpositionedOutputFile << "  " << removeCurlyBrackets(hNames[u]) << " -> " << removeCurlyBrackets(hNames[v]) << ";\n";
+    if (!doPlacement((*hConfig)[u].Opcode, GrammConfig))
+      continue;
+
+    unpositionedOutputFile << "  " << hNames[u] << " -> " << hNames[v] << ";\n";
   }
 
   unpositionedOutputFile << "}\n";
@@ -427,6 +500,10 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   for (auto hElement : gNames)
   {
     int gNumber = hElement.first;
+
+    if (((*gConfig)[gNumber].Cell == "FUNCCELL") && (std::find(GrammConfig["PLACEMENT"].begin(), GrammConfig["PLACEMENT"].end(), (*gConfig)[gNumber].Type) == GrammConfig["PLACEMENT"].end()))
+      continue;
+    
     if ((FunCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "FUNCCELL")) || (PinCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "PINCELL")) || (RouteCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "ROUTECELL")))
     {
       std::string gName = hElement.second;
@@ -439,6 +516,8 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   //------------------------
   for (int i = 0; i < num_vertices(*H); i++)
   {
+    if (!doPlacement((*hConfig)[i].Opcode, GrammConfig))
+      continue;
     printRoutingResults(i, positionedOutputFile, unpositionedOutputFile, hConfig);
   }
 
@@ -504,10 +583,14 @@ void ripUpRouting(int signal, DirectedGraph *G)
   ripup(signal, &toDel);
 }
 
-void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig)
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
   for (int i = 0; i < num_vertices(*H); i++)
   {
+
+    if (!doPlacement((*hConfig)[i].Opcode, GrammConfig))
+      continue;
+
     struct RoutingTree *RT = &((*Trees)[i]);
 
     GRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
@@ -521,17 +604,17 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
       GRAMM->info("\t Empty vertex model (no-fanouts for the node)");
 
-      //Finding FunCell location from the driver(outPin)
+      // Finding FunCell location from the driver(outPin)
       int FunCellLoc = findFunCellFromOutputPin(*it, G);
 
-      //For concatinating the mapped applicationNodeID name in device model cell
+      // For concatinating the mapped applicationNodeID name in device model cell
       funCellMapping[gNames[FunCellLoc]] = hNames[i];
 
-      //Removing the members of vertex model if any:
-      ripUpRouting(i, G); 
+      // Removing the members of vertex model if any:
+      ripUpRouting(i, G);
 
-      //Since ripUp will remove the Users history as well for this node:
-      (*Users)[FunCellLoc].push_back(i);            
+      // Since ripUp will remove the Users history as well for this node:
+      (*Users)[FunCellLoc].push_back(i);
       continue;
     }
     //-----------------------------------------------------------------------//
@@ -547,8 +630,8 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
         //   - finding ID for alu_x_y from this: "alu_x_y.outPinA"
         int FunCellLoc = findFunCellFromOutputPin(*it, G);
 
-        //For concatinating the mapped applicationNodeID name in device model cell
-        funCellMapping[gNames[FunCellLoc]] = hNames[i];   
+        // For concatinating the mapped applicationNodeID name in device model cell
+        funCellMapping[gNames[FunCellLoc]] = hNames[i];
       }
 
       it++;

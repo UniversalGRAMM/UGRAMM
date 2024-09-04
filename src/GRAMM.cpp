@@ -712,6 +712,10 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
       int y = ordering[k];
 
+      GRAMM->trace(" Condition :: {} :: Type :: {} ", doPlacement((*hConfig)[y].Opcode, GrammConfig), hNames[y]);
+      if(!doPlacement((*hConfig)[y].Opcode, GrammConfig))
+        continue;
+
       GRAMM->debug("\n");
       GRAMM->debug("--------------------- New Vertices Mapping Start ---------------------------");
       GRAMM->debug("Finding vertex model for: {} with Current vertex-size: {}", hNames[y], (*Trees)[y].nodes.size());
@@ -1019,10 +1023,10 @@ int main(int argc, char *argv[])
   if (success)
   {
     // Printing vertex model:
-    printVertexModels(&H, &G, &hConfig);
+    printVertexModels(&H, &G, &hConfig, GrammConfig);
 
     // Visualizing mapping result in neato:
-    printMappedResults(&H, &G, &hConfig, &gConfig);
+    printMappedResults(&H, &G, &hConfig, &gConfig, GrammConfig);
   }
 
   //--------------- get elapsed time -------------------------

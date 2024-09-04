@@ -85,7 +85,7 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
  * @param hConfig A map containing node configuration details of application graph.
  * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig , std::map<int, NodeConfig> *gConfig);
+void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig , std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig);
 
 /**
  * @brief Prints vertex models of the application graph's nodes.
@@ -94,7 +94,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
  * @param G A pointer to the device-model graph.
  * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig);
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig);
 
 /**
  * @brief Prints the device model cell name corresponding to a given boost id number from device model graph.
@@ -116,13 +116,17 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
 
 std::string readCommentSection(std::ifstream &deviceModelFile);
 
+bool doPlacement(std::string hOpcode, std::map<std::string, std::vector<std::string>> &GrammConfig);
+
 void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig);
+
+void parsePlacementPragma(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig);
 
 bool checkVectorofStrings(std::string commentSection, std::string keyword, std::vector<std::string> &Type);
 
 void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &GrammConfig);
 
-void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> GrammConfig);
+void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &GrammConfig);
 
 int findFunCellFromOutputPin(int signal, DirectedGraph *G);
 

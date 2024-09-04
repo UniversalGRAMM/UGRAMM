@@ -1,4 +1,5 @@
  /* ------- Application graph pragma ------- 
+[Placement] = {ALU, MEMPORT};
 [SupportedOps] = {ALU, FADD, FMUL};  
 [SupportedOps] = {MEMPORT, input, output};
 [SupportedOps] = {Constant, const};

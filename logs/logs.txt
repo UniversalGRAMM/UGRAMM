@@ -24,250 +24,205 @@ pragma for the device model:
  
 ---------------------Executing GRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------
 make && ./GRAMM Kernels_Modified/Conv_Balance/conv_nounroll_Balance.dot scripts/riken_8_8.dot 8 8 0
-make: 'GRAMM' is up to date.
-[2024-09-04 02:14:54.240] [GRAMM] [info] Parsed Device-Model Pragma: 
+mkdir -p build
+g++ -Ilib -g -lboost_graph -lspdlog -lfmt -c src/GRAMM.cpp -o build/GRAMM.o
+mkdir -p build
+g++ -Ilib -g -lboost_graph -lspdlog -lfmt -c src/utilities.cpp -o build/utilities.o
+g++ build/GRAMM.o build/utilities.o -Ilib -g -lboost_graph -lspdlog -lfmt -o GRAMM
+[2024-09-04 03:15:47.515] [GRAMM] [info] Parsed Device-Model Pragma: 
 [ALU] :: ALU :: FADD :: FSUB :: FMUL :: FDIV
 [CONSTANT] :: CONSTANT :: CONST
 [MEMPORT] :: MEMPORT :: INPUT :: OUTPUT
-[2024-09-04 02:14:54.284] [GRAMM] [info] Checking compatibility of SupportedOps of [ALU]
-[2024-09-04 02:14:54.284] [GRAMM] [info] [PASSED] The token FADD found in ALU
-[2024-09-04 02:14:54.284] [GRAMM] [info] [PASSED] The token FMUL found in ALU
-[2024-09-04 02:14:54.284] [GRAMM] [info] Checking compatibility of SupportedOps of [CONSTANT]
-[2024-09-04 02:14:54.284] [GRAMM] [info] [PASSED] The token CONST found in CONSTANT
-[2024-09-04 02:14:54.284] [GRAMM] [info] Checking compatibility of SupportedOps of [MEMPORT]
-[2024-09-04 02:14:54.284] [GRAMM] [info] [PASSED] The token INPUT found in MEMPORT
-[2024-09-04 02:14:54.284] [GRAMM] [info] [PASSED] The token OUTPUT found in MEMPORT
-[2024-09-04 02:14:54.285] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 1
-[2024-09-04 02:14:55.005] [GRAMM] [info] TOTAL OVERUSE: 13
-[2024-09-04 02:14:55.005] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 2
-[2024-09-04 02:14:56.399] [GRAMM] [info] TOTAL OVERUSE: 2
-[2024-09-04 02:14:56.399] [GRAMM] [info] FRACTION OVERLAP: 0.009345794
-[2024-09-04 02:14:56.399] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 3
-[2024-09-04 02:14:57.721] [GRAMM] [info] TOTAL OVERUSE: 3
-[2024-09-04 02:14:57.721] [GRAMM] [info] FRACTION OVERLAP: 0.014218009
-[2024-09-04 02:14:57.721] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 4
-[2024-09-04 02:14:59.055] [GRAMM] [info] TOTAL OVERUSE: 0
-[2024-09-04 02:14:59.055] [GRAMM] [info] FRACTION OVERLAP: 0.0
-[2024-09-04 02:14:59.055] [GRAMM] [info] SUCCESS! :: [iterCount] :: 4 :: [frac] :: 0.0 :: [num_vertices(H)] :: 36
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Const_27_float32_5_00's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 838 	 pe.w32.c5.r2.const.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 836 	 pe.w32.c5.r2.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 841 	 pe.w32.c5.r2.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Const_28_float32_13_00's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 977 	 pe.w32.c6.r1.const.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 975 	 pe.w32.c6.r1.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 982 	 pe.w32.c6.r1.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Const_29_float32_9_00's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 319 	 pe.w32.c2.r0.const.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 317 	 pe.w32.c2.r0.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 322 	 pe.w32.c2.r0.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Const_30_float32_11_00's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 259 	 pe.w32.c1.r5.const.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 256 	 pe.w32.c1.r5.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 262 	 pe.w32.c1.r5.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Const_31_float32_3_00's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 99 	 pe.w32.c8.r1.const.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 97 	 pe.w32.c8.r1.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 103 	 pe.w32.c8.r1.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Const_32_float32_15_00's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 539 	 pe.w32.c3.r3.const.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 537 	 pe.w32.c3.r3.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 542 	 pe.w32.c3.r3.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Const_33_float32_17_00's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 140 	 pe.w32.c8.r3.const.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 138 	 pe.w32.c8.r3.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 143 	 pe.w32.c8.r3.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Const_34_float32_7_00's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1118 	 pe.w32.c7.r0.const.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1116 	 pe.w32.c7.r0.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1121 	 pe.w32.c7.r0.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Const_35_float32_19_00's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 578 	 pe.w32.c3.r5.const.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 576 	 pe.w32.c3.r5.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 582 	 pe.w32.c3.r5.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FADD_18's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 903 	 pe.w32.c5.r5.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 892 	 pe.w32.c5.r5.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1072 	 pe.w32.c6.r6.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1074 	 pe.w32.c6.r6.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1080 	 pe.w32.c6.r6.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FADD_19's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1042 	 pe.w32.c6.r4.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1030 	 pe.w32.c6.r4.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1050 	 pe.w32.c6.r5.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1073 	 pe.w32.c6.r6.crossbar_mux_9
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1075 	 pe.w32.c6.r6.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1081 	 pe.w32.c6.r6.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FADD_20's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 883 	 pe.w32.c5.r4.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 871 	 pe.w32.c5.r4.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 894 	 pe.w32.c5.r5.crossbar_mux_9
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 896 	 pe.w32.c5.r5.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 902 	 pe.w32.c5.r5.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FADD_21's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1062 	 pe.w32.c6.r5.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1046 	 pe.w32.c6.r5.crossbar_mux_2
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1033 	 pe.w32.c6.r4.crossbar_mux_9
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1036 	 pe.w32.c6.r4.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1041 	 pe.w32.c6.r4.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FADD_22's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 862 	 pe.w32.c5.r3.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 851 	 pe.w32.c5.r3.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1029 	 pe.w32.c6.r4.crossbar_mux_5
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 893 	 pe.w32.c5.r5.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 895 	 pe.w32.c5.r5.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 900 	 pe.w32.c5.r5.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FADD_23's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1022 	 pe.w32.c6.r3.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1010 	 pe.w32.c6.r3.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1032 	 pe.w32.c6.r4.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1035 	 pe.w32.c6.r4.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1040 	 pe.w32.c6.r4.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FADD_24's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 722 	 pe.w32.c4.r4.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 705 	 pe.w32.c4.r4.crossbar_mux_1
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 850 	 pe.w32.c5.r3.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 874 	 pe.w32.c5.r4.crossbar_mux_9
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 876 	 pe.w32.c5.r4.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 882 	 pe.w32.c5.r4.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FADD_25's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1082 	 pe.w32.c6.r6.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1070 	 pe.w32.c6.r6.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1088 	 pe.w32.c6.r7.crossbar_mux_5
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 535 	 LS.w32.c9.r5.mem.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FMUL_10's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 842 	 pe.w32.c5.r2.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 830 	 pe.w32.c5.r2.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 843 	 pe.w32.c5.r3.crossbar_mux_0
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1013 	 pe.w32.c6.r3.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1015 	 pe.w32.c6.r3.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1020 	 pe.w32.c6.r3.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FMUL_11's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1122 	 pe.w32.c7.r0.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1109 	 pe.w32.c7.r0.crossbar_mux_5
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 970 	 pe.w32.c6.r1.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 991 	 pe.w32.c6.r2.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1014 	 pe.w32.c6.r3.crossbar_mux_9
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1016 	 pe.w32.c6.r3.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1021 	 pe.w32.c6.r3.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FMUL_12's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 323 	 pe.w32.c2.r0.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 311 	 pe.w32.c2.r0.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 492 	 pe.w32.c3.r1.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 672 	 pe.w32.c4.r2.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 853 	 pe.w32.c5.r3.crossbar_mux_9
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 855 	 pe.w32.c5.r3.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 861 	 pe.w32.c5.r3.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FMUL_13's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 263 	 pe.w32.c1.r5.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 244 	 pe.w32.c1.r5.crossbar_mux_0
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 405 	 pe.w32.c2.r5.crossbar_mux_1
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 544 	 pe.w32.c3.r4.crossbar_mux_0
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 711 	 pe.w32.c4.r4.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 884 	 pe.w32.c5.r5.crossbar_mux_0
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1052 	 pe.w32.c6.r5.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1054 	 pe.w32.c6.r5.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1060 	 pe.w32.c6.r5.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FMUL_14's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 983 	 pe.w32.c6.r1.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 971 	 pe.w32.c6.r1.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1149 	 pe.w32.c7.r2.crossbar_mux_5
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1009 	 pe.w32.c6.r3.crossbar_mux_5
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 873 	 pe.w32.c5.r4.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 875 	 pe.w32.c5.r4.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 881 	 pe.w32.c5.r4.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FMUL_15's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 543 	 pe.w32.c3.r3.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 531 	 pe.w32.c3.r3.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 713 	 pe.w32.c4.r4.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 715 	 pe.w32.c4.r4.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 720 	 pe.w32.c4.r4.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FMUL_16's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 144 	 pe.w32.c8.r3.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 131 	 pe.w32.c8.r3.crossbar_mux_5
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1188 	 pe.w32.c7.r4.crossbar_mux_5
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1053 	 pe.w32.c6.r5.crossbar_mux_9
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1055 	 pe.w32.c6.r5.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1061 	 pe.w32.c6.r5.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FMUL_17's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 583 	 pe.w32.c3.r5.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 565 	 pe.w32.c3.r5.crossbar_mux_1
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 714 	 pe.w32.c4.r4.crossbar_mux_9
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 716 	 pe.w32.c4.r4.mux_b
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 721 	 pe.w32.c4.r4.alu.inPinB
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for FMUL_9's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 104 	 pe.w32.c8.r1.alu.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 90 	 pe.w32.c8.r1.crossbar_mux_5
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1148 	 pe.w32.c7.r2.crossbar_mux_4
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 989 	 pe.w32.c6.r2.crossbar_mux_5
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 852 	 pe.w32.c5.r3.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 854 	 pe.w32.c5.r3.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 860 	 pe.w32.c5.r3.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Load_0's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 346 	 LS.w32.c0.r7.memport.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 72 	 pe.w32.c8.r0.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 94 	 pe.w32.c8.r1.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 96 	 pe.w32.c8.r1.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 101 	 pe.w32.c8.r1.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Load_1's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 978 	 LS.w32.c0.r2.memport.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 472 	 pe.w32.c3.r0.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 652 	 pe.w32.c4.r1.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 832 	 pe.w32.c5.r2.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 835 	 pe.w32.c5.r2.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 840 	 pe.w32.c5.r2.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Load_2's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 313 	 LS.w32.c0.r6.memport.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1113 	 pe.w32.c7.r0.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1115 	 pe.w32.c7.r0.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 1120 	 pe.w32.c7.r0.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Load_3's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 645 	 LS.w32.c0.r1.memport.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 314 	 pe.w32.c2.r0.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 316 	 pe.w32.c2.r0.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 321 	 pe.w32.c2.r0.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Load_4's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 446 	 LS.w32.c9.r2.mem.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 607 	 pe.w32.c3.r7.crossbar_mux_3
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 428 	 pe.w32.c2.r6.crossbar_mux_3
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 253 	 pe.w32.c1.r5.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 255 	 pe.w32.c1.r5.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 261 	 pe.w32.c1.r5.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Load_5's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 246 	 LS.w32.c0.r4.memport.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 792 	 pe.w32.c5.r0.crossbar_mux_7
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 972 	 pe.w32.c6.r1.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 974 	 pe.w32.c6.r1.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 981 	 pe.w32.c6.r1.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Load_6's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 113 	 LS.w32.c0.r3.memport.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 630 	 pe.w32.c4.r0.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 650 	 pe.w32.c4.r1.crossbar_mux_5
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 510 	 pe.w32.c3.r2.crossbar_mux_6
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 532 	 pe.w32.c3.r3.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 536 	 pe.w32.c3.r3.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 541 	 pe.w32.c3.r3.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Load_7's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 579 	 LS.w32.c9.r6.mem.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 46 	 pe.w32.c7.r7.crossbar_mux_1
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 187 	 pe.w32.c8.r6.crossbar_mux_2
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 167 	 pe.w32.c8.r5.crossbar_mux_2
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 148 	 pe.w32.c8.r4.crossbar_mux_2
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 134 	 pe.w32.c8.r3.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 137 	 pe.w32.c8.r3.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 142 	 pe.w32.c8.r3.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Load_8's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 479 	 LS.w32.c9.r3.mem.outPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 766 	 pe.w32.c4.r7.crossbar_mux_2
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 747 	 pe.w32.c4.r6.crossbar_mux_3
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 573 	 pe.w32.c3.r5.crossbar_mux_8
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 575 	 pe.w32.c3.r5.mux_a
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 581 	 pe.w32.c3.r5.alu.inPinA
-[2024-09-04 02:14:59.055] [GRAMM] [info] ** routing for Store_26's output pin :: 
-[2024-09-04 02:14:59.055] [GRAMM] [info] 	 Empty vertex model (no-fanouts for the node)
-[2024-09-04 02:14:59.056] [GRAMM] [info] Writing the positioned mapping output in file 'positioned_dot_output.dot'
-[2024-09-04 02:14:59.056] [GRAMM] [info] Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot'
-[2024-09-04 02:14:59.057] [GRAMM] [info] Total time taken :: 4.771575 Seconds
+[2024-09-04 03:15:47.560] [GRAMM] [info] Checking compatibility of SupportedOps of [ALU]
+[2024-09-04 03:15:47.560] [GRAMM] [info] [PASSED] The token FADD found in ALU
+[2024-09-04 03:15:47.560] [GRAMM] [info] [PASSED] The token FMUL found in ALU
+[2024-09-04 03:15:47.560] [GRAMM] [info] Checking compatibility of SupportedOps of [CONSTANT]
+[2024-09-04 03:15:47.560] [GRAMM] [info] [PASSED] The token CONST found in CONSTANT
+[2024-09-04 03:15:47.560] [GRAMM] [info] Checking compatibility of SupportedOps of [MEMPORT]
+[2024-09-04 03:15:47.560] [GRAMM] [info] [PASSED] The token INPUT found in MEMPORT
+[2024-09-04 03:15:47.560] [GRAMM] [info] [PASSED] The token OUTPUT found in MEMPORT
+[2024-09-04 03:15:47.560] [GRAMM] [info] [PASSED] The token PLACEMENT found in Placement line [PLACEMENT] = {ALU, MEMPORT}; 
+[2024-09-04 03:15:47.560] [GRAMM] [info] Parsed information about [PLACEMENT]
+ALU :: MEMPORT :: 
+[2024-09-04 03:15:47.561] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 1
+[2024-09-04 03:15:48.248] [GRAMM] [info] TOTAL OVERUSE: 7
+[2024-09-04 03:15:48.248] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 2
+[2024-09-04 03:15:49.561] [GRAMM] [info] TOTAL OVERUSE: 2
+[2024-09-04 03:15:49.561] [GRAMM] [info] FRACTION OVERLAP: 0.0121951215
+[2024-09-04 03:15:49.561] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 3
+[2024-09-04 03:15:50.870] [GRAMM] [info] TOTAL OVERUSE: 2
+[2024-09-04 03:15:50.870] [GRAMM] [info] FRACTION OVERLAP: 0.0125
+[2024-09-04 03:15:50.870] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 4
+[2024-09-04 03:15:52.150] [GRAMM] [info] TOTAL OVERUSE: 4
+[2024-09-04 03:15:52.150] [GRAMM] [info] FRACTION OVERLAP: 0.025806451
+[2024-09-04 03:15:52.150] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 5
+[2024-09-04 03:15:53.426] [GRAMM] [info] TOTAL OVERUSE: 2
+[2024-09-04 03:15:53.426] [GRAMM] [info] FRACTION OVERLAP: 0.012987013
+[2024-09-04 03:15:53.426] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 6
+[2024-09-04 03:15:54.666] [GRAMM] [info] TOTAL OVERUSE: 0
+[2024-09-04 03:15:54.666] [GRAMM] [info] FRACTION OVERLAP: 0.0
+[2024-09-04 03:15:54.666] [GRAMM] [info] SUCCESS! :: [iterCount] :: 6 :: [frac] :: 0.0 :: [num_vertices(H)] :: 36
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FADD_18's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 842 	 pe.w32.c5.r2.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 827 	 pe.w32.c5.r2.crossbar_mux_3
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 653 	 pe.w32.c4.r1.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 655 	 pe.w32.c4.r1.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 661 	 pe.w32.c4.r1.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FADD_19's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 343 	 pe.w32.c2.r1.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 332 	 pe.w32.c2.r1.crossbar_mux_7
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 505 	 pe.w32.c3.r2.crossbar_mux_1
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 654 	 pe.w32.c4.r1.crossbar_mux_9
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 656 	 pe.w32.c4.r1.mux_b
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 662 	 pe.w32.c4.r1.alu.inPinB
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FADD_20's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1022 	 pe.w32.c6.r3.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1007 	 pe.w32.c6.r3.crossbar_mux_3
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 833 	 pe.w32.c5.r2.crossbar_mux_9
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 836 	 pe.w32.c5.r2.mux_b
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 841 	 pe.w32.c5.r2.alu.inPinB
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FADD_21's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 503 	 pe.w32.c3.r1.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 488 	 pe.w32.c3.r1.crossbar_mux_4
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 334 	 pe.w32.c2.r1.crossbar_mux_9
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 337 	 pe.w32.c2.r1.mux_b
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 342 	 pe.w32.c2.r1.alu.inPinB
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FADD_22's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 983 	 pe.w32.c6.r1.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 970 	 pe.w32.c6.r1.crossbar_mux_6
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 988 	 pe.w32.c6.r2.crossbar_mux_4
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 832 	 pe.w32.c5.r2.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 835 	 pe.w32.c5.r2.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 840 	 pe.w32.c5.r2.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FADD_23's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 483 	 pe.w32.c3.r0.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 470 	 pe.w32.c3.r0.crossbar_mux_5
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 333 	 pe.w32.c2.r1.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 336 	 pe.w32.c2.r1.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 341 	 pe.w32.c2.r1.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FADD_24's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 742 	 pe.w32.c4.r5.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 725 	 pe.w32.c4.r5.crossbar_mux_1
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 864 	 pe.w32.c5.r4.crossbar_mux_1
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1014 	 pe.w32.c6.r3.crossbar_mux_9
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1016 	 pe.w32.c6.r3.mux_b
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1021 	 pe.w32.c6.r3.alu.inPinB
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FADD_25's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 663 	 pe.w32.c4.r1.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 648 	 pe.w32.c4.r1.crossbar_mux_3
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 471 	 pe.w32.c3.r0.crossbar_mux_6
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 867 	 LS.w32.c0.r2.memport.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FMUL_10's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 323 	 pe.w32.c2.r0.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 304 	 pe.w32.c2.r0.crossbar_mux_0
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 473 	 pe.w32.c3.r0.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 475 	 pe.w32.c3.r0.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 481 	 pe.w32.c3.r0.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FMUL_11's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 642 	 pe.w32.c4.r0.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 628 	 pe.w32.c4.r0.crossbar_mux_4
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 474 	 pe.w32.c3.r0.crossbar_mux_9
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 476 	 pe.w32.c3.r0.mux_b
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 482 	 pe.w32.c3.r0.alu.inPinB
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FMUL_12's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 962 	 pe.w32.c6.r0.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 950 	 pe.w32.c6.r0.crossbar_mux_6
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 973 	 pe.w32.c6.r1.crossbar_mux_9
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 975 	 pe.w32.c6.r1.mux_b
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 982 	 pe.w32.c6.r1.alu.inPinB
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FMUL_13's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 803 	 pe.w32.c5.r0.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 789 	 pe.w32.c5.r0.crossbar_mux_5
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 649 	 pe.w32.c4.r1.crossbar_mux_4
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 493 	 pe.w32.c3.r1.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 495 	 pe.w32.c3.r1.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 500 	 pe.w32.c3.r1.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FMUL_14's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1162 	 pe.w32.c7.r2.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1149 	 pe.w32.c7.r2.crossbar_mux_5
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1013 	 pe.w32.c6.r3.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1015 	 pe.w32.c6.r3.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1020 	 pe.w32.c6.r3.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FMUL_15's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 603 	 pe.w32.c3.r6.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 585 	 pe.w32.c3.r6.crossbar_mux_1
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 732 	 pe.w32.c4.r5.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 735 	 pe.w32.c4.r5.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 740 	 pe.w32.c4.r5.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FMUL_16's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 812 	 pe.w32.c1.r0.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 701 	 pe.w32.c1.r0.crossbar_mux_7
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 325 	 pe.w32.c2.r1.crossbar_mux_0
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 494 	 pe.w32.c3.r1.crossbar_mux_9
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 496 	 pe.w32.c3.r1.mux_b
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 502 	 pe.w32.c3.r1.alu.inPinB
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FMUL_17's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 763 	 pe.w32.c4.r6.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 746 	 pe.w32.c4.r6.crossbar_mux_2
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 733 	 pe.w32.c4.r5.crossbar_mux_9
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 736 	 pe.w32.c4.r5.mux_b
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 741 	 pe.w32.c4.r5.alu.inPinB
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for FMUL_9's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1142 	 pe.w32.c7.r1.alu.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1128 	 pe.w32.c7.r1.crossbar_mux_4
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 972 	 pe.w32.c6.r1.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 974 	 pe.w32.c6.r1.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 981 	 pe.w32.c6.r1.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for Load_0's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 313 	 LS.w32.c0.r6.memport.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1110 	 pe.w32.c7.r0.crossbar_mux_6
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1132 	 pe.w32.c7.r1.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1135 	 pe.w32.c7.r1.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1140 	 pe.w32.c7.r1.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for Load_1's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 645 	 LS.w32.c0.r1.memport.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 314 	 pe.w32.c2.r0.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 316 	 pe.w32.c2.r0.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 321 	 pe.w32.c2.r0.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for Load_2's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 113 	 LS.w32.c0.r3.memport.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 632 	 pe.w32.c4.r0.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 635 	 pe.w32.c4.r0.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 640 	 pe.w32.c4.r0.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for Load_3's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 279 	 LS.w32.c0.r5.memport.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 952 	 pe.w32.c6.r0.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 954 	 pe.w32.c6.r0.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 960 	 pe.w32.c6.r0.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for Load_4's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 246 	 LS.w32.c0.r4.memport.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 793 	 pe.w32.c5.r0.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 795 	 pe.w32.c5.r0.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 800 	 pe.w32.c5.r0.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for Load_5's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 346 	 LS.w32.c0.r7.memport.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 72 	 pe.w32.c8.r0.crossbar_mux_6
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 90 	 pe.w32.c8.r1.crossbar_mux_5
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1152 	 pe.w32.c7.r2.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1154 	 pe.w32.c7.r2.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 1160 	 pe.w32.c7.r2.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for Load_6's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 412 	 LS.w32.c9.r1.mem.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 445 	 pe.w32.c2.r7.crossbar_mux_1
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 593 	 pe.w32.c3.r6.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 595 	 pe.w32.c3.r6.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 600 	 pe.w32.c3.r6.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for Load_7's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 312 	 LS.w32.c0.r0.memport.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 712 	 pe.w32.c1.r0.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 734 	 pe.w32.c1.r0.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 790 	 pe.w32.c1.r0.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for Load_8's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 512 	 LS.w32.c9.r4.mem.outPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 927 	 pe.w32.c5.r7.crossbar_mux_3
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 752 	 pe.w32.c4.r6.crossbar_mux_8
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 754 	 pe.w32.c4.r6.mux_a
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 761 	 pe.w32.c4.r6.alu.inPinA
+[2024-09-04 03:15:54.666] [GRAMM] [info] ** routing for Store_26's output pin :: 
+[2024-09-04 03:15:54.666] [GRAMM] [info] 	 Empty vertex model (no-fanouts for the node)
+[2024-09-04 03:15:54.666] [GRAMM] [info] Writing the positioned mapping output in file 'positioned_dot_output.dot'
+[2024-09-04 03:15:54.666] [GRAMM] [info] Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot'
+[2024-09-04 03:15:54.668] [GRAMM] [info] Total time taken :: 7.107363 Seconds
  
  
 ---------------------Converting the ordered-mapped  positioned_dot_output.dot file into ordered_dot_output.png:---------------------
