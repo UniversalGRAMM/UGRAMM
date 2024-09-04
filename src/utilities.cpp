@@ -452,6 +452,20 @@ void printName(int n)
   GRAMM->debug("{}", gNames[n]);
 }
 
+/*
+  Description: For the given outputPin (signal), finds the associated FunCell node from the deviceModel.
+  Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking uphill --- finding the source of this edge]
+*/
+int findFunCellFromOutputPin(int signal, DirectedGraph *G)
+{
+  vertex_descriptor signalVertex = vertex(signal, *G);
+  in_edge_iterator ei, ei_end;
+  boost::tie(ei, ei_end) = in_edges(signal, *G);
+  int selectedCellFunCell = source(*ei, *G);
+
+  return selectedCellFunCell;
+}
+
 void ripup(int signal, std::list<int> *nodes)
 {
   std::list<int>::iterator it = (*nodes).begin();
@@ -471,13 +485,15 @@ void ripup(int signal, std::list<int> *nodes)
   }
 }
 
-void ripUpRouting(int signal)
+void ripUpRouting(int signal, DirectedGraph *G)
 {
   struct RoutingTree *RT = &((*Trees)[signal]);
   std::list<int> toDel;
   toDel.clear();
 
   std::list<int>::iterator it = RT->nodes.begin();
+  int driverFuncell = findFunCellFromOutputPin(*it, G);
+  toDel.push_back(driverFuncell);
   for (; it != RT->nodes.end(); it++)
   {
     toDel.push_back(*it);
@@ -495,6 +511,7 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     struct RoutingTree *RT = &((*Trees)[i]);
 
     GRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
+    std::list<int>::iterator it = RT->nodes.begin();
 
     //------------------------- Corner case: -------------------------------//
     // Checking whether there Fan-outs for the current application node:
@@ -503,30 +520,37 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     if (eo == eo_end)
     {
       GRAMM->info("\t Empty vertex model (no-fanouts for the node)");
-      ripUpRouting(i); //Deleting any members of the tree incase any:
+
+      //Finding FunCell location from the driver(outPin)
+      int FunCellLoc = findFunCellFromOutputPin(*it, G);
+
+      //For concatinating the mapped applicationNodeID name in device model cell
+      funCellMapping[gNames[FunCellLoc]] = hNames[i];
+
+      //Removing the members of vertex model if any:
+      ripUpRouting(i, G); 
+
+      //Since ripUp will remove the Users history as well for this node:
+      (*Users)[FunCellLoc].push_back(i);            
       continue;
     }
     //-----------------------------------------------------------------------//
 
-    std::list<int>::iterator it = RT->nodes.begin();
     while (it != RT->nodes.end())
     {
       int n = *it;
       GRAMM->info("\t {} \t {}", n, gNames[n]);
-
       if (it == RT->nodes.begin())
       {
         // The begining node in the resource tree will be always outPin for the FunCell
         //   - Finding the FuncCell based on this outPin ID.
-        //     - finding ID for alu_x_y from this: "alu_x_y.outPinA"
-        in_edge_iterator ei, ei_end;
-        vertex_descriptor yD = vertex(n, *G);
-        boost::tie(ei, ei_end) = in_edges(yD, *G);
-        int FunCellLoc = source(*ei, *G);
+        //   - finding ID for alu_x_y from this: "alu_x_y.outPinA"
+        int FunCellLoc = findFunCellFromOutputPin(*it, G);
 
-        funCellMapping[gNames[FunCellLoc]] = hNames[i];
-        (*Users)[FunCellLoc].push_back(i);
+        //For concatinating the mapped applicationNodeID name in device model cell
+        funCellMapping[gNames[FunCellLoc]] = hNames[i];   
       }
+
       it++;
     }
   }

@@ -73,20 +73,6 @@ int findOutputPinFromFuncell(int signal, DirectedGraph *G)
   return selectedCellOutputPin;
 }
 
-/*
-  Description: For the given outputPin (signal), finds the associated FunCell node from the deviceModel.
-  Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking uphill --- finding the source of this edge]
-*/
-int findFunCellFromOutputPin(int signal, DirectedGraph *G)
-{
-  vertex_descriptor signalVertex = vertex(signal, *G);
-  in_edge_iterator ei, ei_end;
-  boost::tie(ei, ei_end) = in_edges(signal, *G);
-  int selectedCellFunCell = source(*ei, *G);
-
-  return selectedCellFunCell;
-}
-
 void depositRoute(int signal, std::list<int> *nodes)
 {
   if (!nodes->size())
@@ -529,9 +515,9 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     while (vertex_found == false)
     {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
-      GRAMM->debug("Picking up random node {} :: {}", gNames[chooseRand], hNames[y]);
       if (compatibilityCheck((*gConfig)[chooseRand].Type, (*hConfig)[y].Opcode))
       {
+        //GRAMM->debug("Picking up random node :: gNames - {} :: users - {} :: hNames - {} ", gNames[chooseRand], (*Users)[chooseRand].size(), hNames[y]);
         // Finding the output Pin for the selected FunCell:
         selectedCellOutputPin = findOutputPinFromFuncell(chooseRand, G);
         if ((*Users)[chooseRand].size() == 0)
@@ -545,6 +531,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     //(*Trees)[y].nodes.push_back(chooseRand);
     (*Trees)[y].nodes.push_back(selectedCellOutputPin);
     (*Users)[chooseRand].push_back(y); // Users is added for the FunCell instead of the PinCell.
+    (*Users)[selectedCellOutputPin].push_back(y);
 
     return 0;
   }
@@ -573,10 +560,11 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     // Finding the output Pin for the selected FunCell:
     int outputPin = findOutputPinFromFuncell(i, G);
 
-    ripUpRouting(y);
+    ripUpRouting(y,G);
     // Checking if the current node 'y' has any Fanouts to be routed.
     (*Trees)[y].nodes.push_back(outputPin);
     (*Users)[i].push_back(y); // User is added for the FunCell instead of the PinCell.
+    (*Users)[outputPin].push_back(y);
 
     // Cost and history costs are as well added for the FunCell instead of the PinCell.
     totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
@@ -606,12 +594,13 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
       int driverPinNode = findDriver(driver, gConfig);
 
-      ripUpRouting(driver);
+      ripUpRouting(driver, G);
       (*Trees)[driver].nodes.push_back(driverPinNode);
 
       // Need to find the FunCell associated with driverPinNode (which is PinCell)
       int driverFunCellNode = findFunCellFromOutputPin(driverPinNode, G);
       (*Users)[driverFunCellNode].push_back(driver);
+      (*Users)[driverPinNode].push_back(driver);
 
       // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
       totalCosts[i] += routeSignal(G, H, driver, gConfig);
@@ -657,9 +646,10 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
   GRAMM->debug("The bertIndex found for {} from the device-model is {} with cost of {}", hNames[y], gNames[bestIndexPincell], bestCost);
 
   // Final rig-up before doing final routing:
-  ripUpRouting(y);
+  ripUpRouting(y, G);
   (*Trees)[y].nodes.push_back(bestIndexPincell);
   (*Users)[bestIndexFuncell].push_back(y); // User is added for the FunCell instead of the PinCell.
+  (*Users)[bestIndexPincell].push_back(y);
 
   // Final-placement for node 'y':
   routeSignal(G, H, y, gConfig);
@@ -674,12 +664,13 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
     int driverPinNode = findDriver(driver, gConfig);
 
-    ripUpRouting(driver);
+    ripUpRouting(driver, G);
     (*Trees)[driver].nodes.push_back(driverPinNode);
 
     // Need to find the FunCell associated with driverPinNode (which is PinCell)
     int driverFunCellNode = findFunCellFromOutputPin(driverPinNode, G);
     (*Users)[driverFunCellNode].push_back(driver);
+    (*Users)[driverPinNode].push_back(driver);
 
     routeSignal(G, H, driver, gConfig);
   }
@@ -904,7 +895,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 
 int main(int argc, char *argv[])
 {
-  GRAMM->set_level(spdlog::level::debug); // Set global log level to debug
+  GRAMM->set_level(spdlog::level::info); // Set global log level to debug
 
   DirectedGraph H, G;
 
