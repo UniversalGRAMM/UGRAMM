@@ -16,6 +16,9 @@
 #include <bitset>
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
+#include <vector>
+#include <boost/graph/connected_components.hpp>
+#include <boost/graph/copy.hpp>
 
 
 
@@ -69,6 +72,16 @@ void deviceModelDRC_CheckFloatingNodes(DirectedGraph *G, std::map<int, NodeConfi
 void deviceModelDRC_CheckPinsIO(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
 
 
+/**
+ * @brief  Check if the device model graph is weekly conencted
+ * 
+ * @param G A pointer to the device-model graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void deviceModelDRC_CheckDeviceModelWeeklyConnected(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
+
+
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
 /**
  * @brief Application graph should not have any floating nodes
@@ -88,6 +101,19 @@ void applicationGraphDRC_CheckFloatingNodes(DirectedGraph *H, std::map<int, Node
  * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
  */
 void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
+
+
+/**
+ * @brief Check if the application DFG is weekly conencted
+ * 
+ * @param H A pointer to the device-model graph.
+ * @param hConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void applicationGraphDRC_CheckApplicationDFGWeeklyConnected(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
+
+
+
 
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
 /**
