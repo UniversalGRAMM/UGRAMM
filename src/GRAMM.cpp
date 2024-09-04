@@ -39,7 +39,7 @@ std::map<std::string, std::vector<std::string>> GrammConfig;
   Description: this function checks whether current opcode required by the
                application node is supported by device model node.
 */
-bool compatibilityCheck(const std::string& gType, const std::string& hOpcode)
+bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
 {
   // For nodes such as RouteCell, PinCell the GrammConfig array will be empty.
   // Pragma array's are only parsed for the FunCell types.
@@ -55,8 +55,36 @@ bool compatibilityCheck(const std::string& gType, const std::string& hOpcode)
       return true;
     }
   }
-
+  //GRAMM->error("{} node from device model does not supports {} Opcode", gType, hOpcode);
   return false;
+}
+
+/*
+  Description: For the given FunCell (signal), finds the associated outputPin node from the deviceModel.
+  Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking downhill --- finding the sink of this edge]
+*/
+int findOutputPinFromFuncell(int signal, DirectedGraph *G)
+{
+  vertex_descriptor signalVertex = vertex(signal, *G);
+  out_edge_iterator eo, eo_end;
+  boost::tie(eo, eo_end) = out_edges(signalVertex, *G);
+  int selectedCellOutputPin = target(*eo, *G);
+
+  return selectedCellOutputPin;
+}
+
+/*
+  Description: For the given outputPin (signal), finds the associated FunCell node from the deviceModel.
+  Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking uphill --- finding the source of this edge]
+*/
+int findFunCellFromOutputPin(int signal, DirectedGraph *G)
+{
+  vertex_descriptor signalVertex = vertex(signal, *G);
+  in_edge_iterator ei, ei_end;
+  boost::tie(ei, ei_end) = in_edges(signal, *G);
+  int selectedCellFunCell = source(*ei, *G);
+
+  return selectedCellFunCell;
 }
 
 void depositRoute(int signal, std::list<int> *nodes)
@@ -84,18 +112,6 @@ void depositRoute(int signal, std::list<int> *nodes)
     RT->nodes.push_back(addNode);
     prev = addNode;
   }
-}
-
-// For the given FunCell (signal), finds the associated outputPin node from the deviceModel.
-// Ex: FunCell(signal) -> outPin (selectedCellOutputPin)
-int findOutputPin(int signal, DirectedGraph *G)
-{
-  vertex_descriptor signalVertex = vertex(signal, *G);
-  out_edge_iterator eo, eo_end;
-  boost::tie(eo, eo_end) = out_edges(signalVertex, *G);
-  int selectedCellOutputPin = target(*eo, *G);
-
-  return selectedCellOutputPin;
 }
 
 int findDriver(int signal, std::map<int, NodeConfig> *gConfig)
@@ -430,15 +446,12 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     int loadOutPinCellLoc = findDriver(load, gConfig);
 
     // Converting the driver(pinCell) to the actual input pin of FuncCell:
-    in_edge_iterator ei, ei_end;
-    vertex_descriptor yD = vertex(loadOutPinCellLoc, *G);
-    boost::tie(ei, ei_end) = in_edges(yD, *G);
-
     // Step 1: Fetching "FunCell" ID from the edge: FunCell --> OutPin
-    int loadFunCellLoc = source(*ei, *G);
+    int loadFunCellLoc = findFunCellFromOutputPin(loadOutPinCellLoc, G);
 
     // Step 2: Fetching given "inPin" ID from the edge: inPin --> FunCell (Note: there could be multiple input pins for the given FunCell)
-    yD = vertex(loadFunCellLoc, *G);
+    vertex_descriptor yD = vertex(loadFunCellLoc, *G);
+    in_edge_iterator ei, ei_end;
     boost::tie(ei, ei_end) = in_edges(yD, *G);
     int loadInPinCellLoc = 0;
     for (; ei != ei_end; ei++)
@@ -512,15 +525,16 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     int selectedCellOutputPin = 0;
     int chooseRand = (rand() % num_vertices(*G));
     bool vertex_found = false;
-
+    
     while (vertex_found == false)
     {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
+      GRAMM->debug("Picking up random node {} :: {}", gNames[chooseRand], hNames[y]);
       if (compatibilityCheck((*gConfig)[chooseRand].Type, (*hConfig)[y].Opcode))
       {
         // Finding the output Pin for the selected FunCell:
-        selectedCellOutputPin = findOutputPin(chooseRand, G);
-        if ((*Users)[selectedCellOutputPin].size() == 0)
+        selectedCellOutputPin = findOutputPinFromFuncell(chooseRand, G);
+        if ((*Users)[chooseRand].size() == 0)
           vertex_found = true;
       }
     }
@@ -530,14 +544,15 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell
     //(*Trees)[y].nodes.push_back(chooseRand);
     (*Trees)[y].nodes.push_back(selectedCellOutputPin);
-    (*Users)[selectedCellOutputPin].push_back(y);  //Users is added for the FunCell instead of the PinCell.
+    (*Users)[chooseRand].push_back(y); // Users is added for the FunCell instead of the PinCell.
 
     return 0;
   }
 
   // OK, at least one of y's fanins or fanouts have a vertex model
   int bestCost = MAX_DIST;
-  int bestIndex = -1;
+  int bestIndexPincell = -1;
+  int bestIndexFuncell = -1;
 
   int totalCosts[num_vertices(*G)];
   for (int i = 0; i < num_vertices(*G); i++)
@@ -556,24 +571,25 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     }
 
     // Finding the output Pin for the selected FunCell:
-    int outputPin = findOutputPin(i, G);
+    int outputPin = findOutputPinFromFuncell(i, G);
 
     ripUpRouting(y);
     // Checking if the current node 'y' has any Fanouts to be routed.
     (*Trees)[y].nodes.push_back(outputPin);
-    (*Users)[outputPin].push_back(y); //User is added for the FunCell instead of the PinCell.
+    (*Users)[i].push_back(y); // User is added for the FunCell instead of the PinCell.
 
-    totalCosts[outputPin] += (1 + (*HistoryCosts)[outputPin]) * ((*Users)[outputPin].size() * PFac);
+    // Cost and history costs are as well added for the FunCell instead of the PinCell.
+    totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
 
     if (GRAMM->level() <= spdlog::level::trace)
     {
       printRouting(y);
     }
 
-    totalCosts[outputPin] += routeSignal(G, H, y, gConfig);
-    GRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[outputPin], totalCosts[outputPin]);
+    totalCosts[i] += routeSignal(G, H, y, gConfig);
+    GRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[outputPin], totalCosts[i]);
 
-    if (totalCosts[outputPin] > bestCost)
+    if (totalCosts[i] > bestCost)
       continue;
 
     //----------------------------------------------
@@ -588,55 +604,62 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
       if ((*Trees)[driver].nodes.size() == 0)
         continue; // driver is not placed
 
-      int driverNode = findDriver(driver, gConfig);
+      int driverPinNode = findDriver(driver, gConfig);
 
       ripUpRouting(driver);
-      (*Trees)[driver].nodes.push_back(driverNode);
-      (*Users)[driverNode].push_back(driver);
+      (*Trees)[driver].nodes.push_back(driverPinNode);
+
+      // Need to find the FunCell associated with driverPinNode (which is PinCell)
+      int driverFunCellNode = findFunCellFromOutputPin(driverPinNode, G);
+      (*Users)[driverFunCellNode].push_back(driver);
 
       // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
-      totalCosts[outputPin] += routeSignal(G, H, driver, gConfig);
+      totalCosts[i] += routeSignal(G, H, driver, gConfig);
 
       GRAMM->debug("Routing the signals on the input of {}", hNames[y]);
-      GRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driver], hNames[y], gNames[driverNode], gNames[outputPin], totalCosts[outputPin]);
+      GRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driver], hNames[y], gNames[driverPinNode], gNames[outputPin], totalCosts[i]);
 
-      if (totalCosts[outputPin] > bestCost)
+      if (totalCosts[i] > bestCost)
         break;
     }
 
-    GRAMM->debug("Total cost for {} is {}\n", hNames[y], totalCosts[outputPin]);
+    GRAMM->debug("Total cost for {} is {}\n", hNames[y], totalCosts[i]);
 
-    if (totalCosts[outputPin] >= MAX_DIST)
+    if (totalCosts[i] >= MAX_DIST)
       continue;
 
-    if (totalCosts[outputPin] < bestCost)
+    if (totalCosts[i] < bestCost)
     {
-      bestIndex = outputPin;
-      bestCost = totalCosts[outputPin];
+      bestIndexFuncell = i;
+      bestIndexPincell = outputPin;
+      bestCost = totalCosts[i];
       compatibilityStatus = true;
     }
-    else if (totalCosts[outputPin] == bestCost)
+    else if (totalCosts[i] == bestCost)
     {
       if (!(rand() % 2))
-        bestIndex = outputPin;
+      {
+        bestIndexFuncell = i;
+        bestIndexPincell = outputPin;
+      }
       compatibilityStatus = true;
     }
   }
 
-  if (bestIndex == -1)
+  if ((bestIndexPincell == -1) || (bestIndexFuncell == -1))
   {
     GRAMM->error("FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX {} {}", y, hNames[y]);
-    if(!compatibilityStatus)
+    if (!compatibilityStatus)
       GRAMM->error("Nodes in the device model does not supports {} Opcode", (*hConfig)[y].Opcode);
     exit(-1);
   }
 
-  GRAMM->debug("The bertIndex found for {} from the device-model is {} with cost of {}", hNames[y], gNames[bestIndex], bestCost);
+  GRAMM->debug("The bertIndex found for {} from the device-model is {} with cost of {}", hNames[y], gNames[bestIndexPincell], bestCost);
 
   // Final rig-up before doing final routing:
   ripUpRouting(y);
-  (*Trees)[y].nodes.push_back(bestIndex);
-  (*Users)[bestIndex].push_back(y);
+  (*Trees)[y].nodes.push_back(bestIndexPincell);
+  (*Users)[bestIndexFuncell].push_back(y); // User is added for the FunCell instead of the PinCell.
 
   // Final-placement for node 'y':
   routeSignal(G, H, y, gConfig);
@@ -649,11 +672,15 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     if ((*Trees)[driver].nodes.size() == 0)
       continue; // driver is not placed
 
-    int driverNode = findDriver(driver, gConfig);
+    int driverPinNode = findDriver(driver, gConfig);
 
     ripUpRouting(driver);
-    (*Trees)[driver].nodes.push_back(driverNode);
-    (*Users)[driverNode].push_back(driver);
+    (*Trees)[driver].nodes.push_back(driverPinNode);
+
+    // Need to find the FunCell associated with driverPinNode (which is PinCell)
+    int driverFunCellNode = findFunCellFromOutputPin(driverPinNode, G);
+    (*Users)[driverFunCellNode].push_back(driver);
+
     routeSignal(G, H, driver, gConfig);
   }
 
@@ -877,7 +904,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 
 int main(int argc, char *argv[])
 {
-  GRAMM->set_level(spdlog::level::info); // Set global log level to debug
+  GRAMM->set_level(spdlog::level::debug); // Set global log level to debug
 
   DirectedGraph H, G;
 
