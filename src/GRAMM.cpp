@@ -33,8 +33,31 @@ std::vector<std::string> outPin = {"outPinA"};
 
 // Logger global variables:
 std::shared_ptr<spdlog::logger> GRAMM = spdlog::stdout_color_mt("GRAMM");
-
 std::map<std::string, std::vector<std::string>> GrammConfig;
+
+/*
+  Description: this function checks whether current opcode required by the
+               application node is supported by device model node.
+*/
+bool compatibilityCheck(const std::string& gType, const std::string& hOpcode)
+{
+  // For nodes such as RouteCell, PinCell the GrammConfig array will be empty.
+  // Pragma array's are only parsed for the FunCell types.
+  if (GrammConfig[gType].size() == 0)
+    return false;
+
+  // Finding Opcode required by the application graph supported by the device model or not.
+  for (const auto pair : GrammConfig[gType])
+  {
+    if (pair == hOpcode)
+    {
+      GRAMM->debug("{} node from device model supports {} Opcode", gType, hOpcode);
+      return true;
+    }
+  }
+
+  return false;
+}
 
 void depositRoute(int signal, std::list<int> *nodes)
 {
@@ -63,8 +86,8 @@ void depositRoute(int signal, std::list<int> *nodes)
   }
 }
 
-//For the given FunCell (signal), finds the associated outputPin node from the deviceModel. 
-//Ex: FunCell(signal) -> outPin (selectedCellOutputPin)
+// For the given FunCell (signal), finds the associated outputPin node from the deviceModel.
+// Ex: FunCell(signal) -> outPin (selectedCellOutputPin)
 int findOutputPin(int signal, DirectedGraph *G)
 {
   vertex_descriptor signalVertex = vertex(signal, *G);
@@ -121,43 +144,7 @@ bool hasOverlap(int signal)
   return false;
 }
 
-void ripup(int signal, std::list<int> *nodes)
-{
-  std::list<int>::iterator it = (*nodes).begin();
-  struct RoutingTree *RT = &((*Trees)[signal]);
-
-  for (; it != (*nodes).end(); it++)
-  {
-    int delNode = *it;
-    RT->nodes.remove(delNode);
-
-    if (RT->parent.count(delNode))
-    {
-      RT->children[RT->parent[delNode]].remove(delNode);
-      RT->parent.erase(delNode);
-    }
-    (*Users)[delNode].remove(signal);
-  }
-}
-
-void ripUpRouting(int signal)
-{
-  struct RoutingTree *RT = &((*Trees)[signal]);
-  std::list<int> toDel;
-  toDel.clear();
-
-  std::list<int>::iterator it = RT->nodes.begin();
-  for (; it != RT->nodes.end(); it++)
-  {
-    toDel.push_back(*it);
-    //    std::cout << "RIPUP ";
-    //    printName(*it);
-  }
-
-  ripup(signal, &toDel);
-}
-
-#if 0 // JANDERS NEEDS WORK
+#if 0 // JANDERS NEEDS WORK 
 void ripUpToFork(int signal, int node) {
   struct RoutingTree *RT = &((*Trees)[signal]);
   int current = node;
@@ -529,7 +516,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     while (vertex_found == false)
     {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
-      if (((*gConfig)[chooseRand].Type == (*hConfig)[y].Type))
+      if (compatibilityCheck((*gConfig)[chooseRand].Type, (*hConfig)[y].Opcode))
       {
         // Finding the output Pin for the selected FunCell:
         selectedCellOutputPin = findOutputPin(chooseRand, G);
@@ -543,7 +530,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell
     //(*Trees)[y].nodes.push_back(chooseRand);
     (*Trees)[y].nodes.push_back(selectedCellOutputPin);
-    (*Users)[selectedCellOutputPin].push_back(y);
+    (*Users)[selectedCellOutputPin].push_back(y);  //Users is added for the FunCell instead of the PinCell.
 
     return 0;
   }
@@ -556,19 +543,25 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
   for (int i = 0; i < num_vertices(*G); i++)
     totalCosts[i] = 0;
 
+  bool compatibilityStatus = true;
+
   for (int i = 0; i < num_vertices(*G); i++)
   { // first route the signal on the output of y
 
     // Confriming the Vertex correct type:
-    if ((*gConfig)[i].Type != (*hConfig)[y].Type)
+    if (!compatibilityCheck((*gConfig)[i].Type, (*hConfig)[y].Opcode))
+    {
+      compatibilityStatus = false;
       continue;
+    }
 
     // Finding the output Pin for the selected FunCell:
     int outputPin = findOutputPin(i, G);
 
     ripUpRouting(y);
+    // Checking if the current node 'y' has any Fanouts to be routed.
     (*Trees)[y].nodes.push_back(outputPin);
-    (*Users)[outputPin].push_back(y);
+    (*Users)[outputPin].push_back(y); //User is added for the FunCell instead of the PinCell.
 
     totalCosts[outputPin] += (1 + (*HistoryCosts)[outputPin]) * ((*Users)[outputPin].size() * PFac);
 
@@ -620,29 +613,35 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     {
       bestIndex = outputPin;
       bestCost = totalCosts[outputPin];
+      compatibilityStatus = true;
     }
     else if (totalCosts[outputPin] == bestCost)
     {
       if (!(rand() % 2))
         bestIndex = outputPin;
+      compatibilityStatus = true;
     }
   }
 
   if (bestIndex == -1)
   {
     GRAMM->error("FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX {} {}", y, hNames[y]);
+    if(!compatibilityStatus)
+      GRAMM->error("Nodes in the device model does not supports {} Opcode", (*hConfig)[y].Opcode);
     exit(-1);
   }
 
-  // printRouting(y);
   GRAMM->debug("The bertIndex found for {} from the device-model is {} with cost of {}", hNames[y], gNames[bestIndex], bestCost);
 
+  // Final rig-up before doing final routing:
   ripUpRouting(y);
   (*Trees)[y].nodes.push_back(bestIndex);
   (*Users)[bestIndex].push_back(y);
 
+  // Final-placement for node 'y':
   routeSignal(G, H, y, gConfig);
 
+  // Final routing all of the inputs of the node 'y':
   boost::tie(ei, ei_end) = in_edges(yD, *H);
   for (; ei != ei_end; ei++)
   {
@@ -805,14 +804,14 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     vertex_descriptor v = vertex(i, *G);
 
     // Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
-    std::string arch_NodeCell     = boost::get(&DotVertex::G_NodeCell, *G, v);
+    std::string arch_NodeCell = boost::get(&DotVertex::G_NodeCell, *G, v);
     std::string upperCaseNodeCell = boost::to_upper_copy(arch_NodeCell);
-    (*gConfig)[i].Cell            = upperCaseNodeCell;
+    (*gConfig)[i].Cell = upperCaseNodeCell;
 
     // Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
-    std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v);   
+    std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v);
     std::string upperCaseType = boost::to_upper_copy(arch_NodeType);
-    (*gConfig)[i].Type        = upperCaseType;
+    (*gConfig)[i].Type = upperCaseType;
 
     // Contains the node name
     std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);
@@ -830,7 +829,6 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     }
 
     GRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseNodeCell, upperCaseType);
-
   }
 }
 
@@ -851,24 +849,29 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
   for (int i = 0; i < num_vertices(*H); i++)
   {
     vertex_descriptor v = vertex(i, *H);
-    
-    //Fetching node name from the application-graph:
-    std::string name = boost::get(&DotVertex::name, *H, v);
-    hNames[i] = name;
 
-    //Fetching opcode from the application-graph:
-    //Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
+    // Fetching node name from the application-graph:
+    std::string name = boost::get(&DotVertex::name, *H, v);
+    hNames[i] = removeCurlyBrackets(name); // Removing if there are any curly brackets from the hNames.
+
+    // Following characters are not supported in the neato visualizer: "|, =, ."
+    std::replace(hNames[i].begin(), hNames[i].end(), '|', '_');
+    std::replace(hNames[i].begin(), hNames[i].end(), '=', '_');
+    std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
+
+    // Fetching opcode from the application-graph:
+    // Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
     std::string applicationOpcode = boost::get(&DotVertex::opcode, *H, v);
-    std::string upperCaseOpcode   = boost::to_upper_copy(applicationOpcode);
+    std::string upperCaseOpcode = boost::to_upper_copy(applicationOpcode);
     (*hConfig)[i].Opcode = upperCaseOpcode;
 
-    //Fetching type from the application-graph:
-    //Contains the type of the operation (ex: ALU, MEMPORT, CONST etc.)
-    std::string applicationType = boost::get(&DotVertex::type, *H, v);
-    std::string upperCaseType   = boost::to_upper_copy(applicationType);
-    (*hConfig)[i].Type = upperCaseType;
+    // Fetching type from the application-graph:
+    // Contains the type of the operation (ex: ALU, MEMPORT, CONST etc.)
+    // std::string applicationType = boost::get(&DotVertex::type, *H, v);
+    // std::string upperCaseType = boost::to_upper_copy(applicationType);
+    //(*hConfig)[i].Type = upperCaseType;
 
-    GRAMM->trace("[H] name {} :: applicationOpcode {} :: applicationType {}", name, upperCaseOpcode, upperCaseType);
+    GRAMM->trace("[H] name {} :: applicationOpcode {} ", name, upperCaseOpcode);
   }
 }
 
@@ -904,7 +907,6 @@ int main(int argc, char *argv[])
     // DotVertex::H_Opcode --> Contains the Opcode of the operation (ex: op, const, input and output)
     dp.property("label", boost::get(&DotVertex::name, H));
     dp.property("opcode", boost::get(&DotVertex::opcode, H));
-    dp.property("type", boost::get(&DotVertex::type, H));
     dp.property("load", boost::get(&EdgeProperty::loadPin, H));
     dp.property("driver", boost::get(&EdgeProperty::driverPin, H));
 
@@ -946,10 +948,10 @@ int main(int argc, char *argv[])
   //----------------- STEP 0 : READING DEVICE MODEL --------------------
   //--------------------------------------------------------------------
 
-  std::ifstream dFile;                // Defining the input file stream for device model dot file
-  dFile.open(argv[2]);                // Passing the device_Model_dot file as an argument!
-  readDeviceModelPragma(dFile, GrammConfig);  // Reading the device model pragma from the device-model dot file.
-  boost::read_graphviz(dFile, G, dp); // Reading the dot file
+  std::ifstream dFile;                       // Defining the input file stream for device model dot file
+  dFile.open(argv[2]);                       // Passing the device_Model_dot file as an argument!
+  readDeviceModelPragma(dFile, GrammConfig); // Reading the device model pragma from the device-model dot file.
+  boost::read_graphviz(dFile, G, dp);        // Reading the dot file
   readDeviceModel(&G, &gConfig);
 
   //--------------------------------------------------------------------
@@ -957,7 +959,7 @@ int main(int argc, char *argv[])
   //--------------------------------------------------------------------
 
   // read the DFG from a file
-  readApplicationGraphPragma(iFile, GrammConfig);  // Reading the application-graph pragma from the device-model dot file.
+  readApplicationGraphPragma(iFile, GrammConfig); // Reading the application-graph pragma from the device-model dot file.
   boost::read_graphviz(iFile, H, dp);
   readApplicationGraph(&H, &hConfig);
 
@@ -984,8 +986,8 @@ int main(int argc, char *argv[])
    ** compute a topological order
     -->  We also experimented with sorting the nodes of H according to their topological distancwe from a CGRA I/O or memory port; however, we found that this technique did not improve results beyond the ordering by the size of the vertex models.
   */
-  //if (computeTopoEnable)
-  //  computeTopo(&H, &hConfig); // not presently used
+  // if (computeTopoEnable)
+  //   computeTopo(&H, &hConfig); // not presently used
 
   //--------------- Starting timestamp -------------------------
   /* get start timestamp */

@@ -124,4 +124,8 @@ void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string,
 
 void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> GrammConfig);
 
+void ripup(int signal, std::list<int> *nodes);
+
+void ripUpRouting(int signal);
+
 #endif

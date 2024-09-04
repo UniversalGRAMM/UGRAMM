@@ -125,11 +125,7 @@ pe_w32_c3_r3_alu_inPinB -> pe_w32_c3_r3_alu_FADD_24
 pe_w32_c3_r3_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c3_r3_alu_inPinB [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c3_r3_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-LS_w32_c7_r5_mem_Store_26 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
-LS_w32_c7_r5_mem_Store_26 -> LS_w32_c7_r5_mem_outPinA
-LS_w32_c7_r5_mem_inPinA -> LS_w32_c7_r5_mem_Store_26
 LS_w32_c7_r5_mem_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
-LS_w32_c7_r5_mem_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 pe_w32_c3_r5_const_Const_30_float32_11_00 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
 pe_w32_c3_r5_const_Const_30_float32_11_00 -> pe_w32_c3_r5_const_outPinA
 pe_w32_c3_r5_const_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]

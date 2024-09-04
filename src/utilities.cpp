@@ -7,8 +7,6 @@
 #include "../lib/GRAMM.h"
 #include "../lib/utilities.h"
 
-#define DEBUG 0
-
 std::vector<std::string> colors = {
     "#FFFFE0", // Light Yellow
     "#AFEEEE", // Light Turquoise
@@ -270,9 +268,6 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
   int n = RT->nodes.front();
   int orign = n;
 
-  if (DEBUG)
-    std::cout << "For hNames[y] :: " << hNames[y] << " :: gNames[n] :: " << gNames[n] << "\n";
-
   std::list<int>::iterator it = RT->nodes.begin();
 
   for (; it != RT->nodes.end(); it++)
@@ -344,8 +339,8 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
   float G_VisualY = boost::get(&DotVertex::G_VisualY, *G, gNumber) * scale;
   // std::cout << "The X,Y location of " << gName << "is " << G_VisualX << " , " << G_VisualY << "\n";
 
-   // Use for deciding the color of the FunCell based on the opcode
-  //int opcode_gNumber = (*gConfig)[gNumber].opcode;     
+  // Use for deciding the color of the FunCell based on the opcode
+  // int opcode_gNumber = (*gConfig)[gNumber].opcode;
   int opcode_gNumber = 2;
   std::string modified_name = gNames_deliemter_changes(gName); // Modified combined string
 
@@ -457,6 +452,42 @@ void printName(int n)
   GRAMM->debug("{}", gNames[n]);
 }
 
+void ripup(int signal, std::list<int> *nodes)
+{
+  std::list<int>::iterator it = (*nodes).begin();
+  struct RoutingTree *RT = &((*Trees)[signal]);
+
+  for (; it != (*nodes).end(); it++)
+  {
+    int delNode = *it;
+    RT->nodes.remove(delNode);
+
+    if (RT->parent.count(delNode))
+    {
+      RT->children[RT->parent[delNode]].remove(delNode);
+      RT->parent.erase(delNode);
+    }
+    (*Users)[delNode].remove(signal);
+  }
+}
+
+void ripUpRouting(int signal)
+{
+  struct RoutingTree *RT = &((*Trees)[signal]);
+  std::list<int> toDel;
+  toDel.clear();
+
+  std::list<int>::iterator it = RT->nodes.begin();
+  for (; it != RT->nodes.end(); it++)
+  {
+    toDel.push_back(*it);
+    //    std::cout << "RIPUP ";
+    //    printName(*it);
+  }
+
+  ripup(signal, &toDel);
+}
+
 void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig)
 {
   for (int i = 0; i < num_vertices(*H); i++)
@@ -465,8 +496,19 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
     GRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
 
-    std::list<int>::iterator it = RT->nodes.begin();
+    //------------------------- Corner case: -------------------------------//
+    // Checking whether there Fan-outs for the current application node:
+    out_edge_iterator eo, eo_end;
+    boost::tie(eo, eo_end) = out_edges(i, *H);
+    if (eo == eo_end)
+    {
+      GRAMM->info("\t Empty vertex model (no-fanouts for the node)");
+      ripUpRouting(i); //Deleting any members of the tree incase any:
+      continue;
+    }
+    //-----------------------------------------------------------------------//
 
+    std::list<int>::iterator it = RT->nodes.begin();
     while (it != RT->nodes.end())
     {
       int n = *it;
@@ -481,13 +523,8 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
         vertex_descriptor yD = vertex(n, *G);
         boost::tie(ei, ei_end) = in_edges(yD, *G);
         int FunCellLoc = source(*ei, *G);
-        if ((*hConfig)[i].Type == "CONSTANT") // Fixing the constant names:
-        {
-          std::replace(hNames[i].begin(), hNames[i].end(), '|', '_');
-          std::replace(hNames[i].begin(), hNames[i].end(), '=', '_');
-          std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
-        }
-        funCellMapping[gNames[FunCellLoc]] = removeCurlyBrackets(hNames[i]);
+
+        funCellMapping[gNames[FunCellLoc]] = hNames[i];
         (*Users)[FunCellLoc].push_back(i);
       }
       it++;
