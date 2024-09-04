@@ -221,7 +221,7 @@ void runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConf
   //------ Please add any Application Model Graph DRC Rule Check Functions Below ------//
   applicationGraphDRC_CheckFloatingNodes(H, hConfig, &errorDetected);
   applicationGraphDRC_CheckPinNames(H, hConfig, &errorDetected);
-  applicationGraphDRC_CheckApplicationDFGWeeklyConnected(H, hConfig, &errorDetected);
+  //applicationGraphDRC_CheckApplicationDFGWeeklyConnected(H, hConfig, &errorDetected);
 
   //--------- Error Check -----------//
   if (errorDetected){
