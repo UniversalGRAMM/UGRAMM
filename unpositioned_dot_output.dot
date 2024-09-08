@@ -75,14 +75,14 @@ LS_w32_c0_r6_memport_Load_0 [shape="rectangle" width=0.5 fontsize=12 fillcolor="
 LS_w32_c0_r6_memport_Load_0 -> LS_w32_c0_r6_memport_outPinA
 LS_w32_c0_r0_memport_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 LS_w32_c0_r6_memport_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-pe_w32_c2_r0_alu_FMUL_10 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c2_r0_alu_FMUL_10 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c2_r0_alu_FMUL_10 -> pe_w32_c2_r0_alu_outPinA
 pe_w32_c2_r0_alu_inPinA -> pe_w32_c2_r0_alu_FMUL_10
 pe_w32_c2_r0_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c2_r0_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 LS_w32_c0_r7_memport_Load_5 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
 LS_w32_c0_r7_memport_Load_5 -> LS_w32_c0_r7_memport_outPinA
-pe_w32_c2_r1_alu_FADD_19 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c2_r1_alu_FADD_19 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c2_r1_alu_FADD_19 -> pe_w32_c2_r1_alu_outPinA
 pe_w32_c2_r1_alu_inPinA -> pe_w32_c2_r1_alu_FADD_19
 pe_w32_c2_r1_alu_inPinB -> pe_w32_c2_r1_alu_FADD_19
@@ -95,7 +95,7 @@ LS_w32_c9_r1_mem_Load_6 -> LS_w32_c9_r1_mem_outPinA
 LS_w32_c9_r1_mem_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 LS_w32_c0_r1_memport_Load_1 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
 LS_w32_c0_r1_memport_Load_1 -> LS_w32_c0_r1_memport_outPinA
-pe_w32_c3_r0_alu_FADD_23 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c3_r0_alu_FADD_23 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c3_r0_alu_FADD_23 -> pe_w32_c3_r0_alu_outPinA
 pe_w32_c3_r0_alu_inPinA -> pe_w32_c3_r0_alu_FADD_23
 pe_w32_c3_r0_alu_inPinB -> pe_w32_c3_r0_alu_FADD_23
@@ -104,7 +104,7 @@ pe_w32_c3_r0_alu_inPinB [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c3_r0_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 LS_w32_c9_r4_mem_Load_8 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
 LS_w32_c9_r4_mem_Load_8 -> LS_w32_c9_r4_mem_outPinA
-pe_w32_c3_r1_alu_FADD_21 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c3_r1_alu_FADD_21 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c3_r1_alu_FADD_21 -> pe_w32_c3_r1_alu_outPinA
 pe_w32_c3_r1_alu_inPinA -> pe_w32_c3_r1_alu_FADD_21
 pe_w32_c3_r1_alu_inPinB -> pe_w32_c3_r1_alu_FADD_21
@@ -112,25 +112,25 @@ pe_w32_c3_r1_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c3_r1_alu_inPinB [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c3_r1_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 LS_w32_c9_r4_mem_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-pe_w32_c3_r6_alu_FMUL_15 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c3_r6_alu_FMUL_15 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c3_r6_alu_FMUL_15 -> pe_w32_c3_r6_alu_outPinA
 pe_w32_c3_r6_alu_inPinA -> pe_w32_c3_r6_alu_FMUL_15
 pe_w32_c3_r6_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c3_r6_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-pe_w32_c4_r0_alu_FMUL_11 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c4_r0_alu_FMUL_11 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c4_r0_alu_FMUL_11 -> pe_w32_c4_r0_alu_outPinA
 pe_w32_c4_r0_alu_inPinA -> pe_w32_c4_r0_alu_FMUL_11
 pe_w32_c4_r0_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c4_r0_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 LS_w32_c0_r1_memport_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-pe_w32_c4_r1_alu_FADD_25 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c4_r1_alu_FADD_25 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c4_r1_alu_FADD_25 -> pe_w32_c4_r1_alu_outPinA
 pe_w32_c4_r1_alu_inPinA -> pe_w32_c4_r1_alu_FADD_25
 pe_w32_c4_r1_alu_inPinB -> pe_w32_c4_r1_alu_FADD_25
 pe_w32_c4_r1_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c4_r1_alu_inPinB [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c4_r1_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-pe_w32_c4_r5_alu_FADD_24 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c4_r5_alu_FADD_24 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c4_r5_alu_FADD_24 -> pe_w32_c4_r5_alu_outPinA
 pe_w32_c4_r5_alu_inPinA -> pe_w32_c4_r5_alu_FADD_24
 pe_w32_c4_r5_alu_inPinB -> pe_w32_c4_r5_alu_FADD_24
@@ -139,22 +139,22 @@ pe_w32_c4_r5_alu_inPinB [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c4_r5_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 LS_w32_c0_r2_memport_Store_26 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
 LS_w32_c0_r2_memport_inPinA -> LS_w32_c0_r2_memport_Store_26
-pe_w32_c4_r6_alu_FMUL_17 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c4_r6_alu_FMUL_17 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c4_r6_alu_FMUL_17 -> pe_w32_c4_r6_alu_outPinA
 pe_w32_c4_r6_alu_inPinA -> pe_w32_c4_r6_alu_FMUL_17
 pe_w32_c4_r6_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c4_r6_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-pe_w32_c1_r0_alu_FMUL_16 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c1_r0_alu_FMUL_16 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c1_r0_alu_FMUL_16 -> pe_w32_c1_r0_alu_outPinA
 pe_w32_c1_r0_alu_inPinA -> pe_w32_c1_r0_alu_FMUL_16
 pe_w32_c1_r0_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
-pe_w32_c5_r0_alu_FMUL_13 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c5_r0_alu_FMUL_13 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c5_r0_alu_FMUL_13 -> pe_w32_c5_r0_alu_outPinA
 pe_w32_c5_r0_alu_inPinA -> pe_w32_c5_r0_alu_FMUL_13
 pe_w32_c5_r0_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c5_r0_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 pe_w32_c1_r0_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-pe_w32_c5_r2_alu_FADD_18 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c5_r2_alu_FADD_18 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c5_r2_alu_FADD_18 -> pe_w32_c5_r2_alu_outPinA
 pe_w32_c5_r2_alu_inPinA -> pe_w32_c5_r2_alu_FADD_18
 pe_w32_c5_r2_alu_inPinB -> pe_w32_c5_r2_alu_FADD_18
@@ -162,19 +162,19 @@ pe_w32_c5_r2_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c5_r2_alu_inPinB [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c5_r2_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 LS_w32_c0_r2_memport_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
-pe_w32_c6_r0_alu_FMUL_12 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c6_r0_alu_FMUL_12 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c6_r0_alu_FMUL_12 -> pe_w32_c6_r0_alu_outPinA
 pe_w32_c6_r0_alu_inPinA -> pe_w32_c6_r0_alu_FMUL_12
 pe_w32_c6_r0_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c6_r0_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-pe_w32_c6_r1_alu_FADD_22 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c6_r1_alu_FADD_22 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c6_r1_alu_FADD_22 -> pe_w32_c6_r1_alu_outPinA
 pe_w32_c6_r1_alu_inPinA -> pe_w32_c6_r1_alu_FADD_22
 pe_w32_c6_r1_alu_inPinB -> pe_w32_c6_r1_alu_FADD_22
 pe_w32_c6_r1_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c6_r1_alu_inPinB [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c6_r1_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-pe_w32_c6_r3_alu_FADD_20 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c6_r3_alu_FADD_20 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c6_r3_alu_FADD_20 -> pe_w32_c6_r3_alu_outPinA
 pe_w32_c6_r3_alu_inPinA -> pe_w32_c6_r3_alu_FADD_20
 pe_w32_c6_r3_alu_inPinB -> pe_w32_c6_r3_alu_FADD_20
@@ -183,12 +183,12 @@ pe_w32_c6_r3_alu_inPinB [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c6_r3_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 LS_w32_c0_r3_memport_Load_2 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
 LS_w32_c0_r3_memport_Load_2 -> LS_w32_c0_r3_memport_outPinA
-pe_w32_c7_r1_alu_FMUL_9 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c7_r1_alu_FMUL_9 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c7_r1_alu_FMUL_9 -> pe_w32_c7_r1_alu_outPinA
 pe_w32_c7_r1_alu_inPinA -> pe_w32_c7_r1_alu_FMUL_9
 pe_w32_c7_r1_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]
 pe_w32_c7_r1_alu_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
-pe_w32_c7_r2_alu_FMUL_14 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
+pe_w32_c7_r2_alu_FMUL_14 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#FFA500"]
 pe_w32_c7_r2_alu_FMUL_14 -> pe_w32_c7_r2_alu_outPinA
 pe_w32_c7_r2_alu_inPinA -> pe_w32_c7_r2_alu_FMUL_14
 pe_w32_c7_r2_alu_inPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#ADD8E6"]

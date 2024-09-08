@@ -25,6 +25,7 @@
 #include <sys/time.h>
 #include "spdlog/spdlog.h"
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <boost/program_options.hpp>
 
 //-------------------------------------------------------------------//
 //------------------------ GRAMM Configuration ----------------------//

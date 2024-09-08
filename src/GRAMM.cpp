@@ -35,6 +35,8 @@ std::vector<std::string> outPin = {"outPinA"};
 std::shared_ptr<spdlog::logger> GRAMM = spdlog::stdout_color_mt("GRAMM");
 std::map<std::string, std::vector<std::string>> GrammConfig;
 
+namespace po = boost::program_options;
+
 /*
   Description: this function checks whether current opcode required by the
                application node is supported by device model node.
@@ -55,7 +57,7 @@ bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
       return true;
     }
   }
-  //GRAMM->error("{} node from device model does not supports {} Opcode", gType, hOpcode);
+  // GRAMM->error("{} node from device model does not supports {} Opcode", gType, hOpcode);
   return false;
 }
 
@@ -511,14 +513,14 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     int selectedCellOutputPin = 0;
     int chooseRand = (rand() % num_vertices(*G));
     bool vertex_found = false;
-    
+
     while (vertex_found == false)
     {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
       if (compatibilityCheck((*gConfig)[chooseRand].Type, (*hConfig)[y].Opcode))
       {
-        //GRAMM->debug("Picking up random node :: gNames - {} :: users - {} :: hNames - {} ", gNames[chooseRand], (*Users)[chooseRand].size(), hNames[y]);
-        // Finding the output Pin for the selected FunCell:
+        // GRAMM->debug("Picking up random node :: gNames - {} :: users - {} :: hNames - {} ", gNames[chooseRand], (*Users)[chooseRand].size(), hNames[y]);
+        //  Finding the output Pin for the selected FunCell:
         selectedCellOutputPin = findOutputPinFromFuncell(chooseRand, G);
         if ((*Users)[chooseRand].size() == 0)
           vertex_found = true;
@@ -530,7 +532,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell
     //(*Trees)[y].nodes.push_back(chooseRand);
     (*Trees)[y].nodes.push_back(selectedCellOutputPin);
-    (*Users)[chooseRand].push_back(y); // Users is added for the FunCell instead of the PinCell.
+    (*Users)[chooseRand].push_back(y); // Users and history cost is primarily tracked for FunCell nodes.
     (*Users)[selectedCellOutputPin].push_back(y);
 
     return 0;
@@ -560,10 +562,10 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
     // Finding the output Pin for the selected FunCell:
     int outputPin = findOutputPinFromFuncell(i, G);
 
-    ripUpRouting(y,G);
+    ripUpRouting(y, G);
     // Checking if the current node 'y' has any Fanouts to be routed.
     (*Trees)[y].nodes.push_back(outputPin);
-    (*Users)[i].push_back(y); // User is added for the FunCell instead of the PinCell.
+    (*Users)[i].push_back(y); // Users and history cost is primarily tracked for FunCell nodes.
     (*Users)[outputPin].push_back(y);
 
     // Cost and history costs are as well added for the FunCell instead of the PinCell.
@@ -599,14 +601,14 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
       // Need to find the FunCell associated with driverPinNode (which is PinCell)
       int driverFunCellNode = findFunCellFromOutputPin(driverPinNode, G);
-      (*Users)[driverFunCellNode].push_back(driver);
+      (*Users)[driverFunCellNode].push_back(driver); // Users and history cost is primarily tracked for FunCell nodes.
       (*Users)[driverPinNode].push_back(driver);
 
       // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
       totalCosts[i] += routeSignal(G, H, driver, gConfig);
 
       GRAMM->debug("Routing the signals on the input of {}", hNames[y]);
-      GRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driver], hNames[y], gNames[driverPinNode], gNames[outputPin], totalCosts[i]);
+      GRAMM->debug("For {} -> {} :: {} -> {}'s input-pin has cost {}", hNames[driver], hNames[y], gNames[driverPinNode], gNames[i], totalCosts[i]);
 
       if (totalCosts[i] > bestCost)
         break;
@@ -648,7 +650,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
   // Final rig-up before doing final routing:
   ripUpRouting(y, G);
   (*Trees)[y].nodes.push_back(bestIndexPincell);
-  (*Users)[bestIndexFuncell].push_back(y); // User is added for the FunCell instead of the PinCell.
+  (*Users)[bestIndexFuncell].push_back(y); // Users and history cost is primarily tracked for FunCell nodes.
   (*Users)[bestIndexPincell].push_back(y);
 
   // Final-placement for node 'y':
@@ -669,7 +671,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
     // Need to find the FunCell associated with driverPinNode (which is PinCell)
     int driverFunCellNode = findFunCellFromOutputPin(driverPinNode, G);
-    (*Users)[driverFunCellNode].push_back(driver);
+    (*Users)[driverFunCellNode].push_back(driver); // Users and history cost is primarily tracked for FunCell nodes.
     (*Users)[driverPinNode].push_back(driver);
 
     routeSignal(G, H, driver, gConfig);
@@ -713,7 +715,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       int y = ordering[k];
 
       GRAMM->trace(" Condition :: {} :: Type :: {} ", doPlacement((*hConfig)[y].Opcode, GrammConfig), hNames[y]);
-      if(!doPlacement((*hConfig)[y].Opcode, GrammConfig))
+      if (!doPlacement((*hConfig)[y].Opcode, GrammConfig))
         continue;
 
       GRAMM->debug("\n");
@@ -897,12 +899,13 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
   }
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-  GRAMM->set_level(spdlog::level::info); // Set global log level to debug
+  //--------------------------------------------------------------------
+  //----------------- Setting up required variables --------------------
+  //--------------------------------------------------------------------
 
   DirectedGraph H, G;
-
   boost::dynamic_properties dp(boost::ignore_other_properties);
   if (!RIKEN)
   {
@@ -945,33 +948,49 @@ int main(int argc, char *argv[])
     dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));
   }
 
-  if (argc < 6)
-  {
-    GRAMM->error("Arguments are <application.dot> <device_model.dot> <numRows NR> <numCols NC> <seed>");
-    exit(1);
-  }
-
-  // Fetching NR and NC:
-  int dim = CGRAdim = atoi(argv[3]);
-  int NR = dim;
-  int NC = atoi(argv[4]);
-  numR = NR;
-  numC = NC;
-
-  std::ifstream iFile;
-  iFile.open(argv[1]);
-
-  srand(atoi(argv[5])); // Seed
-
   // gConfig and hConfig contains the configuration information about that particular node.
   std::map<int, NodeConfig> gConfig, hConfig;
+
+  //--------------------------------------------------------------------
+  //---------------------- Command line arguments ----------------------
+  //--------------------------------------------------------------------
+
+  po::variables_map vm; // Value map
+
+  // Input variables:
+  std::string deviceModelFile;
+  std::string applicationFile;
+  int seed_value;
+  int verbose_level;
+
+  po::options_description desc("[GRAMM] allowed options =");
+  desc.add_options()("help,h", "Print help messages")("num_rows,nr,NR", po::value<int>(&numR)->required(), "Number of rows")("num_cols,nc,NC", po::value<int>(&numC)->required(), "Number of Columns")("seed", po::value<int>(&seed_value)->required(), "Seed for the run")("verbose_level", po::value<int>(&verbose_level)->required(), "0: info, 1: debug, 2: trace")("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file")("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file");
+
+  po::store(po::parse_command_line(argc, argv, desc), vm);
+
+  if (vm.count("help"))
+  {
+    std::cout << desc << std::endl;
+    return 0;
+  }
+
+  po::notify(vm);
+
+  if (verbose_level == 0)
+    GRAMM->set_level(spdlog::level::info); // Set global log level to debug
+  else if (verbose_level == 1)
+    GRAMM->set_level(spdlog::level::debug); // Set global log level to debug
+  else if (verbose_level == 2)
+    GRAMM->set_level(spdlog::level::trace); // Set global log level to debug
+
+  srand(seed_value); // Seed setup
 
   //--------------------------------------------------------------------
   //----------------- STEP 0 : READING DEVICE MODEL --------------------
   //--------------------------------------------------------------------
 
   std::ifstream dFile;                       // Defining the input file stream for device model dot file
-  dFile.open(argv[2]);                       // Passing the device_Model_dot file as an argument!
+  dFile.open(deviceModelFile);               // Passing the device_Model_dot file as an argument!
   readDeviceModelPragma(dFile, GrammConfig); // Reading the device model pragma from the device-model dot file.
   boost::read_graphviz(dFile, G, dp);        // Reading the dot file
   readDeviceModel(&G, &gConfig);
@@ -981,6 +1000,8 @@ int main(int argc, char *argv[])
   //--------------------------------------------------------------------
 
   // read the DFG from a file
+  std::ifstream iFile;
+  iFile.open(applicationFile);
   readApplicationGraphPragma(iFile, GrammConfig); // Reading the application-graph pragma from the device-model dot file.
   boost::read_graphviz(iFile, H, dp);
   readApplicationGraph(&H, &hConfig);

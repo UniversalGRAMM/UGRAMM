@@ -75,7 +75,7 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
  * @param unpositionedOutputFile The unpositioned-output dot file stream (this dot-file does not contain any co-ordinates of the node cells).
  * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig);
+void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig);
 
 /**
  * @brief Prints mapping results in neato format: First displays the layout and then shows connections between the nodes.

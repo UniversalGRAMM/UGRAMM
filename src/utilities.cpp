@@ -8,13 +8,13 @@
 #include "../lib/utilities.h"
 
 std::vector<std::string> colors = {
-    "#FFFFE0", // Light Yellow
-    "#AFEEEE", // Light Turquoise
-    "#D2B48C", // Tan (Lighter Brown)
-    "#E0FFFF", // Light Cyan
     "#FFA500", // Orange (Replaced Light Pink)
-    "#FFDAB9", // Peach Puff (Lighter Orange)
+    "#FFFFE0", // Light Yellow
     "#D8BFD8", // Thistle (Lighter Purple)
+    "#D2B48C", // Tan (Lighter Brown)
+    "#AFEEEE", // Light Turquoise
+    "#E0FFFF", // Light Cyan
+    "#FFDAB9", // Peach Puff (Lighter Orange)
     "#00FF00", // Lime (Replaced Pink)
     "#AFEEEE", // Light Turquoise
     "#DDA0DD"  // Plum (Lighter Indigo)
@@ -400,7 +400,7 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
   }
 }
 
-void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig)
+void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
   int scale = 6;
   float G_VisualX = boost::get(&DotVertex::G_VisualX, *G, gNumber) * scale;
@@ -409,7 +409,14 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
 
   // Use for deciding the color of the FunCell based on the opcode
   // int opcode_gNumber = (*gConfig)[gNumber].opcode;
-  int opcode_gNumber = 2;
+  int opcode_gNumber = 0;
+  for (const auto &pair : GrammConfig)
+  {
+    if(pair.first == (*gConfig)[gNumber].Type)
+      break;
+    else 
+      opcode_gNumber++;
+  }
   std::string modified_name = gNames_deliemter_changes(gName); // Modified combined string
 
   // OB Debug: std::cout << gNames_deliemter_changes(gName) << " " << (*Users)[gNumber].size() << std::endl;
@@ -503,11 +510,11 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
 
     if (((*gConfig)[gNumber].Cell == "FUNCCELL") && (std::find(GrammConfig["PLACEMENT"].begin(), GrammConfig["PLACEMENT"].end(), (*gConfig)[gNumber].Type) == GrammConfig["PLACEMENT"].end()))
       continue;
-    
+
     if ((FunCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "FUNCCELL")) || (PinCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "PINCELL")) || (RouteCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "ROUTECELL")))
     {
       std::string gName = hElement.second;
-      printPlacementResults(gNumber, gName, G, positionedOutputFile, unpositionedOutputFile, gConfig);
+      printPlacementResults(gNumber, gName, G, positionedOutputFile, unpositionedOutputFile, gConfig, GrammConfig);
     }
   }
 
