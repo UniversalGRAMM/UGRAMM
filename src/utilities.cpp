@@ -87,6 +87,28 @@ std::string string_remover(std::string original_string, std::string toRemove)
   return modified_string;
 }
 
+void jsonUppercase(json &j)
+{
+  json result;
+
+  for (auto &[key, value] : j.items())
+  {
+    std::string upperKey = boost::to_upper_copy(key);
+    auto upperValue = value;
+    json upperArray = json::array();
+    if (value.is_array()) { //Case1: value is an array.
+      for (auto &el : upperValue)
+      {
+        std::string upperValue = el.get<std::string>();  
+        std::transform(upperValue.begin(), upperValue.end(), upperValue.begin(), ::toupper);
+        upperArray.push_back(upperValue);
+      }
+    }
+    result[upperKey] = upperArray;
+  }
+  j = result;
+}
+
 std::string readCommentSection(std::ifstream &deviceModelFile)
 {
   std::string line;
@@ -118,20 +140,27 @@ std::string readCommentSection(std::ifstream &deviceModelFile)
   return commentSection;
 }
 
-bool doPlacement(std::string hOpcode, std::map<std::string, std::vector<std::string>> &GrammConfig)
+bool doPlacement(std::string hOpcode, json &jsonParsed)
 {
-  std::string gType;
-  // Step 1: find what is the type of hOpcode from device-model pragma:
-  for (const auto &pair : GrammConfig)
+  if (jsonParsed["SKIP-PLACEMENT"].empty())
   {
-    if (std::find(pair.second.begin(), pair.second.end(), hOpcode) != pair.second.end())
-      gType = pair.first;
-  }
-
-  if (std::find(GrammConfig["PLACEMENT"].begin(), GrammConfig["PLACEMENT"].end(), gType) != GrammConfig["PLACEMENT"].end())
-    return true;
-  else
     return false;
+  }
+  else
+  {
+    std::string gType;
+    // Step 1: find what is the type of hOpcode from device-model pragma:
+    for (const auto &pair : GrammConfig)
+    {
+      if (std::find(pair.second.begin(), pair.second.end(), hOpcode) != pair.second.end())
+        gType = pair.first;
+    }
+
+    if (std::find(jsonParsed["SKIP-PLACEMENT"].begin(), jsonParsed["SKIP-PLACEMENT"].end(), gType) != jsonParsed["SKIP-PLACEMENT"].end())
+      return true;
+    else
+      return false;
+  }
 }
 
 void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig)
@@ -164,45 +193,6 @@ void parseVectorofStrings(std::string commentSection, std::string keyword, std::
             GrammConfig[token] = {};
           }
           GrammConfig[FunCellName].push_back(token);
-          token_count++;
-        }
-      }
-    }
-  }
-}
-
-void parsePlacementPragma(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig)
-{
-  std::istringstream stream(commentSection);
-  std::string line;
-
-  while (std::getline(stream, line))
-  {
-    size_t keywordPos = line.find(keyword);
-    if (keywordPos != std::string::npos) // Keyword is found
-    {
-      GRAMM->info("[PASSED] The token {} found in Placement line {} ", keyword, line);
-
-      size_t startBracket = line.find("{");
-      size_t endBracket = line.find("}");
-      if ((startBracket != std::string::npos) & (endBracket != std::string::npos))
-      {
-        std::string content = line.substr(startBracket + 1, endBracket - startBracket - 1);
-        std::istringstream content_stream(content);
-        std::string token;
-        std::string FunCellName;
-        int token_count = 0;
-        while (std::getline(content_stream, token, ','))
-        {
-          // Remove leading and/or trailing whitespaces:
-          token.erase(0, token.find_first_not_of(" \t\n\r"));
-          token.erase(token.find_last_not_of(" \t\n\r") + 1);
-          if (token_count == 0)
-          {
-            FunCellName = keyword;
-            GrammConfig[keyword] = {};
-          }
-          GrammConfig[keyword].push_back(token);
           token_count++;
         }
       }
@@ -312,17 +302,6 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<st
       exit(1);
     }
   }
-
-  // Parsing the "Placement" information:
-  parsePlacementPragma(commentSection, "PLACEMENT", GrammConfig);
-
-  // Parsed details:
-  GRAMM->info("Parsed information about [PLACEMENT]");
-  for (const auto &pair : GrammConfig["PLACEMENT"])
-  {
-    std::cout << pair << " :: ";
-  }
-  std::cout << std::endl;
 }
 
 void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig)
@@ -412,9 +391,9 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
   int opcode_gNumber = 0;
   for (const auto &pair : GrammConfig)
   {
-    if(pair.first == (*gConfig)[gNumber].Type)
+    if (pair.first == (*gConfig)[gNumber].Type)
       break;
-    else 
+    else
       opcode_gNumber++;
   }
   std::string modified_name = gNames_deliemter_changes(gName); // Modified combined string
@@ -480,7 +459,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   unpositionedOutputFile << "subgraph cluster_1 {\n label = \"Input Kernel\"; fontsize = 40; style=dashed; \n edge [minlen=3]\n";
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    if (!doPlacement((*hConfig)[i].Opcode, GrammConfig))
+    if (doPlacement((*hConfig)[i].Opcode, jsonParsed))
       continue;
     unpositionedOutputFile << hNames[i] << ";\n";
   }
@@ -491,7 +470,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
     vertex_descriptor u = source(*e_it, *H);
     vertex_descriptor v = target(*e_it, *H);
 
-    if (!doPlacement((*hConfig)[u].Opcode, GrammConfig))
+    if (doPlacement((*hConfig)[u].Opcode, jsonParsed))
       continue;
 
     unpositionedOutputFile << "  " << hNames[u] << " -> " << hNames[v] << ";\n";
@@ -523,7 +502,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   //------------------------
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    if (!doPlacement((*hConfig)[i].Opcode, GrammConfig))
+    if (doPlacement((*hConfig)[i].Opcode, jsonParsed))
       continue;
     printRoutingResults(i, positionedOutputFile, unpositionedOutputFile, hConfig);
   }
@@ -590,12 +569,12 @@ void ripUpRouting(int signal, DirectedGraph *G)
   ripup(signal, &toDel);
 }
 
-void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig)
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig, std::map<int, int> &invUsers)
 {
   for (int i = 0; i < num_vertices(*H); i++)
   {
 
-    if (!doPlacement((*hConfig)[i].Opcode, GrammConfig))
+    if (doPlacement((*hConfig)[i].Opcode, jsonParsed))
       continue;
 
     struct RoutingTree *RT = &((*Trees)[i]);
@@ -616,6 +595,9 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
       // For concatinating the mapped applicationNodeID name in device model cell
       funCellMapping[gNames[FunCellLoc]] = hNames[i];
+
+      // GRAMM->info("funCellMapping[gID] = hID :: funCellMapping[{}] {}", gNames[FunCellLoc],  hNames[i]);
+      // GRAMM->info("invUsers[hID] = gID :: invUsers[{}] {}", hNames[i], gNames[invUsers[i]]);
 
       // Removing the members of vertex model if any:
       ripUpRouting(i, G);
@@ -639,6 +621,9 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
         // For concatinating the mapped applicationNodeID name in device model cell
         funCellMapping[gNames[FunCellLoc]] = hNames[i];
+
+        // GRAMM->info("funCellMapping[gID] = hID :: funCellMapping[{}] {}", gNames[FunCellLoc],  hNames[i]);
+        // GRAMM->info("invUsers[hID] = gID :: invUsers[{}] {}", hNames[i], gNames[invUsers[i]]);
       }
 
       it++;

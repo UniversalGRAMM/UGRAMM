@@ -94,9 +94,10 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
  * @param G A pointer to the device-model graph.
  * @param hConfig A map containing node configuration details of device-model graph.
  */
-void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig);
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig, std::map<int, int> &invUsers);
 
 /**
+ *
  * @brief Prints the device model cell name corresponding to a given boost id number from device model graph.
  * 
  * @param n The boost integer id.
@@ -116,7 +117,7 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
 
 std::string readCommentSection(std::ifstream &deviceModelFile);
 
-bool doPlacement(std::string hOpcode, std::map<std::string, std::vector<std::string>> &GrammConfig);
+bool doPlacement(std::string hOpcode, json& jsonParsed);
 
 void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig);
 
@@ -133,5 +134,7 @@ int findFunCellFromOutputPin(int signal, DirectedGraph *G);
 void ripup(int signal, std::list<int> *nodes);
 
 void ripUpRouting(int signal, DirectedGraph *G);
+
+void jsonUppercase(json& j);
 
 #endif

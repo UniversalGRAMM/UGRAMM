@@ -26,6 +26,7 @@
 #include "spdlog/spdlog.h"
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <boost/program_options.hpp>
+#include "../lib/json.h"
 
 //-------------------------------------------------------------------//
 //------------------------ GRAMM Configuration ----------------------//
@@ -54,6 +55,10 @@ extern std::vector<std::string> outPin;
 //New way for node and opcode types:
 extern std::map<std::string, std::vector<std::string>> GrammConfig;    //New general way
 
+//JSON parsing for the config file:
+using json = nlohmann::json;
+extern json jsonParsed;
+
 struct NodeConfig {
     //G:
     std::string Cell;          //[New way] Cell-type of the node --> FuncCell, RouteCell, PinCell
@@ -66,7 +71,6 @@ struct NodeConfig {
     std::string loadPin;       //Load pin of the PinCell node --> inPinA, inPinB
     std::pair<int, int> Location = {0,0 }; //Optional  
 };
-
 
 //Struct for defining the node types in both the application and device model graph:
 struct DotVertex {
@@ -101,12 +105,14 @@ struct RoutingTree {
 
 extern std::vector<RoutingTree> *Trees;
 extern std::vector<std::list<int>> *Users;
+extern std::map<int, int> invUsers;
 extern std::vector<int> *HistoryCosts;
 extern std::vector<int> *TraceBack;
 extern std::vector<int> *TopoOrder;
 extern std::map<int, std::string> hNames;    //Map for storing the unique names of Application graph
 extern std::map<int, std::string> gNames;    //Map for storing the unique names of device model graph
 extern std::bitset<100000> explored;
+
 
 //Properties of the application and device model graph:
 typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;

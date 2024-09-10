@@ -2,7 +2,6 @@
 [SupportedOps] = {ALU, FADD, FMUL};  
 [SupportedOps] = {MEMPORT, input, output};
 [SupportedOps] = {Constant, const};
-[Placement] = {ALU, MEMPORT};
 */
 strict digraph "omp.inner.for.body" {
 label="omp.inner.for.body";
