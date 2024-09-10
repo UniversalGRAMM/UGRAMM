@@ -129,11 +129,9 @@ void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string,
 
 void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &GrammConfig);
 
-int findFunCellFromOutputPin(int signal, DirectedGraph *G);
+void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig);
 
-void ripup(int signal, std::list<int> *nodes);
-
-void ripUpRouting(int signal, DirectedGraph *G);
+void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig);
 
 void jsonUppercase(json& j);
 

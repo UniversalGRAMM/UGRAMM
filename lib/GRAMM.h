@@ -124,4 +124,8 @@ typedef boost::graph_traits<DirectedGraph>::vertex_descriptor vertex_descriptor;
 typedef boost::graph_traits<DirectedGraph>::out_edge_iterator OutEdgeIterator;
 typedef DirectedGraph::edge_descriptor Edge;
 
+int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
+
+int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
+
 #endif //GRAMM header

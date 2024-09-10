@@ -6,6 +6,7 @@
 
 #include "../lib/GRAMM.h"
 #include "../lib/utilities.h"
+#include "../lib/routing.h"
 
 std::vector<std::string> colors = {
     "#FFA500", // Orange (Replaced Light Pink)
@@ -96,10 +97,11 @@ void jsonUppercase(json &j)
     std::string upperKey = boost::to_upper_copy(key);
     auto upperValue = value;
     json upperArray = json::array();
-    if (value.is_array()) { //Case1: value is an array.
+    if (value.is_array())
+    { // Case1: value is an array.
       for (auto &el : upperValue)
       {
-        std::string upperValue = el.get<std::string>();  
+        std::string upperValue = el.get<std::string>();
         std::transform(upperValue.begin(), upperValue.end(), upperValue.begin(), ::toupper);
         upperArray.push_back(upperValue);
       }
@@ -516,57 +518,93 @@ void printName(int n)
 {
   GRAMM->debug("{}", gNames[n]);
 }
+ 
+/*
+  readDeviceModel() => Reading device model dot file
+  - DirectedGraph *G                  :: original device model read dot file
+  - std::map<int, NodeConfig> *gConfig  :: Store the configuration of each node (type,opcode, latenct etc.)
+*/
+void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
+{
+  //--------------------------------------------------------------------
+  // Omkar:  Reading device model dot file instead.
+  //--------------------------------------------------------------------
+
+  // Iterate over all the nodes of the device model graph and assign the type of nodes:
+  for (int i = 0; i < num_vertices(*G); i++)
+  {
+    vertex_descriptor v = vertex(i, *G);
+
+    // Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
+    std::string arch_NodeCell = boost::get(&DotVertex::G_NodeCell, *G, v);
+    std::string upperCaseNodeCell = boost::to_upper_copy(arch_NodeCell);
+    (*gConfig)[i].Cell = upperCaseNodeCell;
+
+    // Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
+    std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v);
+    std::string upperCaseType = boost::to_upper_copy(arch_NodeType);
+    (*gConfig)[i].Type = upperCaseType;
+
+    // Contains the node name
+    std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);
+    gNames[i] = arch_NodeName;
+
+    // Obtaining the loadPin name for PinCell type:
+    if ((*gConfig)[i].Cell == "PINCELL")
+    {
+      size_t pos = gNames[i].find_last_of('.');
+      if (pos != std::string::npos)
+      {
+        // GRAMM->info("loadPin for {} is {}", gNames[i], gNames[i].substr(pos + 1));
+        (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
+      }
+    }
+
+    GRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseNodeCell, upperCaseType);
+  }
+}
 
 /*
-  Description: For the given outputPin (signal), finds the associated FunCell node from the deviceModel.
-  Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking uphill --- finding the source of this edge]
+  readDeviceModel() => Reading device model dot file
+  - DirectedGraph *H                    :: original device model read dot file
+  - std::map<int, NodeConfig> *hConfig  :: Store the configuration of each node (type,opcode, latenct etc.)
 */
-int findFunCellFromOutputPin(int signal, DirectedGraph *G)
+void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 {
-  vertex_descriptor signalVertex = vertex(signal, *G);
-  in_edge_iterator ei, ei_end;
-  boost::tie(ei, ei_end) = in_edges(signal, *G);
-  int selectedCellFunCell = source(*ei, *G);
+  /*
+    Application DFG is inputed in GRAMM as a directed graph using the Neato Dot file convenction. In neeto,
+    we have defined the vertices (also refered to as nodes) and edges with attributes (also refered to as properies).
+    For instance, a node in GRAMM will have a attribite to define the opcode or the edges may have the attribute to
+    define the selective pins for an PE.
+  */
 
-  return selectedCellFunCell;
-}
-
-void ripup(int signal, std::list<int> *nodes)
-{
-  std::list<int>::iterator it = (*nodes).begin();
-  struct RoutingTree *RT = &((*Trees)[signal]);
-
-  for (; it != (*nodes).end(); it++)
+  for (int i = 0; i < num_vertices(*H); i++)
   {
-    int delNode = *it;
-    RT->nodes.remove(delNode);
+    vertex_descriptor v = vertex(i, *H);
 
-    if (RT->parent.count(delNode))
-    {
-      RT->children[RT->parent[delNode]].remove(delNode);
-      RT->parent.erase(delNode);
-    }
-    (*Users)[delNode].remove(signal);
+    // Fetching node name from the application-graph:
+    std::string name = boost::get(&DotVertex::name, *H, v);
+    hNames[i] = removeCurlyBrackets(name); // Removing if there are any curly brackets from the hNames.
+
+    // Following characters are not supported in the neato visualizer: "|, =, ."
+    std::replace(hNames[i].begin(), hNames[i].end(), '|', '_');
+    std::replace(hNames[i].begin(), hNames[i].end(), '=', '_');
+    std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
+
+    // Fetching opcode from the application-graph:
+    // Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
+    std::string applicationOpcode = boost::get(&DotVertex::opcode, *H, v);
+    std::string upperCaseOpcode = boost::to_upper_copy(applicationOpcode);
+    (*hConfig)[i].Opcode = upperCaseOpcode;
+
+    // Fetching type from the application-graph:
+    // Contains the type of the operation (ex: ALU, MEMPORT, CONST etc.)
+    // std::string applicationType = boost::get(&DotVertex::type, *H, v);
+    // std::string upperCaseType = boost::to_upper_copy(applicationType);
+    //(*hConfig)[i].Type = upperCaseType;
+
+    GRAMM->trace("[H] name {} :: applicationOpcode {} ", name, upperCaseOpcode);
   }
-}
-
-void ripUpRouting(int signal, DirectedGraph *G)
-{
-  struct RoutingTree *RT = &((*Trees)[signal]);
-  std::list<int> toDel;
-  toDel.clear();
-
-  std::list<int>::iterator it = RT->nodes.begin();
-  int driverFuncell = findFunCellFromOutputPin(*it, G);
-  toDel.push_back(driverFuncell);
-  for (; it != RT->nodes.end(); it++)
-  {
-    toDel.push_back(*it);
-    //    std::cout << "RIPUP ";
-    //    printName(*it);
-  }
-
-  ripup(signal, &toDel);
 }
 
 void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig, std::map<int, int> &invUsers)

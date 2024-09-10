@@ -14,10 +14,10 @@ BUILD_DIR = build
 EXE = GRAMM
 
 # Source files
-SRCS = $(SRC_DIR)/GRAMM.cpp $(SRC_DIR)/utilities.cpp
+SRCS = $(SRC_DIR)/GRAMM.cpp $(SRC_DIR)/routing.cpp $(SRC_DIR)/utilities.cpp
 
 # Object files
-OBJS = $(BUILD_DIR)/GRAMM.o $(BUILD_DIR)/utilities.o
+OBJS = $(BUILD_DIR)/GRAMM.o $(BUILD_DIR)/routing.o $(BUILD_DIR)/utilities.o
 
 # Target for the executable
 $(EXE): $(OBJS)
