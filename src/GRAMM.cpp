@@ -1086,6 +1086,37 @@ int main(int argc, char *argv[])
   boost::read_graphviz(iFile, H, dp);
   readApplicationGraph(&H, &hConfig);
 
+  //Working with boost algorithm ------
+
+  // Get the weight map for modifying weights
+  auto weight_map = boost::get(&EdgeProperty::weight, G);
+
+  // Iterate over the edges and set all weights to 1
+  edge_iterator ei, ei_end;
+  for (boost::tie(ei, ei_end) = boost::edges(G); ei != ei_end; ++ei) {
+      boost::put(weight_map, *ei, 1); // Set each edge's weight to 1
+  }
+
+  // Run Dijkstra’s algorithm
+  std::vector<int> distances(boost::num_vertices(G), std::numeric_limits<int>::max());
+  std::vector<int> predecessors(boost::num_vertices(G), -1);
+
+  int source_vertex = 0; // Set your source vertex here
+
+  boost::dijkstra_shortest_paths(G, source_vertex,
+        boost::distance_map(boost::make_iterator_property_map(distances.begin(), boost::get(boost::vertex_index, G)))
+        .predecessor_map(boost::make_iterator_property_map(predecessors.begin(), boost::get(boost::vertex_index, G)))
+        .weight_map(weight_map));
+      
+  // Output the results
+  for (std::size_t i = 0; i < distances.size(); ++i) {
+      std::cout << "Distance from " << source_vertex << " to " << i << " is " << distances[i] << "\n";
+      if (predecessors[i] != -1) {
+          std::cout << "Predecessor of " << i << " is " << predecessors[i] << "\n";
+      }
+  }
+  //End --------------
+
   Trees = new std::vector<RoutingTree>(num_vertices(H));    // routing trees for every node in H
   Users = new std::vector<std::list<int>>(num_vertices(G)); // for every node in device model G track its users
   HistoryCosts = new std::vector<int>(num_vertices(G));     // for history of congestion in PathFinder

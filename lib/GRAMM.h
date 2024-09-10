@@ -21,6 +21,8 @@
 #include <list>
 #include <bitset>
 #include <algorithm>
+#include <vector>
+#include <limits>
 #include <boost/algorithm/string.hpp>
 #include <sys/time.h>
 #include "spdlog/spdlog.h"
@@ -98,6 +100,7 @@ struct DotVertex {
 struct EdgeProperty {
     std::string loadPin;
     std::string driverPin;
+    int weight;
 };
 
 // the routing tree for a signal
@@ -121,8 +124,9 @@ extern std::map<int, std::string> gNames;    //Map for storing the unique names 
 extern std::bitset<100000> explored;
 
 //Properties of the application and device model graph:
-typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
-typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeProperty, EdgeWeightProperty > DirectedGraph;
+//typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
+//typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeProperty, EdgeWeightProperty> DirectedGraph;
+typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeProperty> DirectedGraph;
 typedef boost::graph_traits<DirectedGraph>::edge_iterator edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::in_edge_iterator in_edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::out_edge_iterator out_edge_iterator;

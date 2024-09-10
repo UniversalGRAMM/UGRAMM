@@ -1,0 +1,1611 @@
+---------------------Generating device model using external script:---------------------
+cd scripts && ./device_model_gen.py -NR 6 -NC 6 -Arch RIKEN_with_pins && cd ..
+====================================================
+============ Universal GRAMM (UGRAMM) ==============
+======= helper script: Device Model Generator ======
+====================================================
+
+Generating device model for the following CGRA configuration: 
+> Arch: RIKEN_with_pins
+> NR: 6
+> NC: 6
+Unsupported architecture input
+ 
+ 
+---------------------Executing GRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------
+make && ./GRAMM Kernels_Modified/Conv_Balance/conv_nounroll.dot scripts/riken_6_6.dot 6 6 0
+make: 'GRAMM' is up to date.
+Distance from 0 to 0 is 0
+Predecessor of 0 is 0
+Distance from 0 to 1 is 3
+Predecessor of 1 is 290
+Distance from 0 to 2 is 6
+Predecessor of 2 is 294
+Distance from 0 to 3 is 6
+Predecessor of 3 is 682
+Distance from 0 to 4 is 6
+Predecessor of 4 is 683
+Distance from 0 to 5 is 2147483647
+Predecessor of 5 is 5
+Distance from 0 to 6 is 2147483647
+Predecessor of 6 is 6
+Distance from 0 to 7 is 8
+Predecessor of 7 is 9
+Distance from 0 to 8 is 7
+Predecessor of 8 is 3
+Distance from 0 to 9 is 7
+Predecessor of 9 is 4
+Distance from 0 to 10 is 9
+Predecessor of 10 is 7
+Distance from 0 to 11 is 6
+Predecessor of 11 is 680
+Distance from 0 to 12 is 6
+Predecessor of 12 is 680
+Distance from 0 to 13 is 8
+Predecessor of 13 is 673
+Distance from 0 to 14 is 6
+Predecessor of 14 is 117
+Distance from 0 to 15 is 6
+Predecessor of 15 is 680
+Distance from 0 to 16 is 6
+Predecessor of 16 is 680
+Distance from 0 to 17 is 6
+Predecessor of 17 is 680
+Distance from 0 to 18 is 6
+Predecessor of 18 is 680
+Distance from 0 to 19 is 6
+Predecessor of 19 is 680
+Distance from 0 to 20 is 6
+Predecessor of 20 is 680
+Distance from 0 to 21 is 6
+Predecessor of 21 is 680
+Distance from 0 to 22 is 7
+Predecessor of 22 is 20
+Distance from 0 to 23 is 7
+Predecessor of 23 is 21
+Distance from 0 to 24 is 8
+Predecessor of 24 is 35
+Distance from 0 to 25 is 2147483647
+Predecessor of 25 is 25
+Distance from 0 to 26 is 2147483647
+Predecessor of 26 is 26
+Distance from 0 to 27 is 9
+Predecessor of 27 is 28
+Distance from 0 to 28 is 8
+Predecessor of 28 is 22
+Distance from 0 to 29 is 8
+Predecessor of 29 is 23
+Distance from 0 to 30 is 10
+Predecessor of 30 is 27
+Distance from 0 to 31 is 7
+Predecessor of 31 is 137
+Distance from 0 to 32 is 7
+Predecessor of 32 is 18
+Distance from 0 to 33 is 7
+Predecessor of 33 is 137
+Distance from 0 to 34 is 7
+Predecessor of 34 is 137
+Distance from 0 to 35 is 7
+Predecessor of 35 is 415
+Distance from 0 to 36 is 7
+Predecessor of 36 is 137
+Distance from 0 to 37 is 7
+Predecessor of 37 is 137
+Distance from 0 to 38 is 7
+Predecessor of 38 is 137
+Distance from 0 to 39 is 7
+Predecessor of 39 is 137
+Distance from 0 to 40 is 7
+Predecessor of 40 is 137
+Distance from 0 to 41 is 7
+Predecessor of 41 is 137
+Distance from 0 to 42 is 8
+Predecessor of 42 is 40
+Distance from 0 to 43 is 8
+Predecessor of 43 is 41
+Distance from 0 to 44 is 2147483647
+Predecessor of 44 is 44
+Distance from 0 to 45 is 2147483647
+Predecessor of 45 is 45
+Distance from 0 to 46 is 9
+Predecessor of 46 is 24
+Distance from 0 to 47 is 10
+Predecessor of 47 is 49
+Distance from 0 to 48 is 9
+Predecessor of 48 is 42
+Distance from 0 to 49 is 9
+Predecessor of 49 is 43
+Distance from 0 to 50 is 11
+Predecessor of 50 is 47
+Distance from 0 to 51 is 3
+Predecessor of 51 is 290
+Distance from 0 to 52 is 3
+Predecessor of 52 is 290
+Distance from 0 to 53 is 3
+Predecessor of 53 is 290
+Distance from 0 to 54 is 3
+Predecessor of 54 is 290
+Distance from 0 to 55 is 4
+Predecessor of 55 is 73
+Distance from 0 to 56 is 3
+Predecessor of 56 is 290
+Distance from 0 to 57 is 9
+Predecessor of 57 is 68
+Distance from 0 to 58 is 3
+Predecessor of 58 is 290
+Distance from 0 to 59 is 3
+Predecessor of 59 is 290
+Distance from 0 to 60 is 3
+Predecessor of 60 is 290
+Distance from 0 to 61 is 3
+Predecessor of 61 is 290
+Distance from 0 to 62 is 4
+Predecessor of 62 is 60
+Distance from 0 to 63 is 4
+Predecessor of 63 is 61
+Distance from 0 to 64 is 2147483647
+Predecessor of 64 is 64
+Distance from 0 to 65 is 2147483647
+Predecessor of 65 is 65
+Distance from 0 to 66 is 6
+Predecessor of 66 is 69
+Distance from 0 to 67 is 5
+Predecessor of 67 is 62
+Distance from 0 to 68 is 8
+Predecessor of 68 is 530
+Distance from 0 to 69 is 5
+Predecessor of 69 is 63
+Distance from 0 to 70 is 7
+Predecessor of 70 is 66
+Distance from 0 to 71 is 3
+Predecessor of 71 is 368
+Distance from 0 to 72 is 3
+Predecessor of 72 is 368
+Distance from 0 to 73 is 3
+Predecessor of 73 is 368
+Distance from 0 to 74 is 4
+Predecessor of 74 is 58
+Distance from 0 to 75 is 3
+Predecessor of 75 is 368
+Distance from 0 to 76 is 3
+Predecessor of 76 is 368
+Distance from 0 to 77 is 3
+Predecessor of 77 is 368
+Distance from 0 to 78 is 3
+Predecessor of 78 is 368
+Distance from 0 to 79 is 10
+Predecessor of 79 is 57
+Distance from 0 to 80 is 3
+Predecessor of 80 is 368
+Distance from 0 to 81 is 3
+Predecessor of 81 is 368
+Distance from 0 to 82 is 4
+Predecessor of 82 is 80
+Distance from 0 to 83 is 4
+Predecessor of 83 is 81
+Distance from 0 to 84 is 2147483647
+Predecessor of 84 is 84
+Distance from 0 to 85 is 2147483647
+Predecessor of 85 is 85
+Distance from 0 to 86 is 6
+Predecessor of 86 is 87
+Distance from 0 to 87 is 5
+Predecessor of 87 is 82
+Distance from 0 to 88 is 5
+Predecessor of 88 is 83
+Distance from 0 to 89 is 7
+Predecessor of 89 is 86
+Distance from 0 to 90 is 9
+Predecessor of 90 is 101
+Distance from 0 to 91 is 4
+Predecessor of 91 is 77
+Distance from 0 to 92 is 4
+Predecessor of 92 is 77
+Distance from 0 to 93 is 4
+Predecessor of 93 is 568
+Distance from 0 to 94 is 4
+Predecessor of 94 is 77
+Distance from 0 to 95 is 4
+Predecessor of 95 is 77
+Distance from 0 to 96 is 4
+Predecessor of 96 is 77
+Distance from 0 to 97 is 4
+Predecessor of 97 is 77
+Distance from 0 to 98 is 4
+Predecessor of 98 is 77
+Distance from 0 to 99 is 4
+Predecessor of 99 is 77
+Distance from 0 to 100 is 4
+Predecessor of 100 is 77
+Distance from 0 to 101 is 8
+Predecessor of 101 is 41
+Distance from 0 to 102 is 5
+Predecessor of 102 is 99
+Distance from 0 to 103 is 5
+Predecessor of 103 is 100
+Distance from 0 to 104 is 2147483647
+Predecessor of 104 is 104
+Distance from 0 to 105 is 2147483647
+Predecessor of 105 is 105
+Distance from 0 to 106 is 7
+Predecessor of 106 is 108
+Distance from 0 to 107 is 6
+Predecessor of 107 is 102
+Distance from 0 to 108 is 6
+Predecessor of 108 is 103
+Distance from 0 to 109 is 8
+Predecessor of 109 is 106
+Distance from 0 to 110 is 5
+Predecessor of 110 is 216
+Distance from 0 to 111 is 5
+Predecessor of 111 is 97
+Distance from 0 to 112 is 1
+Predecessor of 112 is 0
+Distance from 0 to 113 is 10
+Predecessor of 113 is 90
+Distance from 0 to 114 is 5
+Predecessor of 114 is 216
+Distance from 0 to 115 is 5
+Predecessor of 115 is 216
+Distance from 0 to 116 is 5
+Predecessor of 116 is 216
+Distance from 0 to 117 is 5
+Predecessor of 117 is 216
+Distance from 0 to 118 is 5
+Predecessor of 118 is 216
+Distance from 0 to 119 is 5
+Predecessor of 119 is 216
+Distance from 0 to 120 is 5
+Predecessor of 120 is 216
+Distance from 0 to 121 is 5
+Predecessor of 121 is 216
+Distance from 0 to 122 is 6
+Predecessor of 122 is 120
+Distance from 0 to 123 is 6
+Predecessor of 123 is 121
+Distance from 0 to 124 is 9
+Predecessor of 124 is 135
+Distance from 0 to 125 is 2147483647
+Predecessor of 125 is 125
+Distance from 0 to 126 is 2147483647
+Predecessor of 126 is 126
+Distance from 0 to 127 is 8
+Predecessor of 127 is 129
+Distance from 0 to 128 is 7
+Predecessor of 128 is 122
+Distance from 0 to 129 is 7
+Predecessor of 129 is 123
+Distance from 0 to 130 is 9
+Predecessor of 130 is 127
+Distance from 0 to 131 is 6
+Predecessor of 131 is 681
+Distance from 0 to 132 is 6
+Predecessor of 132 is 681
+Distance from 0 to 133 is 6
+Predecessor of 133 is 681
+Distance from 0 to 134 is 6
+Predecessor of 134 is 118
+Distance from 0 to 135 is 8
+Predecessor of 135 is 160
+Distance from 0 to 136 is 6
+Predecessor of 136 is 681
+Distance from 0 to 137 is 6
+Predecessor of 137 is 681
+Distance from 0 to 138 is 6
+Predecessor of 138 is 681
+Distance from 0 to 139 is 6
+Predecessor of 139 is 681
+Distance from 0 to 140 is 6
+Predecessor of 140 is 681
+Distance from 0 to 141 is 6
+Predecessor of 141 is 681
+Distance from 0 to 142 is 7
+Predecessor of 142 is 140
+Distance from 0 to 143 is 7
+Predecessor of 143 is 141
+Distance from 0 to 144 is 2147483647
+Predecessor of 144 is 144
+Distance from 0 to 145 is 2147483647
+Predecessor of 145 is 145
+Distance from 0 to 146 is 10
+Predecessor of 146 is 124
+Distance from 0 to 147 is 9
+Predecessor of 147 is 148
+Distance from 0 to 148 is 8
+Predecessor of 148 is 142
+Distance from 0 to 149 is 8
+Predecessor of 149 is 143
+Distance from 0 to 150 is 10
+Predecessor of 150 is 147
+Distance from 0 to 151 is 7
+Predecessor of 151 is 256
+Distance from 0 to 152 is 7
+Predecessor of 152 is 19
+Distance from 0 to 153 is 7
+Predecessor of 153 is 256
+Distance from 0 to 154 is 7
+Predecessor of 154 is 256
+Distance from 0 to 155 is 7
+Predecessor of 155 is 256
+Distance from 0 to 156 is 7
+Predecessor of 156 is 256
+Distance from 0 to 157 is 9
+Predecessor of 157 is 168
+Distance from 0 to 158 is 7
+Predecessor of 158 is 256
+Distance from 0 to 159 is 7
+Predecessor of 159 is 256
+Distance from 0 to 160 is 7
+Predecessor of 160 is 256
+Distance from 0 to 161 is 7
+Predecessor of 161 is 256
+Distance from 0 to 162 is 8
+Predecessor of 162 is 160
+Distance from 0 to 163 is 8
+Predecessor of 163 is 161
+Distance from 0 to 164 is 2147483647
+Predecessor of 164 is 164
+Distance from 0 to 165 is 2147483647
+Predecessor of 165 is 165
+Distance from 0 to 166 is 10
+Predecessor of 166 is 167
+Distance from 0 to 167 is 9
+Predecessor of 167 is 162
+Distance from 0 to 168 is 8
+Predecessor of 168 is 280
+Distance from 0 to 169 is 9
+Predecessor of 169 is 163
+Distance from 0 to 170 is 11
+Predecessor of 170 is 166
+Distance from 0 to 171 is 4
+Predecessor of 171 is 72
+Distance from 0 to 172 is 4
+Predecessor of 172 is 72
+Distance from 0 to 173 is 4
+Predecessor of 173 is 72
+Distance from 0 to 174 is 4
+Predecessor of 174 is 72
+Distance from 0 to 175 is 4
+Predecessor of 175 is 72
+Distance from 0 to 176 is 4
+Predecessor of 176 is 51
+Distance from 0 to 177 is 4
+Predecessor of 177 is 72
+Distance from 0 to 178 is 4
+Predecessor of 178 is 72
+Distance from 0 to 179 is 10
+Predecessor of 179 is 157
+Distance from 0 to 180 is 4
+Predecessor of 180 is 72
+Distance from 0 to 181 is 4
+Predecessor of 181 is 72
+Distance from 0 to 182 is 5
+Predecessor of 182 is 180
+Distance from 0 to 183 is 5
+Predecessor of 183 is 181
+Distance from 0 to 184 is 2147483647
+Predecessor of 184 is 184
+Distance from 0 to 185 is 2147483647
+Predecessor of 185 is 185
+Distance from 0 to 186 is 7
+Predecessor of 186 is 188
+Distance from 0 to 187 is 6
+Predecessor of 187 is 182
+Distance from 0 to 188 is 6
+Predecessor of 188 is 183
+Distance from 0 to 189 is 8
+Predecessor of 189 is 186
+Distance from 0 to 190 is 9
+Predecessor of 190 is 201
+Distance from 0 to 191 is 4
+Predecessor of 191 is 71
+Distance from 0 to 192 is 4
+Predecessor of 192 is 71
+Distance from 0 to 193 is 4
+Predecessor of 193 is 71
+Distance from 0 to 194 is 4
+Predecessor of 194 is 71
+Distance from 0 to 195 is 4
+Predecessor of 195 is 59
+Distance from 0 to 196 is 4
+Predecessor of 196 is 71
+Distance from 0 to 197 is 4
+Predecessor of 197 is 71
+Distance from 0 to 198 is 4
+Predecessor of 198 is 71
+Distance from 0 to 199 is 4
+Predecessor of 199 is 71
+Distance from 0 to 200 is 4
+Predecessor of 200 is 71
+Distance from 0 to 201 is 8
+Predecessor of 201 is 391
+Distance from 0 to 202 is 5
+Predecessor of 202 is 199
+Distance from 0 to 203 is 5
+Predecessor of 203 is 200
+Distance from 0 to 204 is 2147483647
+Predecessor of 204 is 204
+Distance from 0 to 205 is 2147483647
+Predecessor of 205 is 205
+Distance from 0 to 206 is 7
+Predecessor of 206 is 207
+Distance from 0 to 207 is 6
+Predecessor of 207 is 202
+Distance from 0 to 208 is 6
+Predecessor of 208 is 203
+Distance from 0 to 209 is 8
+Predecessor of 209 is 206
+Distance from 0 to 210 is 4
+Predecessor of 210 is 78
+Distance from 0 to 211 is 4
+Predecessor of 211 is 78
+Distance from 0 to 212 is 10
+Predecessor of 212 is 190
+Distance from 0 to 213 is 4
+Predecessor of 213 is 78
+Distance from 0 to 214 is 5
+Predecessor of 214 is 91
+Distance from 0 to 215 is 4
+Predecessor of 215 is 78
+Distance from 0 to 216 is 4
+Predecessor of 216 is 78
+Distance from 0 to 217 is 4
+Predecessor of 217 is 78
+Distance from 0 to 218 is 4
+Predecessor of 218 is 78
+Distance from 0 to 219 is 4
+Predecessor of 219 is 78
+Distance from 0 to 220 is 4
+Predecessor of 220 is 78
+Distance from 0 to 221 is 5
+Predecessor of 221 is 219
+Distance from 0 to 222 is 5
+Predecessor of 222 is 220
+Distance from 0 to 223 is 5
+Predecessor of 223 is 334
+Distance from 0 to 224 is 9
+Predecessor of 224 is 235
+Distance from 0 to 225 is 2147483647
+Predecessor of 225 is 225
+Distance from 0 to 226 is 2147483647
+Predecessor of 226 is 226
+Distance from 0 to 227 is 7
+Predecessor of 227 is 229
+Distance from 0 to 228 is 6
+Predecessor of 228 is 221
+Distance from 0 to 229 is 6
+Predecessor of 229 is 222
+Distance from 0 to 230 is 8
+Predecessor of 230 is 227
+Distance from 0 to 231 is 5
+Predecessor of 231 is 217
+Distance from 0 to 232 is 5
+Predecessor of 232 is 217
+Distance from 0 to 233 is 5
+Predecessor of 233 is 98
+Distance from 0 to 234 is 5
+Predecessor of 234 is 217
+Distance from 0 to 235 is 8
+Predecessor of 235 is 514
+Distance from 0 to 236 is 5
+Predecessor of 236 is 217
+Distance from 0 to 237 is 5
+Predecessor of 237 is 217
+Distance from 0 to 238 is 5
+Predecessor of 238 is 217
+Distance from 0 to 239 is 5
+Predecessor of 239 is 217
+Distance from 0 to 240 is 5
+Predecessor of 240 is 217
+Distance from 0 to 241 is 5
+Predecessor of 241 is 217
+Distance from 0 to 242 is 6
+Predecessor of 242 is 240
+Distance from 0 to 243 is 6
+Predecessor of 243 is 241
+Distance from 0 to 244 is 2147483647
+Predecessor of 244 is 244
+Distance from 0 to 245 is 2147483647
+Predecessor of 245 is 245
+Distance from 0 to 246 is 10
+Predecessor of 246 is 224
+Distance from 0 to 247 is 8
+Predecessor of 247 is 249
+Distance from 0 to 248 is 7
+Predecessor of 248 is 242
+Distance from 0 to 249 is 7
+Predecessor of 249 is 243
+Distance from 0 to 250 is 9
+Predecessor of 250 is 247
+Distance from 0 to 251 is 6
+Predecessor of 251 is 356
+Distance from 0 to 252 is 6
+Predecessor of 252 is 119
+Distance from 0 to 253 is 6
+Predecessor of 253 is 356
+Distance from 0 to 254 is 6
+Predecessor of 254 is 356
+Distance from 0 to 255 is 6
+Predecessor of 255 is 356
+Distance from 0 to 256 is 6
+Predecessor of 256 is 356
+Distance from 0 to 257 is 9
+Predecessor of 257 is 268
+Distance from 0 to 258 is 6
+Predecessor of 258 is 356
+Distance from 0 to 259 is 6
+Predecessor of 259 is 356
+Distance from 0 to 260 is 6
+Predecessor of 260 is 356
+Distance from 0 to 261 is 6
+Predecessor of 261 is 356
+Distance from 0 to 262 is 7
+Predecessor of 262 is 260
+Distance from 0 to 263 is 7
+Predecessor of 263 is 261
+Distance from 0 to 264 is 2147483647
+Predecessor of 264 is 264
+Distance from 0 to 265 is 2147483647
+Predecessor of 265 is 265
+Distance from 0 to 266 is 9
+Predecessor of 266 is 269
+Distance from 0 to 267 is 8
+Predecessor of 267 is 262
+Distance from 0 to 268 is 8
+Predecessor of 268 is 630
+Distance from 0 to 269 is 8
+Predecessor of 269 is 263
+Distance from 0 to 270 is 10
+Predecessor of 270 is 266
+Distance from 0 to 271 is 7
+Predecessor of 271 is 376
+Distance from 0 to 272 is 7
+Predecessor of 272 is 258
+Distance from 0 to 273 is 7
+Predecessor of 273 is 376
+Distance from 0 to 274 is 7
+Predecessor of 274 is 376
+Distance from 0 to 275 is 7
+Predecessor of 275 is 376
+Distance from 0 to 276 is 7
+Predecessor of 276 is 376
+Distance from 0 to 277 is 7
+Predecessor of 277 is 376
+Distance from 0 to 278 is 7
+Predecessor of 278 is 376
+Distance from 0 to 279 is 10
+Predecessor of 279 is 257
+Distance from 0 to 280 is 7
+Predecessor of 280 is 376
+Distance from 0 to 281 is 7
+Predecessor of 281 is 376
+Distance from 0 to 282 is 8
+Predecessor of 282 is 280
+Distance from 0 to 283 is 8
+Predecessor of 283 is 281
+Distance from 0 to 284 is 2147483647
+Predecessor of 284 is 284
+Distance from 0 to 285 is 2147483647
+Predecessor of 285 is 285
+Distance from 0 to 286 is 10
+Predecessor of 286 is 288
+Distance from 0 to 287 is 9
+Predecessor of 287 is 282
+Distance from 0 to 288 is 9
+Predecessor of 288 is 283
+Distance from 0 to 289 is 11
+Predecessor of 289 is 286
+Distance from 0 to 290 is 2
+Predecessor of 290 is 112
+Distance from 0 to 291 is 5
+Predecessor of 291 is 192
+Distance from 0 to 292 is 5
+Predecessor of 292 is 192
+Distance from 0 to 293 is 5
+Predecessor of 293 is 192
+Distance from 0 to 294 is 5
+Predecessor of 294 is 192
+Distance from 0 to 295 is 5
+Predecessor of 295 is 192
+Distance from 0 to 296 is 5
+Predecessor of 296 is 171
+Distance from 0 to 297 is 5
+Predecessor of 297 is 192
+Distance from 0 to 298 is 5
+Predecessor of 298 is 192
+Distance from 0 to 299 is 5
+Predecessor of 299 is 192
+Distance from 0 to 300 is 5
+Predecessor of 300 is 192
+Distance from 0 to 301 is 2
+Predecessor of 301 is 112
+Distance from 0 to 302 is 6
+Predecessor of 302 is 299
+Distance from 0 to 303 is 6
+Predecessor of 303 is 300
+Distance from 0 to 304 is 2147483647
+Predecessor of 304 is 304
+Distance from 0 to 305 is 2147483647
+Predecessor of 305 is 305
+Distance from 0 to 306 is 8
+Predecessor of 306 is 308
+Distance from 0 to 307 is 7
+Predecessor of 307 is 302
+Distance from 0 to 308 is 7
+Predecessor of 308 is 303
+Distance from 0 to 309 is 9
+Predecessor of 309 is 306
+Distance from 0 to 310 is 5
+Predecessor of 310 is 211
+Distance from 0 to 311 is 5
+Predecessor of 311 is 211
+Distance from 0 to 312 is 2
+Predecessor of 312 is 112
+Distance from 0 to 313 is 5
+Predecessor of 313 is 211
+Distance from 0 to 314 is 5
+Predecessor of 314 is 211
+Distance from 0 to 315 is 5
+Predecessor of 315 is 211
+Distance from 0 to 316 is 5
+Predecessor of 316 is 178
+Distance from 0 to 317 is 5
+Predecessor of 317 is 211
+Distance from 0 to 318 is 5
+Predecessor of 318 is 211
+Distance from 0 to 319 is 5
+Predecessor of 319 is 211
+Distance from 0 to 320 is 5
+Predecessor of 320 is 211
+Distance from 0 to 321 is 6
+Predecessor of 321 is 319
+Distance from 0 to 322 is 6
+Predecessor of 322 is 320
+Distance from 0 to 323 is 2
+Predecessor of 323 is 112
+Distance from 0 to 324 is 2147483647
+Predecessor of 324 is 324
+Distance from 0 to 325 is 2147483647
+Predecessor of 325 is 325
+Distance from 0 to 326 is 8
+Predecessor of 326 is 327
+Distance from 0 to 327 is 7
+Predecessor of 327 is 321
+Distance from 0 to 328 is 7
+Predecessor of 328 is 322
+Distance from 0 to 329 is 9
+Predecessor of 329 is 326
+Distance from 0 to 330 is 5
+Predecessor of 330 is 198
+Distance from 0 to 331 is 5
+Predecessor of 331 is 198
+Distance from 0 to 332 is 5
+Predecessor of 332 is 198
+Distance from 0 to 333 is 5
+Predecessor of 333 is 210
+Distance from 0 to 334 is 4
+Predecessor of 334 is 61
+Distance from 0 to 335 is 2
+Predecessor of 335 is 112
+Distance from 0 to 336 is 5
+Predecessor of 336 is 198
+Distance from 0 to 337 is 5
+Predecessor of 337 is 198
+Distance from 0 to 338 is 5
+Predecessor of 338 is 198
+Distance from 0 to 339 is 5
+Predecessor of 339 is 198
+Distance from 0 to 340 is 5
+Predecessor of 340 is 198
+Distance from 0 to 341 is 5
+Predecessor of 341 is 198
+Distance from 0 to 342 is 6
+Predecessor of 342 is 340
+Distance from 0 to 343 is 6
+Predecessor of 343 is 341
+Distance from 0 to 344 is 2147483647
+Predecessor of 344 is 344
+Distance from 0 to 345 is 2147483647
+Predecessor of 345 is 345
+Distance from 0 to 346 is 2
+Predecessor of 346 is 112
+Distance from 0 to 347 is 8
+Predecessor of 347 is 349
+Distance from 0 to 348 is 7
+Predecessor of 348 is 342
+Distance from 0 to 349 is 7
+Predecessor of 349 is 343
+Distance from 0 to 350 is 9
+Predecessor of 350 is 347
+Distance from 0 to 351 is 5
+Predecessor of 351 is 218
+Distance from 0 to 352 is 5
+Predecessor of 352 is 218
+Distance from 0 to 353 is 5
+Predecessor of 353 is 218
+Distance from 0 to 354 is 6
+Predecessor of 354 is 338
+Distance from 0 to 355 is 5
+Predecessor of 355 is 218
+Distance from 0 to 356 is 5
+Predecessor of 356 is 218
+Distance from 0 to 357 is 2
+Predecessor of 357 is 112
+Distance from 0 to 358 is 5
+Predecessor of 358 is 218
+Distance from 0 to 359 is 5
+Predecessor of 359 is 218
+Distance from 0 to 360 is 5
+Predecessor of 360 is 218
+Distance from 0 to 361 is 5
+Predecessor of 361 is 218
+Distance from 0 to 362 is 6
+Predecessor of 362 is 360
+Distance from 0 to 363 is 6
+Predecessor of 363 is 361
+Distance from 0 to 364 is 2147483647
+Predecessor of 364 is 364
+Distance from 0 to 365 is 2147483647
+Predecessor of 365 is 365
+Distance from 0 to 366 is 8
+Predecessor of 366 is 369
+Distance from 0 to 367 is 7
+Predecessor of 367 is 362
+Distance from 0 to 368 is 2
+Predecessor of 368 is 112
+Distance from 0 to 369 is 7
+Predecessor of 369 is 363
+Distance from 0 to 370 is 9
+Predecessor of 370 is 366
+Distance from 0 to 371 is 6
+Predecessor of 371 is 239
+Distance from 0 to 372 is 6
+Predecessor of 372 is 239
+Distance from 0 to 373 is 6
+Predecessor of 373 is 239
+Distance from 0 to 374 is 6
+Predecessor of 374 is 358
+Distance from 0 to 375 is 6
+Predecessor of 375 is 239
+Distance from 0 to 376 is 6
+Predecessor of 376 is 239
+Distance from 0 to 377 is 6
+Predecessor of 377 is 239
+Distance from 0 to 378 is 6
+Predecessor of 378 is 239
+Distance from 0 to 379 is 2
+Predecessor of 379 is 112
+Distance from 0 to 380 is 6
+Predecessor of 380 is 239
+Distance from 0 to 381 is 6
+Predecessor of 381 is 239
+Distance from 0 to 382 is 7
+Predecessor of 382 is 380
+Distance from 0 to 383 is 7
+Predecessor of 383 is 381
+Distance from 0 to 384 is 2147483647
+Predecessor of 384 is 384
+Distance from 0 to 385 is 2147483647
+Predecessor of 385 is 385
+Distance from 0 to 386 is 9
+Predecessor of 386 is 388
+Distance from 0 to 387 is 8
+Predecessor of 387 is 382
+Distance from 0 to 388 is 8
+Predecessor of 388 is 383
+Distance from 0 to 389 is 10
+Predecessor of 389 is 386
+Distance from 0 to 390 is 2
+Predecessor of 390 is 112
+Distance from 0 to 391 is 7
+Predecessor of 391 is 377
+Distance from 0 to 392 is 7
+Predecessor of 392 is 377
+Distance from 0 to 393 is 7
+Predecessor of 393 is 496
+Distance from 0 to 394 is 7
+Predecessor of 394 is 377
+Distance from 0 to 395 is 7
+Predecessor of 395 is 377
+Distance from 0 to 396 is 7
+Predecessor of 396 is 377
+Distance from 0 to 397 is 7
+Predecessor of 397 is 377
+Distance from 0 to 398 is 7
+Predecessor of 398 is 377
+Distance from 0 to 399 is 7
+Predecessor of 399 is 377
+Distance from 0 to 400 is 7
+Predecessor of 400 is 377
+Distance from 0 to 401 is 3
+Predecessor of 401 is 379
+Distance from 0 to 402 is 8
+Predecessor of 402 is 399
+Distance from 0 to 403 is 8
+Predecessor of 403 is 400
+Distance from 0 to 404 is 2147483647
+Predecessor of 404 is 404
+Distance from 0 to 405 is 2147483647
+Predecessor of 405 is 405
+Distance from 0 to 406 is 10
+Predecessor of 406 is 408
+Distance from 0 to 407 is 9
+Predecessor of 407 is 402
+Distance from 0 to 408 is 9
+Predecessor of 408 is 403
+Distance from 0 to 409 is 11
+Predecessor of 409 is 406
+Distance from 0 to 410 is 6
+Predecessor of 410 is 311
+Distance from 0 to 411 is 6
+Predecessor of 411 is 311
+Distance from 0 to 412 is 3
+Predecessor of 412 is 390
+Distance from 0 to 413 is 6
+Predecessor of 413 is 311
+Distance from 0 to 414 is 6
+Predecessor of 414 is 311
+Distance from 0 to 415 is 6
+Predecessor of 415 is 311
+Distance from 0 to 416 is 6
+Predecessor of 416 is 291
+Distance from 0 to 417 is 6
+Predecessor of 417 is 311
+Distance from 0 to 418 is 6
+Predecessor of 418 is 311
+Distance from 0 to 419 is 6
+Predecessor of 419 is 311
+Distance from 0 to 420 is 6
+Predecessor of 420 is 311
+Distance from 0 to 421 is 7
+Predecessor of 421 is 419
+Distance from 0 to 422 is 7
+Predecessor of 422 is 420
+Distance from 0 to 423 is 2147483647
+Predecessor of 423 is 423
+Distance from 0 to 424 is 2147483647
+Predecessor of 424 is 424
+Distance from 0 to 425 is 2147483647
+Predecessor of 425 is 425
+Distance from 0 to 426 is 9
+Predecessor of 426 is 427
+Distance from 0 to 427 is 8
+Predecessor of 427 is 421
+Distance from 0 to 428 is 8
+Predecessor of 428 is 422
+Distance from 0 to 429 is 10
+Predecessor of 429 is 426
+Distance from 0 to 430 is 6
+Predecessor of 430 is 298
+Distance from 0 to 431 is 6
+Predecessor of 431 is 298
+Distance from 0 to 432 is 6
+Predecessor of 432 is 298
+Distance from 0 to 433 is 6
+Predecessor of 433 is 331
+Distance from 0 to 434 is 2147483647
+Predecessor of 434 is 434
+Distance from 0 to 435 is 6
+Predecessor of 435 is 298
+Distance from 0 to 436 is 6
+Predecessor of 436 is 298
+Distance from 0 to 437 is 6
+Predecessor of 437 is 298
+Distance from 0 to 438 is 6
+Predecessor of 438 is 298
+Distance from 0 to 439 is 6
+Predecessor of 439 is 298
+Distance from 0 to 440 is 6
+Predecessor of 440 is 298
+Distance from 0 to 441 is 7
+Predecessor of 441 is 439
+Distance from 0 to 442 is 7
+Predecessor of 442 is 440
+Distance from 0 to 443 is 2147483647
+Predecessor of 443 is 443
+Distance from 0 to 444 is 2147483647
+Predecessor of 444 is 444
+Distance from 0 to 445 is 6
+Predecessor of 445 is 223
+Distance from 0 to 446 is 5
+Predecessor of 446 is 457
+Distance from 0 to 447 is 9
+Predecessor of 447 is 448
+Distance from 0 to 448 is 8
+Predecessor of 448 is 441
+Distance from 0 to 449 is 8
+Predecessor of 449 is 442
+Distance from 0 to 450 is 10
+Predecessor of 450 is 447
+Distance from 0 to 451 is 6
+Predecessor of 451 is 352
+Distance from 0 to 452 is 6
+Predecessor of 452 is 352
+Distance from 0 to 453 is 6
+Predecessor of 453 is 352
+Distance from 0 to 454 is 6
+Predecessor of 454 is 352
+Distance from 0 to 455 is 6
+Predecessor of 455 is 352
+Distance from 0 to 456 is 6
+Predecessor of 456 is 318
+Distance from 0 to 457 is 4
+Predecessor of 457 is 401
+Distance from 0 to 458 is 6
+Predecessor of 458 is 352
+Distance from 0 to 459 is 6
+Predecessor of 459 is 352
+Distance from 0 to 460 is 6
+Predecessor of 460 is 352
+Distance from 0 to 461 is 6
+Predecessor of 461 is 352
+Distance from 0 to 462 is 7
+Predecessor of 462 is 460
+Distance from 0 to 463 is 7
+Predecessor of 463 is 461
+Distance from 0 to 464 is 2147483647
+Predecessor of 464 is 464
+Distance from 0 to 465 is 2147483647
+Predecessor of 465 is 465
+Distance from 0 to 466 is 9
+Predecessor of 466 is 467
+Distance from 0 to 467 is 8
+Predecessor of 467 is 462
+Distance from 0 to 468 is 4
+Predecessor of 468 is 412
+Distance from 0 to 469 is 8
+Predecessor of 469 is 463
+Distance from 0 to 470 is 10
+Predecessor of 470 is 466
+Distance from 0 to 471 is 6
+Predecessor of 471 is 351
+Distance from 0 to 472 is 6
+Predecessor of 472 is 351
+Distance from 0 to 473 is 6
+Predecessor of 473 is 351
+Distance from 0 to 474 is 6
+Predecessor of 474 is 351
+Distance from 0 to 475 is 6
+Predecessor of 475 is 339
+Distance from 0 to 476 is 6
+Predecessor of 476 is 351
+Distance from 0 to 477 is 6
+Predecessor of 477 is 351
+Distance from 0 to 478 is 6
+Predecessor of 478 is 351
+Distance from 0 to 479 is 6
+Predecessor of 479 is 446
+Distance from 0 to 480 is 6
+Predecessor of 480 is 351
+Distance from 0 to 481 is 6
+Predecessor of 481 is 351
+Distance from 0 to 482 is 7
+Predecessor of 482 is 480
+Distance from 0 to 483 is 7
+Predecessor of 483 is 481
+Distance from 0 to 484 is 2147483647
+Predecessor of 484 is 484
+Distance from 0 to 485 is 2147483647
+Predecessor of 485 is 485
+Distance from 0 to 486 is 9
+Predecessor of 486 is 487
+Distance from 0 to 487 is 8
+Predecessor of 487 is 482
+Distance from 0 to 488 is 8
+Predecessor of 488 is 483
+Distance from 0 to 489 is 10
+Predecessor of 489 is 486
+Distance from 0 to 490 is 3
+Predecessor of 490 is 357
+Distance from 0 to 491 is 6
+Predecessor of 491 is 359
+Distance from 0 to 492 is 6
+Predecessor of 492 is 359
+Distance from 0 to 493 is 6
+Predecessor of 493 is 359
+Distance from 0 to 494 is 7
+Predecessor of 494 is 371
+Distance from 0 to 495 is 6
+Predecessor of 495 is 359
+Distance from 0 to 496 is 6
+Predecessor of 496 is 359
+Distance from 0 to 497 is 6
+Predecessor of 497 is 359
+Distance from 0 to 498 is 6
+Predecessor of 498 is 359
+Distance from 0 to 499 is 6
+Predecessor of 499 is 359
+Distance from 0 to 500 is 6
+Predecessor of 500 is 359
+Distance from 0 to 501 is 3
+Predecessor of 501 is 357
+Distance from 0 to 502 is 7
+Predecessor of 502 is 499
+Distance from 0 to 503 is 7
+Predecessor of 503 is 500
+Distance from 0 to 504 is 2147483647
+Predecessor of 504 is 504
+Distance from 0 to 505 is 2147483647
+Predecessor of 505 is 505
+Distance from 0 to 506 is 9
+Predecessor of 506 is 507
+Distance from 0 to 507 is 8
+Predecessor of 507 is 502
+Distance from 0 to 508 is 8
+Predecessor of 508 is 503
+Distance from 0 to 509 is 10
+Predecessor of 509 is 506
+Distance from 0 to 510 is 7
+Predecessor of 510 is 378
+Distance from 0 to 511 is 7
+Predecessor of 511 is 378
+Distance from 0 to 512 is 4
+Predecessor of 512 is 75
+Distance from 0 to 513 is 7
+Predecessor of 513 is 378
+Distance from 0 to 514 is 7
+Predecessor of 514 is 497
+Distance from 0 to 515 is 7
+Predecessor of 515 is 378
+Distance from 0 to 516 is 7
+Predecessor of 516 is 378
+Distance from 0 to 517 is 7
+Predecessor of 517 is 378
+Distance from 0 to 518 is 7
+Predecessor of 518 is 378
+Distance from 0 to 519 is 7
+Predecessor of 519 is 378
+Distance from 0 to 520 is 7
+Predecessor of 520 is 378
+Distance from 0 to 521 is 8
+Predecessor of 521 is 519
+Distance from 0 to 522 is 8
+Predecessor of 522 is 520
+Distance from 0 to 523 is 3
+Predecessor of 523 is 357
+Distance from 0 to 524 is 2147483647
+Predecessor of 524 is 524
+Distance from 0 to 525 is 2147483647
+Predecessor of 525 is 525
+Distance from 0 to 526 is 10
+Predecessor of 526 is 528
+Distance from 0 to 527 is 9
+Predecessor of 527 is 521
+Distance from 0 to 528 is 9
+Predecessor of 528 is 522
+Distance from 0 to 529 is 11
+Predecessor of 529 is 526
+Distance from 0 to 530 is 7
+Predecessor of 530 is 431
+Distance from 0 to 531 is 7
+Predecessor of 531 is 431
+Distance from 0 to 532 is 7
+Predecessor of 532 is 431
+Distance from 0 to 533 is 7
+Predecessor of 533 is 431
+Distance from 0 to 534 is 3
+Predecessor of 534 is 357
+Distance from 0 to 535 is 7
+Predecessor of 535 is 431
+Distance from 0 to 536 is 7
+Predecessor of 536 is 410
+Distance from 0 to 537 is 7
+Predecessor of 537 is 431
+Distance from 0 to 538 is 7
+Predecessor of 538 is 431
+Distance from 0 to 539 is 7
+Predecessor of 539 is 431
+Distance from 0 to 540 is 7
+Predecessor of 540 is 431
+Distance from 0 to 541 is 8
+Predecessor of 541 is 539
+Distance from 0 to 542 is 8
+Predecessor of 542 is 540
+Distance from 0 to 543 is 2147483647
+Predecessor of 543 is 543
+Distance from 0 to 544 is 2147483647
+Predecessor of 544 is 544
+Distance from 0 to 545 is 3
+Predecessor of 545 is 357
+Distance from 0 to 546 is 10
+Predecessor of 546 is 548
+Distance from 0 to 547 is 9
+Predecessor of 547 is 541
+Distance from 0 to 548 is 9
+Predecessor of 548 is 542
+Distance from 0 to 549 is 11
+Predecessor of 549 is 546
+Distance from 0 to 550 is 7
+Predecessor of 550 is 452
+Distance from 0 to 551 is 7
+Predecessor of 551 is 452
+Distance from 0 to 552 is 7
+Predecessor of 552 is 452
+Distance from 0 to 553 is 7
+Predecessor of 553 is 452
+Distance from 0 to 554 is 7
+Predecessor of 554 is 452
+Distance from 0 to 555 is 7
+Predecessor of 555 is 430
+Distance from 0 to 556 is 6
+Predecessor of 556 is 651
+Distance from 0 to 557 is 3
+Predecessor of 557 is 357
+Distance from 0 to 558 is 7
+Predecessor of 558 is 452
+Distance from 0 to 559 is 7
+Predecessor of 559 is 452
+Distance from 0 to 560 is 7
+Predecessor of 560 is 452
+Distance from 0 to 561 is 7
+Predecessor of 561 is 452
+Distance from 0 to 562 is 8
+Predecessor of 562 is 560
+Distance from 0 to 563 is 8
+Predecessor of 563 is 561
+Distance from 0 to 564 is 2147483647
+Predecessor of 564 is 564
+Distance from 0 to 565 is 2147483647
+Predecessor of 565 is 565
+Distance from 0 to 566 is 10
+Predecessor of 566 is 569
+Distance from 0 to 567 is 9
+Predecessor of 567 is 562
+Distance from 0 to 568 is 3
+Predecessor of 568 is 357
+Distance from 0 to 569 is 9
+Predecessor of 569 is 563
+Distance from 0 to 570 is 11
+Predecessor of 570 is 566
+Distance from 0 to 571 is 7
+Predecessor of 571 is 451
+Distance from 0 to 572 is 7
+Predecessor of 572 is 451
+Distance from 0 to 573 is 7
+Predecessor of 573 is 451
+Distance from 0 to 574 is 7
+Predecessor of 574 is 451
+Distance from 0 to 575 is 7
+Predecessor of 575 is 472
+Distance from 0 to 576 is 7
+Predecessor of 576 is 451
+Distance from 0 to 577 is 7
+Predecessor of 577 is 451
+Distance from 0 to 578 is 7
+Predecessor of 578 is 451
+Distance from 0 to 579 is 3
+Predecessor of 579 is 357
+Distance from 0 to 580 is 7
+Predecessor of 580 is 451
+Distance from 0 to 581 is 7
+Predecessor of 581 is 451
+Distance from 0 to 582 is 8
+Predecessor of 582 is 580
+Distance from 0 to 583 is 8
+Predecessor of 583 is 581
+Distance from 0 to 584 is 2147483647
+Predecessor of 584 is 584
+Distance from 0 to 585 is 2147483647
+Predecessor of 585 is 585
+Distance from 0 to 586 is 10
+Predecessor of 586 is 587
+Distance from 0 to 587 is 9
+Predecessor of 587 is 582
+Distance from 0 to 588 is 9
+Predecessor of 588 is 583
+Distance from 0 to 589 is 11
+Predecessor of 589 is 586
+Distance from 0 to 590 is 3
+Predecessor of 590 is 357
+Distance from 0 to 591 is 7
+Predecessor of 591 is 459
+Distance from 0 to 592 is 7
+Predecessor of 592 is 459
+Distance from 0 to 593 is 7
+Predecessor of 593 is 459
+Distance from 0 to 594 is 7
+Predecessor of 594 is 471
+Distance from 0 to 595 is 7
+Predecessor of 595 is 459
+Distance from 0 to 596 is 7
+Predecessor of 596 is 459
+Distance from 0 to 597 is 7
+Predecessor of 597 is 459
+Distance from 0 to 598 is 7
+Predecessor of 598 is 459
+Distance from 0 to 599 is 7
+Predecessor of 599 is 459
+Distance from 0 to 600 is 7
+Predecessor of 600 is 459
+Distance from 0 to 601 is 4
+Predecessor of 601 is 579
+Distance from 0 to 602 is 8
+Predecessor of 602 is 599
+Distance from 0 to 603 is 8
+Predecessor of 603 is 600
+Distance from 0 to 604 is 2147483647
+Predecessor of 604 is 604
+Distance from 0 to 605 is 2147483647
+Predecessor of 605 is 605
+Distance from 0 to 606 is 10
+Predecessor of 606 is 608
+Distance from 0 to 607 is 9
+Predecessor of 607 is 602
+Distance from 0 to 608 is 9
+Predecessor of 608 is 603
+Distance from 0 to 609 is 11
+Predecessor of 609 is 606
+Distance from 0 to 610 is 7
+Predecessor of 610 is 491
+Distance from 0 to 611 is 7
+Predecessor of 611 is 491
+Distance from 0 to 612 is 4
+Predecessor of 612 is 590
+Distance from 0 to 613 is 7
+Predecessor of 613 is 491
+Distance from 0 to 614 is 7
+Predecessor of 614 is 491
+Distance from 0 to 615 is 7
+Predecessor of 615 is 478
+Distance from 0 to 616 is 7
+Predecessor of 616 is 491
+Distance from 0 to 617 is 7
+Predecessor of 617 is 491
+Distance from 0 to 618 is 7
+Predecessor of 618 is 491
+Distance from 0 to 619 is 7
+Predecessor of 619 is 491
+Distance from 0 to 620 is 7
+Predecessor of 620 is 491
+Distance from 0 to 621 is 8
+Predecessor of 621 is 619
+Distance from 0 to 622 is 8
+Predecessor of 622 is 620
+Distance from 0 to 623 is 2147483647
+Predecessor of 623 is 623
+Distance from 0 to 624 is 2147483647
+Predecessor of 624 is 624
+Distance from 0 to 625 is 2147483647
+Predecessor of 625 is 625
+Distance from 0 to 626 is 10
+Predecessor of 626 is 627
+Distance from 0 to 627 is 9
+Predecessor of 627 is 621
+Distance from 0 to 628 is 9
+Predecessor of 628 is 622
+Distance from 0 to 629 is 11
+Predecessor of 629 is 626
+Distance from 0 to 630 is 7
+Predecessor of 630 is 498
+Distance from 0 to 631 is 7
+Predecessor of 631 is 498
+Distance from 0 to 632 is 7
+Predecessor of 632 is 498
+Distance from 0 to 633 is 8
+Predecessor of 633 is 617
+Distance from 0 to 634 is 2147483647
+Predecessor of 634 is 634
+Distance from 0 to 635 is 7
+Predecessor of 635 is 498
+Distance from 0 to 636 is 7
+Predecessor of 636 is 498
+Distance from 0 to 637 is 7
+Predecessor of 637 is 498
+Distance from 0 to 638 is 7
+Predecessor of 638 is 498
+Distance from 0 to 639 is 7
+Predecessor of 639 is 498
+Distance from 0 to 640 is 7
+Predecessor of 640 is 498
+Distance from 0 to 641 is 8
+Predecessor of 641 is 639
+Distance from 0 to 642 is 8
+Predecessor of 642 is 640
+Distance from 0 to 643 is 2147483647
+Predecessor of 643 is 643
+Distance from 0 to 644 is 2147483647
+Predecessor of 644 is 644
+Distance from 0 to 645 is 6
+Predecessor of 645 is 650
+Distance from 0 to 646 is 10
+Predecessor of 646 is 647
+Distance from 0 to 647 is 9
+Predecessor of 647 is 641
+Distance from 0 to 648 is 9
+Predecessor of 648 is 642
+Distance from 0 to 649 is 11
+Predecessor of 649 is 646
+Distance from 0 to 650 is 5
+Predecessor of 650 is 601
+Distance from 0 to 651 is 5
+Predecessor of 651 is 181
+Distance from 0 to 652 is 5
+Predecessor of 652 is 612
+Distance from 0 to 653 is 7
+Predecessor of 653 is 645
+Distance from 0 to 654 is 4
+Predecessor of 654 is 557
+Distance from 0 to 655 is 4
+Predecessor of 655 is 557
+Distance from 0 to 656 is 4
+Predecessor of 656 is 76
+Distance from 0 to 657 is 4
+Predecessor of 657 is 557
+Distance from 0 to 658 is 4
+Predecessor of 658 is 557
+Distance from 0 to 659 is 4
+Predecessor of 659 is 557
+Distance from 0 to 660 is 4
+Predecessor of 660 is 557
+Distance from 0 to 661 is 4
+Predecessor of 661 is 557
+Distance from 0 to 662 is 7
+Predecessor of 662 is 556
+Distance from 0 to 663 is 4
+Predecessor of 663 is 557
+Distance from 0 to 664 is 4
+Predecessor of 664 is 557
+Distance from 0 to 665 is 5
+Predecessor of 665 is 663
+Distance from 0 to 666 is 5
+Predecessor of 666 is 664
+Distance from 0 to 667 is 2147483647
+Predecessor of 667 is 667
+Distance from 0 to 668 is 2147483647
+Predecessor of 668 is 668
+Distance from 0 to 669 is 7
+Predecessor of 669 is 671
+Distance from 0 to 670 is 6
+Predecessor of 670 is 665
+Distance from 0 to 671 is 6
+Predecessor of 671 is 666
+Distance from 0 to 672 is 8
+Predecessor of 672 is 669
+Distance from 0 to 673 is 7
+Predecessor of 673 is 2
+Distance from 0 to 674 is 5
+Predecessor of 674 is 96
+Distance from 0 to 675 is 5
+Predecessor of 675 is 660
+Distance from 0 to 676 is 5
+Predecessor of 676 is 96
+Distance from 0 to 677 is 5
+Predecessor of 677 is 96
+Distance from 0 to 678 is 5
+Predecessor of 678 is 96
+Distance from 0 to 679 is 5
+Predecessor of 679 is 96
+Distance from 0 to 680 is 5
+Predecessor of 680 is 96
+Distance from 0 to 681 is 5
+Predecessor of 681 is 96
+Distance from 0 to 682 is 5
+Predecessor of 682 is 96
+Distance from 0 to 683 is 5
+Predecessor of 683 is 96
+[2024-09-10 16:57:43.810] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 1
+[2024-09-10 16:57:44.064] [GRAMM] [info] TOTAL OVERUSE: 15
+[2024-09-10 16:57:44.064] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 2
+[2024-09-10 16:57:44.559] [GRAMM] [info] TOTAL OVERUSE: 1
+[2024-09-10 16:57:44.559] [GRAMM] [info] FRACTION OVERLAP: 0.0058479533
+[2024-09-10 16:57:44.559] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 3
+[2024-09-10 16:57:45.025] [GRAMM] [info] TOTAL OVERUSE: 1
+[2024-09-10 16:57:45.025] [GRAMM] [info] FRACTION OVERLAP: 0.0060975607
+[2024-09-10 16:57:45.025] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 4
+[2024-09-10 16:57:45.500] [GRAMM] [info] TOTAL OVERUSE: 0
+[2024-09-10 16:57:45.500] [GRAMM] [info] FRACTION OVERLAP: 0.0
+[2024-09-10 16:57:45.500] [GRAMM] [info] SUCCESS! :: [iterCount] :: 4 :: [frac] :: 0.0 :: [num_vertices(H)] :: 36
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Const_27|float32=5.00}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 145 	 pe.w32.c2.r4.const.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 142 	 pe.w32.c2.r4.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 148 	 pe.w32.c2.r4.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Const_28|float32=13.00}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 525 	 pe.w32.c5.r5.const.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 521 	 pe.w32.c5.r5.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 527 	 pe.w32.c5.r5.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Const_29|float32=9.00}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 444 	 pe.w32.c5.r1.const.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 441 	 pe.w32.c5.r1.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 448 	 pe.w32.c5.r1.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Const_30|float32=11.00}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 285 	 pe.w32.c3.r5.const.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 282 	 pe.w32.c3.r5.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 287 	 pe.w32.c3.r5.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Const_31|float32=3.00}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 565 	 pe.w32.c6.r1.const.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 562 	 pe.w32.c6.r1.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 567 	 pe.w32.c6.r1.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Const_32|float32=15.00}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 668 	 pe.w32.c1.r2.const.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 665 	 pe.w32.c1.r2.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 670 	 pe.w32.c1.r2.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Const_33|float32=17.00}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 405 	 pe.w32.c4.r5.const.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 402 	 pe.w32.c4.r5.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 407 	 pe.w32.c4.r5.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Const_34|float32=7.00}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 544 	 pe.w32.c6.r0.const.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 541 	 pe.w32.c6.r0.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 547 	 pe.w32.c6.r0.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Const_35|float32=19.00}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 485 	 pe.w32.c5.r3.const.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 482 	 pe.w32.c5.r3.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 487 	 pe.w32.c5.r3.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FADD_18}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 370 	 pe.w32.c4.r3.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 355 	 pe.w32.c4.r3.crossbar_mux_4
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 233 	 pe.w32.c3.r3.crossbar_mux_2
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 219 	 pe.w32.c3.r2.crossbar_mux_8
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 221 	 pe.w32.c3.r2.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 228 	 pe.w32.c3.r2.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FADD_19}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 130 	 pe.w32.c2.r3.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 114 	 pe.w32.c2.r3.crossbar_mux_2
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 91 	 pe.w32.c2.r2.crossbar_mux_0
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 220 	 pe.w32.c3.r2.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 222 	 pe.w32.c3.r2.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 229 	 pe.w32.c3.r2.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FADD_20}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 509 	 pe.w32.c5.r4.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 494 	 pe.w32.c5.r4.crossbar_mux_3
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 360 	 pe.w32.c4.r3.crossbar_mux_8
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 362 	 pe.w32.c4.r3.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 367 	 pe.w32.c4.r3.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FADD_21}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 30 	 pe.w32.c1.r4.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 12 	 pe.w32.c1.r4.crossbar_mux_1
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 120 	 pe.w32.c2.r3.crossbar_mux_8
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 122 	 pe.w32.c2.r3.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 128 	 pe.w32.c2.r3.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FADD_22}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 470 	 pe.w32.c5.r2.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 456 	 pe.w32.c5.r2.crossbar_mux_5
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 361 	 pe.w32.c4.r3.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 363 	 pe.w32.c4.r3.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 369 	 pe.w32.c4.r3.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FADD_23}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 350 	 pe.w32.c4.r2.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 336 	 pe.w32.c4.r2.crossbar_mux_4
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 216 	 pe.w32.c3.r2.crossbar_mux_5
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 121 	 pe.w32.c2.r3.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 123 	 pe.w32.c2.r3.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 129 	 pe.w32.c2.r3.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FADD_24}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 250 	 pe.w32.c3.r3.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 239 	 pe.w32.c3.r3.crossbar_mux_7
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 371 	 pe.w32.c4.r4.crossbar_mux_0
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 499 	 pe.w32.c5.r4.crossbar_mux_8
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 502 	 pe.w32.c5.r4.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 507 	 pe.w32.c5.r4.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FADD_25}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 230 	 pe.w32.c3.r2.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 214 	 pe.w32.c3.r2.crossbar_mux_3
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 73 	 pe.w32.c2.r1.crossbar_mux_2
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 61 	 pe.w32.c2.r0.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 334 	 LS.w32.c0.r1.memport.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FMUL_10}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 150 	 pe.w32.c2.r4.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 132 	 pe.w32.c2.r4.crossbar_mux_1
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 232 	 pe.w32.c3.r3.crossbar_mux_1
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 341 	 pe.w32.c4.r2.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 343 	 pe.w32.c4.r2.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 349 	 pe.w32.c4.r2.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FMUL_11}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 549 	 pe.w32.c6.r0.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 536 	 pe.w32.c6.r0.crossbar_mux_5
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 436 	 pe.w32.c5.r1.crossbar_mux_5
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 340 	 pe.w32.c4.r2.crossbar_mux_8
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 342 	 pe.w32.c4.r2.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 348 	 pe.w32.c4.r2.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FMUL_12}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 450 	 pe.w32.c5.r1.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 437 	 pe.w32.c5.r1.crossbar_mux_6
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 460 	 pe.w32.c5.r2.crossbar_mux_8
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 462 	 pe.w32.c5.r2.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 467 	 pe.w32.c5.r2.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FMUL_13}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 289 	 pe.w32.c3.r5.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 275 	 pe.w32.c3.r5.crossbar_mux_4
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 154 	 pe.w32.c2.r5.crossbar_mux_3
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 21 	 pe.w32.c1.r4.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 23 	 pe.w32.c1.r4.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 29 	 pe.w32.c1.r4.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FMUL_14}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 529 	 pe.w32.c5.r5.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 513 	 pe.w32.c5.r5.crossbar_mux_2
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 500 	 pe.w32.c5.r4.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 503 	 pe.w32.c5.r4.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 508 	 pe.w32.c5.r4.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FMUL_15}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 672 	 pe.w32.c1.r2.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 661 	 pe.w32.c1.r2.crossbar_mux_7
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 110 	 pe.w32.c2.r3.crossbar_mux_0
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 241 	 pe.w32.c3.r3.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 243 	 pe.w32.c3.r3.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 249 	 pe.w32.c3.r3.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FMUL_16}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 409 	 pe.w32.c4.r5.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 394 	 pe.w32.c4.r5.crossbar_mux_3
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 254 	 pe.w32.c3.r4.crossbar_mux_3
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 117 	 pe.w32.c2.r3.crossbar_mux_5
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 20 	 pe.w32.c1.r4.crossbar_mux_8
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 22 	 pe.w32.c1.r4.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 28 	 pe.w32.c1.r4.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FMUL_17}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 489 	 pe.w32.c5.r3.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 474 	 pe.w32.c5.r3.crossbar_mux_3
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 337 	 pe.w32.c4.r2.crossbar_mux_5
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 240 	 pe.w32.c3.r3.crossbar_mux_8
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 242 	 pe.w32.c3.r3.mux_a
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 248 	 pe.w32.c3.r3.alu.inPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {FMUL_9}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 570 	 pe.w32.c6.r1.alu.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 555 	 pe.w32.c6.r1.crossbar_mux_5
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 461 	 pe.w32.c5.r2.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 463 	 pe.w32.c5.r2.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 469 	 pe.w32.c5.r2.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Load_0}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 46 	 LS.w32.c0.r4.memport.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 418 	 pe.w32.c5.r0.crossbar_mux_7
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 561 	 pe.w32.c6.r1.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 563 	 pe.w32.c6.r1.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 569 	 pe.w32.c6.r1.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Load_1}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 113 	 LS.w32.c7.r0.mem.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 32 	 pe.w32.c1.r5.crossbar_mux_1
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 141 	 pe.w32.c2.r4.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 143 	 pe.w32.c2.r4.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 149 	 pe.w32.c2.r4.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Load_2}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 79 	 LS.w32.c0.r5.memport.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 540 	 pe.w32.c6.r0.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 542 	 pe.w32.c6.r0.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 548 	 pe.w32.c6.r0.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Load_3}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 13 	 LS.w32.c0.r3.memport.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 298 	 pe.w32.c4.r0.crossbar_mux_7
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 440 	 pe.w32.c5.r1.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 442 	 pe.w32.c5.r1.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 449 	 pe.w32.c5.r1.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Load_4}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 179 	 LS.w32.c7.r2.mem.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 281 	 pe.w32.c3.r5.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 283 	 pe.w32.c3.r5.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 288 	 pe.w32.c3.r5.alu.inPinB
+[2024-09-10 16:57:45.500] [GRAMM] [info] ** routing for {Load_5}'s output pin :: 
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 246 	 LS.w32.c7.r4.mem.outPinA
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 520 	 pe.w32.c5.r5.crossbar_mux_9
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 522 	 pe.w32.c5.r5.mux_b
+[2024-09-10 16:57:45.500] [GRAMM] [info] 	 528 	 pe.w32.c5.r5.alu.inPinB
+[2024-09-10 16:57:45.501] [GRAMM] [info] ** routing for {Load_6}'s output pin :: 
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 662 	 LS.w32.c0.r2.memport.outPinA
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 176 	 pe.w32.c3.r0.crossbar_mux_5
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 76 	 pe.w32.c2.r1.crossbar_mux_5
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 664 	 pe.w32.c1.r2.crossbar_mux_9
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 666 	 pe.w32.c1.r2.mux_b
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 671 	 pe.w32.c1.r2.alu.inPinB
+[2024-09-10 16:57:45.501] [GRAMM] [info] ** routing for {Load_7}'s output pin :: 
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 212 	 LS.w32.c7.r3.mem.outPinA
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 400 	 pe.w32.c4.r5.crossbar_mux_9
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 403 	 pe.w32.c4.r5.mux_b
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 408 	 pe.w32.c4.r5.alu.inPinB
+[2024-09-10 16:57:45.501] [GRAMM] [info] ** routing for {Load_8}'s output pin :: 
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 279 	 LS.w32.c7.r5.mem.outPinA
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 632 	 pe.w32.c6.r5.crossbar_mux_2
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 614 	 pe.w32.c6.r4.crossbar_mux_3
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 481 	 pe.w32.c5.r3.crossbar_mux_9
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 483 	 pe.w32.c5.r3.mux_b
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 488 	 pe.w32.c5.r3.alu.inPinB
+[2024-09-10 16:57:45.501] [GRAMM] [info] ** routing for {Store_26}'s output pin :: 
+[2024-09-10 16:57:45.501] [GRAMM] [info] 	 445 	 LS.w32.c0.r1.memport.outPinA
+[2024-09-10 16:57:45.501] [GRAMM] [info] Writing the positioned mapping output in file 'positioned_dot_output.dot'
+[2024-09-10 16:57:45.501] [GRAMM] [info] Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot'
+[2024-09-10 16:57:45.502] [GRAMM] [info] Total time taken :: 1.691878 Seconds
+ 
+ 
+---------------------Converting the ordered-mapped  positioned_dot_output.dot file into ordered_dot_output.png:---------------------
+neato -Tpng positioned_dot_output.dot -o positioned_dot_output.png
+ 
+ 
+---------------------Converting the unordered-mapped  unpositioned_dot_output.dot file into unpositioned_dot_output.png:---------------------
+neato -Tpng unpositioned_dot_output.dot -o unpositioned_dot_output.png
