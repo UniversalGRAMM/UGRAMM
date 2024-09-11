@@ -572,7 +572,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y,
 
     if (GRAMM->level() <= spdlog::level::trace)
     {
-      printRouting(y);
+      utilities.printRouting(y);
     }
 
     totalCosts[outputPin] += routeSignal(G, H, y, gConfig);
@@ -1004,6 +1004,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 int main(int argc, char *argv[])
 {
   GRAMM->set_level(spdlog::level::info); // Set global log level to debug
+  Utilities utilities = new Utilities();
 
   DirectedGraph H, G;
 
@@ -1124,10 +1125,10 @@ int main(int argc, char *argv[])
   if (success)
   {
     // Printing vertex model:
-    printVertexModels(&H, &G, &hConfig);
+    utilities.printVertexModels(&H, &G, &hConfig);
 
     // Visualizing mapping result in neato:
-    printMappedResults(&H, &G, &hConfig, &gConfig);
+    utilities.printMappedResults(&H, &G, &hConfig, &gConfig);
   }
 
   //--------------- get elapsed time -------------------------

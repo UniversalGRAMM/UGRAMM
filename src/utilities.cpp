@@ -9,25 +9,34 @@
 
 #define DEBUG 0
 
-std::vector<std::string> colors = {
-    "#FFFFE0", // Light Yellow
-    "#AFEEEE", // Light Turquoise
-    "#D2B48C", // Tan (Lighter Brown)
-    "#E0FFFF", // Light Cyan
-    "#FFA500", // Orange (Replaced Light Pink)
-    "#FFDAB9", // Peach Puff (Lighter Orange)
-    "#D8BFD8", // Thistle (Lighter Purple)
-    "#00FF00", // Lime (Replaced Pink)
-    "#AFEEEE", // Light Turquoise
-    "#DDA0DD"  // Plum (Lighter Indigo)
-}; // Color code for different FunCells
+Utilities::utilities()
+{
+  std::vector<std::string> colors = {
+      "#FFFFE0", // Light Yellow
+      "#AFEEEE", // Light Turquoise
+      "#D2B48C", // Tan (Lighter Brown)
+      "#E0FFFF", // Light Cyan
+      "#FFA500", // Orange (Replaced Light Pink)
+      "#FFDAB9", // Peach Puff (Lighter Orange)
+      "#D8BFD8", // Thistle (Lighter Purple)
+      "#00FF00", // Lime (Replaced Pink)
+      "#AFEEEE", // Light Turquoise
+      "#DDA0DD"  // Plum (Lighter Indigo)
+  }; // Color code for different FunCells
 
-std::string input_pin_color = "#ADD8E6";           // Pre-defined color-code for the input-pin cell ( Light Blue)
-std::string output_pin_color = "#FFB6C1";          // Pre-defined color-code for the output-pin cell (Lighter Red/Pink)
-std::string unused_cell_color = "#A9A9A9";         // Pre-defined color-code for the unused cell
-std::map<std::string, std::string> funCellMapping; // Key-> Device-model node-name :: Value-> Mapped application name.
+  std::string input_pin_color = "#ADD8E6";           // Pre-defined color-code for the input-pin cell ( Light Blue)
+  std::string output_pin_color = "#FFB6C1";          // Pre-defined color-code for the output-pin cell (Lighter Red/Pink)
+  std::string unused_cell_color = "#A9A9A9";         // Pre-defined color-code for the unused cell
+  std::map<std::string, std::string> funCellMapping; // Key-> Device-model node-name :: Value-> Mapped application name.
 
-std::string removeCurlyBrackets(const std::string &input)
+}
+
+
+Utilities::~utilities()
+{
+}
+
+std::string Utilities::removeCurlyBrackets(const std::string &input)
 {
   std::string result = input;
 
@@ -48,7 +57,7 @@ std::string removeCurlyBrackets(const std::string &input)
   return result;
 }
 
-std::string gNames_deliemter_changes(std::string gNames)
+std::string Utilities::gNames_deliemter_changes(std::string gNames)
 {
   std::string modified_string;
 
@@ -70,7 +79,7 @@ std::string gNames_deliemter_changes(std::string gNames)
   return modified_string;
 }
 
-std::string string_remover(std::string original_string, std::string toRemove)
+std::string Utilities::string_remover(std::string original_string, std::string toRemove)
 {
   std::string modified_string;
 
@@ -89,7 +98,7 @@ std::string string_remover(std::string original_string, std::string toRemove)
   return modified_string;
 }
 
-void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig)
+void Utilities::printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig)
 {
 
   struct RoutingTree *RT = &((*Trees)[y]);
@@ -133,7 +142,7 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
   }
 }
 
-void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile)
+void Utilities::mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile)
 {
 
   vertex_descriptor yD = vertex(gNumber, *G); // Vertex Descriptor for FunCell
@@ -167,7 +176,7 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
   }
 }
 
-void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig)
+void Utilities::printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig)
 {
   int scale = 6;
   float G_VisualX = boost::get(&DotVertex::G_VisualX, *G, gNumber) * scale;
@@ -215,7 +224,7 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
   }
 }
 
-void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
+void Utilities::printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
 
   // Output stream for storing successful mapping: The positioned-output dot file stream (this contains actual co-ordinates of the node cells).
@@ -280,12 +289,12 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   unpositionedOutputFile << "}\n"; // End of digraph
 }
 
-void printName(int n)
+void Utilities::printName(int n)
 {
   GRAMM->debug("{}", gNames[n]);
 }
 
-void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig)
+void Utilities::printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig)
 {
   for (int i = 0; i < num_vertices(*H); i++)
   {
@@ -325,7 +334,7 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   }
 }
 
-void printRouting(int signal)
+void Utilities::printRouting(int signal)
 {
 
   struct RoutingTree *RT = &((*Trees)[signal]);
