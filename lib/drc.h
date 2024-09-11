@@ -82,6 +82,16 @@ void deviceModelDRC_CheckPinsIO(DirectedGraph *G, std::map<int, NodeConfig> *gCo
 void deviceModelDRC_CheckDeviceModelWeeklyConnected(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
 
 
+/**
+ * @brief  Check if FuncCells in the Device Model Graph is connected to other FuncCell. If any two FuncCell does not have a path, this means that the graph is disjointed.
+ * 
+ * @param G A pointer to the device-model graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void deviceModelDRC_CheckFuncCellConnectivity(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
+
+
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
 /**
  * @brief Application graph should not have any floating nodes

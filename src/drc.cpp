@@ -135,6 +135,78 @@ void deviceModelDRC_CheckDeviceModelWeeklyConnected(DirectedGraph *G, std::map<i
   }
 }
 
+void deviceModelDRC_CheckFuncCellConnectivity(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected){
+  // // Get the weight map for modifying weights
+  // auto weight_map = boost::get(&EdgeProperty::weight, *G);
+
+  // // Iterate over the edges and set all weights to 1
+  // edge_iterator ei, ei_end;
+  // for (boost::tie(ei, ei_end) = boost::edges(*G); ei != ei_end; ++ei) {
+  //     boost::put(weight_map, *ei, 1); // Set each edge's weight to 1
+  // }
+
+  // // Run Dijkstra’s algorithm
+  // std::vector<int> distances(boost::num_vertices(*G), std::numeric_limits<int>::max());
+  // std::vector<int> predecessors(boost::num_vertices(*G), -1);
+
+  // int source_vertex = 0; // Set your source vertex here
+
+  // boost::dijkstra_shortest_paths(*G, source_vertex,
+  //       boost::distance_map(boost::make_iterator_property_map(distances.begin(), boost::get(boost::vertex_index, *G)))
+  //       .predecessor_map(boost::make_iterator_property_map(predecessors.begin(), boost::get(boost::vertex_index, *G)))
+  //       .weight_map(weight_map));
+      
+  // // Output the results
+  // for (std::size_t i = 0; i < distances.size(); ++i) {
+  //     std::cout << "Distance from " << source_vertex << " to " << i << " is " << distances[i] << "\n";
+  //     if (predecessors[i] != -1) {
+  //         std::cout << "Predecessor of " << i << " is " << predecessors[i] << "\n";
+  //     }
+  // }
+
+
+
+  // Get the weight map for modifying weights
+  auto weight_map = boost::get(&EdgeProperty::weight, *G);
+
+  // Iterate over the edges and set all weights to 1
+  edge_iterator ei, ei_end;
+  for (boost::tie(ei, ei_end) = boost::edges(*G); ei != ei_end; ++ei) {
+      boost::put(weight_map, *ei, 1); // Set each edge's weight to 1
+  }
+
+
+  vertex_iterator vi, vi_end;
+  std::vector<vertex_descriptor> funcCells_list;
+
+  // Find all FuncCell nodes
+  for (boost::tie(vi, vi_end) = vertices(*G); vi != vi_end; ++vi) {
+      if ((*gConfig)[*vi].type == FuncCell) {
+          funcCells_list.push_back(*vi);
+      }
+  }
+
+  // Iterate over each FuncCell node to check connectivity with others
+  for (vertex_descriptor source_vertex : funcCells_list) {
+    std::vector<int> distances(boost::num_vertices(*G), std::numeric_limits<int>::max());
+    std::vector<int> predecessors(boost::num_vertices(*G), -1);
+
+    // Run Dijkstra's algorithm with default edge weights (all edges treated equally)
+    boost::dijkstra_shortest_paths(*G, source_vertex,
+        boost::distance_map(boost::make_iterator_property_map(distances.begin(), boost::get(boost::vertex_index, *G)))
+        .predecessor_map(boost::make_iterator_property_map(predecessors.begin(), boost::get(boost::vertex_index, *G)))
+        .weight_map(weight_map));
+
+    // Check if all other FuncCell nodes are reachable
+    for (vertex_descriptor target_vertex : funcCells_list) {
+        if (target_vertex != source_vertex && distances[target_vertex] == std::numeric_limits<int>::max()) {
+            GRAMM->error("[DRC Error] - Device model graph is disconnect. There is no routable path from FuncCell {} to FuncCell {}", gNames[source_vertex], gNames[target_vertex]);
+        }
+    }
+  }
+
+
+}
 
 
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
@@ -216,6 +288,7 @@ void runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConf
   deviceModelDRC_CheckFloatingNodes(G, gConfig, &errorDetected);
   //deviceModelDRC_CheckPinsIO(G, gConfig, &errorDetected);
   deviceModelDRC_CheckDeviceModelWeeklyConnected(G, gConfig, &errorDetected);
+  deviceModelDRC_CheckFuncCellConnectivity(G, gConfig, &errorDetected);
 
   //--------- Running DRC for the Application Model Graph -----------//
   //------ Please add any Application Model Graph DRC Rule Check Functions Below ------//
