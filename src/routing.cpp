@@ -1,16 +1,22 @@
 //===================================================================//
 // GRAap Minor Mapping (GRAMM) method for CGRA                       //
-// file : GRAMM.cpp                                                  //
-// description: contains primary functions                           //
+// file : routing.cpp                                                //
+// description: contains routing-related functions                   //
 //===================================================================//
 
 #include "../lib/GRAMM.h"
 #include "../lib/utilities.h"
 #include "../lib/routing.h"
 
+//-------------------------------------------------------------------//
+//------------------- [Routing] Helper function ---------------------//
+//-------------------------------------------------------------------//
+
 /*
-  Description: this function checks whether current opcode required by the
-               application node is supported by device model node.
+ * Checks whether the current opcode required by the application node is supported by the device model node.
+ * 
+ * This function determines if the opcode needed by the application node (represented by `hOpcode`)
+ * is compatible with or supported by the device model node type (represented by `gType`).
 */
 bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
 {
@@ -28,10 +34,195 @@ bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
       return true;
     }
   }
-  // GRAMM->error("{} node from device model does not supports {} Opcode", gType, hOpcode);
   return false;
 }
 
+/*
+ * For the given outputPin (signal), finds the associated FunCell node from the device model.
+ * 
+ * This function identifies the FunCell node in the device model graph G associated with the 
+ * specified output pin (signal), tracing the source of this edge (walking uphill).
+ * 
+ * Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking uphill --- finding the source of this edge]
+*/
+int findFunCellFromOutputPin(int signal, DirectedGraph *G)
+{
+  vertex_descriptor signalVertex = vertex(signal, *G);
+  in_edge_iterator ei, ei_end;
+  boost::tie(ei, ei_end) = in_edges(signal, *G);
+  int selectedCellFunCell = source(*ei, *G);
+
+  return selectedCellFunCell;
+}
+
+/*
+ * For the given FunCell (signal), finds the associated outputPin node from the device model.
+ * 
+ * This function identifies the outputPin node in the device model graph G that is associated 
+ * with the given FunCell (signal), tracing the sink of the edge (walking downhill).
+ * 
+ * Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking downhill --- finding the sink of this edge]
+*/
+int findOutputPinFromFuncell(int signal, DirectedGraph *G)
+{
+  vertex_descriptor signalVertex = vertex(signal, *G);
+  out_edge_iterator eo, eo_end;
+  boost::tie(eo, eo_end) = out_edges(signalVertex, *G);
+  int selectedCellOutputPin = target(*eo, *G);
+
+  return selectedCellOutputPin;
+}
+
+/**
+ * Finds the root of the vertex model for the given signal.
+ * 
+ * As GRAMM performs pin-to-pin mapping, the root of the vertex model, 
+ * or starting point, will always be an output pin that serves as the 
+ * driver for the routing fanout of the specified signal.
+ */
+int findRoot(int signal, std::map<int, NodeConfig> *gConfig)
+{
+  struct RoutingTree *RT = &((*Trees)[signal]);
+  std::list<int>::iterator it = RT->nodes.begin();
+
+  // find the node with no parent
+  for (; it != RT->nodes.end(); it++)
+  {
+    if (!RT->parent.count(*it))
+    {
+      if ((*gConfig)[*it].Cell != "PINCELL")  //Driver has to be an output pin cell
+      {
+        GRAMM->error("FATAL ERROR -- For signal {}, driverNode is not a PinCell!!", *it);
+        exit(-1);
+      }
+      return *it;
+    }
+  }
+  return -1;
+}
+
+/**
+ * Gets the current cost associated with the given signal.
+ */
+int getSignalCost(int signal)
+{
+  int cost = 0;
+  struct RoutingTree *RT = &((*Trees)[signal]);
+
+  std::list<int>::iterator it = RT->nodes.begin();
+  for (; it != RT->nodes.end(); it++)
+  {
+    cost += (1 << (*Users)[*it].size());
+  }
+  return cost;
+}
+
+/**
+ * Checks if there is an overlap for the given signal. 
+ * Confirms by checking if there are more than one 
+ * users for any element in the routing tree.
+ */
+bool hasOverlap(int signal)
+{
+  struct RoutingTree *RT = &((*Trees)[signal]);
+  std::list<int>::iterator it = RT->nodes.begin();
+
+  for (; it != RT->nodes.end(); it++)
+    if ((*Users)[*it].size() > 1)
+      return true;
+  return false;
+}
+
+/**
+ * Calculates the total amount of used resources in the device model graph.
+ */
+int totalUsed(DirectedGraph *G)
+{
+  int total = 0;
+  for (int i = 0; i < num_vertices(*G); i++)
+  {
+    int temp = (*Users)[i].size();
+    if (temp)
+      total++;
+  }
+  return total;
+}
+
+/**
+ * Calculates the total amount of overused resources in the device model graph.
+ */
+int totalOveruse(DirectedGraph *G)
+{
+  int total = 0;
+  for (int i = 0; i < num_vertices(*G); i++)
+  {
+    int temp = (*Users)[i].size() - 1;
+    //    total += (temp >= 0) ? temp : 0;
+    total += (temp > 0) ? 1 : 0;
+
+    if (temp > 0)
+    {
+      GRAMM->debug("{} OVERUSE ON {} with following users:", temp, gNames[i]);
+      for (int value : (*Users)[i])
+      {
+        GRAMM->debug("{}", hNames[value]);
+      }
+    }
+  }
+
+  GRAMM->info("TOTAL OVERUSE: {}", total);
+
+  return total;
+}
+
+/**
+ * Adjusts the history costs for the device model graph.
+*/
+void adjustHistoryCosts(DirectedGraph *G)
+{
+  for (int i = 0; i < num_vertices(*G); i++)
+  {
+    int temp = (*Users)[i].size() - 1;
+    temp = (temp >= 0) ? temp : 0;
+    if (temp > 0)
+    {
+      (*HistoryCosts)[i] = (*HistoryCosts)[i] + 1;
+    }
+  }
+}
+
+/**
+ * Comparison function for sorting.
+*/
+int cmpfunc(const void *a, const void *b)
+{
+
+  int aI = *((int *)a);
+  int bI = *((int *)b);
+
+  // int ret = (*TopoOrder)[aI] - (*TopoOrder)[bI];
+
+  int ret = ((*Trees)[bI].nodes.size() - (*Trees)[aI].nodes.size());
+  if (ret == 0)
+    ret = (rand() % 3 - 1);
+  return ret;
+}
+
+/**
+ * Sorting the nodes of H according to the size (number of vertices) of their vertex model
+*/ 
+void sortList(int *list, int n)
+{
+  qsort(list, n, sizeof(int), cmpfunc);
+}
+
+//-------------------------------------------------------------------//
+//-------------------- [Routing] Main function ----------------------//
+//-------------------------------------------------------------------//
+
+/**
+ * Removes the specified signal from the list of nodes.
+*/
 void ripup(int signal, std::list<int> *nodes)
 {
   std::list<int>::iterator it = (*nodes).begin();
@@ -51,6 +242,10 @@ void ripup(int signal, std::list<int> *nodes)
   }
 }
 
+/**
+ * Removes the routing associated with the given signal from the routing structure.
+ * Make a list of used (device-model-nodes) for the given the given siganl (application-graph-node)
+*/
 void ripUpRouting(int signal, DirectedGraph *G)
 {
   struct RoutingTree *RT = &((*Trees)[signal]);
@@ -70,34 +265,9 @@ void ripUpRouting(int signal, DirectedGraph *G)
   ripup(signal, &toDel);
 }
 
-/*
-  Description: For the given outputPin (signal), finds the associated FunCell node from the deviceModel.
-  Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking uphill --- finding the source of this edge]
+/**
+ * Deposits the route into the routing structure for the given signal.
 */
-int findFunCellFromOutputPin(int signal, DirectedGraph *G)
-{
-  vertex_descriptor signalVertex = vertex(signal, *G);
-  in_edge_iterator ei, ei_end;
-  boost::tie(ei, ei_end) = in_edges(signal, *G);
-  int selectedCellFunCell = source(*ei, *G);
-
-  return selectedCellFunCell;
-}
-
-/*
-  Description: For the given FunCell (signal), finds the associated outputPin node from the deviceModel.
-  Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking downhill --- finding the sink of this edge]
-*/
-int findOutputPinFromFuncell(int signal, DirectedGraph *G)
-{
-  vertex_descriptor signalVertex = vertex(signal, *G);
-  out_edge_iterator eo, eo_end;
-  boost::tie(eo, eo_end) = out_edges(signalVertex, *G);
-  int selectedCellOutputPin = target(*eo, *G);
-
-  return selectedCellOutputPin;
-}
-
 void depositRoute(int signal, std::list<int> *nodes)
 {
   if (!nodes->size())
@@ -125,52 +295,9 @@ void depositRoute(int signal, std::list<int> *nodes)
   }
 }
 
-int findDriver(int signal, std::map<int, NodeConfig> *gConfig)
-{
-  struct RoutingTree *RT = &((*Trees)[signal]);
-  std::list<int>::iterator it = RT->nodes.begin();
-
-  // find the node with no parent
-  for (; it != RT->nodes.end(); it++)
-  {
-    if (!RT->parent.count(*it))
-    {
-      if ((*gConfig)[*it].Cell != "PINCELL")
-      {
-        GRAMM->error("FATAL ERROR -- For signal {}, driverNode is not a PinCell!!", *it);
-        exit(-1);
-      }
-      return *it;
-    }
-  }
-  return -1;
-}
-
-int getSignalCost(int signal)
-{
-  int cost = 0;
-  struct RoutingTree *RT = &((*Trees)[signal]);
-
-  std::list<int>::iterator it = RT->nodes.begin();
-  for (; it != RT->nodes.end(); it++)
-  {
-    cost += (1 << (*Users)[*it].size());
-  }
-  return cost;
-}
-
-bool hasOverlap(int signal)
-{
-
-  struct RoutingTree *RT = &((*Trees)[signal]);
-  std::list<int>::iterator it = RT->nodes.begin();
-
-  for (; it != RT->nodes.end(); it++)
-    if ((*Users)[*it].size() > 1)
-      return true;
-  return false;
-}
-
+/**
+ * Pathfinder approach for routing signal -> sink
+*/
 int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig)
 {
 
@@ -292,94 +419,9 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
   return retVal;
 }
 
-int totalUsed(DirectedGraph *G)
-{
-
-  int total = 0;
-  for (int i = 0; i < num_vertices(*G); i++)
-  {
-    int temp = (*Users)[i].size();
-    if (temp)
-      total++;
-  }
-  return total;
-}
-
-int totalOveruse(DirectedGraph *G)
-{
-
-  int total = 0;
-  for (int i = 0; i < num_vertices(*G); i++)
-  {
-    int temp = (*Users)[i].size() - 1;
-    //    total += (temp >= 0) ? temp : 0;
-    total += (temp > 0) ? 1 : 0;
-
-    if (temp > 0)
-    {
-      GRAMM->debug("{} OVERUSE ON {} with following users:", temp, gNames[i]);
-      for (int value : (*Users)[i])
-      {
-        GRAMM->debug("{}", hNames[value]);
-      }
-    }
-  }
-
-  GRAMM->info("TOTAL OVERUSE: {}", total);
-
-  return total;
-}
-
-void adjustHistoryCosts(DirectedGraph *G)
-{
-  for (int i = 0; i < num_vertices(*G); i++)
-  {
-    int temp = (*Users)[i].size() - 1;
-    temp = (temp >= 0) ? temp : 0;
-    if (temp > 0)
-    {
-      (*HistoryCosts)[i] = (*HistoryCosts)[i] + 1;
-    }
-  }
-}
-
-int cmpfunc(const void *a, const void *b)
-{
-
-  int aI = *((int *)a);
-  int bI = *((int *)b);
-
-  // int ret = (*TopoOrder)[aI] - (*TopoOrder)[bI];
-
-  int ret = ((*Trees)[bI].nodes.size() - (*Trees)[aI].nodes.size());
-  if (ret == 0)
-    ret = (rand() % 3 - 1);
-  return ret;
-}
-
-void sortList(int *list, int n)
-{
-  qsort(list, n, sizeof(int), cmpfunc);
-}
-
-void randomizeList(int *list, int n)
-{
-
-  // do 3n random swaps
-  for (int i = 0; i < 3 * n; i++)
-  {
-    int j = rand() % n;
-    int k = rand() % n;
-    if (j == k)
-      j = (j + 1) % n;
-
-    int temp;
-    temp = list[j];
-    list[j] = list[k];
-    list[k] = temp;
-  }
-}
-
+/**
+ * Routes all fanout edges of the specified application-graph node.
+*/
 int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig)
 {
   GRAMM->trace("BEGINNING ROUTE OF NAME : {}", hNames[y]);
@@ -403,7 +445,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
       continue; // load should be placed for the routing purpose!!
 
     // Since driver will always be the outPin of the FunCell, the type of loadOutPinCellLoc will be "pinCell"
-    // int loadOutPinCellLoc = findDriver(load, gConfig);
+    // int loadOutPinCellLoc = findRoot(load, gConfig);
 
     // Converting the driver(pinCell) to the actual input pin of FuncCell:
     // Step 1: Fetching "FunCell" ID from the edge: FunCell --> OutPin

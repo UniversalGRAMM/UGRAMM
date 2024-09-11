@@ -1,7 +1,8 @@
 //=======================================================================//
 // GRAap Minor Mapping (GRAMM) method for CGRA                           //
 // file : utilities.cp                                                   //
-// description: contains functions needed for printing and visualization //
+// description: contains functions needed for printing, visualization    //
+//              pragma etc.                                              //
 //=======================================================================//
 
 #include "../lib/GRAMM.h"
@@ -26,6 +27,14 @@ std::string output_pin_color = "#FFB6C1";          // Pre-defined color-code for
 std::string unused_cell_color = "#A9A9A9";         // Pre-defined color-code for the unused cell
 std::map<std::string, std::string> funCellMapping; // Key-> Device-model node-name :: Value-> Mapped application name.
 
+//------------------------------------------------------------------------------------//
+//------------------- [Utilities] String manipulation operations ---------------------//
+//------------------------------------------------------------------------------------//
+
+/**
+ * Removes the curly brackets '{' and '}' from the given string.
+ * The kernels present in CGRA-ME have {} included in the node names, which hinders dot visualization.
+ */
 std::string removeCurlyBrackets(const std::string &input)
 {
   std::string result = input;
@@ -47,6 +56,9 @@ std::string removeCurlyBrackets(const std::string &input)
   return result;
 }
 
+/**
+ * Changes the delimiters in the given string from "." to "_" (neato dot format does not support "." delimiter in the node name)
+ */
 std::string gNames_deliemter_changes(std::string gNames)
 {
   std::string modified_string;
@@ -69,6 +81,9 @@ std::string gNames_deliemter_changes(std::string gNames)
   return modified_string;
 }
 
+/**
+ * Removes a specified substring from the original string.
+ */
 std::string string_remover(std::string original_string, std::string toRemove)
 {
   std::string modified_string;
@@ -88,6 +103,9 @@ std::string string_remover(std::string original_string, std::string toRemove)
   return modified_string;
 }
 
+/**
+ * Converts all keys and values of the parsed JSON object to uppercase for normalization.
+ */
 void jsonUppercase(json &j)
 {
   json result;
@@ -111,13 +129,20 @@ void jsonUppercase(json &j)
   j = result;
 }
 
-std::string readCommentSection(std::ifstream &deviceModelFile)
+//------------------------------------------------------------------------------------//
+//---------------------- [Utilities] PRAGMA related functions ------------------------//
+//------------------------------------------------------------------------------------//
+
+/**
+ * Reads a multi-line comment containing PRAGMA from the given file.
+ */
+std::string readCommentSection(std::ifstream &inputFile)
 {
   std::string line;
   std::string commentSection = {};
   bool comment_started = false;
 
-  while (std::getline(deviceModelFile, line))
+  while (std::getline(inputFile, line))
   {
     size_t startPos = line.find("/*");
     if (startPos != std::string::npos)
@@ -138,10 +163,13 @@ std::string readCommentSection(std::ifstream &deviceModelFile)
       }
     }
   }
-
   return commentSection;
 }
 
+/**
+ * Checks whether placement is required for the given opcode based on the information given in the JSON.
+ * In JSON, we can either have opcode("Reg") or nodeType("ALU/Memport") to be skipped.
+*/ 
 bool doPlacement(std::string hOpcode, json &jsonParsed)
 {
   if (jsonParsed["SKIP-PLACEMENT"].empty())
@@ -150,21 +178,41 @@ bool doPlacement(std::string hOpcode, json &jsonParsed)
   }
   else
   {
-    std::string gType;
-    // Step 1: find what is the type of hOpcode from device-model pragma:
+    // First case: Opcode itself is mentioned in the json file to be skipped.
+    if (std::find(jsonParsed["SKIP-PLACEMENT"].begin(), jsonParsed["SKIP-PLACEMENT"].end(), hOpcode) != jsonParsed["SKIP-PLACEMENT"].end())
+    { 
+      GRAMM->trace(" [Case-1] : Skipping found Opcode {} in JSON",  hOpcode);
+      return true;
+    }
+
+    // Second case: NodeType to be skipped is given in the JSON file:
+    std::vector<std::string> gTypeSupported;
+
     for (const auto &pair : GrammConfig)
     {
       if (std::find(pair.second.begin(), pair.second.end(), hOpcode) != pair.second.end())
-        gType = pair.first;
+        gTypeSupported.push_back(pair.first);
     }
 
-    if (std::find(jsonParsed["SKIP-PLACEMENT"].begin(), jsonParsed["SKIP-PLACEMENT"].end(), gType) != jsonParsed["SKIP-PLACEMENT"].end())
-      return true;
-    else
-      return false;
+    for (const auto &value : gTypeSupported)
+    { 
+      if (std::find(jsonParsed["SKIP-PLACEMENT"].begin(), jsonParsed["SKIP-PLACEMENT"].end(), value) != jsonParsed["SKIP-PLACEMENT"].end())
+      {
+        GRAMM->trace(" [Case-2] : Skipping found NodeType {} in JSON",  value);
+        return true;
+      }
+    }
+    return false;
   }
 }
 
+/**
+ * Parses PRAGMA vectors from the comment section of the device model graph.
+ * 
+ * This function extracts and parses vectors of strings associated with the given keyword 
+ * from the comment section of the device model graph, and stores them in the provided 
+ * GrammConfig map.
+ */
 void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
   std::istringstream stream(commentSection);
@@ -202,6 +250,9 @@ void parseVectorofStrings(std::string commentSection, std::string keyword, std::
   }
 }
 
+/**
+ * Validates PRAGMA directives read from the application graph.
+ */
 bool checkVectorofStrings(std::string commentSection, std::string keyword, std::vector<std::string> &Type)
 {
   std::istringstream stream(commentSection);
@@ -260,6 +311,9 @@ bool checkVectorofStrings(std::string commentSection, std::string keyword, std::
   return false;
 }
 
+/**
+ * Reads, checks, and stores PRAGMA directives from the device model file.
+*/
 void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
   std::string commentSection = readCommentSection(deviceModelFile);
@@ -286,6 +340,9 @@ void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string,
   }
 }
 
+/**
+ * Reads, checks, and stores PRAGMA directives from the application graph file.
+*/ 
 void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
 
@@ -306,6 +363,13 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<st
   }
 }
 
+//------------------------------------------------------------------------------------//
+//---------------------- [Utilities] Printing and visualization ----------------------//
+//------------------------------------------------------------------------------------//
+
+/**
+ * Prints routing information to a mapping-output file.
+ */ 
 void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig)
 {
 
@@ -347,6 +411,9 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
   }
 }
 
+/**
+ * Connects associated pins to the specified FunCell in the device model graph.
+*/ 
 void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile)
 {
 
@@ -381,6 +448,9 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
   }
 }
 
+/**
+ * Prints placement information to a mapping-output file.
+*/
 void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
   int scale = 6;
@@ -438,6 +508,9 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
   }
 }
 
+/**
+ * Prints mapping results in neato format: First displays the layout and then shows connections between the nodes.
+ */
 void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
 
@@ -514,16 +587,102 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   unpositionedOutputFile << "}\n"; // End of digraph
 }
 
+/**
+ * Prints the device model cell name corresponding to a given boost id number from device model graph.
+ */
 void printName(int n)
 {
   GRAMM->debug("{}", gNames[n]);
 }
- 
-/*
-  readDeviceModel() => Reading device model dot file
-  - DirectedGraph *G                  :: original device model read dot file
-  - std::map<int, NodeConfig> *gConfig  :: Store the configuration of each node (type,opcode, latenct etc.)
-*/
+
+/**
+ * Prints vertex models of the application graph's nodes.
+ */
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig, std::map<int, int> &invUsers)
+{
+  for (int i = 0; i < num_vertices(*H); i++)
+  {
+
+    if (doPlacement((*hConfig)[i].Opcode, jsonParsed))
+      continue;
+
+    struct RoutingTree *RT = &((*Trees)[i]);
+
+    GRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
+    std::list<int>::iterator it = RT->nodes.begin();
+    /*
+    //------------------------- Corner case: -------------------------------//
+    // Checking whether there Fan-outs for the current application node:
+    out_edge_iterator eo, eo_end;
+    boost::tie(eo, eo_end) = out_edges(i, *H);
+    if (eo == eo_end)
+    {
+      GRAMM->info("\t Empty vertex model (no-fanouts for the node)");
+
+      // Finding FunCell location from the driver(outPin)
+      int FunCellLoc = findFunCellFromOutputPin(*it, G);
+
+      // For concatinating the mapped applicationNodeID name in device model cell
+      funCellMapping[gNames[FunCellLoc]] = hNames[i];
+
+      // GRAMM->info("funCellMapping[gID] = hID :: funCellMapping[{}] {}", gNames[FunCellLoc],  hNames[i]);
+      // GRAMM->info("invUsers[hID] = gID :: invUsers[{}] {}", hNames[i], gNames[invUsers[i]]);
+
+      // Removing the members of vertex model if any:
+      ripUpRouting(i, G);
+
+      // Since ripUp will remove the Users history as well for this node:
+      (*Users)[FunCellLoc].push_back(i);
+      continue;
+    }
+    //-----------------------------------------------------------------------//
+    */
+    while (it != RT->nodes.end())
+    {
+      int n = *it;
+      GRAMM->info("\t {} \t {}", n, gNames[n]);
+      if (it == RT->nodes.begin())
+      {
+        // The begining node in the resource tree will be always outPin for the FunCell
+        //   - Finding the FuncCell based on this outPin ID.
+        //   - finding ID for alu_x_y from this: "alu_x_y.outPinA"
+        int FunCellLoc = findFunCellFromOutputPin(*it, G);
+
+        // For concatinating the mapped applicationNodeID name in device model cell
+        funCellMapping[gNames[FunCellLoc]] = hNames[i];
+
+        // GRAMM->info("funCellMapping[gID] = hID :: funCellMapping[{}] {}", gNames[FunCellLoc],  hNames[i]);
+        // GRAMM->info("invUsers[hID] = gID :: invUsers[{}] {}", hNames[i], gNames[invUsers[i]]);
+      }
+
+      it++;
+    }
+  }
+}
+
+/**
+ * Prints the routing details for the given signal.
+*/ 
+void printRouting(int signal)
+{
+
+  struct RoutingTree *RT = &((*Trees)[signal]);
+  GRAMM->debug("** routing for i: {} {} ", signal, hNames[signal]);
+
+  std::list<int>::iterator it = RT->nodes.begin();
+  for (; it != RT->nodes.end(); it++)
+  {
+    GRAMM->debug("\t {} \t {}", *it, gNames[*it]);
+  }
+}
+
+//------------------------------------------------------------------------------------//
+//-------------------------------- [Utilities] File read -----------------------------//
+//------------------------------------------------------------------------------------//
+
+/**
+ * Reads a DOT file and stores attributes into the device model graph.
+ */
 void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
 {
   //--------------------------------------------------------------------
@@ -564,11 +723,9 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
   }
 }
 
-/*
-  readDeviceModel() => Reading device model dot file
-  - DirectedGraph *H                    :: original device model read dot file
-  - std::map<int, NodeConfig> *hConfig  :: Store the configuration of each node (type,opcode, latenct etc.)
-*/
+/**
+ * Reads a DOT file and stores attributes into the application graph.
+*/ 
 void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 {
   /*
@@ -604,80 +761,5 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     //(*hConfig)[i].Type = upperCaseType;
 
     GRAMM->trace("[H] name {} :: applicationOpcode {} ", name, upperCaseOpcode);
-  }
-}
-
-void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig, std::map<int, int> &invUsers)
-{
-  for (int i = 0; i < num_vertices(*H); i++)
-  {
-
-    if (doPlacement((*hConfig)[i].Opcode, jsonParsed))
-      continue;
-
-    struct RoutingTree *RT = &((*Trees)[i]);
-
-    GRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
-    std::list<int>::iterator it = RT->nodes.begin();
-
-    //------------------------- Corner case: -------------------------------//
-    // Checking whether there Fan-outs for the current application node:
-    out_edge_iterator eo, eo_end;
-    boost::tie(eo, eo_end) = out_edges(i, *H);
-    if (eo == eo_end)
-    {
-      GRAMM->info("\t Empty vertex model (no-fanouts for the node)");
-
-      // Finding FunCell location from the driver(outPin)
-      int FunCellLoc = findFunCellFromOutputPin(*it, G);
-
-      // For concatinating the mapped applicationNodeID name in device model cell
-      funCellMapping[gNames[FunCellLoc]] = hNames[i];
-
-      // GRAMM->info("funCellMapping[gID] = hID :: funCellMapping[{}] {}", gNames[FunCellLoc],  hNames[i]);
-      // GRAMM->info("invUsers[hID] = gID :: invUsers[{}] {}", hNames[i], gNames[invUsers[i]]);
-
-      // Removing the members of vertex model if any:
-      ripUpRouting(i, G);
-
-      // Since ripUp will remove the Users history as well for this node:
-      (*Users)[FunCellLoc].push_back(i);
-      continue;
-    }
-    //-----------------------------------------------------------------------//
-
-    while (it != RT->nodes.end())
-    {
-      int n = *it;
-      GRAMM->info("\t {} \t {}", n, gNames[n]);
-      if (it == RT->nodes.begin())
-      {
-        // The begining node in the resource tree will be always outPin for the FunCell
-        //   - Finding the FuncCell based on this outPin ID.
-        //   - finding ID for alu_x_y from this: "alu_x_y.outPinA"
-        int FunCellLoc = findFunCellFromOutputPin(*it, G);
-
-        // For concatinating the mapped applicationNodeID name in device model cell
-        funCellMapping[gNames[FunCellLoc]] = hNames[i];
-
-        // GRAMM->info("funCellMapping[gID] = hID :: funCellMapping[{}] {}", gNames[FunCellLoc],  hNames[i]);
-        // GRAMM->info("invUsers[hID] = gID :: invUsers[{}] {}", hNames[i], gNames[invUsers[i]]);
-      }
-
-      it++;
-    }
-  }
-}
-
-void printRouting(int signal)
-{
-
-  struct RoutingTree *RT = &((*Trees)[signal]);
-  GRAMM->debug("** routing for i: {} {} ", signal, hNames[signal]);
-
-  std::list<int>::iterator it = RT->nodes.begin();
-  for (; it != RT->nodes.end(); it++)
-  {
-    GRAMM->debug("\t {} \t {}", *it, gNames[*it]);
   }
 }

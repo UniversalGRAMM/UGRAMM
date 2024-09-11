@@ -37,10 +37,71 @@
 #define maxIterations 39
 //-------------------------------------------------------------------//
 
-//CGRA device model parameters:
-extern int numR;       //Number of rows in the CGRA architecture
-extern int numC;       //Number of columns in the CGRA architecture
-extern int CGRAdim;    //CGRA architecture dimension (3 means --> 3x3)
+//Struct for defining the node configuration in hConfig and gConfig data-structures:
+struct NodeConfig {
+    // For [G] --> Device Model Graph
+    std::string Cell;          //Cell-type --> FuncCell, RouteCell, PinCell
+    std::string Type;          //Node-Type --> io, alu, memport....
+    int Latency = 0;           //Optional            
+
+    // For [H] --> Application Graph
+    std::string Opcode;        //OpcodeType --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
+    std::string loadPin;       //Load pin of the PinCell node --> inPinA, inPinB
+    std::pair<int, int> Location = {0,0 }; //Optional  
+};
+
+//Struct for defining the expected attributes defined in the h and g graph:
+struct DotVertex {
+    // For [H] --> Application Graph
+    std::string name;       //[Required] Contains name of the operation in Application graph (ex: Load_0)
+    std::string opcode;     //[Required] Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
+    std::string type;       //[Required] Contains the type of the operation (ex: ALU, MEMPORT, CONST etc.)
+
+    // For [G] --> Device Model Graph
+    std::string G_Name;       //[Required] Contains the unique name of the cell in the device model graph.
+    std::string G_NodeCell;   //[Required] Contains the Opcode of the NodeType (FuncCell, RouteCell, PinCell)
+    std::string G_NodeType;   //[Required] Contains the Node type of Device Model Graph (For example "ALU" for NodeType "FuncCell") 
+    float G_VisualX;          //[Optional] Visual X co-ordinate
+    float G_VisualY;          //[Optional] Visual Y co-ordinate
+};
+
+//Struct for defining the edge types in the H graph to determine the pin layout
+struct EdgeProperty {
+    std::string loadPin;   //[Required]
+    std::string driverPin; //[Required]
+};
+
+//Properties of the application and device model graph:
+typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
+typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeProperty, EdgeWeightProperty > DirectedGraph;
+typedef boost::graph_traits<DirectedGraph>::edge_iterator edge_iterator;
+typedef boost::graph_traits<DirectedGraph>::in_edge_iterator in_edge_iterator;
+typedef boost::graph_traits<DirectedGraph>::out_edge_iterator out_edge_iterator;
+typedef boost::graph_traits<DirectedGraph>::vertex_descriptor vertex_descriptor;
+typedef boost::graph_traits<DirectedGraph>::out_edge_iterator OutEdgeIterator;
+typedef DirectedGraph::edge_descriptor Edge;
+
+// the routing tree for a signal
+// explanation for the three fields:
+// for each node in the tree, we have a map that returns a list of its child nodes (i.e. the nodes it drives)
+// for each node in the tree, we have a map that returns its parent node (i.e., the unique node that drives it)
+// we also keep track of the list of all nodes in the routing tree
+struct RoutingTree {
+  std::map<int, std::list<int>> children;
+  std::map<int, int> parent;
+  std::list<int> nodes;
+};
+
+// Routing related variables:
+extern std::vector<RoutingTree> *Trees;      // routing trees for every node in H
+extern std::vector<std::list<int>> *Users;   // for every node in device model G track its users
+extern std::map<int, int> invUsers;          // InvUsers, key = hID, value = current_mapped gID   
+extern std::vector<int> *HistoryCosts;       // for history of congestion in PathFinder
+extern std::vector<int> *TraceBack;          
+extern std::vector<int> *TopoOrder;          // NOT USED: for topological order
+extern std::map<int, std::string> hNames;    //Map for storing the unique names of Application graph
+extern std::map<int, std::string> gNames;    //Map for storing the unique names of device model graph
+extern std::bitset<100000> explored;
 
 //Pathefinder cost parameters:
 extern float PFac;  //Congestion cost factor
@@ -59,73 +120,31 @@ extern std::map<std::string, std::vector<std::string>> GrammConfig;    //New gen
 using json = nlohmann::json;
 extern json jsonParsed;
 
-struct NodeConfig {
-    //G:
-    std::string Cell;          //[New way] Cell-type of the node --> FuncCell, RouteCell, PinCell
-    std::string Type;          //[New way] Node-Type of the node --> io, alu, memport....
-    int Latency = 0;           //Optional            
-    int Width   = 0;           //Optional  
+//Function declaration:
 
-    //H:
-    std::string Opcode;        //[New way] Opcode of the node --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
-    std::string loadPin;       //Load pin of the PinCell node --> inPinA, inPinB
-    std::pair<int, int> Location = {0,0 }; //Optional  
-};
-
-//Struct for defining the node types in both the application and device model graph:
-struct DotVertex {
-    // For [H] --> Application Graph
-    std::string name;       //Contains name of the operation in Application graph (ex: Load_0)
-    std::string opcode;     //Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
-    std::string type;       //Contains the type of the operation (ex: ALU, MEMPORT, CONST etc.)
-    // For [G] --> Device Model Graph
-    std::string G_Name;       //Contains the unique name of the cell in the device model graph.
-    std::string G_NodeCell;   //Contains the Opcode of the NodeType (FuncCell, RouteCell, PinCell)
-    std::string G_NodeType;   //Contains the Node type of Device Model Graph (For example "ALU" for NodeType "FuncCell") 
-    float G_VisualX;
-    float G_VisualY;
-};
-
-//Struct for defining the edge types in the H graph to determine the pin layout
-struct EdgeProperty {
-    std::string loadPin;
-    std::string driverPin;
-};
-
-// the routing tree for a signal
-// explanation for the three fields:
-// for each node in the tree, we have a map that returns a list of its child nodes (i.e. the nodes it drives)
-// for each node in the tree, we have a map that returns its parent node (i.e., the unique node that drives it)
-// we also keep track of the list of all nodes in the routing tree
-struct RoutingTree {
-  std::map<int, std::list<int>> children;
-  std::map<int, int> parent;
-  std::list<int> nodes;
-};
-
-extern std::vector<RoutingTree> *Trees;
-extern std::vector<std::list<int>> *Users;
-extern std::map<int, int> invUsers;
-extern std::vector<int> *HistoryCosts;
-extern std::vector<int> *TraceBack;
-extern std::vector<int> *TopoOrder;
-extern std::map<int, std::string> hNames;    //Map for storing the unique names of Application graph
-extern std::map<int, std::string> gNames;    //Map for storing the unique names of device model graph
-extern std::bitset<100000> explored;
-
-
-//Properties of the application and device model graph:
-typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
-typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeProperty, EdgeWeightProperty > DirectedGraph;
-typedef boost::graph_traits<DirectedGraph>::edge_iterator edge_iterator;
-typedef boost::graph_traits<DirectedGraph>::in_edge_iterator in_edge_iterator;
-typedef boost::graph_traits<DirectedGraph>::out_edge_iterator out_edge_iterator;
-typedef boost::graph_traits<DirectedGraph>::vertex_descriptor vertex_descriptor;
-typedef boost::graph_traits<DirectedGraph>::out_edge_iterator OutEdgeIterator;
-typedef DirectedGraph::edge_descriptor Edge;
-
+/**
+ * Finds a minor embedding of graph H into graph G.
+ * 
+ * 
+ * @param H Pointer to the directed graph H (original application graph read from a DOT file).
+ * @param G Pointer to the directed graph G (original device model read from a DOT file).
+ * @param hConfig Pointer to a map containing configuration information about nodes in graph H.
+ * @param gConfig Pointer to a map containing configuration information about nodes in graph G.
+ * @return int Returns an integer indicating the success or failure of finding the minor embedding.
+ */
 int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
 
+/**
+ * Finds the minimal vertex model for embedding.
+ * 
+ * 
+ * @param H Pointer to the directed graph H (original application graph read from a DOT file).
+ * @param G Pointer to the directed graph G (original device model graph read from a DOT file).
+ * @param y Integer indicating a vertex in graph H to begin from.
+ * @param hConfig Pointer to a map containing configuration information about nodes in graph H.
+ * @param gConfig Pointer to a map containing configuration information about nodes in graph G.
+ * @return int Returns an integer indicating the success or failure of finding the minimal embedding.
+ */
 int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
 
 #endif //GRAMM header

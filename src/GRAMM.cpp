@@ -8,12 +8,9 @@
 #include "../lib/utilities.h"
 #include "../lib/routing.h"
 
-// Declartion of variables:
-
-// CGRA device model parameters:
-int numR;    // Number of rows in the CGRA architecture
-int numC;    // Number of columns in the CGRA architecture
-int CGRAdim; // CGRA architecture dimension (3 means --> 3x3)
+//-------------------------------------------------------------------//
+//------------------- Declartion of variables -----------------------//
+//-------------------------------------------------------------------//
 
 // Pathefinder cost parameters:
 float PFac = 1; // Congestion cost factor
@@ -37,11 +34,17 @@ std::vector<std::string> outPin = {"outPinA"};
 std::shared_ptr<spdlog::logger> GRAMM = spdlog::stdout_color_mt("GRAMM");
 namespace po = boost::program_options;
 
-std::map<std::string, std::vector<std::string>> GrammConfig; // Gramm config parsed from Pragma
+//GrammConfig structure which is parsed from Pragma's of Device and application graph
+std::map<std::string, std::vector<std::string>> GrammConfig; 
 
 // Defining the JSON for the config file:
 json jsonParsed;
 
+//---------------------------------------------------------------------//
+
+/*
+  Description: For every application graph node, find a minimal vertex model.
+*/
 int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
   //--------------------------------------
@@ -87,17 +90,18 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
     GRAMM->debug("[RandomSelection] for application node :: {} :: Choosing starting vertex model as :: {} :: {}", hNames[y], gNames[chooseRand], gNames[selectedCellOutputPin]);
 
-    // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell
-    //(*Trees)[y].nodes.push_back(chooseRand);
-    (*Trees)[y].nodes.push_back(selectedCellOutputPin);
-    (*Users)[chooseRand].push_back(y); // Users and history cost is primarily tracked for FunCell nodes.
-    (*Users)[selectedCellOutputPin].push_back(y);
+    // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell node.
+    //     But note that costing is still done with respect to the FunCell node as costing based on output cell may not show overlap correctly
+
+    (*Trees)[y].nodes.push_back(selectedCellOutputPin); // Routing data structure starts with outpin itself
+    (*Users)[chooseRand].push_back(y);                  // Users and history cost is primarily tracked for FunCell nodes.
+    (*Users)[selectedCellOutputPin].push_back(y);       
     invUsers[y] = chooseRand;
 
     return 0;
   }
 
-  // OK, at least one of y's fanins or fanouts have a vertex model
+  // At least one of y's fanins or fanouts have a vertex model [not allEmpty cases]
   int bestCost = MAX_DIST;
   int bestIndexPincell = -1;
   int bestIndexFuncell = -1;
@@ -120,13 +124,24 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
     // Finding the output Pin for the selected FunCell:
     int outputPin = findOutputPinFromFuncell(i, G);
+    invUsers[y] = i;
+
+    //------------------------- Corner case: -------------------------------//
+    // Checking whether there Fan-outs for the current application node:
+    out_edge_iterator eout, eout_end;
+    boost::tie(eout, eout_end) = out_edges(y, *H);
+    if (eout == eout_end)
+    {
+      GRAMM->info("The application node {} does not have any Fanouts, thus not calculating any vertex model for it", hNames[y]);
+      return 0;
+    }
+    //-----------------------------------------------------------------------//
 
     ripUpRouting(y, G);
-    // Checking if the current node 'y' has any Fanouts to be routed.
     (*Trees)[y].nodes.push_back(outputPin);
-    (*Users)[i].push_back(y); // Users and history cost is primarily tracked for FunCell nodes.
+    (*Users)[i].push_back(y);                   // Users and history cost is primarily tracked for FunCell nodes.
     (*Users)[outputPin].push_back(y);
-    invUsers[y] = i;
+    
 
     // Cost and history costs are as well added for the FunCell instead of the PinCell.
     totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
@@ -154,7 +169,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       if ((*Trees)[driver].nodes.size() == 0)
         continue; // driver is not placed
 
-      int driverPinNode = findDriver(driver, gConfig);
+      int driverPinNode = findRoot(driver, gConfig);
 
       ripUpRouting(driver, G);
       (*Trees)[driver].nodes.push_back(driverPinNode);
@@ -226,7 +241,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     if ((*Trees)[driver].nodes.size() == 0)
       continue; // driver is not placed
 
-    int driverPinNode = findDriver(driver, gConfig);
+    int driverPinNode = findRoot(driver, gConfig);
 
     ripUpRouting(driver, G);
     (*Trees)[driver].nodes.push_back(driverPinNode);
@@ -243,13 +258,15 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   return 0;
 }
 
+//---------------------------------------------------------------------//
+
 /*
-  findMinorEmbedding() => determine if H is a minor of G
+  Description: Find minor embedding for all of the nodes of the application graph.
 */
 int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
 
-  int ordering[num_vertices(*H)]; // presently unused
+  int ordering[num_vertices(*H)];
   for (int i = 0; i < num_vertices(*H); i++)
   {
     GRAMM->trace("{} ", ordering[i]);
@@ -270,7 +287,10 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     GRAMM->debug("\n\n");
     GRAMM->info("***** BEGINNING OUTER WHILE LOOP ***** ITER {}", iterCount);
 
-    // randomizeList(ordering, num_vertices(*H));
+    // Not using randomize sorting:
+    //randomizeList(ordering, num_vertices(*H));
+    
+    // Sorting the nodes of H according to the size (number of vertices) of their vertex model
     sortList(ordering, num_vertices(*H));
 
     for (int k = 0; k < num_vertices(*H); k++)
@@ -278,14 +298,13 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       int y = ordering[k];
 
       GRAMM->trace(" Condition :: {} :: Type :: {} ", doPlacement((*hConfig)[y].Opcode, jsonParsed), (*hConfig)[y].Opcode);
+
       if (doPlacement((*hConfig)[y].Opcode, jsonParsed))
         continue;
 
       GRAMM->debug("\n");
       GRAMM->debug("--------------------- New Vertices Mapping Start ---------------------------");
       GRAMM->debug("Finding vertex model for: {} with Current vertex-size: {}", hNames[y], (*Trees)[y].nodes.size());
-      if (computeTopoEnable)
-        GRAMM->trace("TOPO ORDER: {}", (*TopoOrder)[y]);
 
       findMinVertexModel(G, H, y, hConfig, gConfig);
     } // for k
@@ -325,6 +344,11 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   return 0;
 }
 
+//---------------------------------------------------------------------//
+
+/*
+  Description: main function
+*/
 int main(int argc, char **argv)
 {
 
@@ -336,17 +360,17 @@ int main(int argc, char **argv)
   boost::dynamic_properties dp(boost::ignore_other_properties);
 
   //----------------- For [H] --> Application Graph --------------------//
-  dp.property("label", boost::get(&DotVertex::name, H));          //--> Contains name of the operation in Application graph (ex: Load_0)
-  dp.property("opcode", boost::get(&DotVertex::opcode, H));       //--> Contains the Opcode of the operation (ex: op, const, input and output)
-  dp.property("load", boost::get(&EdgeProperty::loadPin, H));     //-->Edge property describing the loadPin to use for the edge
-  dp.property("driver", boost::get(&EdgeProperty::driverPin, H)); //-->Edge property describing the driverPin to use for the edge
+  dp.property("label", boost::get(&DotVertex::name, H));                 //--> [Required] Contains name of the operation in Application graph (ex: Load_0)
+  dp.property("opcode", boost::get(&DotVertex::opcode, H));              //--> [Required] Contains the Opcode of the operation (ex: op, const, input and output)
+  dp.property("load", boost::get(&EdgeProperty::loadPin, H));            //--> [Required] Edge property describing the loadPin to use for the edge
+  dp.property("driver", boost::get(&EdgeProperty::driverPin, H));        //--> [Required] Edge property describing the driverPin to use for the edge
 
   //---------------- For [G] --> Device Model Graph --------------------//
-  dp.property("G_Name", boost::get(&DotVertex::G_Name, G));
-  dp.property("G_NodeCell", boost::get(&DotVertex::G_NodeCell, G)); //--> Contains the Node CellType (FuncCell, RouteCell, PinCell)
-  dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G)); //--> Contains the NodeType (FuncCell CellType can have NodeTypes as ALU, MEMPORT)
-  dp.property("G_VisualX", boost::get(&DotVertex::G_VisualX, G));   //--> X location for only visualization purpose.
-  dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));   //--> Y location for only visualization purpose.
+  dp.property("G_Name", boost::get(&DotVertex::G_Name, G));         //--> [Required] Contains the unique name of the cell in the device model graph.
+  dp.property("G_NodeCell", boost::get(&DotVertex::G_NodeCell, G)); //--> [Required] Contains the Node CellType (FuncCell, RouteCell, PinCell)
+  dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G)); //--> [Required] Contains the NodeType (FuncCell CellType can have NodeTypes as ALU, MEMPORT)
+  dp.property("G_VisualX", boost::get(&DotVertex::G_VisualX, G));   //--> [Optional] X location for only visualization purpose.
+  dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));   //--> [Optional] Y location for only visualization purpose.
 
   // gConfig and hConfig contains the configuration information about the particular node.
   std::map<int, NodeConfig> gConfig, hConfig;
@@ -365,7 +389,7 @@ int main(int argc, char **argv)
   int verbose_level;           // Verbosity level => [0: info], [1: debug], [2: trace]
 
   po::options_description desc("[GRAMM] allowed options =");
-  desc.add_options()("help,h", "Print help messages")("num_rows,nr,NR", po::value<int>(&numR)->required(), "Number of rows")("num_cols,nc,NC", po::value<int>(&numC)->required(), "Number of Columns")("seed", po::value<int>(&seed_value)->required(), "Seed for the run")("verbose_level", po::value<int>(&verbose_level)->required(), "0: info, 1: debug, 2: trace")("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file")("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file")("config", po::value<std::string>(&configFile)->required(), "GRAMM config file");
+  desc.add_options()("help,h", "Print help messages")("seed", po::value<int>(&seed_value)->required(), "Seed for the run")("verbose_level", po::value<int>(&verbose_level)->required(), "0: info, 1: debug, 2: trace")("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file")("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file")("config", po::value<std::string>(&configFile)->required(), "GRAMM config file");
 
   po::store(po::parse_command_line(argc, argv, desc), vm);
 
@@ -380,7 +404,7 @@ int main(int argc, char **argv)
   //---------------------- setting up the input variables --------------//
 
   if (verbose_level == 0)
-    GRAMM->set_level(spdlog::level::info); // Set global log level to debug
+    GRAMM->set_level(spdlog::level::info);  // Set global log level to debug
   else if (verbose_level == 1)
     GRAMM->set_level(spdlog::level::debug); // Set global log level to debug
   else if (verbose_level == 2)
@@ -394,8 +418,9 @@ int main(int argc, char **argv)
   {
     std::ifstream f(configFile);
     jsonParsed = json::parse(f);                            // Parsing the Json file.
-    jsonUppercase(jsonParsed);                              // Normalizing the JSON to uppercase letters.
     GRAMM->info("Parsed JSON file {} ", jsonParsed.dump()); // Printing JSON file for the info purpose.
+    jsonUppercase(jsonParsed);                              // Normalizing the JSON to uppercase letters.
+    GRAMM->info("Normalized JSON {} ", jsonParsed.dump()); // Printing JSON file for the info purpose.
   }
 
   //--------------------------------------------------------------------//
