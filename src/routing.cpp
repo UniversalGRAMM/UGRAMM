@@ -200,8 +200,6 @@ int cmpfunc(const void *a, const void *b)
   int aI = *((int *)a);
   int bI = *((int *)b);
 
-  // int ret = (*TopoOrder)[aI] - (*TopoOrder)[bI];
-
   int ret = ((*Trees)[bI].nodes.size() - (*Trees)[aI].nodes.size());
   if (ret == 0)
     ret = (rand() % 3 - 1);
@@ -258,8 +256,6 @@ void ripUpRouting(int signal, DirectedGraph *G)
   for (; it != RT->nodes.end(); it++)
   {
     toDel.push_back(*it);
-    //    std::cout << "RIPUP ";
-    //    printName(*it);
   }
 
   ripup(signal, &toDel);
@@ -278,15 +274,11 @@ void depositRoute(int signal, std::list<int> *nodes)
   std::list<int>::reverse_iterator it = (*nodes).rbegin();
   struct RoutingTree *RT = &((*Trees)[signal]);
   int prev = *it; // first should should already be part of the route
-  //  std::cout << "PATH:\n";
-  //  std::cout << "USERS: " << (*Users)[prev].size() << " ";
-  //  printName(prev);
+
   it++;
   for (; it != (*nodes).rend(); it++)
   {
     int addNode = *it;
-    //    std::cout << "USERS: " << (*Users)[addNode].size() << " ";
-    //    printName(addNode);
     (*Users)[addNode].push_back(signal);
     RT->children[prev].push_back(addNode);
     RT->parent[addNode] = prev;
@@ -329,16 +321,14 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     eNode.cost = 0;
     eNode.i = rNode;
 
-    if (DEBUG)
-      std::cout << "EXPANSION SOURCE : " << gNames[rNode] << "\n";
+    GRAMM->trace("EXPANSION SOURCE : {}", gNames[rNode]);
 
     explored.set(rNode);
     expInt.push_back(rNode);
     PRQ.push(eNode);
   }
 
-  //  std::cout << "EXPANSION TARGET: \n";
-  //  printName(sink);
+  GRAMM->trace("EXPANSION TARGET : {}", gNames[sink]);
 
   struct ExpNode popped;
   bool hit = false;
@@ -346,8 +336,9 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
   {
     popped = PRQ.top();
     PRQ.pop();
-    //    printName(popped.i);
-    //    std::cout << "PRQ POP COST: " << popped.cost << "\n";
+    GRAMM->trace("Popped element: ", gNames[popped.i]);
+    GRAMM->trace("PRQ POP COST: {}", popped.cost);
+
     if ((popped.cost > 0) &&
         (popped.i == sink))
     { // cost must be higher than 0 (otherwise sink was part of initial expansion list)
@@ -373,13 +364,9 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
 
       struct ExpNode eNodeNew;
       eNodeNew.i = next;
-      //      eNodeNew.cost = popped.cost + (4 << (*Users)[next].size());
-      //      eNodeNew.cost = popped.cost + (4 << (*Users)[next].size()) + (1 << (*HistoryCosts)[next]);
+
       eNodeNew.cost = popped.cost + (1 + (*HistoryCosts)[next]) * (1 + (*Users)[next].size() * PFac);
-      //      if ((*HistoryCosts)[next] >= 2) {
-      //	eNodeNew.cost = MAX_DIST;
-      //	(*HistoryCosts)[next] = 0;
-      //      }
+
       (*TraceBack)[next] = popped.i;
       if ((eNodeNew.cost > 0) && (next == sink))
       { // JANDERS fast targeting
@@ -488,9 +475,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     }
     else
     {
-      // uncommenting this
-      //  OB:  std::cout << "NAME :" << hNames[y] << " LOAD: \n";
-      //  OB:      printName(loadLoc);
+      GRAMM->trace("Skipped the routing for this application node {} due to high cost", hNames[y]);
     }
   }
   return totalCost;

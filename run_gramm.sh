@@ -2,23 +2,26 @@
 
 #Default architecture set to RIKEN in this helper script
 #Seed is default to 0
-# $1 : Kernels/Conv_Balance/conv_nounroll_Balance.dot 
+# $1 = Seed
 # $2 = NR = 8
 # $3 = NC = 8
-# $4 = Arch Type = RIKEN_with_pins or RIKEN <without pins>
+# $4 = Application graph
+# $5 = GRAMM config JSON file
 
 # Generating device model:
 echo "---------------------Generating device model using external script:---------------------"
-echo "cd scripts && ./device_model_gen.py -NR $2 -NC $3 -Arch $4 && cd .."
-cd scripts && ./device_model_gen.py -NR $2 -NC $3 -Arch $4 && cd ..
+echo "cd scripts && ./device_model_gen.py -NR $2 -NC $3 -Arch RIKEN && cd .."
+cd scripts && ./device_model_gen.py -NR $2 -NC $3 -Arch RIKEN && cd ..
 
 # Executes GRAMM and producing mapping result in mapping_output.dot
 echo " "
 echo " "
 echo "---------------------Executing GRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------"
 device_model_output="scripts/riken_$2_$3.dot"
-echo "make && ./GRAMM $1 $device_model_output $2 $3 0"
-make && ./GRAMM $1 $device_model_output $2 $3 0
+echo "make && ./GRAMM --seed $1 --verbose_level 0 --dfile $device_model_output --afile $4 --config $5"
+make && ./GRAMM --seed $1 --verbose_level 0 --dfile $device_model_output --afile $4 --config $5
+
+
 
 # Converting the mapped output dot file into png:
 echo " "

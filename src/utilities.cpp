@@ -610,33 +610,14 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
     GRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
     std::list<int>::iterator it = RT->nodes.begin();
-    /*
-    //------------------------- Corner case: -------------------------------//
-    // Checking whether there Fan-outs for the current application node:
-    out_edge_iterator eo, eo_end;
-    boost::tie(eo, eo_end) = out_edges(i, *H);
-    if (eo == eo_end)
+
+    //Checking for the elements with zero vertex model size (for the nodes without any fanout)
+    if(RT->nodes.size() == 0)
     {
       GRAMM->info("\t Empty vertex model (no-fanouts for the node)");
-
-      // Finding FunCell location from the driver(outPin)
-      int FunCellLoc = findFunCellFromOutputPin(*it, G);
-
-      // For concatinating the mapped applicationNodeID name in device model cell
-      funCellMapping[gNames[FunCellLoc]] = hNames[i];
-
-      // GRAMM->info("funCellMapping[gID] = hID :: funCellMapping[{}] {}", gNames[FunCellLoc],  hNames[i]);
-      // GRAMM->info("invUsers[hID] = gID :: invUsers[{}] {}", hNames[i], gNames[invUsers[i]]);
-
-      // Removing the members of vertex model if any:
-      ripUpRouting(i, G);
-
-      // Since ripUp will remove the Users history as well for this node:
-      (*Users)[FunCellLoc].push_back(i);
-      continue;
+      funCellMapping[gNames[invUsers[i]]] = hNames[i];
     }
-    //-----------------------------------------------------------------------//
-    */
+   
     while (it != RT->nodes.end())
     {
       int n = *it;
@@ -650,9 +631,6 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
         // For concatinating the mapped applicationNodeID name in device model cell
         funCellMapping[gNames[FunCellLoc]] = hNames[i];
-
-        // GRAMM->info("funCellMapping[gID] = hID :: funCellMapping[{}] {}", gNames[FunCellLoc],  hNames[i]);
-        // GRAMM->info("invUsers[hID] = gID :: invUsers[{}] {}", hNames[i], gNames[invUsers[i]]);
       }
 
       it++;
@@ -753,12 +731,6 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     std::string applicationOpcode = boost::get(&DotVertex::opcode, *H, v);
     std::string upperCaseOpcode = boost::to_upper_copy(applicationOpcode);
     (*hConfig)[i].Opcode = upperCaseOpcode;
-
-    // Fetching type from the application-graph:
-    // Contains the type of the operation (ex: ALU, MEMPORT, CONST etc.)
-    // std::string applicationType = boost::get(&DotVertex::type, *H, v);
-    // std::string upperCaseType = boost::to_upper_copy(applicationType);
-    //(*hConfig)[i].Type = upperCaseType;
 
     GRAMM->trace("[H] name {} :: applicationOpcode {} ", name, upperCaseOpcode);
   }

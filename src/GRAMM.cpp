@@ -81,7 +81,6 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       chooseRand = (chooseRand + 1) % num_vertices(*G);
       if (compatibilityCheck((*gConfig)[chooseRand].Type, (*hConfig)[y].Opcode))
       {
-        // GRAMM->debug("Picking up random node :: gNames - {} :: users - {} :: hNames - {} ", gNames[chooseRand], (*Users)[chooseRand].size(), hNames[y]);
         //  Finding the output Pin for the selected FunCell:
         selectedCellOutputPin = findOutputPinFromFuncell(chooseRand, G);
         vertex_found = true;
@@ -91,7 +90,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     GRAMM->debug("[RandomSelection] for application node :: {} :: Choosing starting vertex model as :: {} :: {}", hNames[y], gNames[chooseRand], gNames[selectedCellOutputPin]);
 
     // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell node.
-    //     But note that costing is still done with respect to the FunCell node as costing based on output cell may not show overlap correctly
+    //     But note that costing is still done with respect to the FunCell node as costing based on output pin may not show overlap correctly
 
     (*Trees)[y].nodes.push_back(selectedCellOutputPin); // Routing data structure starts with outpin itself
     (*Users)[chooseRand].push_back(y);                  // Users and history cost is primarily tracked for FunCell nodes.
@@ -127,7 +126,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     invUsers[y] = i;
 
     //------------------------- Corner case: -------------------------------//
-    // Checking whether there Fan-outs for the current application node:
+    // Checking whether current application node has any Fan-outs or not:
     out_edge_iterator eout, eout_end;
     boost::tie(eout, eout_end) = out_edges(y, *H);
     if (eout == eout_end)
@@ -137,19 +136,17 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     }
     //-----------------------------------------------------------------------//
 
+    //Fan-outs present for the current application node, thus trying to find a vertex model for it.
     ripUpRouting(y, G);
     (*Trees)[y].nodes.push_back(outputPin);
     (*Users)[i].push_back(y);                   // Users and history cost is primarily tracked for FunCell nodes.
     (*Users)[outputPin].push_back(y);
     
-
     // Cost and history costs are as well added for the FunCell instead of the PinCell.
     totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
 
     if (GRAMM->level() <= spdlog::level::trace)
-    {
       printRouting(y);
-    }
 
     totalCosts[i] += routeSignal(G, H, y, gConfig);
     GRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[outputPin], totalCosts[i]);
@@ -352,6 +349,13 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 int main(int argc, char **argv)
 {
 
+  //--------------- Starting timestamp -------------------------
+  /* get start timestamp */
+  struct timeval totalTime;
+  gettimeofday(&totalTime, NULL);
+  uint64_t startTotal = totalTime.tv_sec * (uint64_t)1000000 + totalTime.tv_usec;
+  //------------------------------------------------------------
+
   //--------------------------------------------------------------------//
   //----------------- Setting up required variables --------------------//
   //--------------------------------------------------------------------//
@@ -468,22 +472,15 @@ int main(int argc, char **argv)
     invUsers[i] = -1;
   }
 
-  /*
-   ** compute a topological order
-    -->  We also experimented with sorting the nodes of H according to their topological distancwe from a CGRA I/O or memory port; however, we found that this technique did not improve results beyond the ordering by the size of the vertex models.
-  */
-  // if (computeTopoEnable)
-  //   computeTopo(&H, &hConfig); // not presently used
-
   //--------------------------------------------------------------------//
   //----------------- STEP 3: Finding minor embedding ------------------//
   //--------------------------------------------------------------------//
 
   //--------------- Starting timestamp -------------------------
   /* get start timestamp */
-  struct timeval tv;
-  gettimeofday(&tv, NULL);
-  uint64_t start = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
+  struct timeval grammTime;
+  gettimeofday(&grammTime, NULL);
+  uint64_t startGramm = grammTime.tv_sec * (uint64_t)1000000 + grammTime.tv_usec;
   //------------------------------------------------------------
 
   int success = findMinorEmbedding(&H, &G, &hConfig, &gConfig);
@@ -498,11 +495,19 @@ int main(int argc, char **argv)
   }
 
   //--------------- get elapsed time -------------------------
-  gettimeofday(&tv, NULL);
-  uint64_t end = tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
-  uint64_t elapsed = end - start;
-  double seconds = static_cast<double>(elapsed) / 1000000.0;
-  GRAMM->info("Total time taken :: {} Seconds", seconds);
+  gettimeofday(&grammTime, NULL);
+  uint64_t endGramm = grammTime.tv_sec * (uint64_t)1000000 + grammTime.tv_usec;
+  uint64_t elapsedGramm = endGramm - startGramm;
+  double secondsGramm = static_cast<double>(elapsedGramm) / 1000000.0;
+  GRAMM->info("Total time taken for [mapping] :: {} Seconds", secondsGramm);
+  //------------------------------------------------------------
+
+  //--------------- get elapsed time -------------------------
+  gettimeofday(&totalTime, NULL);
+  uint64_t endTotal = totalTime.tv_sec * (uint64_t)1000000 + totalTime.tv_usec;
+  uint64_t elapsedTotal = endTotal - startTotal;
+  double secondsTotal = static_cast<double>(elapsedTotal) / 1000000.0;
+  GRAMM->info("Total time taken for [GRAMM]:: {} Seconds", secondsTotal);
   //------------------------------------------------------------
 
   return 0;
