@@ -82,7 +82,7 @@ def create_riken(args):
         left_io_base_name = "LS.w32.c0.r" + str(i)  + ".memport"
         G.nodes[left_io_index]["G_Name"]             = left_io_base_name
         G.nodes[left_io_index]["G_NodeCell"]         = "FuncCell"     
-        G.nodes[left_io_index]["G_NodeType"]           = "MemPort"     
+        G.nodes[left_io_index]["G_NodeType"]         = "MemPort"     
         G.nodes[left_io_index]["G_ID"]               = str(left_io_index)   
         G.nodes[left_io_index]["G_VisualX"]          = 0
         G.nodes[left_io_index]["G_VisualY"]          = left_io_pin_scalar       
@@ -90,7 +90,7 @@ def create_riken(args):
         #Left-IO-input-Pin :
         G.nodes[left_io_inPin_index]["G_Name"]             = left_io_base_name + ".inPinA"
         G.nodes[left_io_inPin_index]["G_NodeCell"]         = "PinCell"   
-        G.nodes[left_io_inPin_index]["G_NodeType"]           = "in"      
+        G.nodes[left_io_inPin_index]["G_NodeType"]         = "in"      
         G.nodes[left_io_inPin_index]["G_ID"]               = str(left_io_inPin_index)      
         G.nodes[left_io_inPin_index]["G_VisualX"]          = 0
         G.nodes[left_io_inPin_index]["G_VisualY"]          = left_io_input_pin_scalar   
@@ -121,10 +121,10 @@ def create_riken(args):
         right_io_inPin_index    = right_io_index + 1
         right_io_outPin_index   = right_io_index + 2
         
-        right_io_base_name = "LS.w32.c" + str(args.NR+1) + ".r" + str(i) + ".mem"
+        right_io_base_name = "LS.w32.c" + str(args.NR+1) + ".r" + str(i) + ".memport"
         G.nodes[right_io_index]["G_Name"]     = right_io_base_name      #Right-IOs       
         G.nodes[right_io_index]["G_NodeCell"] = "FuncCell"              #Right-IOs
-        G.nodes[right_io_index]["G_NodeType"]   = "MemPort"               #Right-IOs
+        G.nodes[right_io_index]["G_NodeType"] = "MemPort"               #Right-IOs
         G.nodes[right_io_index]["G_ID"]       = str(right_io_index)     #Right-IOs
         G.nodes[right_io_index]["G_VisualX"]          = args.NC+1
         G.nodes[right_io_index]["G_VisualY"]          = right_io_pin_scalar     
@@ -132,7 +132,7 @@ def create_riken(args):
         #Right-IO-input-Pin :
         G.nodes[right_io_inPin_index]["G_Name"]             = right_io_base_name + ".inPinA"
         G.nodes[right_io_inPin_index]["G_NodeCell"]         = "PinCell"   
-        G.nodes[right_io_inPin_index]["G_NodeType"]           = "in"      
+        G.nodes[right_io_inPin_index]["G_NodeType"]         = "in"      
         G.nodes[right_io_inPin_index]["G_ID"]               = str(right_io_inPin_index)     
         G.nodes[right_io_inPin_index]["G_VisualX"]          = args.NC+1
         G.nodes[right_io_inPin_index]["G_VisualY"]          = right_io_input_pin_scalar   
@@ -140,7 +140,7 @@ def create_riken(args):
         #Right-IO-output-Pin :
         G.nodes[right_io_outPin_index]["G_Name"]             = right_io_base_name + ".outPinA"
         G.nodes[right_io_outPin_index]["G_NodeCell"]         = "PinCell"   
-        G.nodes[right_io_outPin_index]["G_NodeType"]           = "out"      
+        G.nodes[right_io_outPin_index]["G_NodeType"]         = "out"      
         G.nodes[right_io_outPin_index]["G_ID"]               = str(right_io_outPin_index)   
         G.nodes[right_io_outPin_index]["G_VisualX"]          = args.NC+1
         G.nodes[right_io_outPin_index]["G_VisualY"]          = right_io_output_pin_scalar   

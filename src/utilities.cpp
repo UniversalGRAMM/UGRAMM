@@ -456,7 +456,6 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
   int scale = 6;
   float G_VisualX = boost::get(&DotVertex::G_VisualX, *G, gNumber) * scale;
   float G_VisualY = boost::get(&DotVertex::G_VisualY, *G, gNumber) * scale;
-  // std::cout << "The X,Y location of " << gName << "is " << G_VisualX << " , " << G_VisualY << "\n";
 
   // Use for deciding the color of the FunCell based on the opcode
   // int opcode_gNumber = (*gConfig)[gNumber].opcode;
@@ -469,8 +468,6 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
       opcode_gNumber++;
   }
   std::string modified_name = gNames_deliemter_changes(gName); // Modified combined string
-
-  // OB Debug: std::cout << gNames_deliemter_changes(gName) << " " << (*Users)[gNumber].size() << std::endl;
 
   if ((*gConfig)[gNumber].Cell == "FUNCCELL")
   {
@@ -561,13 +558,22 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   for (auto hElement : gNames)
   {
     int gNumber = hElement.first;
+    /*
+    if(gNumber == 0)
+    {
+      GRAMM->info("For 0th node, doPlacement condition {} :: {}", doPlacement((*hConfig)[gNumber].Opcode, jsonParsed), (*hConfig)[gNumber].Opcode);
+    }
 
-    if (((*gConfig)[gNumber].Cell == "FUNCCELL") && (std::find(GrammConfig["PLACEMENT"].begin(), GrammConfig["PLACEMENT"].end(), (*gConfig)[gNumber].Type) == GrammConfig["PLACEMENT"].end()))
+    if (doPlacement((*gConfig)[gNumber].Opcode, jsonParsed))
       continue;
-
+    */
     if ((FunCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "FUNCCELL")) || (PinCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "PINCELL")) || (RouteCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "ROUTECELL")))
     {
       std::string gName = hElement.second;
+
+      //if(gNumber == 0)
+      //  GRAMM->info("Mapping for 0th node");
+
       printPlacementResults(gNumber, gName, G, positionedOutputFile, unpositionedOutputFile, gConfig, GrammConfig);
     }
   }
@@ -616,6 +622,8 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
       GRAMM->info("\t Empty vertex model (no-fanouts for the node)");
       funCellMapping[gNames[invUsers[i]]] = hNames[i];
+      (*Users)[invUsers[i]].push_back(i);
+      GRAMM->info("\t Empty vertex model {} {} {}", invUsers[i], gNames[invUsers[i]],(*Users)[invUsers[i]].size());
     }
    
     while (it != RT->nodes.end())
@@ -685,7 +693,9 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     // Contains the node name
     std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);
     gNames[i] = arch_NodeName;
-
+    if(i==0){
+      GRAMM->info("For device model 0th node: {} {} {} {}", i, upperCaseNodeCell, upperCaseType, arch_NodeName);
+    }
     // Obtaining the loadPin name for PinCell type:
     if ((*gConfig)[i].Cell == "PINCELL")
     {
@@ -732,6 +742,6 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     std::string upperCaseOpcode = boost::to_upper_copy(applicationOpcode);
     (*hConfig)[i].Opcode = upperCaseOpcode;
 
-    GRAMM->trace("[H] name {} :: applicationOpcode {} ", name, upperCaseOpcode);
+    GRAMM->trace("[H] name {} :: applicationOpcode {} ", hNames[i], upperCaseOpcode);
   }
 }

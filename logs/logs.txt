@@ -1,188 +1,424 @@
-[2024-09-11 15:12:51.920] [GRAMM] [info] Parsed JSON file {"skip-placement":["const"]} 
-[2024-09-11 15:12:51.921] [GRAMM] [info] Normalized JSON {"SKIP-PLACEMENT":["CONST"]} 
-[2024-09-11 15:12:51.921] [GRAMM] [info] Parsed Device-Model Pragma: 
+---------------------Generating device model using external script:---------------------
+cd scripts && ./device_model_gen.py -NR 8 -NC 8 -Arch RIKEN && cd ..
+====================================================
+============ Universal GRAMM (UGRAMM) ==============
+======= helper script: Device Model Generator ======
+====================================================
+
+Generating device model for the following CGRA configuration: 
+> Arch: RIKEN
+> NR: 8
+> NC: 8
+Creating RIKEN architecture!!
+
+
+pragma for the device model: 
+
+ /* ------- Device model pragma ------- 
+[SupportedOps] = {ALU, FADD, FSUB, FMUL, FDIV}; 
+[SupportedOps] = {MemPort, INPUT, OUTPUT}; 
+[SupportedOps] = {Constant, CONST}; 
+*/
+
+ 
+ 
+---------------------Executing GRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------
+make && ./GRAMM --seed 0 --verbose_level 0 --dfile scripts/riken_8_8.dot --afile Kernels_Modified/Conv_Balance/conv_nounroll_Balance.dot --config config.json
+make: 'GRAMM' is up to date.
+[2024-09-15 17:54:01.938] [GRAMM] [info] Parsed JSON file {"skip-placement":["const"]} 
+[2024-09-15 17:54:01.938] [GRAMM] [info] Normalized JSON {"SKIP-PLACEMENT":["CONST"]} 
+[2024-09-15 17:54:01.938] [GRAMM] [info] Parsed Device-Model Pragma: 
 [ALU] :: ALU :: FADD :: FSUB :: FMUL :: FDIV
 [CONSTANT] :: CONSTANT :: CONST
 [MEMPORT] :: MEMPORT :: INPUT :: OUTPUT
-[2024-09-11 15:12:52.159] [GRAMM] [info] Checking compatibility of SupportedOps of [ALU]
-[2024-09-11 15:12:52.160] [GRAMM] [info] [PASSED] The token FADD found in ALU
-[2024-09-11 15:12:52.160] [GRAMM] [info] [PASSED] The token FMUL found in ALU
-[2024-09-11 15:12:52.160] [GRAMM] [info] Checking compatibility of SupportedOps of [CONSTANT]
-[2024-09-11 15:12:52.160] [GRAMM] [info] [PASSED] The token CONST found in CONSTANT
-[2024-09-11 15:12:52.160] [GRAMM] [info] Checking compatibility of SupportedOps of [MEMPORT]
-[2024-09-11 15:12:52.160] [GRAMM] [info] [PASSED] The token INPUT found in MEMPORT
-[2024-09-11 15:12:52.160] [GRAMM] [info] [PASSED] The token OUTPUT found in MEMPORT
-[2024-09-11 15:12:52.162] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 1
-[2024-09-11 15:12:53.959] [GRAMM] [info] The application node Store_26 does not have any Fanouts, thus not calculating any vertex model for it
-[2024-09-11 15:12:53.986] [GRAMM] [info] TOTAL OVERUSE: 5
-[2024-09-11 15:12:53.986] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 2
-[2024-09-11 15:12:56.550] [GRAMM] [info] The application node Store_26 does not have any Fanouts, thus not calculating any vertex model for it
-[2024-09-11 15:12:56.551] [GRAMM] [info] TOTAL OVERUSE: 0
-[2024-09-11 15:12:56.551] [GRAMM] [info] FRACTION OVERLAP: 0.0
-[2024-09-11 15:12:56.551] [GRAMM] [info] SUCCESS! :: [iterCount] :: 2 :: [frac] :: 0.0 :: [num_vertices(H)] :: 36
-[2024-09-11 15:12:56.551] [GRAMM] [info] ** routing for FADD_18's output pin :: 
-[2024-09-11 15:12:56.551] [GRAMM] [info] 	 1162 	 pe.w32.c7.r2.alu.outPinA
-[2024-09-11 15:12:56.552] [GRAMM] [info] 	 1149 	 pe.w32.c7.r2.crossbar_mux_5
-[2024-09-11 15:12:56.552] [GRAMM] [info] 	 1013 	 pe.w32.c6.r3.crossbar_mux_8
-[2024-09-11 15:12:56.552] [GRAMM] [info] 	 1015 	 pe.w32.c6.r3.mux_a
-[2024-09-11 15:12:56.552] [GRAMM] [info] 	 1020 	 pe.w32.c6.r3.alu.inPinA
-[2024-09-11 15:12:56.552] [GRAMM] [info] ** routing for FADD_19's output pin :: 
-[2024-09-11 15:12:56.552] [GRAMM] [info] 	 1182 	 pe.w32.c7.r3.alu.outPinA
-[2024-09-11 15:12:56.552] [GRAMM] [info] 	 1168 	 pe.w32.c7.r3.crossbar_mux_4
-[2024-09-11 15:12:56.553] [GRAMM] [info] 	 1014 	 pe.w32.c6.r3.crossbar_mux_9
-[2024-09-11 15:12:56.553] [GRAMM] [info] 	 1016 	 pe.w32.c6.r3.mux_b
-[2024-09-11 15:12:56.553] [GRAMM] [info] 	 1021 	 pe.w32.c6.r3.alu.inPinB
-[2024-09-11 15:12:56.553] [GRAMM] [info] ** routing for FADD_20's output pin :: 
-[2024-09-11 15:12:56.553] [GRAMM] [info] 	 124 	 pe.w32.c8.r2.alu.outPinA
-[2024-09-11 15:12:56.553] [GRAMM] [info] 	 109 	 pe.w32.c8.r2.crossbar_mux_4
-[2024-09-11 15:12:56.553] [GRAMM] [info] 	 1153 	 pe.w32.c7.r2.crossbar_mux_9
-[2024-09-11 15:12:56.554] [GRAMM] [info] 	 1155 	 pe.w32.c7.r2.mux_b
-[2024-09-11 15:12:56.554] [GRAMM] [info] 	 1161 	 pe.w32.c7.r2.alu.inPinB
-[2024-09-11 15:12:56.554] [GRAMM] [info] ** routing for FADD_21's output pin :: 
-[2024-09-11 15:12:56.554] [GRAMM] [info] 	 1003 	 pe.w32.c6.r2.alu.outPinA
-[2024-09-11 15:12:56.554] [GRAMM] [info] 	 992 	 pe.w32.c6.r2.crossbar_mux_7
-[2024-09-11 15:12:56.554] [GRAMM] [info] 	 1173 	 pe.w32.c7.r3.crossbar_mux_9
-[2024-09-11 15:12:56.554] [GRAMM] [info] 	 1175 	 pe.w32.c7.r3.mux_b
-[2024-09-11 15:12:56.555] [GRAMM] [info] 	 1181 	 pe.w32.c7.r3.alu.inPinB
-[2024-09-11 15:12:56.555] [GRAMM] [info] ** routing for FADD_22's output pin :: 
-[2024-09-11 15:12:56.555] [GRAMM] [info] 	 883 	 pe.w32.c5.r4.alu.outPinA
-[2024-09-11 15:12:56.555] [GRAMM] [info] 	 864 	 pe.w32.c5.r4.crossbar_mux_1
-[2024-09-11 15:12:56.555] [GRAMM] [info] 	 1005 	 pe.w32.c6.r3.crossbar_mux_1
-[2024-09-11 15:12:56.555] [GRAMM] [info] 	 1152 	 pe.w32.c7.r2.crossbar_mux_8
-[2024-09-11 15:12:56.555] [GRAMM] [info] 	 1154 	 pe.w32.c7.r2.mux_a
-[2024-09-11 15:12:56.556] [GRAMM] [info] 	 1160 	 pe.w32.c7.r2.alu.inPinA
-[2024-09-11 15:12:56.556] [GRAMM] [info] ** routing for FADD_23's output pin :: 
-[2024-09-11 15:12:56.556] [GRAMM] [info] 	 24 	 pe.w32.c7.r5.alu.outPinA
-[2024-09-11 15:12:56.556] [GRAMM] [info] 	 9 	 pe.w32.c7.r5.crossbar_mux_3
-[2024-09-11 15:12:56.556] [GRAMM] [info] 	 1025 	 pe.w32.c6.r4.crossbar_mux_1
-[2024-09-11 15:12:56.556] [GRAMM] [info] 	 1172 	 pe.w32.c7.r3.crossbar_mux_8
-[2024-09-11 15:12:56.556] [GRAMM] [info] 	 1174 	 pe.w32.c7.r3.mux_a
-[2024-09-11 15:12:56.557] [GRAMM] [info] 	 1180 	 pe.w32.c7.r3.alu.inPinA
-[2024-09-11 15:12:56.557] [GRAMM] [info] ** routing for FADD_24's output pin :: 
-[2024-09-11 15:12:56.557] [GRAMM] [info] 	 104 	 pe.w32.c8.r1.alu.outPinA
-[2024-09-11 15:12:56.557] [GRAMM] [info] 	 92 	 pe.w32.c8.r1.crossbar_mux_6
-[2024-09-11 15:12:56.557] [GRAMM] [info] 	 116 	 pe.w32.c8.r2.crossbar_mux_9
-[2024-09-11 15:12:56.557] [GRAMM] [info] 	 118 	 pe.w32.c8.r2.mux_b
-[2024-09-11 15:12:56.557] [GRAMM] [info] 	 123 	 pe.w32.c8.r2.alu.inPinB
-[2024-09-11 15:12:56.558] [GRAMM] [info] ** routing for FADD_25's output pin :: 
-[2024-09-11 15:12:56.558] [GRAMM] [info] 	 1022 	 pe.w32.c6.r3.alu.outPinA
-[2024-09-11 15:12:56.558] [GRAMM] [info] ** routing for FMUL_10's output pin :: 
-[2024-09-11 15:12:56.558] [GRAMM] [info] 	 862 	 pe.w32.c5.r3.alu.outPinA
-[2024-09-11 15:12:56.558] [GRAMM] [info] 	 851 	 pe.w32.c5.r3.crossbar_mux_7
-[2024-09-11 15:12:56.558] [GRAMM] [info] 	 1031 	 pe.w32.c6.r4.crossbar_mux_7
-[2024-09-11 15:12:56.558] [GRAMM] [info] 	 15 	 pe.w32.c7.r5.crossbar_mux_8
-[2024-09-11 15:12:56.559] [GRAMM] [info] 	 17 	 pe.w32.c7.r5.mux_a
-[2024-09-11 15:12:56.559] [GRAMM] [info] 	 22 	 pe.w32.c7.r5.alu.inPinA
-[2024-09-11 15:12:56.559] [GRAMM] [info] ** routing for FMUL_11's output pin :: 
-[2024-09-11 15:12:56.559] [GRAMM] [info] 	 1103 	 pe.w32.c6.r7.alu.outPinA
-[2024-09-11 15:12:56.559] [GRAMM] [info] 	 1085 	 pe.w32.c6.r7.crossbar_mux_2
-[2024-09-11 15:12:56.559] [GRAMM] [info] 	 1064 	 pe.w32.c6.r6.crossbar_mux_1
-[2024-09-11 15:12:56.559] [GRAMM] [info] 	 16 	 pe.w32.c7.r5.crossbar_mux_9
-[2024-09-11 15:12:56.559] [GRAMM] [info] 	 18 	 pe.w32.c7.r5.mux_b
-[2024-09-11 15:12:56.560] [GRAMM] [info] 	 23 	 pe.w32.c7.r5.alu.inPinB
-[2024-09-11 15:12:56.560] [GRAMM] [info] ** routing for FMUL_12's output pin :: 
-[2024-09-11 15:12:56.560] [GRAMM] [info] 	 1062 	 pe.w32.c6.r5.alu.outPinA
-[2024-09-11 15:12:56.560] [GRAMM] [info] 	 1047 	 pe.w32.c6.r5.crossbar_mux_3
-[2024-09-11 15:12:56.560] [GRAMM] [info] 	 874 	 pe.w32.c5.r4.crossbar_mux_9
-[2024-09-11 15:12:56.560] [GRAMM] [info] 	 876 	 pe.w32.c5.r4.mux_b
-[2024-09-11 15:12:56.560] [GRAMM] [info] 	 882 	 pe.w32.c5.r4.alu.inPinB
-[2024-09-11 15:12:56.561] [GRAMM] [info] ** routing for FMUL_13's output pin :: 
-[2024-09-11 15:12:56.561] [GRAMM] [info] 	 803 	 pe.w32.c5.r0.alu.outPinA
-[2024-09-11 15:12:56.561] [GRAMM] [info] 	 789 	 pe.w32.c5.r0.crossbar_mux_5
-[2024-09-11 15:12:56.561] [GRAMM] [info] 	 652 	 pe.w32.c4.r1.crossbar_mux_7
-[2024-09-11 15:12:56.561] [GRAMM] [info] 	 824 	 pe.w32.c5.r2.crossbar_mux_0
-[2024-09-11 15:12:56.561] [GRAMM] [info] 	 993 	 pe.w32.c6.r2.crossbar_mux_8
-[2024-09-11 15:12:56.561] [GRAMM] [info] 	 995 	 pe.w32.c6.r2.mux_a
-[2024-09-11 15:12:56.562] [GRAMM] [info] 	 1000 	 pe.w32.c6.r2.alu.inPinA
-[2024-09-11 15:12:56.562] [GRAMM] [info] ** routing for FMUL_14's output pin :: 
-[2024-09-11 15:12:56.562] [GRAMM] [info] 	 922 	 pe.w32.c5.r6.alu.outPinA
-[2024-09-11 15:12:56.562] [GRAMM] [info] 	 905 	 pe.w32.c5.r6.crossbar_mux_1
-[2024-09-11 15:12:56.562] [GRAMM] [info] 	 1044 	 pe.w32.c6.r5.crossbar_mux_1
-[2024-09-11 15:12:56.562] [GRAMM] [info] 	 1185 	 pe.w32.c7.r4.crossbar_mux_2
-[2024-09-11 15:12:56.563] [GRAMM] [info] 	 1164 	 pe.w32.c7.r3.crossbar_mux_1
-[2024-09-11 15:12:56.563] [GRAMM] [info] 	 115 	 pe.w32.c8.r2.crossbar_mux_8
-[2024-09-11 15:12:56.563] [GRAMM] [info] 	 117 	 pe.w32.c8.r2.mux_a
-[2024-09-11 15:12:56.563] [GRAMM] [info] 	 122 	 pe.w32.c8.r2.alu.inPinA
-[2024-09-11 15:12:56.563] [GRAMM] [info] ** routing for FMUL_15's output pin :: 
-[2024-09-11 15:12:56.563] [GRAMM] [info] 	 84 	 pe.w32.c8.r0.alu.outPinA
-[2024-09-11 15:12:56.563] [GRAMM] [info] 	 72 	 pe.w32.c8.r0.crossbar_mux_6
-[2024-09-11 15:12:56.564] [GRAMM] [info] 	 94 	 pe.w32.c8.r1.crossbar_mux_8
-[2024-09-11 15:12:56.564] [GRAMM] [info] 	 96 	 pe.w32.c8.r1.mux_a
-[2024-09-11 15:12:56.564] [GRAMM] [info] 	 101 	 pe.w32.c8.r1.alu.inPinA
-[2024-09-11 15:12:56.564] [GRAMM] [info] ** routing for FMUL_16's output pin :: 
-[2024-09-11 15:12:56.564] [GRAMM] [info] 	 983 	 pe.w32.c6.r1.alu.outPinA
-[2024-09-11 15:12:56.564] [GRAMM] [info] 	 970 	 pe.w32.c6.r1.crossbar_mux_6
-[2024-09-11 15:12:56.564] [GRAMM] [info] 	 994 	 pe.w32.c6.r2.crossbar_mux_9
-[2024-09-11 15:12:56.565] [GRAMM] [info] 	 996 	 pe.w32.c6.r2.mux_b
-[2024-09-11 15:12:56.565] [GRAMM] [info] 	 1002 	 pe.w32.c6.r2.alu.inPinB
-[2024-09-11 15:12:56.565] [GRAMM] [info] ** routing for FMUL_17's output pin :: 
-[2024-09-11 15:12:56.565] [GRAMM] [info] 	 1122 	 pe.w32.c7.r0.alu.outPinA
-[2024-09-11 15:12:56.565] [GRAMM] [info] 	 1111 	 pe.w32.c7.r0.crossbar_mux_7
-[2024-09-11 15:12:56.565] [GRAMM] [info] 	 95 	 pe.w32.c8.r1.crossbar_mux_9
-[2024-09-11 15:12:56.565] [GRAMM] [info] 	 97 	 pe.w32.c8.r1.mux_b
-[2024-09-11 15:12:56.566] [GRAMM] [info] 	 103 	 pe.w32.c8.r1.alu.inPinB
-[2024-09-11 15:12:56.566] [GRAMM] [info] ** routing for FMUL_9's output pin :: 
-[2024-09-11 15:12:56.566] [GRAMM] [info] 	 1082 	 pe.w32.c6.r6.alu.outPinA
-[2024-09-11 15:12:56.566] [GRAMM] [info] 	 1066 	 pe.w32.c6.r6.crossbar_mux_3
-[2024-09-11 15:12:56.566] [GRAMM] [info] 	 886 	 pe.w32.c5.r5.crossbar_mux_2
-[2024-09-11 15:12:56.566] [GRAMM] [info] 	 873 	 pe.w32.c5.r4.crossbar_mux_8
-[2024-09-11 15:12:56.566] [GRAMM] [info] 	 875 	 pe.w32.c5.r4.mux_a
-[2024-09-11 15:12:56.567] [GRAMM] [info] 	 881 	 pe.w32.c5.r4.alu.inPinA
-[2024-09-11 15:12:56.567] [GRAMM] [info] ** routing for Load_0's output pin :: 
-[2024-09-11 15:12:56.567] [GRAMM] [info] 	 612 	 LS.w32.c9.r7.mem.outPinA
-[2024-09-11 15:12:56.567] [GRAMM] [info] 	 208 	 pe.w32.c8.r7.crossbar_mux_3
-[2024-09-11 15:12:56.567] [GRAMM] [info] 	 30 	 pe.w32.c7.r6.crossbar_mux_4
-[2024-09-11 15:12:56.567] [GRAMM] [info] 	 1072 	 pe.w32.c6.r6.crossbar_mux_8
-[2024-09-11 15:12:56.567] [GRAMM] [info] 	 1074 	 pe.w32.c6.r6.mux_a
-[2024-09-11 15:12:56.568] [GRAMM] [info] 	 1080 	 pe.w32.c6.r6.alu.inPinA
-[2024-09-11 15:12:56.568] [GRAMM] [info] ** routing for Load_1's output pin :: 
-[2024-09-11 15:12:56.568] [GRAMM] [info] 	 645 	 LS.w32.c0.r1.memport.outPinA
-[2024-09-11 15:12:56.568] [GRAMM] [info] 	 311 	 pe.w32.c2.r0.crossbar_mux_7
-[2024-09-11 15:12:56.568] [GRAMM] [info] 	 492 	 pe.w32.c3.r1.crossbar_mux_7
-[2024-09-11 15:12:56.568] [GRAMM] [info] 	 672 	 pe.w32.c4.r2.crossbar_mux_7
-[2024-09-11 15:12:56.569] [GRAMM] [info] 	 852 	 pe.w32.c5.r3.crossbar_mux_8
-[2024-09-11 15:12:56.569] [GRAMM] [info] 	 854 	 pe.w32.c5.r3.mux_a
-[2024-09-11 15:12:56.569] [GRAMM] [info] 	 860 	 pe.w32.c5.r3.alu.inPinA
-[2024-09-11 15:12:56.569] [GRAMM] [info] ** routing for Load_2's output pin :: 
-[2024-09-11 15:12:56.569] [GRAMM] [info] 	 546 	 LS.w32.c9.r5.mem.outPinA
-[2024-09-11 15:12:56.569] [GRAMM] [info] 	 1093 	 pe.w32.c6.r7.crossbar_mux_8
-[2024-09-11 15:12:56.569] [GRAMM] [info] 	 1095 	 pe.w32.c6.r7.mux_a
-[2024-09-11 15:12:56.570] [GRAMM] [info] 	 1100 	 pe.w32.c6.r7.alu.inPinA
-[2024-09-11 15:12:56.570] [GRAMM] [info] ** routing for Load_3's output pin :: 
-[2024-09-11 15:12:56.570] [GRAMM] [info] 	 512 	 LS.w32.c9.r4.mem.outPinA
-[2024-09-11 15:12:56.570] [GRAMM] [info] 	 925 	 pe.w32.c5.r7.crossbar_mux_1
-[2024-09-11 15:12:56.570] [GRAMM] [info] 	 1065 	 pe.w32.c6.r6.crossbar_mux_2
-[2024-09-11 15:12:56.570] [GRAMM] [info] 	 1052 	 pe.w32.c6.r5.crossbar_mux_8
-[2024-09-11 15:12:56.570] [GRAMM] [info] 	 1054 	 pe.w32.c6.r5.mux_a
-[2024-09-11 15:12:56.571] [GRAMM] [info] 	 1060 	 pe.w32.c6.r5.alu.inPinA
-[2024-09-11 15:12:56.571] [GRAMM] [info] ** routing for Load_4's output pin :: 
-[2024-09-11 15:12:56.571] [GRAMM] [info] 	 246 	 LS.w32.c0.r4.memport.outPinA
-[2024-09-11 15:12:56.571] [GRAMM] [info] 	 793 	 pe.w32.c5.r0.crossbar_mux_8
-[2024-09-11 15:12:56.571] [GRAMM] [info] 	 795 	 pe.w32.c5.r0.mux_a
-[2024-09-11 15:12:56.571] [GRAMM] [info] 	 800 	 pe.w32.c5.r0.alu.inPinA
-[2024-09-11 15:12:56.571] [GRAMM] [info] ** routing for Load_5's output pin :: 
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 479 	 LS.w32.c9.r3.mem.outPinA
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 765 	 pe.w32.c4.r7.crossbar_mux_1
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 913 	 pe.w32.c5.r6.crossbar_mux_8
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 915 	 pe.w32.c5.r6.mux_a
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 920 	 pe.w32.c5.r6.alu.inPinA
-[2024-09-11 15:12:56.572] [GRAMM] [info] ** routing for Load_6's output pin :: 
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 346 	 LS.w32.c0.r7.memport.outPinA
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 74 	 pe.w32.c8.r0.crossbar_mux_8
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 76 	 pe.w32.c8.r0.mux_a
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 82 	 pe.w32.c8.r0.alu.inPinA
-[2024-09-11 15:12:56.572] [GRAMM] [info] ** routing for Load_7's output pin :: 
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 279 	 LS.w32.c0.r5.memport.outPinA
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 950 	 pe.w32.c6.r0.crossbar_mux_6
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 972 	 pe.w32.c6.r1.crossbar_mux_8
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 974 	 pe.w32.c6.r1.mux_a
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 981 	 pe.w32.c6.r1.alu.inPinA
-[2024-09-11 15:12:56.572] [GRAMM] [info] ** routing for Load_8's output pin :: 
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 313 	 LS.w32.c0.r6.memport.outPinA
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 1113 	 pe.w32.c7.r0.crossbar_mux_8
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 1115 	 pe.w32.c7.r0.mux_a
-[2024-09-11 15:12:56.572] [GRAMM] [info] 	 1120 	 pe.w32.c7.r0.alu.inPinA
-[2024-09-11 15:12:56.572] [GRAMM] [info] ** routing for Store_26's output pin :: 
-[2024-09-11 15:12:56.572] [GRAMM] [info] Writing the positioned mapping output in file 'positioned_dot_output.dot'
-[2024-09-11 15:12:56.572] [GRAMM] [info] Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot'
-[2024-09-11 15:12:56.575] [GRAMM] [info] Total time taken :: 4.412543 Seconds
+[2024-09-15 17:54:01.981] [GRAMM] [info] For device model 0th node: 0 FUNCCELL MEMPORT LS.w32.c0.r0.memport
+[2024-09-15 17:54:01.983] [GRAMM] [info] Checking compatibility of SupportedOps of [ALU]
+[2024-09-15 17:54:01.983] [GRAMM] [info] [PASSED] The token FADD found in ALU
+[2024-09-15 17:54:01.983] [GRAMM] [info] [PASSED] The token FMUL found in ALU
+[2024-09-15 17:54:01.983] [GRAMM] [info] Checking compatibility of SupportedOps of [CONSTANT]
+[2024-09-15 17:54:01.983] [GRAMM] [info] [PASSED] The token CONST found in CONSTANT
+[2024-09-15 17:54:01.983] [GRAMM] [info] Checking compatibility of SupportedOps of [MEMPORT]
+[2024-09-15 17:54:01.983] [GRAMM] [info] [PASSED] The token INPUT found in MEMPORT
+[2024-09-15 17:54:01.983] [GRAMM] [info] [PASSED] The token OUTPUT found in MEMPORT
+[2024-09-15 17:54:01.984] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 1
+[2024-09-15 17:54:03.015] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:03.015] [GRAMM] [info] TOTAL OVERUSE: 9
+[2024-09-15 17:54:03.015] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 2
+[2024-09-15 17:54:04.936] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.939] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.942] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.946] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.948] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.951] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.954] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.957] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.960] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.962] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.965] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.968] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.970] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.973] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.975] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.979] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.981] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.982] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.984] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.985] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.987] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.989] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.992] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.994] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.997] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:04.998] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.000] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.002] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.003] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.005] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.007] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.009] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.012] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.013] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.014] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.015] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.016] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.018] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.020] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.022] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.024] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.026] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.028] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.029] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.031] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.032] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.034] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.036] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.038] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.040] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.042] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.043] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.044] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.046] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.048] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.049] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.051] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.054] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.056] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.057] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.059] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.060] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.062] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.064] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.066] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.212] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:05.213] [GRAMM] [info] TOTAL OVERUSE: 2
+[2024-09-15 17:54:05.213] [GRAMM] [info] FRACTION OVERLAP: 0.0125
+[2024-09-15 17:54:05.213] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 3
+[2024-09-15 17:54:07.208] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.211] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.214] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.218] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.221] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.223] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.226] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.229] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.232] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.234] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.237] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.240] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.243] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.245] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.248] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.251] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.253] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.255] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.256] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.258] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.260] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.262] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.264] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.266] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.269] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.270] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.272] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.274] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.275] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.278] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.279] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.282] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.284] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.286] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.286] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.288] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.289] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.291] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.293] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.295] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.297] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.299] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.301] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.302] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.304] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.305] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.307] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.309] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.311] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.314] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.315] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.316] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.318] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.320] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.322] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.324] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.326] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.328] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.330] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.332] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.334] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.335] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.337] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.339] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.341] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.381] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:07.381] [GRAMM] [info] TOTAL OVERUSE: 2
+[2024-09-15 17:54:07.381] [GRAMM] [info] FRACTION OVERLAP: 0.012658228
+[2024-09-15 17:54:07.381] [GRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 4
+[2024-09-15 17:54:09.388] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.391] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.394] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.397] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.400] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.402] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.405] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.408] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.410] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.413] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.416] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.419] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.423] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.425] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.428] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.431] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.435] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.436] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.438] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.440] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.442] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.444] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.446] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.450] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.452] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.454] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.456] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.457] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.458] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.461] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.463] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.465] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.467] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.469] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.469] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.470] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.472] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.473] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.476] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.478] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.479] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.482] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.484] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.485] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.486] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.487] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.489] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.491] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.493] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.496] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.497] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.498] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.500] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.502] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.504] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.505] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.507] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.509] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.512] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.513] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.515] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.516] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.518] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.520] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.522] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.548] [GRAMM] [info] For Store_26 :: mismatch between Trees size and invUsers content 0
+[2024-09-15 17:54:09.548] [GRAMM] [info] TOTAL OVERUSE: 0
+[2024-09-15 17:54:09.548] [GRAMM] [info] FRACTION OVERLAP: 0.0
+[2024-09-15 17:54:09.548] [GRAMM] [info] SUCCESS! :: [iterCount] :: 4 :: [frac] :: 0.0 :: [num_vertices(H)] :: 36
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FADD_18's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 842 	 pe.w32.c5.r2.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 827 	 pe.w32.c5.r2.crossbar_mux_3
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 653 	 pe.w32.c4.r1.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 655 	 pe.w32.c4.r1.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 661 	 pe.w32.c4.r1.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FADD_19's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 323 	 pe.w32.c2.r0.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 304 	 pe.w32.c2.r0.crossbar_mux_0
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 472 	 pe.w32.c3.r0.crossbar_mux_7
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 654 	 pe.w32.c4.r1.crossbar_mux_9
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 656 	 pe.w32.c4.r1.mux_b
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 662 	 pe.w32.c4.r1.alu.inPinB
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FADD_20's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1022 	 pe.w32.c6.r3.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1007 	 pe.w32.c6.r3.crossbar_mux_3
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 833 	 pe.w32.c5.r2.crossbar_mux_9
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 836 	 pe.w32.c5.r2.mux_b
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 841 	 pe.w32.c5.r2.alu.inPinB
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FADD_21's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 503 	 pe.w32.c3.r1.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 487 	 pe.w32.c3.r1.crossbar_mux_3
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 315 	 pe.w32.c2.r0.crossbar_mux_9
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 317 	 pe.w32.c2.r0.mux_b
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 322 	 pe.w32.c2.r0.alu.inPinB
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FADD_22's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 983 	 pe.w32.c6.r1.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 969 	 pe.w32.c6.r1.crossbar_mux_5
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 832 	 pe.w32.c5.r2.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 835 	 pe.w32.c5.r2.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 840 	 pe.w32.c5.r2.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FADD_23's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 483 	 pe.w32.c3.r0.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 469 	 pe.w32.c3.r0.crossbar_mux_4
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 314 	 pe.w32.c2.r0.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 316 	 pe.w32.c2.r0.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 321 	 pe.w32.c2.r0.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FADD_24's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 742 	 pe.w32.c4.r5.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 725 	 pe.w32.c4.r5.crossbar_mux_1
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 864 	 pe.w32.c5.r4.crossbar_mux_1
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1014 	 pe.w32.c6.r3.crossbar_mux_9
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1016 	 pe.w32.c6.r3.mux_b
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1021 	 pe.w32.c6.r3.alu.inPinB
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FADD_25's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 663 	 pe.w32.c4.r1.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 648 	 pe.w32.c4.r1.crossbar_mux_3
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 471 	 pe.w32.c3.r0.crossbar_mux_6
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 867 	 LS.w32.c0.r2.memport.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FMUL_10's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 343 	 pe.w32.c2.r1.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 326 	 pe.w32.c2.r1.crossbar_mux_1
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 473 	 pe.w32.c3.r0.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 475 	 pe.w32.c3.r0.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 481 	 pe.w32.c3.r0.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FMUL_11's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 642 	 pe.w32.c4.r0.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 628 	 pe.w32.c4.r0.crossbar_mux_4
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 474 	 pe.w32.c3.r0.crossbar_mux_9
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 476 	 pe.w32.c3.r0.mux_b
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 482 	 pe.w32.c3.r0.alu.inPinB
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FMUL_12's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1122 	 pe.w32.c7.r0.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1109 	 pe.w32.c7.r0.crossbar_mux_5
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 973 	 pe.w32.c6.r1.crossbar_mux_9
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 975 	 pe.w32.c6.r1.mux_b
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 982 	 pe.w32.c6.r1.alu.inPinB
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FMUL_13's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 803 	 pe.w32.c5.r0.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 789 	 pe.w32.c5.r0.crossbar_mux_5
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 649 	 pe.w32.c4.r1.crossbar_mux_4
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 493 	 pe.w32.c3.r1.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 495 	 pe.w32.c3.r1.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 500 	 pe.w32.c3.r1.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FMUL_14's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1162 	 pe.w32.c7.r2.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1149 	 pe.w32.c7.r2.crossbar_mux_5
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1013 	 pe.w32.c6.r3.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1015 	 pe.w32.c6.r3.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1020 	 pe.w32.c6.r3.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FMUL_15's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1103 	 pe.w32.c6.r7.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1086 	 pe.w32.c6.r7.crossbar_mux_3
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 907 	 pe.w32.c5.r6.crossbar_mux_3
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 732 	 pe.w32.c4.r5.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 735 	 pe.w32.c4.r5.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 740 	 pe.w32.c4.r5.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FMUL_16's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 363 	 pe.w32.c2.r2.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 345 	 pe.w32.c2.r2.crossbar_mux_1
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 494 	 pe.w32.c3.r1.crossbar_mux_9
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 496 	 pe.w32.c3.r1.mux_b
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 502 	 pe.w32.c3.r1.alu.inPinB
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FMUL_17's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 942 	 pe.w32.c5.r7.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 927 	 pe.w32.c5.r7.crossbar_mux_3
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 746 	 pe.w32.c4.r6.crossbar_mux_2
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 733 	 pe.w32.c4.r5.crossbar_mux_9
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 736 	 pe.w32.c4.r5.mux_b
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 741 	 pe.w32.c4.r5.alu.inPinB
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for FMUL_9's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 962 	 pe.w32.c6.r0.alu.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 950 	 pe.w32.c6.r0.crossbar_mux_6
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 972 	 pe.w32.c6.r1.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 974 	 pe.w32.c6.r1.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 981 	 pe.w32.c6.r1.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for Load_0's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 279 	 LS.w32.c0.r5.memport.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 952 	 pe.w32.c6.r0.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 954 	 pe.w32.c6.r0.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 960 	 pe.w32.c6.r0.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for Load_1's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 312 	 LS.w32.c0.r0.memport.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 701 	 pe.w32.c1.r0.crossbar_mux_7
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 333 	 pe.w32.c2.r1.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 336 	 pe.w32.c2.r1.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 341 	 pe.w32.c2.r1.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for Load_2's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 113 	 LS.w32.c0.r3.memport.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 632 	 pe.w32.c4.r0.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 635 	 pe.w32.c4.r0.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 640 	 pe.w32.c4.r0.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for Load_3's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 313 	 LS.w32.c0.r6.memport.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1113 	 pe.w32.c7.r0.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1115 	 pe.w32.c7.r0.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 1120 	 pe.w32.c7.r0.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for Load_4's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 246 	 LS.w32.c0.r4.memport.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 793 	 pe.w32.c5.r0.crossbar_mux_8
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 795 	 pe.w32.c5.r0.mux_a
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 800 	 pe.w32.c5.r0.alu.inPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] ** routing for Load_5's output pin :: 
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 346 	 LS.w32.c0.r7.memport.outPinA
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 72 	 pe.w32.c8.r0.crossbar_mux_6
+[2024-09-15 17:54:09.548] [GRAMM] [info] 	 90 	 pe.w32.c8.r1.crossbar_mux_5
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 1152 	 pe.w32.c7.r2.crossbar_mux_8
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 1154 	 pe.w32.c7.r2.mux_a
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 1160 	 pe.w32.c7.r2.alu.inPinA
+[2024-09-15 17:54:09.549] [GRAMM] [info] ** routing for Load_6's output pin :: 
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 546 	 LS.w32.c9.r5.memport.outPinA
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 1093 	 pe.w32.c6.r7.crossbar_mux_8
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 1095 	 pe.w32.c6.r7.mux_a
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 1100 	 pe.w32.c6.r7.alu.inPinA
+[2024-09-15 17:54:09.549] [GRAMM] [info] ** routing for Load_7's output pin :: 
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 645 	 LS.w32.c0.r1.memport.outPinA
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 311 	 pe.w32.c2.r0.crossbar_mux_7
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 489 	 pe.w32.c3.r1.crossbar_mux_5
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 353 	 pe.w32.c2.r2.crossbar_mux_8
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 355 	 pe.w32.c2.r2.mux_a
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 361 	 pe.w32.c2.r2.alu.inPinA
+[2024-09-15 17:54:09.549] [GRAMM] [info] ** routing for Load_8's output pin :: 
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 512 	 LS.w32.c9.r4.memport.outPinA
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 932 	 pe.w32.c5.r7.crossbar_mux_8
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 935 	 pe.w32.c5.r7.mux_a
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 940 	 pe.w32.c5.r7.alu.inPinA
+[2024-09-15 17:54:09.549] [GRAMM] [info] ** routing for Store_26's output pin :: 
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 Empty vertex model (no-fanouts for the node)
+[2024-09-15 17:54:09.549] [GRAMM] [info] 	 Empty vertex model 756 LS.w32.c0.r2.memport 2
+[2024-09-15 17:54:09.549] [GRAMM] [info] Writing the positioned mapping output in file 'positioned_dot_output.dot'
+[2024-09-15 17:54:09.549] [GRAMM] [info] Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot'
+[2024-09-15 17:54:09.551] [GRAMM] [info] Total time taken for [mapping] :: 7.56737 Seconds
+[2024-09-15 17:54:09.551] [GRAMM] [info] Total time taken for [GRAMM]:: 7.613449 Seconds
+ 
+ 
+---------------------Converting the ordered-mapped  positioned_dot_output.dot file into ordered_dot_output.png:---------------------
+neato -Tpng positioned_dot_output.dot -o positioned_dot_output.png
+ 
+ 
+---------------------Converting the unordered-mapped  unpositioned_dot_output.dot file into unpositioned_dot_output.png:---------------------
+neato -Tpng unpositioned_dot_output.dot -o unpositioned_dot_output.png

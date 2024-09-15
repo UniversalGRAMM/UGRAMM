@@ -245,7 +245,8 @@ void ripup(int signal, std::list<int> *nodes)
  * Make a list of used (device-model-nodes) for the given the given siganl (application-graph-node)
 */
 void ripUpRouting(int signal, DirectedGraph *G)
-{
+{ 
+  invUsers[signal] = -1;  //ripUp of invUsers as well!!
   struct RoutingTree *RT = &((*Trees)[signal]);
   std::list<int> toDel;
   toDel.clear();
@@ -279,6 +280,12 @@ void depositRoute(int signal, std::list<int> *nodes)
   for (; it != (*nodes).rend(); it++)
   {
     int addNode = *it;
+
+    if(hNames[signal] == "Store_26")
+      GRAMM->info("For Store_26 : {} -> {}", gNames[prev], gNames[addNode]);
+
+    //GRAMM->info("For {} : {} -> {}", hNames[signal], gNames[prev], gNames[addNode]);
+
     (*Users)[addNode].push_back(signal);
     RT->children[prev].push_back(addNode);
     RT->parent[addNode] = prev;
@@ -428,7 +435,14 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     if (load == y)
       continue; // JANDERS ignore feedback connections for the moment
 
-    if ((*Trees)[load].nodes.size() == 0)
+    //if ((*Trees)[load].nodes.size() == 0)
+    if((*Trees)[load].nodes.size() == 0) 
+    {
+      if(invUsers[load] != -1)
+        GRAMM->info("For {} :: mismatch between Trees size and invUsers content {}", hNames[load], (*Trees)[load].nodes.size(), invUsers[load]);
+    }
+    
+    if(invUsers[load] == -1)
       continue; // load should be placed for the routing purpose!!
 
     // Since driver will always be the outPin of the FunCell, the type of loadOutPinCellLoc will be "pinCell"
@@ -471,6 +485,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     {
       // Earlier in Func to Func Mapping, we used to remove the driver Function:
       // path.remove(loadPinCellLoc);
+      //GRAMM->info("Depositing route for following signal");
       depositRoute(y, &path);
     }
     else

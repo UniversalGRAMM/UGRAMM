@@ -123,25 +123,14 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
     // Finding the output Pin for the selected FunCell:
     int outputPin = findOutputPinFromFuncell(i, G);
-    invUsers[y] = i;
-
-    //------------------------- Corner case: -------------------------------//
-    // Checking whether current application node has any Fan-outs or not:
-    out_edge_iterator eout, eout_end;
-    boost::tie(eout, eout_end) = out_edges(y, *H);
-    if (eout == eout_end)
-    {
-      GRAMM->info("The application node {} does not have any Fanouts, thus not calculating any vertex model for it", hNames[y]);
-      return 0;
-    }
-    //-----------------------------------------------------------------------//
-
+    
     //Fan-outs present for the current application node, thus trying to find a vertex model for it.
     ripUpRouting(y, G);
-    (*Trees)[y].nodes.push_back(outputPin);
     (*Users)[i].push_back(y);                   // Users and history cost is primarily tracked for FunCell nodes.
+    invUsers[y] = i;
     (*Users)[outputPin].push_back(y);
-    
+    (*Trees)[y].nodes.push_back(outputPin);
+
     // Cost and history costs are as well added for the FunCell instead of the PinCell.
     totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
 
@@ -149,8 +138,8 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       printRouting(y);
 
     totalCosts[i] += routeSignal(G, H, y, gConfig);
-    GRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[outputPin], totalCosts[i]);
 
+    GRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[outputPin], totalCosts[i]);
     if (totalCosts[i] > bestCost)
       continue;
 
@@ -222,10 +211,34 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
   // Final rig-up before doing final routing:
   ripUpRouting(y, G);
-  (*Trees)[y].nodes.push_back(bestIndexPincell);
-  (*Users)[bestIndexFuncell].push_back(y); // Users and history cost is primarily tracked for FunCell nodes.
-  (*Users)[bestIndexPincell].push_back(y);
   invUsers[y] = bestIndexFuncell;
+  (*Users)[bestIndexFuncell].push_back(y); // Users and history cost is primarily tracked for FunCell nodes.
+  
+  //------------------------- Corner case: -------------------------------//
+  // Checking whether current application node has any Fan-outs or not:
+  out_edge_iterator eout, eout_end;
+  boost::tie(eout, eout_end) = out_edges(yD, *H);
+  if (eout != eout_end)
+  {
+    (*Trees)[y].nodes.push_back(bestIndexPincell);
+    (*Users)[bestIndexPincell].push_back(y);
+  }
+  //-----------------------------------------------------------------------//
+
+  /*
+    //------------------------- Corner case: -------------------------------//
+    // Checking whether current application node has any Fan-outs or not:
+    out_edge_iterator eout, eout_end;
+    boost::tie(eout, eout_end) = out_edges(yD, *H);
+    if (eout == eout_end)
+    {
+      //GRAMM->info("{} placement at {} Type: {} Required Opcode {}",  hNames[y], gNames[bestIndexFuncell], (*gConfig)[bestIndexFuncell].Type, (*hConfig)[y].Opcode);
+      GRAMM->info("The application node {} does not have any Fanouts, thus not storing any vertex model for it, current placement {} {}", hNames[y], bestIndexFuncell, gNames[bestIndexFuncell]);
+      //Saving up the mapped/placed results for this node:
+      return 0;
+    }
+    //-----------------------------------------------------------------------//
+  */
 
   // Final-placement for node 'y':
   routeSignal(G, H, y, gConfig);
