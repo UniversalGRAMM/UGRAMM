@@ -26,7 +26,7 @@ make && ./GRAMM --seed $1 --verbose_level 0 --dfile $device_model_output --afile
 # Converting the mapped output dot file into png:
 echo " "
 echo " "
-echo "---------------------Converting the ordered-mapped  positioned_dot_output.dot file into ordered_dot_output.png:---------------------"
+echo "---------------------Converting the ordered-mapped  positioned_dot_output.dot file into positioned_dot_output.png:---------------------"
 echo "neato -Tpng positioned_dot_output.dot -o positioned_dot_output.png"
 neato -Tpng positioned_dot_output.dot -o positioned_dot_output.png
 
