@@ -21,6 +21,8 @@
 #include <list>
 #include <bitset>
 #include <algorithm>
+#include <vector>
+#include <limits>
 #include <boost/algorithm/string.hpp>
 #include <sys/time.h>
 #include "spdlog/spdlog.h"
@@ -47,37 +49,43 @@ struct NodeConfig {
     // For [H] --> Application Graph
     std::string Opcode;        //OpcodeType --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
     std::string loadPin;       //Load pin of the PinCell node --> inPinA, inPinB
-    std::pair<int, int> Location = {0,0 }; //Optional  
+    std::pair<int, int> Location = {0,0}; //Optional  
 };
 
 //Struct for defining the expected attributes defined in the h and g graph:
 struct DotVertex {
     // For [H] --> Application Graph
-    std::string name;       //[Required] Contains name of the operation in Application graph (ex: Load_0)
-    std::string opcode;     //[Required] Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
-    std::string type;       //[Required] Contains the type of the operation (ex: ALU, MEMPORT, CONST etc.)
+    std::string H_Name;       //[Required] Contains name of the operation in Application graph (ex: Load_0)
+    std::string H_Opcode;     //[Required] Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
+    std::string H_Latency;    //[Optional] Contains the latency of the operation
+    std::string H_PlacementX; //[Optional] Contains the placement location of X
+    std::string H_PlacementY; //[Optional] Contains the placement location of Y
 
     // For [G] --> Device Model Graph
     std::string G_Name;       //[Required] Contains the unique name of the cell in the device model graph.
     std::string G_NodeCell;   //[Required] Contains the Opcode of the NodeType (FuncCell, RouteCell, PinCell)
     std::string G_NodeType;   //[Required] Contains the Node type of Device Model Graph (For example "ALU" for NodeType "FuncCell") 
-    std::string G_VisualX;          //[Optional] Visual X co-ordinate
-    std::string G_VisualY;          //[Optional] Visual Y co-ordinate
+    std::string G_VisualX;    //[Optional] Visual X co-ordinate
+    std::string G_VisualY;    //[Optional] Visual Y co-ordinate
 };
 
 //Struct for defining the edge types in the H graph to determine the pin layout
 struct EdgeProperty {
-    std::string loadPin;   //[Required]
-    std::string driverPin; //[Required]
+    // For [H] --> Application Graph
+    std::string H_LoadPin;   //[Required]
+    std::string H_DriverPin;   //[Required]
+    // For [H] --> Application Graph and [G] --> Device Model Graph
+    int weight;
 };
 
 //Properties of the application and device model graph:
-typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
-typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeProperty, EdgeWeightProperty > DirectedGraph;
+typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, DotVertex, EdgeProperty> DirectedGraph;
+typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, DotVertex, EdgeProperty> UnDirectedGraph;
 typedef boost::graph_traits<DirectedGraph>::edge_iterator edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::in_edge_iterator in_edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::out_edge_iterator out_edge_iterator;
 typedef boost::graph_traits<DirectedGraph>::vertex_descriptor vertex_descriptor;
+typedef boost::graph_traits<DirectedGraph>::vertex_iterator vertex_iterator;
 typedef boost::graph_traits<DirectedGraph>::out_edge_iterator OutEdgeIterator;
 typedef DirectedGraph::edge_descriptor Edge;
 

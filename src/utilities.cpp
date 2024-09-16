@@ -8,6 +8,7 @@
 #include "../lib/GRAMM.h"
 #include "../lib/utilities.h"
 #include "../lib/routing.h"
+#include "../lib/drc.h"
 
 std::vector<std::string> colors = {
     "#FFA500", // Orange (Replaced Light Pink)
@@ -453,8 +454,16 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
 void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
   int scale = 6;
-  float G_VisualX = std::stof(boost::get(&DotVertex::G_VisualX, *G, gNumber)) * scale;
-  float G_VisualY = std::stof(boost::get(&DotVertex::G_VisualY, *G, gNumber)) * scale;
+  float G_VisualX;
+  float G_VisualY;
+
+  if (!boost::get(&DotVertex::G_VisualX, *G, gNumber).empty()){
+    G_VisualX = std::stof(boost::get(&DotVertex::G_VisualX, *G, gNumber)) * scale;
+  }
+
+  if (!boost::get(&DotVertex::G_VisualY, *G, gNumber).empty()){
+    G_VisualY = std::stof(boost::get(&DotVertex::G_VisualY, *G, gNumber)) * scale;
+  }
 
   // Use for deciding the color of the FunCell based on the opcode
   // int opcode_gNumber = (*gConfig)[gNumber].opcode;
@@ -711,7 +720,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 
     vertex_descriptor v = vertex(i, *H);
     // Fetching node name from the application-graph:
-    std::string name = boost::get(&DotVertex::name, *H, v);
+    std::string name = boost::get(&DotVertex::H_Name, *H, v);
     hNames[i] = removeCurlyBrackets(name); // Removing if there are any curly brackets from the hNames.
 
     // Following characters are not supported in the neato visualizer: "|, =, ."
@@ -721,7 +730,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 
     // Fetching opcode from the application-graph:
     // Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
-    std::string applicationOpcode = boost::get(&DotVertex::opcode, *H, v);
+    std::string applicationOpcode = boost::get(&DotVertex::H_Opcode, *H, v);
     std::string upperCaseOpcode = boost::to_upper_copy(applicationOpcode);
     (*hConfig)[i].Opcode = upperCaseOpcode;
 
