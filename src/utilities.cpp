@@ -172,8 +172,7 @@ std::string readCommentSection(std::ifstream &inputFile)
 */ 
 bool skipPlacement(std::string hOpcode, json &jsonParsed)
 {
-  if (jsonParsed["SKIP-PLACEMENT"].empty())
-  {
+  if (jsonParsed["SKIP-PLACEMENT"].empty()){
     return false;
   }
   else
