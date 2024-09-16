@@ -247,12 +247,13 @@ void ripup(int signal, std::list<int> *nodes)
 void ripUpRouting(int signal, DirectedGraph *G)
 { 
   struct RoutingTree *RT = &((*Trees)[signal]);
+  /*
   if(RT->nodes.size() == 0)
   {
     //Do nothing
   }
   else
-  {
+  {*/
     std::list<int> toDel;
     toDel.clear();
 
@@ -274,7 +275,7 @@ void ripUpRouting(int signal, DirectedGraph *G)
     }
 
     ripup(signal, &toDel);
-  }
+  //}
 }
 
 /**

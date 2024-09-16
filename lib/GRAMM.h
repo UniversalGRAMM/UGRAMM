@@ -42,11 +42,11 @@ struct NodeConfig {
     // For [G] --> Device Model Graph
     std::string Cell;          //Cell-type --> FuncCell, RouteCell, PinCell
     std::string Type;          //Node-Type --> io, alu, memport....
+    std::string pinName;       //Load pin of the PinCell node --> inPinA, inPinB
     int Latency = 0;           //Optional            
 
     // For [H] --> Application Graph
     std::string Opcode;        //OpcodeType --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
-    std::string pinName;       //Load pin of the PinCell node --> inPinA, inPinB
     std::pair<int, int> Location = {0,0 }; //Optional  
 };
 
