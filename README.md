@@ -7,27 +7,28 @@
 G. Zhou, M. Stojilović and J. H. Anderson, "GRAMM: Fast CGRA Application Mapping Based on A Heuristic for Finding Graph Minors," 2023 33rd International Conference on Field-Programmable Logic and Applications (FPL), Gothenburg, Sweden, 2023, pp. 305-310, doi: 10.1109/FPL60245.2023.00052.
 ```
 
-
 ## Helper Script usage:
 
 
 The following command maps the input DFG on the RIKEN architecture:
 
-> ./run_gramm.sh Kernels_Modified/Conv_Balance/conv_nounroll_Balance.dot  8 8 RIKEN
+> ./run_gramm.sh 15 8 8 Kernels_Modified/Conv_Balance/conv_nounroll_Balance.dot config.json
 
 - run_gramm.sh script:
     - Arugment info:
-        - $1 [Kernel]: Kernels/Conv_Balance/conv_nounroll_Balance.dot 
+        - $1 [Seed] = 0,1,15 etc...
         - $2 [NR] = 8
         - $3 [NC] = 8
-        - 4 [Arch_Type for device model] =  RIKEN
+        - $4 [ApplicationGraph] = Kernels/Conv_Balance/conv_nounroll_Balance.dot 
+        - $5 [grammConfigFile]  = config.json example
     - Generating device model using external script
         - `cd scripts && ./device_model_gen.py -NR $2 -NC $3 -Arch RIKEN && cd ..`
     - Executes GRAMM and produces mapping result in mapping_output.dot
-        - `make && ./GRAMM $1 $device_model_output $2 $3 0`
+        - `make && ./GRAMM --seed $1 --verbose_level 0 --dfile $device_model_output --afile $4 --config $5`
     - Finally converts the mapped output dot file into png
-        - `neato -Tpng mapping_output.dot -o mapping_output.png`
-    - Successful mapping result will be in `mapping_output.png`
+        - `neato -Tpng positioned_dot_output.dot -o positioned_dot_output.png`
+        - `dot -Tpng unpositioned_dot_output.dot -o unpositioned_dot_output.png`
+    - Successful mapping result will be in `unpositioned_dot_output.png` and `positioned_dot_output.png`
 
 ## Positioned graph output:
 

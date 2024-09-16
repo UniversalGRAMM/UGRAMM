@@ -1,3 +1,8 @@
+ /* ------- Application graph pragma ------- 
+[SupportedOps] = {ALU, FADD, FMUL};  
+[SupportedOps] = {MEMPORT, input, output};
+[SupportedOps] = {Constant, const};
+*/
 strict digraph "omp.inner.for.body" {
 label="omp.inner.for.body";
 Load_0 [label="{Load_0}", opcode=input, shape=record];
