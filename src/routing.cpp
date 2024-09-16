@@ -233,14 +233,7 @@ void ripup(int signal, std::list<int> *nodes)
 
     if (RT->parent.count(delNode))
     {
-      RT->children[RT->parent[delNode]].remove(delNode);
-      RT->parent.erase(delNode);
-    }
-    (*Users)[delNode].remove(signal);
-  }
-}
 
-/**
  * Removes the routing associated with the given signal from the routing structure.
  * Make a list of used (device-model-nodes) for the given the given siganl (application-graph-node)
 */
@@ -254,27 +247,27 @@ void ripUpRouting(int signal, DirectedGraph *G)
   }
   else
   {*/
-    std::list<int> toDel;
-    toDel.clear();
+  std::list<int> toDel;
+  toDel.clear();
 
-    std::list<int>::iterator it = RT->nodes.begin();
-    int driverFuncell = findFunCellFromOutputPin(*it, G);
+  std::list<int>::iterator it = RT->nodes.begin();
+  int driverFuncell = findFunCellFromOutputPin(*it, G);
 
-    if(driverFuncell != invUsers[signal])
-    {
-      GRAMM->error("For {} with vertex-size {} => Dervied funCell : {} :: Mapped FunCell : {}", hNames[signal], (*Trees)[signal].nodes.size(), gNames[driverFuncell], gNames[invUsers[signal]]);
-      exit(-1);
-    }
-      
-    toDel.push_back(invUsers[signal]);  //ripUp of associated funCell as well.
-    invUsers[signal] = -1;              //Make the invUsers null as well.
+  if(driverFuncell != invUsers[signal])
+  {
+    GRAMM->error("For {} with vertex-size {} => Dervied funCell : {} :: Mapped FunCell : {}", hNames[signal], (*Trees)[signal].nodes.size(), gNames[driverFuncell], gNames[invUsers[signal]]);
+    exit(-1);
+  }
+    
+  toDel.push_back(invUsers[signal]);  //ripUp of associated funCell as well.
+  invUsers[signal] = -1;              //Make the invUsers null as well.
 
-    for (; it != RT->nodes.end(); it++)
-    {
-      toDel.push_back(*it);
-    }
+  for (; it != RT->nodes.end(); it++)
+  {
+    toDel.push_back(*it);
+  }
 
-    ripup(signal, &toDel);
+  ripup(signal, &toDel);
   //}
 }
 
