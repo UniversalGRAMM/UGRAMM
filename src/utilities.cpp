@@ -686,8 +686,8 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
       size_t pos = gNames[i].find_last_of('.');
       if (pos != std::string::npos)
       {
-        // GRAMM->info("loadPin for {} is {}", gNames[i], gNames[i].substr(pos + 1));
-        (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
+        //OB debug: GRAMM->trace("pinName for {} is {}", gNames[i], gNames[i].substr(pos + 1));
+        (*gConfig)[i].pinName = gNames[i].substr(pos + 1);
       }
     }
 

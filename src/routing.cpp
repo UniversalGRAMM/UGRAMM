@@ -246,20 +246,35 @@ void ripup(int signal, std::list<int> *nodes)
 */
 void ripUpRouting(int signal, DirectedGraph *G)
 { 
-  invUsers[signal] = -1;  //ripUp of invUsers as well!!
   struct RoutingTree *RT = &((*Trees)[signal]);
-  std::list<int> toDel;
-  toDel.clear();
-
-  std::list<int>::iterator it = RT->nodes.begin();
-  int driverFuncell = findFunCellFromOutputPin(*it, G);
-  toDel.push_back(driverFuncell);
-  for (; it != RT->nodes.end(); it++)
+  if(RT->nodes.size() == 0)
   {
-    toDel.push_back(*it);
+    //Do nothing
   }
+  else
+  {
+    std::list<int> toDel;
+    toDel.clear();
 
-  ripup(signal, &toDel);
+    std::list<int>::iterator it = RT->nodes.begin();
+    int driverFuncell = findFunCellFromOutputPin(*it, G);
+
+    if(driverFuncell != invUsers[signal])
+    {
+      GRAMM->error("For {} with vertex-size {} => Dervied funCell : {} :: Mapped FunCell : {}", hNames[signal], (*Trees)[signal].nodes.size(), gNames[driverFuncell], gNames[invUsers[signal]]);
+      exit(-1);
+    }
+      
+    toDel.push_back(invUsers[signal]);  //ripUp of associated funCell as well.
+    invUsers[signal] = -1;              //Make the invUsers null as well.
+
+    for (; it != RT->nodes.end(); it++)
+    {
+      toDel.push_back(*it);
+    }
+
+    ripup(signal, &toDel);
+  }
 }
 
 /**
@@ -424,48 +439,102 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
   for (; eo != eo_end; eo++)
   {
     int load = target(*eo, *H);
-    std::string loadPin = boost::get(&EdgeProperty::loadPin, *H, *eo);
-    std::string driverPin = boost::get(&EdgeProperty::driverPin, *H, *eo);
-
+    
+    //---------------------------------------------------------------//
+    //------------------------- safety checks -----------------------//
+    //---------------------------------------------------------------//
+    // JANDERS ignore feedback connections for the moment
     if (load == y)
-      continue; // JANDERS ignore feedback connections for the moment
-
+      continue; 
+    
+    // load should be placed for the routing purpose!!
     if(invUsers[load] == -1)
-      continue; // load should be placed for the routing purpose!!
-
-    // Since driver will always be the outPin of the FunCell, the type of loadOutPinCellLoc will be "pinCell"
-    // int loadOutPinCellLoc = findRoot(load, gConfig);
-
-    // Converting the driver(pinCell) to the actual input pin of FuncCell:
-    // Step 1: Fetching "FunCell" ID from the edge: FunCell --> OutPin
-    // int loadFunCellLoc = findFunCellFromOutputPin(loadOutPinCellLoc, G);
-    int loadFunCellLoc = invUsers[load];
-
-    // Step 2: Fetching given "inPin" ID from the edge: inPin --> FunCell (Note: there could be multiple input pins for the given FunCell)
-    vertex_descriptor yD = vertex(loadFunCellLoc, *G);
-    in_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = in_edges(yD, *G);
-    int loadInPinCellLoc = 0;
-    for (; ei != ei_end; ei++)
+      continue; 
+    
+    //Routing tree should be empty for the current application-node (signal y) 
+    if((*Trees)[y].nodes.size() != 0)
     {
-      int source_id = source(*ei, *G);
-      if ((*gConfig)[source_id].loadPin == loadPin)
-        loadInPinCellLoc = source_id;
-    }
-
-    GRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], loadPin);
-    GRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFunCellLoc], gNames[loadInPinCellLoc]);
-
-    if (loadInPinCellLoc < 0)
-    {
-      GRAMM->error("SIGNAL WITHOUT A DRIVER.\n");
+      GRAMM->error("For application node {}, the routing tree already has elements", hNames[y]);
+      printRouting(y);
       exit(-1);
     }
+      
+
+    if(invUsers[y] == -1)
+    {
+      GRAMM->error("While routing, invUsers for node {} found to be NULL", hNames[y]);
+      exit(-1);
+    }
+    //-------------------------------------------------//
+
+    //----------------------------------------------------------------//
+    //--------- Finding appropriate outputPin for the driver ---------//
+    //----------------------------------------------------------------//
+    int driverFunCell = invUsers[y];
+    int driverOutPin = -1;
+
+    //Finding the outputPin based on attribute given in the benchmark:
+    std::string driverPinName = boost::get(&EdgeProperty::driverPin, *H, *eo);
+    vertex_descriptor driverD = vertex(driverFunCell, *G);
+    out_edge_iterator eoY, eoY_end;
+    boost::tie(eoY, eoY_end) = out_edges(driverD, *G);
+    for (; eoY != eoY_end; eoY++)
+    {
+      int outPinID = target(*eoY, *G);
+      if ((*gConfig)[outPinID].pinName == driverPinName)
+        driverOutPin = outPinID;
+    }
+
+    //Check:
+    if (driverOutPin < 0)
+    {
+      GRAMM->error("Could not find outputPin for the driver\n");
+      exit(-1);
+    }
+
+    //Adding outputPin in routing data structure:
+    (*Users)[driverOutPin].push_back(y);
+    (*Trees)[y].nodes.push_back(driverOutPin);
+    //----------------------------------------------------------------//
+
+    //----------------------------------------------------------------//
+    //--------- Finding appropriate inputPin for the load ------------//
+    //----------------------------------------------------------------//
+    int loadFunCell = invUsers[load];
+    int loadInPin = -1;
+
+    //Finding the inputPin based on attribute given in the benchmark:
+    std::string loadPinName = boost::get(&EdgeProperty::loadPin, *H, *eo);
+    vertex_descriptor loadD = vertex(loadFunCell, *G);
+    in_edge_iterator eiL, eiL_end;
+    boost::tie(eiL, eiL_end) = in_edges(loadD, *G);
+    for (; eiL != eiL_end; eiL++)
+    {
+      int inPinId = source(*eiL, *G);
+      if ((*gConfig)[inPinId].pinName == loadPinName)
+        loadInPin = inPinId;
+    }
+
+    //Check:
+    if (loadInPin < 0)
+    {
+      GRAMM->error("Could not find inputPin for the dloadriver\n");
+      exit(-1);
+    }
+
+    //[TODO] Check: Adding inputPin in routing data structure:
+
+    //----------------------------------------------------------------//
+
+    //Debugging statement:
+    GRAMM->debug("ROUTING => hSOURCE : {} :: hTARGET : {} || dSource : {} dTarget : {} || SOURCE-Pin : {} :: TARGET-Pin : {} ", hNames[y], hNames[load], gNames[driverOutPin], gNames[loadInPin], driverPinName, loadPinName);
+    //GRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFunCell], gNames[loadInPinCell]);
+    //----------------------------------------------------------------//
 
     int cost;
     std::list<int> path;
 
-    cost = route(G, y, loadInPinCellLoc, &path, gConfig);
+    cost = route(G, y, loadInPin, &path, gConfig);
 
     totalCost += cost;
 

@@ -57,22 +57,24 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   boost::tie(ei, ei_end) = in_edges(yD, *H);
   for (; ei != ei_end; ei++)
   {
-    if ((*Trees)[source(*ei, *G)].nodes.size())
+    //if ((*Trees)[source(*ei, *G)].nodes.size())
+    if(invUsers[source(*ei, *G)] != -1)
       allEmpty = false;
   }
 
   out_edge_iterator eo, eo_end;
   boost::tie(eo, eo_end) = out_edges(yD, *H);
   for (; eo != eo_end; eo++)
-  {
-    if ((*Trees)[target(*eo, *H)].nodes.size())
+  { 
+    //if ((*Trees)[target(*eo, *H)].nodes.size())
+    if(invUsers[target(*eo, *H)] != -1)
       allEmpty = false;
   }
 
   if (allEmpty)
   {
     // choose a random unused node of G to be the vertex model for y because NONE of its fanins or fanouts have vertex models
-    int selectedCellOutputPin = 0;
+    // OB: int selectedCellOutputPin = 0;
     int chooseRand = (rand() % num_vertices(*G));
     bool vertex_found = false;
 
@@ -81,21 +83,21 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       chooseRand = (chooseRand + 1) % num_vertices(*G);
       if (compatibilityCheck((*gConfig)[chooseRand].Type, (*hConfig)[y].Opcode))
       {
-        //  Finding the output Pin for the selected FunCell:
-        selectedCellOutputPin = findOutputPinFromFuncell(chooseRand, G);
+        // OB: Finding the output Pin for the selected FunCell:
+        // OB: selectedCellOutputPin = findOutputPinFromFuncell(chooseRand, G);
         vertex_found = true;
       }
     }
 
-    GRAMM->debug("[RandomSelection] for application node :: {} :: Choosing starting vertex model as :: {} :: {}", hNames[y], gNames[chooseRand], gNames[selectedCellOutputPin]);
+    GRAMM->debug("[RandomSelection] for application node :: {} :: Choosing starting vertex model as :: {} ", hNames[y], gNames[chooseRand]);
 
     // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell node.
     //     But note that costing is still done with respect to the FunCell node as costing based on output pin may not show overlap correctly
 
-    (*Trees)[y].nodes.push_back(selectedCellOutputPin); // Routing data structure starts with outpin itself
-    (*Users)[chooseRand].push_back(y);                  // Users and history cost is primarily tracked for FunCell nodes.
-    (*Users)[selectedCellOutputPin].push_back(y);       
+    (*Users)[chooseRand].push_back(y);                  // Users and history cost is primarily tracked for FunCell nodes.    
     invUsers[y] = chooseRand;
+    //OB:(*Trees)[y].nodes.push_back(selectedCellOutputPin); // Routing data structure starts with outpin itself
+    //OB:(*Users)[selectedCellOutputPin].push_back(y);   
 
     return 0;
   }
@@ -128,9 +130,9 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     //     But note that costing is still done with respect to the FunCell node as costing based on output pin may not show overlap correctly
     ripUpRouting(y, G);
     (*Users)[i].push_back(y);                   
-    (*Users)[outputPin].push_back(y);
-    (*Trees)[y].nodes.push_back(outputPin);
     invUsers[y] = i;
+    //OB:(*Users)[outputPin].push_back(y);
+    //OB:(*Trees)[y].nodes.push_back(outputPin);
 
     // Cost and history costs are calculated for the FunCell:
     totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
@@ -162,13 +164,13 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       int driverPinNode = findRoot(driver, gConfig);
 
       ripUpRouting(driver, G);
-      (*Trees)[driver].nodes.push_back(driverPinNode);
 
       // Need to find the FunCell associated with driverPinNode (which is PinCell)
       int driverFunCellNode = findFunCellFromOutputPin(driverPinNode, G);
       (*Users)[driverFunCellNode].push_back(driver); // Users and history cost is primarily tracked for FunCell nodes.
-      (*Users)[driverPinNode].push_back(driver);
       invUsers[driver] = driverFunCellNode;
+      //OB: (*Trees)[driver].nodes.push_back(driverPinNode);
+      //OB: (*Users)[driverPinNode].push_back(driver);
 
       // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
       totalCosts[i] += routeSignal(G, H, driver, gConfig);
@@ -215,9 +217,9 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
   // Final rig-up before doing final routing:
   ripUpRouting(y, G);
-  invUsers[y] = bestIndexFuncell;
   (*Users)[bestIndexFuncell].push_back(y); // Users and history cost is primarily tracked for FunCell nodes.
-  
+  invUsers[y] = bestIndexFuncell;
+
   //------------------------- Corner case: -------------------------------//
   // Checking whether current application node has any Fan-outs or not:
   // If fan-outs available for the current application-node, then only adding placement information into 
@@ -226,8 +228,8 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   boost::tie(eout, eout_end) = out_edges(yD, *H);
   if (eout != eout_end) //Fanout available
   { 
-    (*Trees)[y].nodes.push_back(bestIndexPincell);
-    (*Users)[bestIndexPincell].push_back(y);
+    //OB: (*Trees)[y].nodes.push_back(bestIndexPincell);
+    //OB: (*Users)[bestIndexPincell].push_back(y);
   }
   //-----------------------------------------------------------------------//
 
@@ -245,13 +247,13 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     int driverPinNode = findRoot(driver, gConfig);
 
     ripUpRouting(driver, G);
-    (*Trees)[driver].nodes.push_back(driverPinNode);
 
     // Need to find the FunCell associated with driverPinNode (which is PinCell)
     int driverFunCellNode = findFunCellFromOutputPin(driverPinNode, G);
     (*Users)[driverFunCellNode].push_back(driver); // Users and history cost is primarily tracked for FunCell nodes.
-    (*Users)[driverPinNode].push_back(driver);
     invUsers[driver] = driverFunCellNode;
+    //OB: (*Trees)[driver].nodes.push_back(driverPinNode);
+    //OB: (*Users)[driverPinNode].push_back(driver);
 
     routeSignal(G, H, driver, gConfig);
   }
@@ -433,6 +435,7 @@ int main(int argc, char **argv)
   //----------------- STEP 0 : READING DEVICE MODEL --------------------//
   //--------------------------------------------------------------------//
 
+  // read the device-model-DFG from a file
   std::ifstream dFile;                       // Defining the input file stream for device model dot file
   dFile.open(deviceModelFile);               // Passing the device_Model_dot file as an argument!
   readDeviceModelPragma(dFile, GrammConfig); // Reading the device model pragma from the device-model dot file.
@@ -443,7 +446,7 @@ int main(int argc, char **argv)
   //----------------- STEP 1: READING APPLICATION DOT FILE -------------//
   //--------------------------------------------------------------------//
 
-  // read the DFG from a file
+  // read the application-DFG from a file
   std::ifstream iFile;                            // Defining the input file stream for application_dot file
   iFile.open(applicationFile);                    // Passing the application_dot file as an argument!
   readApplicationGraphPragma(iFile, GrammConfig); // Reading the application-graph pragma from the device-model dot file.

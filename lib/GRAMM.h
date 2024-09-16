@@ -46,7 +46,7 @@ struct NodeConfig {
 
     // For [H] --> Application Graph
     std::string Opcode;        //OpcodeType --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
-    std::string loadPin;       //Load pin of the PinCell node --> inPinA, inPinB
+    std::string pinName;       //Load pin of the PinCell node --> inPinA, inPinB
     std::pair<int, int> Location = {0,0 }; //Optional  
 };
 
