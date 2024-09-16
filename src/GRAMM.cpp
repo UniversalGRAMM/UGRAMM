@@ -124,22 +124,26 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     // Finding the output Pin for the selected FunCell:
     int outputPin = findOutputPinFromFuncell(i, G);
     
-    //Fan-outs present for the current application node, thus trying to find a vertex model for it.
+    // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell node.
+    //     But note that costing is still done with respect to the FunCell node as costing based on output pin may not show overlap correctly
     ripUpRouting(y, G);
-    (*Users)[i].push_back(y);                   // Users and history cost is primarily tracked for FunCell nodes.
-    invUsers[y] = i;
+    (*Users)[i].push_back(y);                   
     (*Users)[outputPin].push_back(y);
     (*Trees)[y].nodes.push_back(outputPin);
+    invUsers[y] = i;
 
-    // Cost and history costs are as well added for the FunCell instead of the PinCell.
+    // Cost and history costs are calculated for the FunCell:
     totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
-
-    if (GRAMM->level() <= spdlog::level::trace)
-      printRouting(y);
 
     totalCosts[i] += routeSignal(G, H, y, gConfig);
 
+    //-------- Debugging statements ------------//
+    if (GRAMM->level() <= spdlog::level::trace)
+      printRouting(y);
     GRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[outputPin], totalCosts[i]);
+    //------------------------------------------//
+
+    //Early exit if the cost is greater than bestCost:
     if (totalCosts[i] > bestCost)
       continue;
 
@@ -216,29 +220,16 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   
   //------------------------- Corner case: -------------------------------//
   // Checking whether current application node has any Fan-outs or not:
+  // If fan-outs available for the current application-node, then only adding placement information into 
+  // the vertex model.
   out_edge_iterator eout, eout_end;
   boost::tie(eout, eout_end) = out_edges(yD, *H);
-  if (eout != eout_end)
-  {
+  if (eout != eout_end) //Fanout available
+  { 
     (*Trees)[y].nodes.push_back(bestIndexPincell);
     (*Users)[bestIndexPincell].push_back(y);
   }
   //-----------------------------------------------------------------------//
-
-  /*
-    //------------------------- Corner case: -------------------------------//
-    // Checking whether current application node has any Fan-outs or not:
-    out_edge_iterator eout, eout_end;
-    boost::tie(eout, eout_end) = out_edges(yD, *H);
-    if (eout == eout_end)
-    {
-      //GRAMM->info("{} placement at {} Type: {} Required Opcode {}",  hNames[y], gNames[bestIndexFuncell], (*gConfig)[bestIndexFuncell].Type, (*hConfig)[y].Opcode);
-      GRAMM->info("The application node {} does not have any Fanouts, thus not storing any vertex model for it, current placement {} {}", hNames[y], bestIndexFuncell, gNames[bestIndexFuncell]);
-      //Saving up the mapped/placed results for this node:
-      return 0;
-    }
-    //-----------------------------------------------------------------------//
-  */
 
   // Final-placement for node 'y':
   routeSignal(G, H, y, gConfig);
@@ -306,12 +297,10 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     for (int k = 0; k < num_vertices(*H); k++)
     {
       int y = ordering[k];
-
-      GRAMM->trace(" Condition :: {} :: Type :: {} ", doPlacement((*hConfig)[y].Opcode, jsonParsed), (*hConfig)[y].Opcode);
-
-      if (doPlacement((*hConfig)[y].Opcode, jsonParsed))
+      
+      if(hNames[y] == "NULL")
         continue;
-
+      
       GRAMM->debug("\n");
       GRAMM->debug("--------------------- New Vertices Mapping Start ---------------------------");
       GRAMM->debug("Finding vertex model for: {} with Current vertex-size: {}", hNames[y], (*Trees)[y].nodes.size());

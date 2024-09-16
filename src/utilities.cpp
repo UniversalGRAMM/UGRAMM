@@ -531,7 +531,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   unpositionedOutputFile << "subgraph cluster_1 {\n label = \"Input Kernel\"; fontsize = 40; style=dashed; \n edge [minlen=3]\n";
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    if (doPlacement((*hConfig)[i].Opcode, jsonParsed))
+    if(hNames[i] == "NULL")
       continue;
     unpositionedOutputFile << hNames[i] << ";\n";
   }
@@ -542,7 +542,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
     vertex_descriptor u = source(*e_it, *H);
     vertex_descriptor v = target(*e_it, *H);
 
-    if (doPlacement((*hConfig)[u].Opcode, jsonParsed))
+    if(hNames[u] == "NULL")
       continue;
 
     unpositionedOutputFile << "  " << hNames[u] << " -> " << hNames[v] << ";\n";
@@ -558,22 +558,10 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   for (auto hElement : gNames)
   {
     int gNumber = hElement.first;
-    /*
-    if(gNumber == 0)
-    {
-      GRAMM->info("For 0th node, doPlacement condition {} :: {}", doPlacement((*hConfig)[gNumber].Opcode, jsonParsed), (*hConfig)[gNumber].Opcode);
-    }
 
-    if (doPlacement((*gConfig)[gNumber].Opcode, jsonParsed))
-      continue;
-    */
     if ((FunCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "FUNCCELL")) || (PinCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "PINCELL")) || (RouteCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "ROUTECELL")))
     {
       std::string gName = hElement.second;
-
-      //if(gNumber == 0)
-      //  GRAMM->info("Mapping for 0th node");
-
       printPlacementResults(gNumber, gName, G, positionedOutputFile, unpositionedOutputFile, gConfig, GrammConfig);
     }
   }
@@ -583,7 +571,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   //------------------------
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    if (doPlacement((*hConfig)[i].Opcode, jsonParsed))
+    if(hNames[i] == "NULL")
       continue;
     printRoutingResults(i, positionedOutputFile, unpositionedOutputFile, hConfig);
   }
@@ -609,7 +597,7 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   for (int i = 0; i < num_vertices(*H); i++)
   {
 
-    if (doPlacement((*hConfig)[i].Opcode, jsonParsed))
+    if(hNames[i] == "NULL")
       continue;
 
     struct RoutingTree *RT = &((*Trees)[i]);
@@ -622,8 +610,6 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
       GRAMM->info("\t Empty vertex model (no-fanouts for the node)");
       funCellMapping[gNames[invUsers[i]]] = hNames[i];
-      (*Users)[invUsers[i]].push_back(i);
-      GRAMM->info("\t Empty vertex model {} {} {}", invUsers[i], gNames[invUsers[i]],(*Users)[invUsers[i]].size());
     }
    
     while (it != RT->nodes.end())
@@ -693,9 +679,7 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     // Contains the node name
     std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);
     gNames[i] = arch_NodeName;
-    if(i==0){
-      GRAMM->info("For device model 0th node: {} {} {} {}", i, upperCaseNodeCell, upperCaseType, arch_NodeName);
-    }
+
     // Obtaining the loadPin name for PinCell type:
     if ((*gConfig)[i].Cell == "PINCELL")
     {
@@ -725,8 +709,8 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    vertex_descriptor v = vertex(i, *H);
 
+    vertex_descriptor v = vertex(i, *H);
     // Fetching node name from the application-graph:
     std::string name = boost::get(&DotVertex::name, *H, v);
     hNames[i] = removeCurlyBrackets(name); // Removing if there are any curly brackets from the hNames.
@@ -741,6 +725,18 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     std::string applicationOpcode = boost::get(&DotVertex::opcode, *H, v);
     std::string upperCaseOpcode = boost::to_upper_copy(applicationOpcode);
     (*hConfig)[i].Opcode = upperCaseOpcode;
+
+    GRAMM->trace(" Condition :: {} :: Type :: {} ", doPlacement((*hConfig)[i].Opcode, jsonParsed), (*hConfig)[i].Opcode);
+ 
+    if (doPlacement((*hConfig)[i].Opcode, jsonParsed))
+    { 
+      GRAMM->info("[H] Ignoring placement for application node :: {} ", name);
+      boost::clear_out_edges(v, *H);   //Removing all out-edges to and from vertex "v"
+      boost::clear_in_edges(v,*H);     //Removing all in-edges to and from vertex "v"
+      //boost::remove_vertex(v,*H);    //OB: Not removing vertex since it will impact the Adjacency list.
+      (*hConfig)[i].Opcode = "NULL";   //Keeping the opcode Null for the removed vertex
+      hNames[i] = "NULL";              //Keeping the opcode Null for the removed vertex
+    }
 
     GRAMM->trace("[H] name {} :: applicationOpcode {} ", hNames[i], upperCaseOpcode);
   }

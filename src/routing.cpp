@@ -281,11 +281,6 @@ void depositRoute(int signal, std::list<int> *nodes)
   {
     int addNode = *it;
 
-    if(hNames[signal] == "Store_26")
-      GRAMM->info("For Store_26 : {} -> {}", gNames[prev], gNames[addNode]);
-
-    //GRAMM->info("For {} : {} -> {}", hNames[signal], gNames[prev], gNames[addNode]);
-
     (*Users)[addNode].push_back(signal);
     RT->children[prev].push_back(addNode);
     RT->parent[addNode] = prev;
@@ -435,13 +430,6 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     if (load == y)
       continue; // JANDERS ignore feedback connections for the moment
 
-    //if ((*Trees)[load].nodes.size() == 0)
-    if((*Trees)[load].nodes.size() == 0) 
-    {
-      if(invUsers[load] != -1)
-        GRAMM->info("For {} :: mismatch between Trees size and invUsers content {}", hNames[load], (*Trees)[load].nodes.size(), invUsers[load]);
-    }
-    
     if(invUsers[load] == -1)
       continue; // load should be placed for the routing purpose!!
 
@@ -485,7 +473,6 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     {
       // Earlier in Func to Func Mapping, we used to remove the driver Function:
       // path.remove(loadPinCellLoc);
-      //GRAMM->info("Depositing route for following signal");
       depositRoute(y, &path);
     }
     else
