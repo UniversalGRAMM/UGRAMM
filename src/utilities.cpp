@@ -170,7 +170,7 @@ std::string readCommentSection(std::ifstream &inputFile)
  * Checks whether placement is required for the given opcode based on the information given in the JSON.
  * In JSON, we can either have opcode("Reg") or nodeType("ALU/Memport") to be skipped.
 */ 
-bool doPlacement(std::string hOpcode, json &jsonParsed)
+bool skipPlacement(std::string hOpcode, json &jsonParsed)
 {
   if (jsonParsed["SKIP-PLACEMENT"].empty())
   {
@@ -454,8 +454,8 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
 void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig)
 {
   int scale = 6;
-  float G_VisualX = boost::get(&DotVertex::G_VisualX, *G, gNumber) * scale;
-  float G_VisualY = boost::get(&DotVertex::G_VisualY, *G, gNumber) * scale;
+  float G_VisualX = std::stof(boost::get(&DotVertex::G_VisualX, *G, gNumber)) * scale;
+  float G_VisualY = std::stof(boost::get(&DotVertex::G_VisualY, *G, gNumber)) * scale;
 
   // Use for deciding the color of the FunCell based on the opcode
   // int opcode_gNumber = (*gConfig)[gNumber].opcode;
@@ -726,9 +726,9 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     std::string upperCaseOpcode = boost::to_upper_copy(applicationOpcode);
     (*hConfig)[i].Opcode = upperCaseOpcode;
 
-    GRAMM->trace(" Condition :: {} :: Type :: {} ", doPlacement((*hConfig)[i].Opcode, jsonParsed), (*hConfig)[i].Opcode);
+    GRAMM->trace(" Condition :: {} :: Type :: {} ", skipPlacement((*hConfig)[i].Opcode, jsonParsed), (*hConfig)[i].Opcode);
  
-    if (doPlacement((*hConfig)[i].Opcode, jsonParsed))
+    if (skipPlacement((*hConfig)[i].Opcode, jsonParsed))
     { 
       GRAMM->info("[H] Ignoring placement for application node :: {} ", name);
       boost::clear_out_edges(v, *H);   //Removing all out-edges to and from vertex "v"

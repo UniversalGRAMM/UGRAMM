@@ -86,7 +86,7 @@ std::string readCommentSection(std::ifstream &inputFile);
  * @param jsonParsed Reference to the parsed JSON object containing node type information.
  * @return bool Returns true if placement is required, false otherwise.
  */
-bool doPlacement(std::string hOpcode, json& jsonParsed);
+bool skipPlacement(std::string hOpcode, json& jsonParsed);
 
 /**
  * Parses PRAGMA vectors from the comment section of the device model graph.

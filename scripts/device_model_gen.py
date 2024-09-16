@@ -84,24 +84,24 @@ def create_riken(args):
         G.nodes[left_io_index]["G_NodeCell"]         = "FuncCell"     
         G.nodes[left_io_index]["G_NodeType"]         = "MemPort"     
         G.nodes[left_io_index]["G_ID"]               = str(left_io_index)   
-        G.nodes[left_io_index]["G_VisualX"]          = 0
-        G.nodes[left_io_index]["G_VisualY"]          = left_io_pin_scalar       
+        G.nodes[left_io_index]["G_VisualX"]          = str(0)
+        G.nodes[left_io_index]["G_VisualY"]          = str(left_io_pin_scalar)       
 
         #Left-IO-input-Pin :
         G.nodes[left_io_inPin_index]["G_Name"]             = left_io_base_name + ".inPinA"
         G.nodes[left_io_inPin_index]["G_NodeCell"]         = "PinCell"   
         G.nodes[left_io_inPin_index]["G_NodeType"]         = "in"      
         G.nodes[left_io_inPin_index]["G_ID"]               = str(left_io_inPin_index)      
-        G.nodes[left_io_inPin_index]["G_VisualX"]          = 0
-        G.nodes[left_io_inPin_index]["G_VisualY"]          = left_io_input_pin_scalar   
+        G.nodes[left_io_inPin_index]["G_VisualX"]          = str(0)
+        G.nodes[left_io_inPin_index]["G_VisualY"]          = str(left_io_input_pin_scalar)   
 
         #Left-IO-output-Pin :
         G.nodes[left_io_outPin_index]["G_Name"]             = left_io_base_name + ".outPinA"
         G.nodes[left_io_outPin_index]["G_NodeCell"]         = "PinCell"   
         G.nodes[left_io_outPin_index]["G_NodeType"]           = "out"      
         G.nodes[left_io_outPin_index]["G_ID"]               = str(left_io_outPin_index)          
-        G.nodes[left_io_outPin_index]["G_VisualX"]          = 0
-        G.nodes[left_io_outPin_index]["G_VisualY"]          = left_io_output_pin_scalar    
+        G.nodes[left_io_outPin_index]["G_VisualX"]          = str(0)
+        G.nodes[left_io_outPin_index]["G_VisualY"]          = str(left_io_output_pin_scalar)    
         
         #----------------------------------
         #Connectivity of Left IO port and Pin cell:
@@ -126,24 +126,24 @@ def create_riken(args):
         G.nodes[right_io_index]["G_NodeCell"] = "FuncCell"              #Right-IOs
         G.nodes[right_io_index]["G_NodeType"] = "MemPort"               #Right-IOs
         G.nodes[right_io_index]["G_ID"]       = str(right_io_index)     #Right-IOs
-        G.nodes[right_io_index]["G_VisualX"]          = args.NC+1
-        G.nodes[right_io_index]["G_VisualY"]          = right_io_pin_scalar     
+        G.nodes[right_io_index]["G_VisualX"]          = str(args.NC+1)
+        G.nodes[right_io_index]["G_VisualY"]          = str(right_io_pin_scalar)     
 
         #Right-IO-input-Pin :
         G.nodes[right_io_inPin_index]["G_Name"]             = right_io_base_name + ".inPinA"
         G.nodes[right_io_inPin_index]["G_NodeCell"]         = "PinCell"   
         G.nodes[right_io_inPin_index]["G_NodeType"]         = "in"      
         G.nodes[right_io_inPin_index]["G_ID"]               = str(right_io_inPin_index)     
-        G.nodes[right_io_inPin_index]["G_VisualX"]          = args.NC+1
-        G.nodes[right_io_inPin_index]["G_VisualY"]          = right_io_input_pin_scalar   
+        G.nodes[right_io_inPin_index]["G_VisualX"]          = str(args.NC+1)
+        G.nodes[right_io_inPin_index]["G_VisualY"]          = str(right_io_input_pin_scalar)   
 
         #Right-IO-output-Pin :
         G.nodes[right_io_outPin_index]["G_Name"]             = right_io_base_name + ".outPinA"
         G.nodes[right_io_outPin_index]["G_NodeCell"]         = "PinCell"   
         G.nodes[right_io_outPin_index]["G_NodeType"]         = "out"      
         G.nodes[right_io_outPin_index]["G_ID"]               = str(right_io_outPin_index)   
-        G.nodes[right_io_outPin_index]["G_VisualX"]          = args.NC+1
-        G.nodes[right_io_outPin_index]["G_VisualY"]          = right_io_output_pin_scalar   
+        G.nodes[right_io_outPin_index]["G_VisualX"]          = str(args.NC+1)
+        G.nodes[right_io_outPin_index]["G_VisualY"]          = str(right_io_output_pin_scalar)   
 
         #----------------------------------
         #Connectivity of Right IO port and Pin cell:
@@ -410,16 +410,16 @@ def create_riken(args):
             G.nodes[PEindex + pe_const_offset]["G_NodeCell"]     = "FuncCell";
             G.nodes[PEindex + pe_const_offset]["G_NodeType"]       = "Constant";
             G.nodes[PEindex + pe_const_offset]["G_ID"]           = str(PEindex + pe_const_offset)  
-            G.nodes[PEindex + pe_const_offset]["G_VisualX"]      = x_coordinate
-            G.nodes[PEindex + pe_const_offset]["G_VisualY"]      = const_scalar   
+            G.nodes[PEindex + pe_const_offset]["G_VisualX"]      = str(x_coordinate)
+            G.nodes[PEindex + pe_const_offset]["G_VisualY"]      = str(const_scalar)   
 
             # Assigning the Pin type
             G.nodes[PEindex + pe_const_pinO_offset]["G_Name"]         = base_name + ".const.outPinA" 
             G.nodes[PEindex + pe_const_pinO_offset]["G_NodeCell"]     = "PinCell";
             G.nodes[PEindex + pe_const_pinO_offset]["G_NodeType"]       = "out";
             G.nodes[PEindex + pe_const_pinO_offset]["G_ID"]           = str(PEindex + pe_const_pinO_offset)         
-            G.nodes[PEindex + pe_const_pinO_offset]["G_VisualX"]      = x_coordinate
-            G.nodes[PEindex + pe_const_pinO_offset]["G_VisualY"]      = const_out_pin_scalar   
+            G.nodes[PEindex + pe_const_pinO_offset]["G_VisualX"]      = str(x_coordinate)
+            G.nodes[PEindex + pe_const_pinO_offset]["G_VisualY"]      = str(const_out_pin_scalar)  
 
 
             # Assigning the ALU type:
@@ -427,30 +427,30 @@ def create_riken(args):
             G.nodes[PEindex + pe_alu_offset]["G_NodeCell"]     = "FuncCell";
             G.nodes[PEindex + pe_alu_offset]["G_NodeType"]       = "ALU";
             G.nodes[PEindex + pe_alu_offset]["G_ID"]           = str(PEindex + pe_alu_offset) 
-            G.nodes[PEindex + pe_alu_offset]["G_VisualX"]      = x_coordinate
-            G.nodes[PEindex + pe_alu_offset]["G_VisualY"]      = alu_scalar
+            G.nodes[PEindex + pe_alu_offset]["G_VisualX"]      = str(x_coordinate)
+            G.nodes[PEindex + pe_alu_offset]["G_VisualY"]      = str(alu_scalar)
 
             # Assigning the Pin type
             G.nodes[PEindex + pe_alu_pinA_offset]["G_Name"]         = base_name + ".alu.inPinA"  
             G.nodes[PEindex + pe_alu_pinA_offset]["G_NodeCell"]     = "PinCell";
             G.nodes[PEindex + pe_alu_pinA_offset]["G_NodeType"]       = "in";
             G.nodes[PEindex + pe_alu_pinA_offset]["G_ID"]           = str(PEindex + pe_alu_pinA_offset)           
-            G.nodes[PEindex + pe_alu_pinA_offset]["G_VisualX"]      = (x_coordinate) - 0.25
-            G.nodes[PEindex + pe_alu_pinA_offset]["G_VisualY"]      = alu_in_pin_scalar
+            G.nodes[PEindex + pe_alu_pinA_offset]["G_VisualX"]      = str((x_coordinate) - 0.25)
+            G.nodes[PEindex + pe_alu_pinA_offset]["G_VisualY"]      = str(alu_in_pin_scalar)
 
             G.nodes[PEindex + pe_alu_pinB_offset]["G_Name"]         = base_name + ".alu.inPinB" 
             G.nodes[PEindex + pe_alu_pinB_offset]["G_NodeCell"]     = "PinCell";
             G.nodes[PEindex + pe_alu_pinB_offset]["G_NodeType"]       = "in";
             G.nodes[PEindex + pe_alu_pinB_offset]["G_ID"]           = str(PEindex + pe_alu_pinB_offset)     
-            G.nodes[PEindex + pe_alu_pinB_offset]["G_VisualX"]      = (x_coordinate) + 0.25
-            G.nodes[PEindex + pe_alu_pinB_offset]["G_VisualY"]      = alu_in_pin_scalar
+            G.nodes[PEindex + pe_alu_pinB_offset]["G_VisualX"]      = str((x_coordinate) + 0.25)
+            G.nodes[PEindex + pe_alu_pinB_offset]["G_VisualY"]      = str(alu_in_pin_scalar)
 
             G.nodes[PEindex + pe_alu_pinO_offset]["G_Name"]         = base_name + ".alu.outPinA" 
             G.nodes[PEindex + pe_alu_pinO_offset]["G_NodeCell"]     = "PinCell";
             G.nodes[PEindex + pe_alu_pinO_offset]["G_NodeType"]       = "out";
             G.nodes[PEindex + pe_alu_pinO_offset]["G_ID"]           = str(PEindex + pe_alu_pinO_offset)     
-            G.nodes[PEindex + pe_alu_pinO_offset]["G_VisualX"]      = x_coordinate
-            G.nodes[PEindex + pe_alu_pinO_offset]["G_VisualY"]      = alu_out_pin_scalar
+            G.nodes[PEindex + pe_alu_pinO_offset]["G_VisualX"]      = str(x_coordinate)
+            G.nodes[PEindex + pe_alu_pinO_offset]["G_VisualY"]      = str(alu_out_pin_scalar)
 
     #--------------------------------------------------------
     #   Visualizing a PE
