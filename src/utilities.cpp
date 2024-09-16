@@ -170,8 +170,8 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
 void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig)
 {
   int scale = 6;
-  float G_VisualX = boost::get(&DotVertex::G_VisualX, *G, gNumber) * scale;
-  float G_VisualY = boost::get(&DotVertex::G_VisualY, *G, gNumber) * scale;
+  float G_VisualX = std::stof(boost::get(&DotVertex::G_VisualX, *G, gNumber)) * scale;
+  float G_VisualY = std::stof(boost::get(&DotVertex::G_VisualY, *G, gNumber)) * scale;
   // std::cout << "The X,Y location of " << gName << "is " << G_VisualX << " , " << G_VisualY << "\n";
 
   int opcode_gNumber = (*gConfig)[gNumber].opcode;             // Use for deciding the color of the FunCell based on the opcode

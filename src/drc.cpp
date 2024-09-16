@@ -175,8 +175,69 @@ void deviceModelDRC_CheckFuncCellConnectivity(DirectedGraph *G, std::map<int, No
         }
     }
   }
+}
+
+void deviceModelDRC_CheckDeviceModelAttributes(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected){
+  for (int i = 0; i < num_vertices(*G); i++){
+    vertex_descriptor v = vertex(i, *G);
+
+    //Check if the G_ID attribute in the device model graph
+    std::string G_ID = boost::get(&DotVertex::G_ID, *G, v);
+    if (G_ID.empty()){
+      GRAMM->error("[DRC Error] Device Model Graph does not have a G_ID attribute. Please verify the device model");
+    }
+
+    //Check if the G_Name attribute in the device model graph
+    std::string G_Name = boost::get(&DotVertex::G_Name, *G, v);
+    if (G_Name.empty()){
+      GRAMM->error("[DRC Error] Vertex (G_ID) {} in device model graph does not have a G_Name attribute", G_ID);
+      *errorDetected  = true;
+    } else {
+      if (gNames[i] != G_Name){
+        GRAMM->error("[DRC Error] Vertex name attribute (G_Name) {} in device model graph is not reflected in the gNames map which is {}. Please recheck the implementation of GRAMM", G_Name, gNames[i]);
+        *errorDetected  = true;
+      }
+    }
 
 
+    //Check if the G_NodeType attribute in the device model graph
+    std::string G_NodeCell = boost::get(&DotVertex::G_NodeType, *G, v);
+    if (G_NodeCell.empty()){
+      GRAMM->error("[DRC Error] Vertex (G_Name) {} in device model graph does not have a G_NodeCell attribute", G_Name);
+      *errorDetected  = true;
+    } else {
+      // if ((*gConfig)[i].Cell != G_NodeCell){
+      //   GRAMM->error("[DRC Error] Vertex (G_Name) {} has a G_NodeCell attribute of {} in device model graph. This is not reflected in the gConfig data structure which is {}. Please recheck the implementation of GRAMM", G_NodeCell, (*gConfig)[i].type);
+      //   *errorDetected  = true;
+      // }
+    }
+
+
+    //Check if the G_NodeType attribute in the device model graph. Rightnow, we need to G_Opcode, need to change to G_NodeType
+    std::string G_NodeType = boost::get(&DotVertex::G_Opcode, *G, v);
+    if (G_NodeType.empty()){
+      GRAMM->error("[DRC Error] Vertex (G_Name) {} in device model graph does not have a G_NodeType attribute", G_Name);
+      *errorDetected  = true;
+    } else {
+      // if ((*gConfig)[i].opcode != G_NodeType){
+      //   GRAMM->error("[DRC Error] Vertex (G_Name) {} has a G_NodeType attribute of {} in device model graph. This is not reflected in the gConfig data structure which is {}. Please recheck the implementation of GRAMM", G_NodeCell, (*gConfig)[i].opcode);
+      //   *errorDetected  = true;
+      // }
+    }
+
+    //Check if the G_VisualX attribute in the device model graph.
+    std::string G_VisualX = boost::get(&DotVertex::G_VisualX, *G, v);
+    if (G_VisualX.empty() && G_NodeCell != "RouteCell"){
+      GRAMM->warn("[DRC Warning] Vertex (G_Name) {} in device model graph does not have an optional G_VisualX attribute", G_Name);
+    }
+
+    //Check if the G_VisualY attribute in the device model graph.
+    std::string G_VisualY = boost::get(&DotVertex::G_VisualY, *G, v);
+    if (G_VisualY.empty() && G_NodeCell != "RouteCell"){
+      GRAMM->warn("[DRC Warning] Vertex (G_Name) {} in device model graph does not have an optional G_VisualY attribute", G_Name);
+    }
+
+  }
 }
 
 
@@ -240,7 +301,76 @@ void applicationGraphDRC_CheckApplicationDFGWeeklyConnected(DirectedGraph *H, st
   }
 }
 
-//------------ The following sections is for DRC Rules check for Application Model Graph -----------//
+void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected){
+  for (int i = 0; i < num_vertices(*H); i++){
+    vertex_descriptor v = vertex(i, *H);
+
+
+    //Check if the name attribute in the application DFG
+    std::string H_Name = boost::get(&DotVertex::name, *H, v);
+    if (H_Name.empty()){
+      GRAMM->error("[DRC Error] Vertex {} in application DFG does not have a name attribute", H_Name);
+      *errorDetected  = true;
+    } else {
+      if (hNames[i] != H_Name){
+        GRAMM->error("[DRC Error] Vertex {} in application DFG is not reflected in the hNames map which is {}. Please recheck the implementation of GRAMM", H_Name, hNames[i]);
+        *errorDetected  = true;
+      }
+    }
+
+    //Check if the opcode attribute in the application DFG
+    std::string H_Opcode = boost::get(&DotVertex::opcode, *H, v);
+    if (H_Opcode.empty()){
+      GRAMM->error("[DRC Error] Vertex {} in application DFG does not have a opcode attribute", H_Name);
+      *errorDetected  = true;
+    } else {
+      // if ((*hConfig)[i].Opcode != H_Opcode){
+      //   GRAMM->error("[DRC Error] Vertex {} has a opcode attribute of {} in application DFG. This is not reflected in the hConfig data structure which is {}. Please recheck the implementation of GRAMM", H_Name, H_Opcode, (*hConfig)[i].Opcode);
+      //   *errorDetected  = true;
+      // }
+    }
+
+    //Check if the loadPin and driverPin attribute is in the application DFG edges
+    out_edge_iterator eo, eo_end;
+    boost::tie(eo, eo_end) = out_edges(v, *H);
+    for (; eo != eo_end; eo++){
+      //Check if the loadPin attribute is in the application DFG edges
+      std::string loadPin = boost::get(&EdgeProperty::loadPin, *H, *eo);
+      if (loadPin.empty()){
+        GRAMM->error("[DRC Error] Edge {} -> {} in application DFG does not have a loadPin attribute", boost::get(&DotVertex::name, *H, boost::source(*eo, *H)), boost::get(&DotVertex::name, *H, boost::target(*eo, *H)));
+        *errorDetected  = true;
+      }
+
+      //Check if the driverPin attribute is in the application DFG edges
+      std::string driverPin = boost::get(&EdgeProperty::driverPin, *H, *eo);
+      if (driverPin.empty()){
+        GRAMM->error("[DRC Error] Edge {} -> {} in application DFG does not have a driverPin attribute", boost::get(&DotVertex::name, *H, boost::source(*eo, *H)), boost::get(&DotVertex::name, *H, boost::target(*eo, *H)));
+        *errorDetected  = true;
+      }
+    }
+
+    //Check if the latency attribute in the application DFG.
+    std::string H_Latency = boost::get(&DotVertex::latency, *H, v);
+    if (H_Latency.empty()){
+      GRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional latency attribute", H_Name);
+    }
+  
+    //Check if the placementX attribute in the application DFG.
+    std::string H_PlacementX = boost::get(&DotVertex::placementX, *H, v);
+    if (H_PlacementX.empty()){
+      GRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional placementX attribute", H_Name);
+    }
+
+    //Check if the placementY attribute in the application DFG.
+    std::string H_PlacementY = boost::get(&DotVertex::placementY, *H, v);
+    if (H_PlacementY.empty()){
+      GRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional placementY attribute", H_Name);
+    }
+
+  }
+}
+
+//------------ The following sections is the functions that runs all DRC rules -----------//
 void runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig){
   // Run all the DRC rule check function, and if an error is detected, 
   // raise the errorDetected flag
@@ -260,12 +390,14 @@ void runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConf
   //deviceModelDRC_CheckPinsIO(G, gConfig, &errorDetected);
   deviceModelDRC_CheckDeviceModelWeeklyConnected(G, gConfig, &errorDetected);
   deviceModelDRC_CheckFuncCellConnectivity(G, gConfig, &errorDetected);
+  deviceModelDRC_CheckDeviceModelAttributes(G, gConfig, &errorDetected);
 
   //--------- Running DRC for the Application Model Graph -----------//
   //------ Please add any Application Model Graph DRC Rule Check Functions Below ------//
   applicationGraphDRC_CheckFloatingNodes(H, hConfig, &errorDetected);
   applicationGraphDRC_CheckPinNames(H, hConfig, &errorDetected);
   //applicationGraphDRC_CheckApplicationDFGWeeklyConnected(H, hConfig, &errorDetected);
+  applicationGraphDRC_CheckDeviceModelAttributes(H, hConfig, &errorDetected);
 
   //--------- Error Check -----------//
   if (errorDetected){

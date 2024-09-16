@@ -92,6 +92,16 @@ void deviceModelDRC_CheckDeviceModelWeeklyConnected(DirectedGraph *G, std::map<i
 void deviceModelDRC_CheckFuncCellConnectivity(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
 
 
+/**
+ * @brief  Check if the device model dot files has the correct attributes and also verify if the attributes haves been correctly loaded into the gConfig data structure
+ * 
+ * @param G A pointer to the device-model graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void deviceModelDRC_CheckDeviceModelAttributes(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
+
+
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
 /**
  * @brief Application graph should not have any floating nodes
@@ -122,10 +132,18 @@ void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfi
  */
 void applicationGraphDRC_CheckApplicationDFGWeeklyConnected(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
 
+/**
+ * @brief  Check if the application DFG dot files has the correct attributes and also verify if the attributes haves been correctly loaded into the hConfig data structure
+ * 
+ * @param H A pointer to the device-model graph.
+ * @param hConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
 
 
 
-//------------ The following sections is for DRC Rules check for Application Model Graph -----------//
+//------------ The following sections is the functions that runs all DRC rules -----------//
 /**
  * @brief Main DRC function that run through all DRC rules check for both H and G graph seen above
  * 

@@ -77,7 +77,7 @@ struct NodeConfig {
     //As of now following configs are optional
     int Latency = 0;                    
     int Width   = 0;                      
-    std::pair<int, int> Location = {0,0 };   
+    std::pair<int, int> Location = {0,0};   
 };
 
 
@@ -86,14 +86,17 @@ struct DotVertex {
     // For [H] --> Application Graph
     std::string name;       //Contains name of the operation in Application graph (ex: Load_0)
     std::string opcode;     //Contains the Opcode of the operation (ex: op, const, input and output)
+    std::string latency;    //Contains the latency of the operation
+    std::string placementX; //Contains the placement location of X
+    std::string placementY; //Contains the placement location of Y
 
     // For [G] --> Device Model Graph
     std::string G_Name;       //Contains the unique name of the cell in the device model graph.
     std::string G_ID;         //Contains the sequence ID for the given node of Device Model Graph
     std::string G_NodeType;   //Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
     std::string G_Opcode;     //Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
-    float G_VisualX;
-    float G_VisualY;
+    std::string G_VisualX;
+    std::string G_VisualY;
 };
 
 //Struct for defining the edge types in the H graph to determine the pin layout

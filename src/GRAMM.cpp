@@ -970,6 +970,9 @@ int main(int argc, char *argv[])
     dp.property("opcode", boost::get(&DotVertex::opcode, H));
     dp.property("load", boost::get(&EdgeProperty::loadPin, H));
     dp.property("driver", boost::get(&EdgeProperty::driverPin, H));
+    dp.property("latency", boost::get(&DotVertex::latency, H)); 
+    dp.property("placementX", boost::get(&DotVertex::placementX, H)); 
+    dp.property("placementY", boost::get(&DotVertex::placementY, H));
 
     // For [G] --> Device Model Graph
     // DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
@@ -988,6 +991,10 @@ int main(int argc, char *argv[])
     dp.property("opcode", boost::get(&DotVertex::opcode, H));
     dp.property("load", boost::get(&EdgeProperty::loadPin, H));
     dp.property("driver", boost::get(&EdgeProperty::driverPin, H));
+    dp.property("latency", boost::get(&DotVertex::latency, H)); 
+    dp.property("placementX", boost::get(&DotVertex::placementX, H)); 
+    dp.property("placementY", boost::get(&DotVertex::placementY, H));
+
 
     // For [G] --> Device Model Graph
     // DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
