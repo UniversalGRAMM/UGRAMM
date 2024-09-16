@@ -17,6 +17,7 @@
 #include <list>
 #include <bitset>
 #include <algorithm>
+#include <sys/time.h>
 
 struct DotVertex {
     std::string name;
@@ -1152,6 +1153,13 @@ void computeTopo(DirectedGraph *H, std::map<int, nodeType> *HTypes) {
 int main(int argc, char *argv[])
 {
 
+  //--------------- Starting timestamp -------------------------
+  /* get start timestamp */
+  struct timeval totalTime;
+  gettimeofday(&totalTime, NULL);
+  uint64_t startTotal = totalTime.tv_sec * (uint64_t)1000000 + totalTime.tv_usec;
+  //------------------------------------------------------------
+
   DirectedGraph H,G;
 
   boost::dynamic_properties dp(boost::ignore_other_properties);
@@ -1239,8 +1247,31 @@ int main(int argc, char *argv[])
 
   // compute a topological order
   computeTopo(&H, &hTypes); // not presently used
-  
+
+  //--------------- Starting timestamp -------------------------
+  /* get start timestamp */
+  struct timeval grammTime;
+  gettimeofday(&grammTime, NULL);
+  uint64_t startGramm = grammTime.tv_sec * (uint64_t)1000000 + grammTime.tv_usec;
+  //------------------------------------------------------------
+
   findMinorEmbedding(&H, &G, &hTypes, &gTypes);
-    
+
+  //--------------- get elapsed time -------------------------
+  gettimeofday(&grammTime, NULL);
+  uint64_t endGramm = grammTime.tv_sec * (uint64_t)1000000 + grammTime.tv_usec;
+  uint64_t elapsedGramm = endGramm - startGramm;
+  double secondsGramm = static_cast<double>(elapsedGramm) / 1000000.0;
+  std::cout << "Total time taken for [mapping]:: " << secondsGramm << " Seconds\n";
+  //------------------------------------------------------------
+
+  //--------------- get elapsed time -------------------------
+  gettimeofday(&totalTime, NULL);
+  uint64_t endTotal = totalTime.tv_sec * (uint64_t)1000000 + totalTime.tv_usec;
+  uint64_t elapsedTotal = endTotal - startTotal;
+  double secondsTotal = static_cast<double>(elapsedTotal) / 1000000.0;
+  std::cout << "Total time taken for [GRAMM]:: " << secondsTotal << " Seconds\n";
+  //------------------------------------------------------------
+
   return 0;
  }
