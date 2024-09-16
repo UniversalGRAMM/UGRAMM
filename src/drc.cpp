@@ -264,15 +264,15 @@ void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfi
     boost::tie(eo, eo_end) = out_edges(v, *H);
     for (; eo != eo_end; eo++){
 
-      auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::loadPin, *H, *eo));
+      auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::H_LoadPin, *H, *eo));
       if (it_inPin == inPin.end()){
-        GRAMM->error("[DRC Error] load pin name {} for edge {} -> {} is not defined in inPin vector seen in GRAMM.cpp", boost::get(&EdgeProperty::loadPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+        GRAMM->error("[DRC Error] load pin attribute {} for edge {} -> {} is not defined in inPin vector seen in GRAMM.cpp", boost::get(&EdgeProperty::H_LoadPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
         *errorDetected  = true;
       }
 
-      auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::driverPin, *H, *eo));
+      auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::H_DriverPin, *H, *eo));
       if (it_outPin == outPin.end()){
-        GRAMM->error("[DRC Error] driver pin name {} for edge {} -> {} is not defined in outPin vector seen in GRAMM.cpp", boost::get(&EdgeProperty::driverPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+        GRAMM->error("[DRC Error] driver pin attribute {} for edge {} -> {} is not defined in outPin vector seen in GRAMM.cpp", boost::get(&EdgeProperty::H_DriverPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
         *errorDetected  = true;
       }
     }
@@ -307,9 +307,9 @@ void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<i
 
 
     //Check if the name attribute in the application DFG
-    std::string H_Name = boost::get(&DotVertex::name, *H, v);
+    std::string H_Name = boost::get(&DotVertex::H_Name, *H, v);
     if (H_Name.empty()){
-      GRAMM->error("[DRC Error] Vertex {} in application DFG does not have a name attribute", H_Name);
+      GRAMM->error("[DRC Error] Vertex {} in application DFG does not have a H_Name attribute", H_Name);
       *errorDetected  = true;
     } else {
       if (hNames[i] != H_Name){
@@ -319,7 +319,7 @@ void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<i
     }
 
     //Check if the opcode attribute in the application DFG
-    std::string H_Opcode = boost::get(&DotVertex::opcode, *H, v);
+    std::string H_Opcode = boost::get(&DotVertex::H_Opcode, *H, v);
     if (H_Opcode.empty()){
       GRAMM->error("[DRC Error] Vertex {} in application DFG does not have a opcode attribute", H_Name);
       *errorDetected  = true;
@@ -335,34 +335,34 @@ void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<i
     boost::tie(eo, eo_end) = out_edges(v, *H);
     for (; eo != eo_end; eo++){
       //Check if the loadPin attribute is in the application DFG edges
-      std::string loadPin = boost::get(&EdgeProperty::loadPin, *H, *eo);
-      if (loadPin.empty()){
-        GRAMM->error("[DRC Error] Edge {} -> {} in application DFG does not have a loadPin attribute", boost::get(&DotVertex::name, *H, boost::source(*eo, *H)), boost::get(&DotVertex::name, *H, boost::target(*eo, *H)));
+      std::string H_LoadPin = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
+      if (H_LoadPin.empty()){
+        GRAMM->error("[DRC Error] Edge {} -> {} in application DFG does not have a loadPin attribute", boost::get(&DotVertex::H_Name, *H, boost::source(*eo, *H)), boost::get(&DotVertex::H_Name, *H, boost::target(*eo, *H)));
         *errorDetected  = true;
       }
 
       //Check if the driverPin attribute is in the application DFG edges
-      std::string driverPin = boost::get(&EdgeProperty::driverPin, *H, *eo);
-      if (driverPin.empty()){
-        GRAMM->error("[DRC Error] Edge {} -> {} in application DFG does not have a driverPin attribute", boost::get(&DotVertex::name, *H, boost::source(*eo, *H)), boost::get(&DotVertex::name, *H, boost::target(*eo, *H)));
+      std::string H_DriverPin = boost::get(&EdgeProperty::H_DriverPin, *H, *eo);
+      if (H_DriverPin.empty()){
+        GRAMM->error("[DRC Error] Edge {} -> {} in application DFG does not have a driverPin attribute", boost::get(&DotVertex::H_Name, *H, boost::source(*eo, *H)), boost::get(&DotVertex::H_Name, *H, boost::target(*eo, *H)));
         *errorDetected  = true;
       }
     }
 
     //Check if the latency attribute in the application DFG.
-    std::string H_Latency = boost::get(&DotVertex::latency, *H, v);
+    std::string H_Latency = boost::get(&DotVertex::H_Latency, *H, v);
     if (H_Latency.empty()){
       GRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional latency attribute", H_Name);
     }
   
     //Check if the placementX attribute in the application DFG.
-    std::string H_PlacementX = boost::get(&DotVertex::placementX, *H, v);
+    std::string H_PlacementX = boost::get(&DotVertex::H_PlacementX, *H, v);
     if (H_PlacementX.empty()){
       GRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional placementX attribute", H_Name);
     }
 
     //Check if the placementY attribute in the application DFG.
-    std::string H_PlacementY = boost::get(&DotVertex::placementY, *H, v);
+    std::string H_PlacementY = boost::get(&DotVertex::H_PlacementY, *H, v);
     if (H_PlacementY.empty()){
       GRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional placementY attribute", H_Name);
     }

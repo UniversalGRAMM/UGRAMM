@@ -429,8 +429,8 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
   for (; eo != eo_end; eo++)
   {
     int load = target(*eo, *H);
-    std::string loadPin = boost::get(&EdgeProperty::loadPin, *H, *eo);
-    std::string driverPin = boost::get(&EdgeProperty::driverPin, *H, *eo);
+    std::string H_LoadPin = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
+    std::string H_DriverPin = boost::get(&EdgeProperty::H_DriverPin, *H, *eo);
 
     if (load == y)
       continue; // JANDERS ignore feedback connections for the moment
@@ -456,11 +456,11 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     for (; ei != ei_end; ei++)
     {
       int source_id = source(*ei, *G);
-      if ((*gConfig)[source_id].loadPin == loadPin)
+      if ((*gConfig)[source_id].H_LoadPin == H_LoadPin)
         loadInPinCellLoc = source_id;
     }
 
-    GRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], loadPin);
+    GRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], H_LoadPin);
     GRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFunCellLoc], gNames[loadInPinCellLoc]);
 
     if (loadInPinCellLoc < 0)
@@ -852,8 +852,8 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
       size_t pos = gNames[i].find_last_of('.');
       if (pos != std::string::npos)
       {
-        // GRAMM->info("loadPin for {} is {}", gNames[i], gNames[i].substr(pos + 1));
-        (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
+        // GRAMM->info("H_LoadPin for {} is {}", gNames[i], gNames[i].substr(pos + 1));
+        (*gConfig)[i].H_LoadPin = gNames[i].substr(pos + 1);
       }
     }
   }
@@ -876,12 +876,12 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
   for (int i = 0; i < num_vertices(*H); i++)
   {
     vertex_descriptor v = vertex(i, *H);
-    std::string opcode = boost::get(&DotVertex::opcode, *H, v);
-    std::string name = boost::get(&DotVertex::name, *H, v);
+    std::string H_Opcode = boost::get(&DotVertex::H_Opcode, *H, v);
+    std::string H_Name = boost::get(&DotVertex::H_Name, *H, v);
 
-    hNames[i] = name;
+    hNames[i] = H_Name;
 
-    GRAMM->trace("[H] name {} opcode {}", name, opcode);
+    GRAMM->trace("[H] H_Name {} H_Opcode {}", H_Name, H_Opcode);
 
     /*
       Translating the Opcodes from Application grpah into common NodeTypes
@@ -889,34 +889,34 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
         1. FuncCell  (ALU, Constant, MemPort, IO)
         2. RouteCell (MUX, Reg)
         3. PinCell   (In, Out)
-      -- Also storing the other important information such as opcode..
+      -- Also storing the other important information such as H_Opcode..
     */
     if (!RIKEN)
     {
       //==========================//
       //---------- ADRES ---------//
       //==========================//
-      if (opcode == "const")
+      if (H_Opcode == "const")
       {
         (*hConfig)[i].type = FuncCell;   // constant is part of FuncCell
         (*hConfig)[i].opcode = constant; // Saving Opcode in the config map.
       }
-      else if (opcode == "input")
+      else if (H_Opcode == "input")
       {
         (*hConfig)[i].type = FuncCell; // io is part of FuncCell
         (*hConfig)[i].opcode = io;     // Saving Opcode in the config map.
       }
-      else if (opcode == "output")
+      else if (H_Opcode == "output")
       {
         (*hConfig)[i].type = FuncCell; // io is part of FuncCell
         (*hConfig)[i].opcode = io;     // Saving Opcode in the config map.
       }
-      else if (opcode == "load")
+      else if (H_Opcode == "load")
       {
         (*hConfig)[i].type = FuncCell;  // memport is part of FuncCell
         (*hConfig)[i].opcode = memport; // Saving Opcode in the config map.
       }
-      else if (opcode == "store")
+      else if (H_Opcode == "store")
       {
         (*hConfig)[i].type = FuncCell;  // memport is part of FuncCell
         (*hConfig)[i].opcode = memport; // Saving Opcode in the config map.
@@ -932,17 +932,17 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
       //==========================//
       //---------- RIKEN ---------//
       //==========================//
-      if (opcode == "const")
+      if (H_Opcode == "const")
       {
         (*hConfig)[i].type = FuncCell;   // constant is part of FuncCell
         (*hConfig)[i].opcode = constant; // Saving Opcode in the config map.
       }
-      else if (opcode == "input")
+      else if (H_Opcode == "input")
       {
         (*hConfig)[i].type = FuncCell;  // memport is part of FuncCell
         (*hConfig)[i].opcode = memport; // Saving Opcode in the config map.
       }
-      else if (opcode == "output")
+      else if (H_Opcode == "output")
       {
         (*hConfig)[i].type = FuncCell;  // memport is part of FuncCell
         (*hConfig)[i].opcode = memport; // Saving Opcode in the config map.
@@ -966,13 +966,13 @@ int main(int argc, char *argv[])
   if (!RIKEN)
   {
     // H --> Application Graph
-    dp.property("node_id", boost::get(&DotVertex::name, H));
-    dp.property("opcode", boost::get(&DotVertex::opcode, H));
-    dp.property("load", boost::get(&EdgeProperty::loadPin, H));
-    dp.property("driver", boost::get(&EdgeProperty::driverPin, H));
-    dp.property("latency", boost::get(&DotVertex::latency, H)); 
-    dp.property("placementX", boost::get(&DotVertex::placementX, H)); 
-    dp.property("placementY", boost::get(&DotVertex::placementY, H));
+    dp.property("node_id", boost::get(&DotVertex::H_Name, H));
+    dp.property("opcode", boost::get(&DotVertex::H_Opcode, H));
+    dp.property("load", boost::get(&EdgeProperty::H_LoadPin, H));
+    dp.property("driver", boost::get(&EdgeProperty::H_DriverPin, H));
+    dp.property("latency", boost::get(&DotVertex::H_Latency, H)); 
+    dp.property("placementX", boost::get(&DotVertex::H_PlacementX, H)); 
+    dp.property("placementY", boost::get(&DotVertex::H_PlacementY, H));
 
     // For [G] --> Device Model Graph
     // DotVertex::G_ID --> Contains the sequence ID for the given node of Device Model Graph
@@ -985,15 +985,15 @@ int main(int argc, char *argv[])
   else
   {
     // For [H] --> Application Graph
-    // DotVertex::name   --> Contains name of the operation in Application graph (ex: Load_0)
+    // DotVertex::H_Name   --> Contains name of the operation in Application graph (ex: Load_0)
     // DotVertex::H_Opcode --> Contains the Opcode of the operation (ex: op, const, input and output)
-    dp.property("label", boost::get(&DotVertex::name, H));
-    dp.property("opcode", boost::get(&DotVertex::opcode, H));
-    dp.property("load", boost::get(&EdgeProperty::loadPin, H));
-    dp.property("driver", boost::get(&EdgeProperty::driverPin, H));
-    dp.property("latency", boost::get(&DotVertex::latency, H)); 
-    dp.property("placementX", boost::get(&DotVertex::placementX, H)); 
-    dp.property("placementY", boost::get(&DotVertex::placementY, H));
+    dp.property("label", boost::get(&DotVertex::H_Name, H));
+    dp.property("opcode", boost::get(&DotVertex::H_Opcode, H));
+    dp.property("load", boost::get(&EdgeProperty::H_LoadPin, H));
+    dp.property("driver", boost::get(&EdgeProperty::H_DriverPin, H));
+    dp.property("latency", boost::get(&DotVertex::H_Latency, H)); 
+    dp.property("placementX", boost::get(&DotVertex::H_PlacementX, H)); 
+    dp.property("placementY", boost::get(&DotVertex::H_PlacementY, H));
 
 
     // For [G] --> Device Model Graph

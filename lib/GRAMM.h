@@ -71,7 +71,7 @@ extern std::vector<std::string> outPin;
 struct NodeConfig {
     nodeType type;          //Type of the node --> FuncCell, RouteCell, PinCell
     opcodeType opcode;      //Opcode of the node --> io, alu, memport, ....
-    std::string loadPin;    //Load pin of the PinCell node --> inPinA, inPinB
+    std::string H_LoadPin;    //Load pin of the PinCell node --> inPinA, inPinB
     std::string tile;       //Tile of the FuncCell Node --> PE, LS, ....
     //std::string name; gnames  // gNames[i] or gNames[next]
     //As of now following configs are optional
@@ -84,11 +84,11 @@ struct NodeConfig {
 //Struct for defining the node types in both the application and device model graph:
 struct DotVertex {
     // For [H] --> Application Graph
-    std::string name;       //Contains name of the operation in Application graph (ex: Load_0)
-    std::string opcode;     //Contains the Opcode of the operation (ex: op, const, input and output)
-    std::string latency;    //Contains the latency of the operation
-    std::string placementX; //Contains the placement location of X
-    std::string placementY; //Contains the placement location of Y
+    std::string H_Name;       //Contains name of the operation in Application graph (ex: Load_0)
+    std::string H_Opcode;     //Contains the Opcode of the operation (ex: op, const, input and output)
+    std::string H_Latency;    //Contains the latency of the operation
+    std::string H_PlacementX; //Contains the placement location of X
+    std::string H_PlacementY; //Contains the placement location of Y
 
     // For [G] --> Device Model Graph
     std::string G_Name;       //Contains the unique name of the cell in the device model graph.
@@ -101,8 +101,8 @@ struct DotVertex {
 
 //Struct for defining the edge types in the H graph to determine the pin layout
 struct EdgeProperty {
-    std::string loadPin;
-    std::string driverPin;
+    std::string H_LoadPin;
+    std::string H_DriverPin;
     int weight;
 };
 
