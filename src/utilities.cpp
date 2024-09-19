@@ -8,7 +8,6 @@
 #include "../lib/GRAMM.h"
 #include "../lib/utilities.h"
 #include "../lib/routing.h"
-#include "../lib/drc.h"
 
 std::vector<std::string> colors = {
     "#FFA500", // Orange (Replaced Light Pink)

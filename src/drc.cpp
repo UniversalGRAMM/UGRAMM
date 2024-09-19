@@ -9,60 +9,44 @@
 #include "../lib/utilities.h"
 
 //------------ The following sections is for DRC Rules check for Device Model Graph -----------//
-void deviceModelDRC_VerifyPinNodeFanOut(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected){
+void deviceModelDRC_VerifyPinNodes(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected){
   // Iterate over all the nodes of the device model graph and assign the type of nodes:
   for (int i = 0; i < num_vertices(*G); i++){
-    //Check if the node in the device model graph is an input PinCell
-    if (((*gConfig)[i].Cell == "PinCell") && (*gConfig)[i].Type == "IN"){
-      //Verifying that all input PinCell node has a out degree of 1
-      if (boost::out_degree(i, *G) != 1){
-        GRAMM->error("[DRC Error] {} input pin node can not have a fanout", gNames[i]);
-        *errorDetected  = true;
-      } 
-    }
-
-  }
-}
-
-void deviceModelDRC_VerifyPinNodeFanIn(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected){
-  // Iterate over all the nodes of the device model graph and assign the type of nodes:
-  for (int i = 0; i < num_vertices(*G); i++){
-    //Check if the node in the device model graph is an input PinCell
-    if (((*gConfig)[i].Cell == "PinCell") && (*gConfig)[i].Type == "OUT"){
-      //Verifying that all input PinCell node has a out degree of 1
-      if (boost::in_degree(i, *G) != 1){
-        GRAMM->error("[DRC Error] {} ouput pin node can not have a fanin", gNames[i]);
-        *errorDetected  = true;
-      } 
-    }
-  }
-}
-
-void deviceModelDRC_CheckPinsExistBeforeAndAfterFuncCell(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected){
-  // Iterate over all the nodes of the device model graph and assign the type of nodes:
-  for (int i = 0; i < num_vertices(*G); i++){
-    vertex_descriptor v = vertex(i, *G);
-
-    // Obtaining the iterator that will iterator over all the output edges of the node
+    //Checking if all of the inputPins have a fanout of 1 and connected to a FuncCell
     out_edge_iterator eo, eo_end;
-    boost::tie(eo, eo_end) = out_edges(v, *G);
+    boost::tie(eo, eo_end) = out_edges(i, *G);
     for (; eo != eo_end; eo++){
-      // Checking if the out edges of the input pin cells are connected to a functional unit
-      if ((*gConfig)[boost::source(*eo, *G)].Cell == "PinCell" && (*gConfig)[boost::source(*eo, *G)].Type == "IN"){
-        if (!((*gConfig)[boost::target(*eo, *G)].Cell == "FuncCell")){
-          GRAMM->error("[DRC Error] {} node is not a FuncCell, hence should not be input edge connected from {} input PinCell", gNames[boost::target(*eo, *G)], gNames[boost::source(*eo, *G)]);
+      //Check if the node in the device model graph is an input PinCell
+      if (((*gConfig)[i].Cell == "PINCELL") && (*gConfig)[i].Type == "IN"){
+        //Verifying that all input PinCell node has a out degree of 1
+        if (boost::out_degree(i, *G) != 1){
+          GRAMM->error("[DRC Error] {} input pin node can not have a fanout", gNames[i]);
+          *errorDetected  = true;
+        } 
+        //Verifying that all input PinCell fanout edge is connected to a funcCell
+        if (!((*gConfig)[boost::target(*eo, *G)].Cell == "FUNCCELL")){
+          GRAMM->error("[DRC Error] {} input pin node fanout is not connected to a FuncCell", gNames[i]);
+          *errorDetected  = true;
+        } 
+      }
+    }
+    //Checking if all of the outputPins have a fanin of 1 and connected to a FuncCell
+    in_edge_iterator ei, ei_end;
+    boost::tie(ei, ei_end) = in_edges(i, *G);
+    for (; ei != ei_end; ei++){
+      //Check if the node in the device model graph is an output PinCell
+      if (((*gConfig)[i].Cell == "PINCELL") && (*gConfig)[i].Type == "OUT"){
+        //Verifying that all output PinCell node has a in degree of 1
+        if (boost::in_degree(i, *G) != 1){
+          GRAMM->error("[DRC Error] {} output pin node can not have a fanin", gNames[i]);
           *errorDetected  = true;
         }
-      }
-
-      // Checking if the out edges of the functional cells are connected to a output pin cell
-      if ((*gConfig)[boost::source(*eo, *G)].Cell == "FuncCell"){
-        if (!((*gConfig)[boost::target(*eo, *G)].Cell == "PinCell" && (*gConfig)[boost::target(*eo, *G)].Type == "OUT")){
-          GRAMM->error("[DRC Error] {} node is not a output PinCell, hence should not be input edge connected from {} FuncCell", gNames[boost::target(*eo, *G)], gNames[boost::source(*eo, *G)]);
+        //Verifying that all output PinCell fanin edge is connected to a funcCell
+        if (!((*gConfig)[boost::source(*ei, *G)].Cell == "FUNCCELL")){
+          GRAMM->error("[DRC Error] {} output pin node fanin is not connected to a FuncCell", gNames[i]);
           *errorDetected  = true;
-        }
+        } 
       }
-
     }
   }
 }
@@ -79,7 +63,7 @@ void deviceModelDRC_CheckFloatingNodes(DirectedGraph *G, std::map<int, NodeConfi
 }
 
 
-void deviceModelDRC_CheckDeviceModelWeeklyConnected(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected){
+void deviceModelDRC_CheckDeviceModelWeaklyConnected(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected){
 
   UnDirectedGraph G_undirected;
   boost::copy_graph(*G, G_undirected);
@@ -94,8 +78,6 @@ void deviceModelDRC_CheckDeviceModelWeeklyConnected(DirectedGraph *G, std::map<i
   if (num_components > 1) {
         GRAMM->error("[DRC Error] Device model graph is disconnect. There is {} numbers of differents independant graph within the provided Device Model", num_components);
         *errorDetected  = true;
-  } else {
-      //GRAMM->info("[DRC Passed] - Device model graph is not disconnected");
   }
 }
 
@@ -116,7 +98,7 @@ void deviceModelDRC_CheckFuncCellConnectivity(DirectedGraph *G, std::map<int, No
 
   // Find all FuncCell nodes
   for (boost::tie(vi, vi_end) = vertices(*G); vi != vi_end; ++vi) {
-      if ((*gConfig)[*vi].Cell == "FuncCell") {
+      if ((*gConfig)[*vi].Cell == "FUNCCELL") {
           funcCells_list.push_back(*vi);
       }
   }
@@ -150,11 +132,6 @@ void deviceModelDRC_CheckDeviceModelAttributes(DirectedGraph *G, std::map<int, N
     if (G_Name.empty()){
       GRAMM->error("[DRC Error] Device model graph have verticies that does not have a G_Name attribute");
       *errorDetected  = true;
-    } else {
-      if (gNames[i] != G_Name){
-        GRAMM->error("[DRC Error] Vertex name attribute (G_Name) {} in device model graph is not reflected in the gNames map which is {}. Please recheck the implementation of GRAMM", G_Name, gNames[i]);
-        *errorDetected  = true;
-      }
     }
 
 
@@ -175,13 +152,13 @@ void deviceModelDRC_CheckDeviceModelAttributes(DirectedGraph *G, std::map<int, N
 
     //Check if the G_VisualX attribute in the device model graph.
     std::string G_VisualX = boost::get(&DotVertex::G_VisualX, *G, v);
-    if (G_VisualX.empty() && G_NodeCell != "RouteCell"){
+    if (G_VisualX.empty()){
       GRAMM->warn("[DRC Warning] Vertex (G_Name) {} in device model graph does not have an optional G_VisualX attribute", G_Name);
     }
 
     //Check if the G_VisualY attribute in the device model graph.
     std::string G_VisualY = boost::get(&DotVertex::G_VisualY, *G, v);
-    if (G_VisualY.empty() && G_NodeCell != "RouteCell"){
+    if (G_VisualY.empty()){
       GRAMM->warn("[DRC Warning] Vertex (G_Name) {} in device model graph does not have an optional G_VisualY attribute", G_Name);
     }
 
@@ -228,7 +205,7 @@ void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfi
 }
 
 
-void applicationGraphDRC_CheckApplicationDFGWeeklyConnected(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected){
+void applicationGraphDRC_CheckApplicationDFGWeaklyConnected(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected){
 
   UnDirectedGraph H_undirected;
   boost::copy_graph(*H, H_undirected);
@@ -244,8 +221,6 @@ void applicationGraphDRC_CheckApplicationDFGWeeklyConnected(DirectedGraph *H, st
   if (num_components > 1) {
         GRAMM->error("[DRC Error] Application DFG is disconnect. There is {} numbers of differents independant graph within the provided DFG", num_components);
         *errorDetected  = true;
-  } else {
-      //GRAMM->info("[DRC Passed] - Application DFG is not disconnected");
   }
 }
 
@@ -259,13 +234,6 @@ void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<i
     if (H_Name.empty()){
       GRAMM->error("[DRC Error] Vertex {} in application DFG does not have a H_Name attribute", H_Name);
       *errorDetected  = true;
-    } else {
-      H_Name.erase(std::remove(H_Name.begin(), H_Name.end(), '{'), H_Name.end());
-      H_Name.erase(std::remove(H_Name.begin(), H_Name.end(), '}'), H_Name.end());
-      if (hNames[i] != H_Name && hNames[i] != "NULL"){
-        GRAMM->error("[DRC Error] Vertex {} in application DFG is not reflected in the hNames map which is {}. Please recheck the implementation of GRAMM", H_Name, hNames[i]);
-        *errorDetected  = true;
-      }
     }
 
     //Check if the opcode attribute in the application DFG
@@ -333,11 +301,9 @@ double runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hCo
 
   //--------- Running DRC for the Device Model Graph -----------//
   //------ Please add any Device Model Graph DRC Rule Check Functions Below ------//
-  deviceModelDRC_VerifyPinNodeFanOut(G, gConfig, &errorDetected);
-  deviceModelDRC_VerifyPinNodeFanIn(G, gConfig, &errorDetected);
-  deviceModelDRC_CheckPinsExistBeforeAndAfterFuncCell(G, gConfig, &errorDetected);
+  deviceModelDRC_VerifyPinNodes(G, gConfig, &errorDetected);
   deviceModelDRC_CheckFloatingNodes(G, gConfig, &errorDetected);
-  deviceModelDRC_CheckDeviceModelWeeklyConnected(G, gConfig, &errorDetected);
+  deviceModelDRC_CheckDeviceModelWeaklyConnected(G, gConfig, &errorDetected);
   deviceModelDRC_CheckFuncCellConnectivity(G, gConfig, &errorDetected);
   deviceModelDRC_CheckDeviceModelAttributes(G, gConfig, &errorDetected);
 
@@ -345,7 +311,7 @@ double runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hCo
   //------ Please add any Application Model Graph DRC Rule Check Functions Below ------//
   applicationGraphDRC_CheckFloatingNodes(H, hConfig, &errorDetected);
   applicationGraphDRC_CheckPinNames(H, hConfig, &errorDetected);
-  //applicationGraphDRC_CheckApplicationDFGWeeklyConnected(H, hConfig, &errorDetected);
+  //applicationGraphDRC_CheckApplicationDFGWeaklyConnected(H, hConfig, &errorDetected);
   applicationGraphDRC_CheckDeviceModelAttributes(H, hConfig, &errorDetected);
 
   //--------------- get elapsed time -------------------------//
