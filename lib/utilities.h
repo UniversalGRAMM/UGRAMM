@@ -1,3 +1,9 @@
+//===========================================================================//
+// Universal GRAaph Minor Mapping (UGRAMM) method for CGRA                   //
+// file : utilities.h                                                        //
+// description: contains variables and function declaration used for utility //
+//===========================================================================//
+
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
@@ -93,13 +99,13 @@ bool skipPlacement(std::string hOpcode, json& jsonParsed);
  * 
  * This function extracts and parses vectors of strings associated with the given keyword 
  * from the comment section of the device model graph, and stores them in the provided 
- * GrammConfig map.
+ * ugrammConfig map.
  * 
  * @param commentSection The comment section containing PRAGMA directives.
  * @param keyword The keyword to search for within the comment section.
- * @param GrammConfig Reference to the map where parsed vectors of strings will be stored.
+ * @param ugrammConfig Reference to the map where parsed vectors of strings will be stored.
  */
-void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig);
+void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &ugrammConfig);
 
 /**
  * Validates PRAGMA directives read from the application graph.
@@ -115,17 +121,17 @@ bool checkVectorofStrings(std::string commentSection, std::string keyword, std::
  * Reads, checks, and stores PRAGMA directives from the device model file.
  * 
  * @param deviceModelFile Reference to the input file stream for the device model.
- * @param GrammConfig Reference to the map where PRAGMA directives will be stored.
+ * @param ugrammConfig Reference to the map where PRAGMA directives will be stored.
  */
-void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &GrammConfig);
+void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &ugrammConfig);
 
 /**
  * Reads, checks, and stores PRAGMA directives from the application graph file.
  * 
  * @param applicationGraphFile Reference to the input file stream for the application graph.
- * @param GrammConfig Reference to the map where PRAGMA directives will be stored.
+ * @param ugrammConfig Reference to the map where PRAGMA directives will be stored.
  */
-void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &GrammConfig);
+void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &ugrammConfig);
 
 
 //------------------------------------------------------------------------------------//
@@ -163,9 +169,9 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
  * @param positionedOutputFile The positioned-output dot file stream (this dot-file contains actual co-ordinates of the node cells).
  * @param unpositionedOutputFile The unpositioned-output dot file stream (this dot-file does not contain any co-ordinates of the node cells).
  * @param gConfig A map containing node configuration details of device-model graph.
- * @param GrammConfig A map containing parsed pragma and config related information.
+ * @param ugrammConfig A map containing parsed pragma and config related information.
  */
-void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig);
+void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &ugrammConfig);
 
 /**
  * Prints mapping results in neato format: First displays the layout and then shows connections between the nodes.
@@ -174,9 +180,9 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
  * @param G A pointer to the device-model graph.
  * @param hConfig A map containing node configuration details of application graph.
  * @param gConfig A map containing node configuration details of device-model graph.
- * @param GrammConfig A map containing parsed pragma and config related information.
+ * @param ugrammConfig A map containing parsed pragma and config related information.
  */
-void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig , std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig);
+void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig , std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &ugrammConfig);
 
 /**
  * Prints the device model cell name corresponding to a given boost id number from device model graph.
@@ -191,10 +197,10 @@ void printName(int n);
  * @param H A pointer to the application graph.
  * @param G A pointer to the device-model graph.
  * @param hConfig A map containing node configuration details of device-model graph.
- * @param GrammConfig A map containing parsed pragma and config related information.
+ * @param ugrammConfig A map containing parsed pragma and config related information.
  * @param invUsers A map of hIDs to mapped gIDs.
  */
-void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig, std::map<int, int> &invUsers);
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &ugrammConfig, std::map<int, int> &invUsers);
 
 
 /**

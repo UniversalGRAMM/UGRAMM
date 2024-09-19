@@ -1,3 +1,10 @@
+//===================================================================//
+// Universal GRAaph Minor Mapping (UGRAMM) method for CGRA           //
+// file : routing.h                                                  //
+// description: contains variables and function declaration related  //
+//              to routing.                                          //
+//===================================================================//
+
 #ifndef ROUTING_H
 #define ROUTING_H
 

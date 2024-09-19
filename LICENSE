@@ -18,8 +18,8 @@ of this software may be incorporated into a commercial product without the
 written consent of the authors. The software may not be used for the design of
 a commercial electronic product without the written consent of the authors.
 The use of this software to assist in the development of new commercial CGRA
-architectures or commercial soft processor architectures is also prohibited
-without the written consent of the authors.
+architectures or inculsion of the UGRAMM algorithm in any commercial CAD flow is
+also prohibited without the written consent of the authors.
 
 This software is provided "as is" with no warranties or guarantees of support.
 
@@ -27,3 +27,4 @@ This Agreement shall be governed by the laws of Province of Ontario, Canada.
 
 Please contact Prof. Anderson of University of Toronto at janders@eecg.toronto.edu
 if you are interested in commercial use of the "UGRAMM" mapper.
+

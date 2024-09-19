@@ -1,3 +1,10 @@
+//===================================================================//
+// Universal GRAaph Minor Mapping (UGRAMM) method for CGRA           //
+// file : drc.h                                                      //
+// description: contains variables and function declaration related  //
+//              to DRC.                                              //
+//===================================================================//
+
 #ifndef DRC_H
 #define DRC_H
 

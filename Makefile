@@ -11,13 +11,13 @@ SRC_DIR = src
 LIB_DIR = lib
 BUILD_DIR = build
 
-EXE = GRAMM
+EXE = UGRAMM
 
 # Source files
-SRCS = $(SRC_DIR)/GRAMM.cpp $(SRC_DIR)/routing.cpp $(SRC_DIR)/utilities.cpp $(SRC_DIR)/drc.cpp
+SRCS = $(SRC_DIR)/UGRAMM.cpp $(SRC_DIR)/routing.cpp $(SRC_DIR)/utilities.cpp $(SRC_DIR)/drc.cpp
 
 # Object files
-OBJS = $(BUILD_DIR)/GRAMM.o $(BUILD_DIR)/routing.o $(BUILD_DIR)/utilities.o $(BUILD_DIR)/drc.o
+OBJS = $(BUILD_DIR)/UGRAMM.o $(BUILD_DIR)/routing.o $(BUILD_DIR)/utilities.o $(BUILD_DIR)/drc.o
 
 # Target for the executable
 $(EXE): $(OBJS)

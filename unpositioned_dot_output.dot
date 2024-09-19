@@ -61,7 +61,7 @@ Store_26;
   FADD_18 -> FADD_25;
 }
 subgraph cluster_0 {
- label = "GRAMM mapping output"; fontsize = 40; style=dashed;
+ label = "UGRAMM mapping output"; fontsize = 40; style=dashed;
 LS_w32_c0_r3_memport_outPinA [shape="oval" width=0.1 fontsize=10 fillcolor="#FFB6C1"]
 LS_w32_c0_r5_memport_Load_4 [shape="rectangle" width=0.5 fontsize=12 fillcolor="#D2B48C"]
 LS_w32_c0_r5_memport_Load_4 -> LS_w32_c0_r5_memport_outPinA

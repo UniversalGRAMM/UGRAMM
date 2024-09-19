@@ -1,10 +1,10 @@
 //===================================================================//
-// GRAap Minor Mapping (GRAMM) method for CGRA                       //
+// Universal GRAaph Minor Mapping (UGRAMM) method for CGRA           //
 // file : routing.cpp                                                //
 // description: contains routing-related functions                   //
 //===================================================================//
 
-#include "../lib/GRAMM.h"
+#include "../lib/UGRAMM.h"
 #include "../lib/utilities.h"
 #include "../lib/routing.h"
 
@@ -20,17 +20,17 @@
 */
 bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
 {
-  // For nodes such as RouteCell, PinCell the GrammConfig array will be empty.
+  // For nodes such as RouteCell, PinCell the ugrammConfig array will be empty.
   // Pragma array's are only parsed for the FunCell types.
-  if (GrammConfig[gType].size() == 0)
+  if (ugrammConfig[gType].size() == 0)
     return false;
 
   // Finding Opcode required by the application graph supported by the device model or not.
-  for (const auto pair : GrammConfig[gType])
+  for (const auto pair : ugrammConfig[gType])
   {
     if (pair == hOpcode)
     {
-      GRAMM->debug("{} node from device model supports {} Opcode", gType, hOpcode);
+      UGRAMM->debug("{} node from device model supports {} Opcode", gType, hOpcode);
       return true;
     }
   }
@@ -76,7 +76,7 @@ int findOutputPinFromFuncell(int signal, DirectedGraph *G)
 /**
  * Finds the root of the vertex model for the given signal.
  * 
- * As GRAMM performs pin-to-pin mapping, the root of the vertex model, 
+ * As UGRAMM performs pin-to-pin mapping, the root of the vertex model, 
  * or starting point, will always be an output pin that serves as the 
  * driver for the routing fanout of the specified signal.
  */
@@ -92,7 +92,7 @@ int findRoot(int signal, std::map<int, NodeConfig> *gConfig)
     {
       if ((*gConfig)[*it].Cell != "PINCELL")  //Driver has to be an output pin cell
       {
-        GRAMM->error("FATAL ERROR -- For signal {}, driverNode is not a PinCell!!", *it);
+        UGRAMM->error("FATAL ERROR -- For signal {}, driverNode is not a PinCell!!", *it);
         exit(-1);
       }
       return *it;
@@ -162,15 +162,15 @@ int totalOveruse(DirectedGraph *G)
 
     if (temp > 0)
     {
-      GRAMM->debug("{} OVERUSE ON {} with following users:", temp, gNames[i]);
+      UGRAMM->debug("{} OVERUSE ON {} with following users:", temp, gNames[i]);
       for (int value : (*Users)[i])
       {
-        GRAMM->debug("{}", hNames[value]);
+        UGRAMM->debug("{}", hNames[value]);
       }
     }
   }
 
-  GRAMM->info("TOTAL OVERUSE: {}", total);
+  UGRAMM->info("TOTAL OVERUSE: {}", total);
 
   return total;
 }
@@ -323,14 +323,14 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     eNode.cost = 0;
     eNode.i = rNode;
 
-    GRAMM->trace("EXPANSION SOURCE : {}", gNames[rNode]);
+    UGRAMM->trace("EXPANSION SOURCE : {}", gNames[rNode]);
 
     explored.set(rNode);
     expInt.push_back(rNode);
     PRQ.push(eNode);
   }
 
-  GRAMM->trace("EXPANSION TARGET : {}", gNames[sink]);
+  UGRAMM->trace("EXPANSION TARGET : {}", gNames[sink]);
 
   struct ExpNode popped;
   bool hit = false;
@@ -338,8 +338,8 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
   {
     popped = PRQ.top();
     PRQ.pop();
-    GRAMM->trace("Popped element: ", gNames[popped.i]);
-    GRAMM->trace("PRQ POP COST: {}", popped.cost);
+    UGRAMM->trace("Popped element: ", gNames[popped.i]);
+    UGRAMM->trace("PRQ POP COST: {}", popped.cost);
 
     if ((popped.cost > 0) &&
         (popped.i == sink))
@@ -413,7 +413,7 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
 */
 int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig)
 {
-  GRAMM->trace("BEGINNING ROUTE OF NAME : {}", hNames[y]);
+  UGRAMM->trace("BEGINNING ROUTE OF NAME : {}", hNames[y]);
 
   vertex_descriptor yD = vertex(y, *H);
   int totalCost = 0;
@@ -453,12 +453,12 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
         loadInPinCellLoc = source_id;
     }
 
-    GRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], H_LoadPin);
-    GRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFunCellLoc], gNames[loadInPinCellLoc]);
+    UGRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], H_LoadPin);
+    UGRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFunCellLoc], gNames[loadInPinCellLoc]);
 
     if (loadInPinCellLoc < 0)
     {
-      GRAMM->error("SIGNAL WITHOUT A DRIVER.\n");
+      UGRAMM->error("SIGNAL WITHOUT A DRIVER.\n");
       exit(-1);
     }
 
@@ -477,7 +477,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     }
     else
     {
-      GRAMM->trace("Skipped the routing for this application node {} due to high cost", hNames[y]);
+      UGRAMM->trace("Skipped the routing for this application node {} due to high cost", hNames[y]);
     }
   }
   return totalCost;

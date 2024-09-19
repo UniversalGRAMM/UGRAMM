@@ -1,10 +1,10 @@
 //=======================================================================//
-// GRAap Minor Mapping (GRAMM) method for CGRA                           //
+// Universal GRAaph Minor Mapping (UGRAMM) method for CGRA               //
 // file : utilities.cp                                                   //
 // description: contains functions needed for printing and visualization //
 //=======================================================================//
 
-#include "../lib/GRAMM.h"
+#include "../lib/UGRAMM.h"
 #include "../lib/drc.h"
 #include "../lib/utilities.h"
 
@@ -20,12 +20,12 @@ void deviceModelDRC_VerifyPinNodes(DirectedGraph *G, std::map<int, NodeConfig> *
       if (((*gConfig)[i].Cell == "PINCELL") && (*gConfig)[i].Type == "IN"){
         //Verifying that all input PinCell node has a out degree of 1
         if (boost::out_degree(i, *G) != 1){
-          GRAMM->error("[DRC Error] {} input pin node can not have a fanout", gNames[i]);
+          UGRAMM->error("[DRC Error] {} input pin node can not have a fanout", gNames[i]);
           *errorDetected  = true;
         } 
         //Verifying that all input PinCell fanout edge is connected to a funcCell
         if (!((*gConfig)[boost::target(*eo, *G)].Cell == "FUNCCELL")){
-          GRAMM->error("[DRC Error] {} input pin node fanout is not connected to a FuncCell", gNames[i]);
+          UGRAMM->error("[DRC Error] {} input pin node fanout is not connected to a FuncCell", gNames[i]);
           *errorDetected  = true;
         } 
       }
@@ -38,12 +38,12 @@ void deviceModelDRC_VerifyPinNodes(DirectedGraph *G, std::map<int, NodeConfig> *
       if (((*gConfig)[i].Cell == "PINCELL") && (*gConfig)[i].Type == "OUT"){
         //Verifying that all output PinCell node has a in degree of 1
         if (boost::in_degree(i, *G) != 1){
-          GRAMM->error("[DRC Error] {} output pin node can not have a fanin", gNames[i]);
+          UGRAMM->error("[DRC Error] {} output pin node can not have a fanin", gNames[i]);
           *errorDetected  = true;
         }
         //Verifying that all output PinCell fanin edge is connected to a funcCell
         if (!((*gConfig)[boost::source(*ei, *G)].Cell == "FUNCCELL")){
-          GRAMM->error("[DRC Error] {} output pin node fanin is not connected to a FuncCell", gNames[i]);
+          UGRAMM->error("[DRC Error] {} output pin node fanin is not connected to a FuncCell", gNames[i]);
           *errorDetected  = true;
         } 
       }
@@ -56,7 +56,7 @@ void deviceModelDRC_CheckFloatingNodes(DirectedGraph *G, std::map<int, NodeConfi
   for (int i = 0; i < num_vertices(*G); i++){
     // Check for floating nodes as it will have no output and input edges
     if (boost::in_degree(i, *G) == 0 && boost::out_degree(i, *G) == 0){
-        GRAMM->error("[DRC Error] {} node is floating in the device model graph and is not connected to any other nodes", gNames[i]);
+        UGRAMM->error("[DRC Error] {} node is floating in the device model graph and is not connected to any other nodes", gNames[i]);
         *errorDetected  = true;
       } 
   }
@@ -76,7 +76,7 @@ void deviceModelDRC_CheckDeviceModelWeaklyConnected(DirectedGraph *G, std::map<i
   int num_components = boost::connected_components(G_undirected, &component[0]);
 
   if (num_components > 1) {
-        GRAMM->error("[DRC Error] Device model graph is disconnect. There is {} numbers of differents independant graph within the provided Device Model", num_components);
+        UGRAMM->error("[DRC Error] Device model graph is disconnect. There is {} numbers of differents independant graph within the provided Device Model", num_components);
         *errorDetected  = true;
   }
 }
@@ -117,7 +117,7 @@ void deviceModelDRC_CheckFuncCellConnectivity(DirectedGraph *G, std::map<int, No
     // Check if all other FuncCell nodes are reachable
     for (vertex_descriptor target_vertex : funcCells_list) {
         if (target_vertex != source_vertex && distances[target_vertex] == std::numeric_limits<int>::max()) {
-            GRAMM->warn("[DRC Warning] Device model graph is disconnect. There is no routable path from FuncCell {} to FuncCell {}", gNames[source_vertex], gNames[target_vertex]);
+            UGRAMM->warn("[DRC Warning] Device model graph is disconnect. There is no routable path from FuncCell {} to FuncCell {}", gNames[source_vertex], gNames[target_vertex]);
         }
     }
   }
@@ -130,7 +130,7 @@ void deviceModelDRC_CheckDeviceModelAttributes(DirectedGraph *G, std::map<int, N
     //Check if the G_Name attribute in the device model graph
     std::string G_Name = boost::get(&DotVertex::G_Name, *G, v);
     if (G_Name.empty()){
-      GRAMM->error("[DRC Error] Device model graph have verticies that does not have a G_Name attribute");
+      UGRAMM->error("[DRC Error] Device model graph have verticies that does not have a G_Name attribute");
       *errorDetected  = true;
     }
 
@@ -138,7 +138,7 @@ void deviceModelDRC_CheckDeviceModelAttributes(DirectedGraph *G, std::map<int, N
     //Check if the G_NodeType attribute in the device model graph
     std::string G_NodeCell = boost::get(&DotVertex::G_NodeType, *G, v);
     if (G_NodeCell.empty()){
-      GRAMM->error("[DRC Error] Vertex (G_Name) {} in device model graph does not have a G_NodeCell attribute", G_Name);
+      UGRAMM->error("[DRC Error] Vertex (G_Name) {} in device model graph does not have a G_NodeCell attribute", G_Name);
       *errorDetected  = true;
     }
 
@@ -146,20 +146,20 @@ void deviceModelDRC_CheckDeviceModelAttributes(DirectedGraph *G, std::map<int, N
     //Check if the G_NodeType attribute in the device model graph.
     std::string G_NodeType = boost::get(&DotVertex::G_NodeType, *G, v);
     if (G_NodeType.empty()){
-      GRAMM->error("[DRC Error] Vertex (G_Name) {} in device model graph does not have a G_NodeType attribute", G_Name);
+      UGRAMM->error("[DRC Error] Vertex (G_Name) {} in device model graph does not have a G_NodeType attribute", G_Name);
       *errorDetected  = true;
     }
 
     //Check if the G_VisualX attribute in the device model graph.
     std::string G_VisualX = boost::get(&DotVertex::G_VisualX, *G, v);
     if (G_VisualX.empty()){
-      GRAMM->warn("[DRC Warning] Vertex (G_Name) {} in device model graph does not have an optional G_VisualX attribute", G_Name);
+      UGRAMM->warn("[DRC Warning] Vertex (G_Name) {} in device model graph does not have an optional G_VisualX attribute", G_Name);
     }
 
     //Check if the G_VisualY attribute in the device model graph.
     std::string G_VisualY = boost::get(&DotVertex::G_VisualY, *G, v);
     if (G_VisualY.empty()){
-      GRAMM->warn("[DRC Warning] Vertex (G_Name) {} in device model graph does not have an optional G_VisualY attribute", G_Name);
+      UGRAMM->warn("[DRC Warning] Vertex (G_Name) {} in device model graph does not have an optional G_VisualY attribute", G_Name);
     }
 
   }
@@ -172,7 +172,7 @@ void applicationGraphDRC_CheckFloatingNodes(DirectedGraph *H, std::map<int, Node
   for (int i = 0; i < num_vertices(*H); i++){
     // Check for floating nodes as it will have no output and input edges
     if (boost::in_degree(i, *H) == 0 && boost::out_degree(i, *H) == 0 && hNames[i] != "NULL"){
-      GRAMM->error("[DRC Error] {} node is floating in the application DFG and is not connected to any other nodes", hNames[i]);
+      UGRAMM->error("[DRC Error] {} node is floating in the application DFG and is not connected to any other nodes", hNames[i]);
       *errorDetected  = true;
     } 
   }
@@ -191,13 +191,13 @@ void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfi
 
       auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::H_LoadPin, *H, *eo));
       if (it_inPin == inPin.end()){
-        GRAMM->error("[DRC Error] load pin attribute {} for edge {} -> {} is not defined in inPin vector seen in GRAMM.cpp", boost::get(&EdgeProperty::H_LoadPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+        UGRAMM->error("[DRC Error] load pin attribute {} for edge {} -> {} is not defined in inPin vector seen in UGRAMM.cpp", boost::get(&EdgeProperty::H_LoadPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
         *errorDetected  = true;
       }
 
       auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::H_DriverPin, *H, *eo));
       if (it_outPin == outPin.end()){
-        GRAMM->error("[DRC Error] driver pin attribute {} for edge {} -> {} is not defined in outPin vector seen in GRAMM.cpp", boost::get(&EdgeProperty::H_DriverPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+        UGRAMM->error("[DRC Error] driver pin attribute {} for edge {} -> {} is not defined in outPin vector seen in UGRAMM.cpp", boost::get(&EdgeProperty::H_DriverPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
         *errorDetected  = true;
       }
     }
@@ -219,7 +219,7 @@ void applicationGraphDRC_CheckApplicationDFGWeaklyConnected(DirectedGraph *H, st
   int num_components = boost::connected_components(H_undirected, &component[0]);
 
   if (num_components > 1) {
-        GRAMM->error("[DRC Error] Application DFG is disconnect. There is {} numbers of differents independant graph within the provided DFG", num_components);
+        UGRAMM->error("[DRC Error] Application DFG is disconnect. There is {} numbers of differents independant graph within the provided DFG", num_components);
         *errorDetected  = true;
   }
 }
@@ -232,14 +232,14 @@ void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<i
     //Check if the name attribute in the application DFG
     std::string H_Name = boost::get(&DotVertex::H_Name, *H, v);
     if (H_Name.empty()){
-      GRAMM->error("[DRC Error] Vertex {} in application DFG does not have a H_Name attribute", H_Name);
+      UGRAMM->error("[DRC Error] Vertex {} in application DFG does not have a H_Name attribute", H_Name);
       *errorDetected  = true;
     }
 
     //Check if the opcode attribute in the application DFG
     std::string H_Opcode = boost::get(&DotVertex::H_Opcode, *H, v);
     if (H_Opcode.empty()){
-      GRAMM->error("[DRC Error] Vertex {} in application DFG does not have a opcode attribute", H_Name);
+      UGRAMM->error("[DRC Error] Vertex {} in application DFG does not have a opcode attribute", H_Name);
       *errorDetected  = true;
     }
 
@@ -250,14 +250,14 @@ void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<i
       //Check if the loadPin attribute is in the application DFG edges
       std::string H_LoadPin = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
       if (H_LoadPin.empty()){
-        GRAMM->error("[DRC Error] Edge {} -> {} in application DFG does not have a loadPin attribute", boost::get(&DotVertex::H_Name, *H, boost::source(*eo, *H)), boost::get(&DotVertex::H_Name, *H, boost::target(*eo, *H)));
+        UGRAMM->error("[DRC Error] Edge {} -> {} in application DFG does not have a loadPin attribute", boost::get(&DotVertex::H_Name, *H, boost::source(*eo, *H)), boost::get(&DotVertex::H_Name, *H, boost::target(*eo, *H)));
         *errorDetected  = true;
       }
 
       //Check if the driverPin attribute is in the application DFG edges
       std::string H_DriverPin = boost::get(&EdgeProperty::H_DriverPin, *H, *eo);
       if (H_DriverPin.empty()){
-        GRAMM->error("[DRC Error] Edge {} -> {} in application DFG does not have a driverPin attribute", boost::get(&DotVertex::H_Name, *H, boost::source(*eo, *H)), boost::get(&DotVertex::H_Name, *H, boost::target(*eo, *H)));
+        UGRAMM->error("[DRC Error] Edge {} -> {} in application DFG does not have a driverPin attribute", boost::get(&DotVertex::H_Name, *H, boost::source(*eo, *H)), boost::get(&DotVertex::H_Name, *H, boost::target(*eo, *H)));
         *errorDetected  = true;
       }
     }
@@ -265,19 +265,19 @@ void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<i
     //Check if the latency attribute in the application DFG.
     std::string H_Latency = boost::get(&DotVertex::H_Latency, *H, v);
     if (H_Latency.empty()){
-      GRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional latency attribute", H_Name);
+      UGRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional latency attribute", H_Name);
     }
 
     //Check if the placementX attribute in the application DFG.
     std::string H_PlacementX = boost::get(&DotVertex::H_PlacementX, *H, v);
     if (H_PlacementX.empty()){
-      GRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional placementX attribute", H_Name);
+      UGRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional placementX attribute", H_Name);
     }
 
     //Check if the placementY attribute in the application DFG.
     std::string H_PlacementY = boost::get(&DotVertex::H_PlacementY, *H, v);
     if (H_PlacementY.empty()){
-      GRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional placementY attribute", H_Name);
+      UGRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional placementY attribute", H_Name);
     }
 
   }
@@ -295,9 +295,9 @@ double runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hCo
   bool errorDetected = false;
 
 
-  GRAMM->info("--------------------------------------------------");
-  GRAMM->info("Executing DRC Rules Check");
-  GRAMM->info("--------------------------------------------------");
+  UGRAMM->info("--------------------------------------------------");
+  UGRAMM->info("Executing DRC Rules Check");
+  UGRAMM->info("--------------------------------------------------");
 
   //--------- Running DRC for the Device Model Graph -----------//
   //------ Please add any Device Model Graph DRC Rule Check Functions Below ------//
@@ -322,15 +322,15 @@ double runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hCo
 
   //--------- Error Check -----------//
   if (errorDetected){
-    GRAMM->info("--------------------------------------------------");
-    GRAMM->info ("DRC Error Detected --- Please fix all the errors above");
-    GRAMM->info("--------------------------------------------------");
-    GRAMM->info("Total time taken for [DRC] :: {} Seconds", secondsDRC);
+    UGRAMM->info("--------------------------------------------------");
+    UGRAMM->info ("DRC Error Detected --- Please fix all the errors above");
+    UGRAMM->info("--------------------------------------------------");
+    UGRAMM->info("Total time taken for [DRC] :: {} Seconds", secondsDRC);
     exit(-1);
   } else {
-    GRAMM->info("--------------------------------------------------");
-    GRAMM->info ("DRC Passed --- Continueing to GRAMM Mapping");
-    GRAMM->info("--------------------------------------------------");
+    UGRAMM->info("--------------------------------------------------");
+    UGRAMM->info ("DRC Passed --- Continueing to UGRAMM Mapping");
+    UGRAMM->info("--------------------------------------------------");
   }
   return secondsDRC;
 }

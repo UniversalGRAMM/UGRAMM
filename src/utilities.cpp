@@ -1,11 +1,11 @@
 //=======================================================================//
-// GRAap Minor Mapping (GRAMM) method for CGRA                           //
+// Universal GRAaph Minor Mapping (UGRAMM) method for CGRA               //
 // file : utilities.cp                                                   //
 // description: contains functions needed for printing, visualization    //
 //              pragma etc.                                              //
 //=======================================================================//
 
-#include "../lib/GRAMM.h"
+#include "../lib/UGRAMM.h"
 #include "../lib/utilities.h"
 #include "../lib/routing.h"
 
@@ -180,14 +180,14 @@ bool skipPlacement(std::string hOpcode, json &jsonParsed)
     // First case: Opcode itself is mentioned in the json file to be skipped.
     if (std::find(jsonParsed["SKIP-PLACEMENT"].begin(), jsonParsed["SKIP-PLACEMENT"].end(), hOpcode) != jsonParsed["SKIP-PLACEMENT"].end())
     { 
-      GRAMM->trace(" [Case-1] : Skipping found Opcode {} in JSON",  hOpcode);
+      UGRAMM->trace(" [Case-1] : Skipping found Opcode {} in JSON",  hOpcode);
       return true;
     }
 
     // Second case: NodeType to be skipped is given in the JSON file:
     std::vector<std::string> gTypeSupported;
 
-    for (const auto &pair : GrammConfig)
+    for (const auto &pair : ugrammConfig)
     {
       if (std::find(pair.second.begin(), pair.second.end(), hOpcode) != pair.second.end())
         gTypeSupported.push_back(pair.first);
@@ -197,7 +197,7 @@ bool skipPlacement(std::string hOpcode, json &jsonParsed)
     { 
       if (std::find(jsonParsed["SKIP-PLACEMENT"].begin(), jsonParsed["SKIP-PLACEMENT"].end(), value) != jsonParsed["SKIP-PLACEMENT"].end())
       {
-        GRAMM->trace(" [Case-2] : Skipping found NodeType {} in JSON",  value);
+        UGRAMM->trace(" [Case-2] : Skipping found NodeType {} in JSON",  value);
         return true;
       }
     }
@@ -210,9 +210,9 @@ bool skipPlacement(std::string hOpcode, json &jsonParsed)
  * 
  * This function extracts and parses vectors of strings associated with the given keyword 
  * from the comment section of the device model graph, and stores them in the provided 
- * GrammConfig map.
+ * ugrammConfig map.
  */
-void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &GrammConfig)
+void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &ugrammConfig)
 {
   std::istringstream stream(commentSection);
   std::string line;
@@ -239,9 +239,9 @@ void parseVectorofStrings(std::string commentSection, std::string keyword, std::
           if (token_count == 0)
           {
             FunCellName = token;
-            GrammConfig[token] = {};
+            ugrammConfig[token] = {};
           }
-          GrammConfig[FunCellName].push_back(token);
+          ugrammConfig[FunCellName].push_back(token);
           token_count++;
         }
       }
@@ -282,7 +282,7 @@ bool checkVectorofStrings(std::string commentSection, std::string keyword, std::
           {
             if (token != keyword)
             {
-              GRAMM->error("FunCell {} from application graph not found in the device model pragma", token);
+              UGRAMM->error("FunCell {} from application graph not found in the device model pragma", token);
               return false;
             }
           }
@@ -292,11 +292,11 @@ bool checkVectorofStrings(std::string commentSection, std::string keyword, std::
             auto it = std::find(Type.begin(), Type.end(), token);
             if (it != Type.end())
             { // If iterator is not at the end, the string is present
-              GRAMM->info("[PASSED] The token {} found in {}", token, keyword);
+              UGRAMM->info("[PASSED] The token {} found in {}", token, keyword);
             }
             else
             {
-              GRAMM->error("[FAILED] The token {} not found in {}", token, keyword);
+              UGRAMM->error("[FAILED] The token {} not found in {}", token, keyword);
               return false;
             }
           }
@@ -306,23 +306,23 @@ bool checkVectorofStrings(std::string commentSection, std::string keyword, std::
       return true;
     }
   }
-  GRAMM->error("FunCell {} from device-model not found in the application graph pragma", keyword);
+  UGRAMM->error("FunCell {} from device-model not found in the application graph pragma", keyword);
   return false;
 }
 
 /**
  * Reads, checks, and stores PRAGMA directives from the device model file.
 */
-void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &GrammConfig)
+void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &ugrammConfig)
 {
   std::string commentSection = readCommentSection(deviceModelFile);
-  parseVectorofStrings(commentSection, "[SUPPORTEDOPS]", GrammConfig);
+  parseVectorofStrings(commentSection, "[SUPPORTEDOPS]", ugrammConfig);
 
   // OB for debug
-  GRAMM->trace(" Device model pragma READ from the dot file :: {}", commentSection);
+  UGRAMM->trace(" Device model pragma READ from the dot file :: {}", commentSection);
 
-  GRAMM->info("Parsed Device-Model Pragma: ");
-  for (const auto &pair : GrammConfig)
+  UGRAMM->info("Parsed Device-Model Pragma: ");
+  for (const auto &pair : ugrammConfig)
   {
     std::cout << "[" << pair.first << "] :: ";
 
@@ -342,21 +342,21 @@ void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string,
 /**
  * Reads, checks, and stores PRAGMA directives from the application graph file.
 */ 
-void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &GrammConfig)
+void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &ugrammConfig)
 {
 
   std::string commentSection = readCommentSection(applicationGraphFile);
 
   // OB for debug
-  GRAMM->trace(" Application graph pragma READ from the dot file :: {}", commentSection);
+  UGRAMM->trace(" Application graph pragma READ from the dot file :: {}", commentSection);
 
-  for (const auto pair : GrammConfig)
+  for (const auto pair : ugrammConfig)
   {
-    GRAMM->info("Checking compatibility of SupportedOps of [{}]", pair.first);
-    bool status = checkVectorofStrings(commentSection, pair.first, GrammConfig[pair.first]);
+    UGRAMM->info("Checking compatibility of SupportedOps of [{}]", pair.first);
+    bool status = checkVectorofStrings(commentSection, pair.first, ugrammConfig[pair.first]);
     if (status == false)
     {
-      GRAMM->error("FATAL ERROR -- application pragma are not compatiable with the device model pragma's");
+      UGRAMM->error("FATAL ERROR -- application pragma are not compatiable with the device model pragma's");
       exit(1);
     }
   }
@@ -450,7 +450,7 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
 /**
  * Prints placement information to a mapping-output file.
 */
-void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig)
+void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &ugrammConfig)
 {
   int scale = 6;
   float G_VisualX;
@@ -467,7 +467,7 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
   // Use for deciding the color of the FunCell based on the opcode
   // int opcode_gNumber = (*gConfig)[gNumber].opcode;
   int opcode_gNumber = 0;
-  for (const auto &pair : GrammConfig)
+  for (const auto &pair : ugrammConfig)
   {
     if (pair.first == (*gConfig)[gNumber].Type)
       break;
@@ -515,18 +515,18 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
 /**
  * Prints mapping results in neato format: First displays the layout and then shows connections between the nodes.
  */
-void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &GrammConfig)
+void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &ugrammConfig)
 {
 
   // Output stream for storing successful mapping: The positioned-output dot file stream (this contains actual co-ordinates of the node cells).
   std::ofstream positionedOutputFile;
   positionedOutputFile.open("positioned_dot_output.dot");
-  GRAMM->info("Writing the positioned mapping output in file 'positioned_dot_output.dot'");
+  UGRAMM->info("Writing the positioned mapping output in file 'positioned_dot_output.dot'");
 
   // Output stream for storing successful mapping:
   std::ofstream unpositionedOutputFile;
   unpositionedOutputFile.open("unpositioned_dot_output.dot");
-  GRAMM->info("Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot'");
+  UGRAMM->info("Writing the unpositioned mapping output in file 'unpositioned_dot_output.dot'");
 
   // Printing the start of the dot file:
   positionedOutputFile << "digraph {\ngraph [bgcolor=lightgray];\n node [style=filled, fontname=\"times-bold\", penwidth=2];\n edge [penwidth=4]; \n splines=ortho;\n";
@@ -557,7 +557,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
 
   unpositionedOutputFile << "}\n";
 
-  unpositionedOutputFile << "subgraph cluster_0 {\n label = \"GRAMM mapping output\"; fontsize = 40; style=dashed;\n";
+  unpositionedOutputFile << "subgraph cluster_0 {\n label = \"UGRAMM mapping output\"; fontsize = 40; style=dashed;\n";
 
   //------------------------
   // Draw/Print placement:
@@ -569,7 +569,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
     if ((FunCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "FUNCCELL")) || (PinCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "PINCELL")) || (RouteCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "ROUTECELL")))
     {
       std::string gName = hElement.second;
-      printPlacementResults(gNumber, gName, G, positionedOutputFile, unpositionedOutputFile, gConfig, GrammConfig);
+      printPlacementResults(gNumber, gName, G, positionedOutputFile, unpositionedOutputFile, gConfig, ugrammConfig);
     }
   }
 
@@ -593,13 +593,13 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
  */
 void printName(int n)
 {
-  GRAMM->debug("{}", gNames[n]);
+  UGRAMM->debug("{}", gNames[n]);
 }
 
 /**
  * Prints vertex models of the application graph's nodes.
  */
-void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &GrammConfig, std::map<int, int> &invUsers)
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &ugrammConfig, std::map<int, int> &invUsers)
 {
   for (int i = 0; i < num_vertices(*H); i++)
   {
@@ -609,20 +609,20 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
     struct RoutingTree *RT = &((*Trees)[i]);
 
-    GRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
+    UGRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
     std::list<int>::iterator it = RT->nodes.begin();
 
     //Checking for the elements with zero vertex model size (for the nodes without any fanout)
     if(RT->nodes.size() == 0)
     {
-      GRAMM->info("\t Empty vertex model (no-fanouts for the node)");
+      UGRAMM->info("\t Empty vertex model (no-fanouts for the node)");
       funCellMapping[gNames[invUsers[i]]] = hNames[i];
     }
    
     while (it != RT->nodes.end())
     {
       int n = *it;
-      GRAMM->info("\t {} \t {}", n, gNames[n]);
+      UGRAMM->info("\t {} \t {}", n, gNames[n]);
       if (it == RT->nodes.begin())
       {
         // The begining node in the resource tree will be always outPin for the FunCell
@@ -646,12 +646,12 @@ void printRouting(int signal)
 {
 
   struct RoutingTree *RT = &((*Trees)[signal]);
-  GRAMM->debug("** routing for i: {} {} ", signal, hNames[signal]);
+  UGRAMM->debug("** routing for i: {} {} ", signal, hNames[signal]);
 
   std::list<int>::iterator it = RT->nodes.begin();
   for (; it != RT->nodes.end(); it++)
   {
-    GRAMM->debug("\t {} \t {}", *it, gNames[*it]);
+    UGRAMM->debug("\t {} \t {}", *it, gNames[*it]);
   }
 }
 
@@ -693,12 +693,12 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
       size_t pos = gNames[i].find_last_of('.');
       if (pos != std::string::npos)
       {
-        // GRAMM->info("loadPin for {} is {}", gNames[i], gNames[i].substr(pos + 1));
+        // UGRAMM->info("loadPin for {} is {}", gNames[i], gNames[i].substr(pos + 1));
         (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
       }
     }
 
-    GRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseNodeCell, upperCaseType);
+    UGRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseNodeCell, upperCaseType);
   }
 }
 
@@ -708,9 +708,9 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
 void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 {
   /*
-    Application DFG is inputed in GRAMM as a directed graph using the Neato Dot file convenction. In neeto,
+    Application DFG is inputed in UGRAMM as a directed graph using the Neato Dot file convenction. In neeto,
     we have defined the vertices (also refered to as nodes) and edges with attributes (also refered to as properies).
-    For instance, a node in GRAMM will have a attribite to define the opcode or the edges may have the attribute to
+    For instance, a node in UGRAMM will have a attribite to define the opcode or the edges may have the attribute to
     define the selective pins for an PE.
   */
 
@@ -733,11 +733,11 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     std::string upperCaseOpcode = boost::to_upper_copy(applicationOpcode);
     (*hConfig)[i].Opcode = upperCaseOpcode;
 
-    GRAMM->trace(" Condition :: {} :: Type :: {} ", skipPlacement((*hConfig)[i].Opcode, jsonParsed), (*hConfig)[i].Opcode);
+    UGRAMM->trace(" Condition :: {} :: Type :: {} ", skipPlacement((*hConfig)[i].Opcode, jsonParsed), (*hConfig)[i].Opcode);
  
     if (skipPlacement((*hConfig)[i].Opcode, jsonParsed))
     { 
-      GRAMM->info("[H] Ignoring placement for application node :: {} ", name);
+      UGRAMM->info("[H] Ignoring placement for application node :: {} ", name);
       boost::clear_out_edges(v, *H);   //Removing all out-edges to and from vertex "v"
       boost::clear_in_edges(v,*H);     //Removing all in-edges to and from vertex "v"
       //boost::remove_vertex(v,*H);    //OB: Not removing vertex since it will impact the Adjacency list.
@@ -745,6 +745,6 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
       hNames[i] = "NULL";              //Keeping the opcode Null for the removed vertex
     }
 
-    GRAMM->trace("[H] name {} :: applicationOpcode {} ", hNames[i], upperCaseOpcode);
+    UGRAMM->trace("[H] name {} :: applicationOpcode {} ", hNames[i], upperCaseOpcode);
   }
 }
