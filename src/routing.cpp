@@ -424,8 +424,8 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
   for (; eo != eo_end; eo++)
   {
     int load = target(*eo, *H);
-    std::string loadPin = boost::get(&EdgeProperty::loadPin, *H, *eo);
-    std::string driverPin = boost::get(&EdgeProperty::driverPin, *H, *eo);
+    std::string H_LoadPin = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
+    std::string H_DriverPin = boost::get(&EdgeProperty::H_DriverPin, *H, *eo);
 
     if (load == y)
       continue; // JANDERS ignore feedback connections for the moment
@@ -449,11 +449,11 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     for (; ei != ei_end; ei++)
     {
       int source_id = source(*ei, *G);
-      if ((*gConfig)[source_id].loadPin == loadPin)
+      if ((*gConfig)[source_id].loadPin == H_LoadPin)
         loadInPinCellLoc = source_id;
     }
 
-    GRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], loadPin);
+    GRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], H_LoadPin);
     GRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFunCellLoc], gNames[loadInPinCellLoc]);
 
     if (loadInPinCellLoc < 0)

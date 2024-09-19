@@ -7,6 +7,7 @@
 #include "../lib/GRAMM.h"
 #include "../lib/utilities.h"
 #include "../lib/routing.h"
+#include "../lib/drc.h"
 
 //-------------------------------------------------------------------//
 //------------------- Declartion of variables -----------------------//
@@ -366,10 +367,13 @@ int main(int argc, char **argv)
   boost::dynamic_properties dp(boost::ignore_other_properties);
 
   //----------------- For [H] --> Application Graph --------------------//
-  dp.property("label", boost::get(&DotVertex::name, H));                 //--> [Required] Contains name of the operation in Application graph (ex: Load_0)
-  dp.property("opcode", boost::get(&DotVertex::opcode, H));              //--> [Required] Contains the Opcode of the operation (ex: op, const, input and output)
-  dp.property("load", boost::get(&EdgeProperty::loadPin, H));            //--> [Required] Edge property describing the loadPin to use for the edge
-  dp.property("driver", boost::get(&EdgeProperty::driverPin, H));        //--> [Required] Edge property describing the driverPin to use for the edge
+  dp.property("label", boost::get(&DotVertex::H_Name, H));                 //--> [Required] Contains name of the operation in Application graph (ex: Load_0)
+  dp.property("opcode", boost::get(&DotVertex::H_Opcode, H));              //--> [Required] Contains the Opcode of the operation (ex: op, const, input and output)
+  dp.property("load", boost::get(&EdgeProperty::H_LoadPin, H));            //--> [Required] Edge property describing the loadPin to use for the edge
+  dp.property("driver", boost::get(&EdgeProperty::H_DriverPin, H));        //--> [Required] Edge property describing the driverPin to use for the edge
+  dp.property("latency", boost::get(&DotVertex::H_Latency, H));            //--> [Required] Contains for latency of the node --> check this as it needs to be between the edges
+  dp.property("placementX", boost::get(&DotVertex::H_PlacementX, H));      //--> [Required] Contains the property describing the fixed X location for placing the node
+  dp.property("placementY", boost::get(&DotVertex::H_PlacementY, H));      //--> [Required] Contains the property describing the fixed Y location for placing the node
 
   //---------------- For [G] --> Device Model Graph --------------------//
   dp.property("G_Name", boost::get(&DotVertex::G_Name, G));         //--> [Required] Contains the unique name of the cell in the device model graph.
@@ -451,7 +455,13 @@ int main(int argc, char **argv)
   readApplicationGraph(&H, &hConfig);             // Reading the Application graph file.
 
   //--------------------------------------------------------------------//
-  //--------- STEP 2: Initializing the mapping-datastructures ----------//
+  //----------------- STEP 2: DRC Verification -------------------------//
+  //--------------------------------------------------------------------//
+  double secondsDRC;
+  secondsDRC = runDRC(&H, &G, &hConfig, &gConfig);
+
+  //--------------------------------------------------------------------//
+  //--------- STEP 3: Initializing the mapping-datastructures ----------//
   //--------------------------------------------------------------------//
 
   Trees = new std::vector<RoutingTree>(num_vertices(H));    // routing trees for every node in H
@@ -475,7 +485,7 @@ int main(int argc, char **argv)
   }
 
   //--------------------------------------------------------------------//
-  //----------------- STEP 3: Finding minor embedding ------------------//
+  //----------------- STEP 4: Finding minor embedding ------------------//
   //--------------------------------------------------------------------//
 
   //--------------- Starting timestamp -------------------------
@@ -495,6 +505,10 @@ int main(int argc, char **argv)
     // Visualizing mapping result in neato:
     printMappedResults(&H, &G, &hConfig, &gConfig, GrammConfig);
   }
+
+  //--------------- get elapsed time -------------------------
+  GRAMM->info("Total time taken for [DRC] :: {} Seconds", secondsDRC);
+  //------------------------------------------------------------
 
   //--------------- get elapsed time -------------------------
   gettimeofday(&grammTime, NULL);
