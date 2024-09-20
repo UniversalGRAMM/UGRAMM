@@ -8,8 +8,7 @@
 </div>
 
 <div style="text-align: center;">
-    <img src="assets/images/minor_example.png" alt="Fig 1. Graph Minor example" style="border: 1px solid black; width: 400px;">
-    <figcaption style="font-size: 14px; color: #555;">Fig 1. Graph Minor example</figcaption>
+    <img src="assets/images/minor_example.png" style="width: 400px;">
 </div>
 
 <div style="text-align: justify;">
