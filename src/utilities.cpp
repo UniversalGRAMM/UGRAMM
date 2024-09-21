@@ -757,6 +757,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
       int placementY = std::stoi(boost::get(&DotVertex::H_PlacementY, *H, v));
       (*hConfig)[i].Location.second = placementY;
     } else {
+      //set to -1 to indicated placement location is out of bounds
       (*hConfig)[i].Location.second = -1;
     }
 

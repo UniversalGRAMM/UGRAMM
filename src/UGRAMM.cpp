@@ -294,7 +294,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     // Sorting the nodes of H according to the size (number of vertices) of their vertex model
     sortList(ordering, num_vertices(*H), hConfig);
     for (int i = 0; i < num_vertices(*H); i++){
-      UGRAMM->info("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], i, hNames[i]);
+      UGRAMM->info("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], ordering[i], hNames[ordering[i]]);
     }
 
     for (int k = 0; k < num_vertices(*H); k++)

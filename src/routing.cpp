@@ -217,6 +217,18 @@ struct CustomComparator {
         // // Get the vertex name property using Boost's get method
         // auto vertexNameMap = get(vertex_name, *H);
         int ret;
+
+        //------- Sorting the nodes with priority constraints ------------//
+        //------- Placement constraints 
+        bool has_aI_Placement = ((*hConfig)[aI].Location.first != -1); //&& ((*hConfig)[aI].Location.second != -1);
+        bool has_bI_Placement = ((*hConfig)[bI].Location.first != -1); //&& ((*hConfig)[bI].Location.second != -1);
+
+        if (has_aI_Placement || has_bI_Placement){
+          if (has_aI_Placement)
+            return true;
+          else
+            return false;
+        }
        
         //------- Randomly sorting the remaining non-priority nodes ------------//
         ret = ((*Trees)[bI].nodes.size() - (*Trees)[aI].nodes.size());
@@ -225,10 +237,11 @@ struct CustomComparator {
 
 
 
-        if (ret == -1)
+        if (ret == -1){
           return true;
-        else
-          return false;
+        } else {
+          return rand() % 2;
+        }
     }
 };
 
