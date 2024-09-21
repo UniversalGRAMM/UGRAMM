@@ -42,7 +42,6 @@ std::map<std::string, std::vector<std::string>> ugrammConfig;
 json jsonParsed;
 
 //---------------------------------------------------------------------//
-
 /*
   Description: For every application graph node, find a minimal vertex model.
 */
@@ -271,8 +270,8 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   int ordering[num_vertices(*H)];
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    UGRAMM->trace("{} ", ordering[i]);
     ordering[i] = i;
+    UGRAMM->info("Ordering[{}]: {} ", i, ordering[i]);
   }
 
   bool done = false;
@@ -293,7 +292,10 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     //randomizeList(ordering, num_vertices(*H));
     
     // Sorting the nodes of H according to the size (number of vertices) of their vertex model
-    sortList(ordering, num_vertices(*H));
+    sortList(ordering, num_vertices(*H), hConfig);
+    for (int i = 0; i < num_vertices(*H); i++){
+      UGRAMM->info("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], i, hNames[i]);
+    }
 
     for (int k = 0; k < num_vertices(*H); k++)
     {
