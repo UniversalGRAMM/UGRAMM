@@ -63,8 +63,8 @@ struct DotVertex {
 
     // For [G] --> Device Model Graph
     std::string G_Name;       //[Required] Contains the unique name of the cell in the device model graph.
-    std::string G_NodeCell;   //[Required] Contains the Opcode of the NodeType (FuncCell, RouteCell, PinCell)
-    std::string G_NodeType;   //[Required] Contains the Node type of Device Model Graph (For example "ALU" for NodeType "FuncCell") 
+    std::string G_CellType;   //[Required] Contains the Opcode of the CellType (FuncCell, RouteCell, PinCell)
+    std::string G_NodeType;   //[Required] Contains the NodeType of Device Model Graph (For example "ALU" for CellType "FuncCell") 
     std::string G_VisualX;    //[Optional] Visual X co-ordinate
     std::string G_VisualY;    //[Optional] Visual Y co-ordinate
 };

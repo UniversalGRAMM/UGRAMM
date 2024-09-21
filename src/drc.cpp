@@ -136,9 +136,9 @@ void deviceModelDRC_CheckDeviceModelAttributes(DirectedGraph *G, std::map<int, N
 
 
     //Check if the G_NodeType attribute in the device model graph
-    std::string G_NodeCell = boost::get(&DotVertex::G_NodeType, *G, v);
-    if (G_NodeCell.empty()){
-      UGRAMM->error("[DRC Error] Vertex (G_Name) {} in device model graph does not have a G_NodeCell attribute", G_Name);
+    std::string G_CellType = boost::get(&DotVertex::G_CellType, *G, v);
+    if (G_CellType.empty()){
+      UGRAMM->error("[DRC Error] Vertex (G_Name) {} in device model graph does not have a G_CellType attribute", G_Name);
       *errorDetected  = true;
     }
 

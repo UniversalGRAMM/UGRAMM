@@ -82,19 +82,19 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       chooseRand = (chooseRand + 1) % num_vertices(*G);
       if (compatibilityCheck((*gConfig)[chooseRand].Type, (*hConfig)[y].Opcode))
       {
-        //  Finding the output Pin for the selected FunCell:
-        selectedCellOutputPin = findOutputPinFromFuncell(chooseRand, G);
+        //  Finding the output Pin for the selected FuncCell:
+        selectedCellOutputPin = findOutputPinFromFuncCell(chooseRand, G);
         vertex_found = true;
       }
     }
 
     UGRAMM->debug("[RandomSelection] for application node :: {} :: Choosing starting vertex model as :: {} :: {}", hNames[y], gNames[chooseRand], gNames[selectedCellOutputPin]);
 
-    // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell node.
-    //     But note that costing is still done with respect to the FunCell node as costing based on output pin may not show overlap correctly
+    // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FuncCell node.
+    //     But note that costing is still done with respect to the FuncCell node as costing based on output pin may not show overlap correctly
 
     (*Trees)[y].nodes.push_back(selectedCellOutputPin); // Routing data structure starts with outpin itself
-    (*Users)[chooseRand].push_back(y);                  // Users and history cost is primarily tracked for FunCell nodes.
+    (*Users)[chooseRand].push_back(y);                  // Users and history cost is primarily tracked for FuncCell nodes.
     (*Users)[selectedCellOutputPin].push_back(y);       
     invUsers[y] = chooseRand;
 
@@ -104,7 +104,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   // At least one of y's fanins or fanouts have a vertex model [not allEmpty cases]
   int bestCost = MAX_DIST;
   int bestIndexPincell = -1;
-  int bestIndexFuncell = -1;
+  int bestIndexFuncCell = -1;
 
   int totalCosts[num_vertices(*G)];
   for (int i = 0; i < num_vertices(*G); i++)
@@ -122,18 +122,18 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       continue;
     }
 
-    // Finding the output Pin for the selected FunCell:
-    int outputPin = findOutputPinFromFuncell(i, G);
+    // Finding the output Pin for the selected FuncCell:
+    int outputPin = findOutputPinFromFuncCell(i, G);
     
-    // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FunCell node.
-    //     But note that costing is still done with respect to the FunCell node as costing based on output pin may not show overlap correctly
+    // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FuncCell node.
+    //     But note that costing is still done with respect to the FuncCell node as costing based on output pin may not show overlap correctly
     ripUpRouting(y, G);
     (*Users)[i].push_back(y);                   
     (*Users)[outputPin].push_back(y);
     (*Trees)[y].nodes.push_back(outputPin);
     invUsers[y] = i;
 
-    // Cost and history costs are calculated for the FunCell:
+    // Cost and history costs are calculated for the FuncCell:
     totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
 
     totalCosts[i] += routeSignal(G, H, y, gConfig);
@@ -165,11 +165,11 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       ripUpRouting(driver, G);
       (*Trees)[driver].nodes.push_back(driverPinNode);
 
-      // Need to find the FunCell associated with driverPinNode (which is PinCell)
-      int driverFunCellNode = findFunCellFromOutputPin(driverPinNode, G);
-      (*Users)[driverFunCellNode].push_back(driver); // Users and history cost is primarily tracked for FunCell nodes.
+      // Need to find the FuncCell associated with driverPinNode (which is PinCell)
+      int driverFuncCellNode = findFuncCellFromOutputPin(driverPinNode, G);
+      (*Users)[driverFuncCellNode].push_back(driver); // Users and history cost is primarily tracked for FuncCell nodes.
       (*Users)[driverPinNode].push_back(driver);
-      invUsers[driver] = driverFunCellNode;
+      invUsers[driver] = driverFuncCellNode;
 
       // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
       totalCosts[i] += routeSignal(G, H, driver, gConfig);
@@ -188,7 +188,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
     if (totalCosts[i] < bestCost)
     {
-      bestIndexFuncell = i;
+      bestIndexFuncCell = i;
       bestIndexPincell = outputPin;
       bestCost = totalCosts[i];
       compatibilityStatus = true;
@@ -197,14 +197,14 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     {
       if (!(rand() % 2))
       {
-        bestIndexFuncell = i;
+        bestIndexFuncCell = i;
         bestIndexPincell = outputPin;
       }
       compatibilityStatus = true;
     }
   }
 
-  if ((bestIndexPincell == -1) || (bestIndexFuncell == -1))
+  if ((bestIndexPincell == -1) || (bestIndexFuncCell == -1))
   {
     UGRAMM->error("FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX {} {}", y, hNames[y]);
     if (!compatibilityStatus)
@@ -216,8 +216,8 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
   // Final rig-up before doing final routing:
   ripUpRouting(y, G);
-  invUsers[y] = bestIndexFuncell;
-  (*Users)[bestIndexFuncell].push_back(y); // Users and history cost is primarily tracked for FunCell nodes.
+  invUsers[y] = bestIndexFuncCell;
+  (*Users)[bestIndexFuncCell].push_back(y); // Users and history cost is primarily tracked for FuncCell nodes.
   
   //------------------------- Corner case: -------------------------------//
   // Checking whether current application node has any Fan-outs or not:
@@ -248,11 +248,11 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     ripUpRouting(driver, G);
     (*Trees)[driver].nodes.push_back(driverPinNode);
 
-    // Need to find the FunCell associated with driverPinNode (which is PinCell)
-    int driverFunCellNode = findFunCellFromOutputPin(driverPinNode, G);
-    (*Users)[driverFunCellNode].push_back(driver); // Users and history cost is primarily tracked for FunCell nodes.
+    // Need to find the FuncCell associated with driverPinNode (which is PinCell)
+    int driverFuncCellNode = findFuncCellFromOutputPin(driverPinNode, G);
+    (*Users)[driverFuncCellNode].push_back(driver); // Users and history cost is primarily tracked for FuncCell nodes.
     (*Users)[driverPinNode].push_back(driver);
-    invUsers[driver] = driverFunCellNode;
+    invUsers[driver] = driverFuncCellNode;
 
     routeSignal(G, H, driver, gConfig);
   }
@@ -377,8 +377,8 @@ int main(int argc, char **argv)
 
   //---------------- For [G] --> Device Model Graph --------------------//
   dp.property("G_Name", boost::get(&DotVertex::G_Name, G));         //--> [Required] Contains the unique name of the cell in the device model graph.
-  dp.property("G_NodeCell", boost::get(&DotVertex::G_NodeCell, G)); //--> [Required] Contains the Node CellType (FuncCell, RouteCell, PinCell)
-  dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G)); //--> [Required] Contains the NodeType (FuncCell CellType can have NodeTypes as ALU, MEMPORT)
+  dp.property("G_CellType", boost::get(&DotVertex::G_CellType, G)); //--> [Required] Contains the Opcode of the CellType (FuncCell, RouteCell, PinCell)
+  dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G)); //--> [Required] Contains the NodeType of Device Model Graph (For example "ALU" for CellType "FuncCell") 
   dp.property("G_VisualX", boost::get(&DotVertex::G_VisualX, G));   //--> [Optional] X location for only visualization purpose.
   dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));   //--> [Optional] Y location for only visualization purpose.
 

@@ -21,7 +21,7 @@
 bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
 {
   // For nodes such as RouteCell, PinCell the ugrammConfig array will be empty.
-  // Pragma array's are only parsed for the FunCell types.
+  // Pragma array's are only parsed for the FuncCell types.
   if (ugrammConfig[gType].size() == 0)
     return false;
 
@@ -38,32 +38,32 @@ bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
 }
 
 /*
- * For the given outputPin (signal), finds the associated FunCell node from the device model.
+ * For the given outputPin (signal), finds the associated FuncCell node from the device model.
  * 
- * This function identifies the FunCell node in the device model graph G associated with the 
+ * This function identifies the FuncCell node in the device model graph G associated with the 
  * specified output pin (signal), tracing the source of this edge (walking uphill).
  * 
- * Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking uphill --- finding the source of this edge]
+ * Ex: FuncCell(signal) -> outPin (selectedCellOutputPin) [Walking uphill --- finding the source of this edge]
 */
-int findFunCellFromOutputPin(int signal, DirectedGraph *G)
+int findFuncCellFromOutputPin(int signal, DirectedGraph *G)
 {
   vertex_descriptor signalVertex = vertex(signal, *G);
   in_edge_iterator ei, ei_end;
   boost::tie(ei, ei_end) = in_edges(signal, *G);
-  int selectedCellFunCell = source(*ei, *G);
+  int selectedCellFuncCell = source(*ei, *G);
 
-  return selectedCellFunCell;
+  return selectedCellFuncCell;
 }
 
 /*
- * For the given FunCell (signal), finds the associated outputPin node from the device model.
+ * For the given FuncCell (signal), finds the associated outputPin node from the device model.
  * 
  * This function identifies the outputPin node in the device model graph G that is associated 
- * with the given FunCell (signal), tracing the sink of the edge (walking downhill).
+ * with the given FuncCell (signal), tracing the sink of the edge (walking downhill).
  * 
- * Ex: FunCell(signal) -> outPin (selectedCellOutputPin) [Walking downhill --- finding the sink of this edge]
+ * Ex: FuncCell(signal) -> outPin (selectedCellOutputPin) [Walking downhill --- finding the sink of this edge]
 */
-int findOutputPinFromFuncell(int signal, DirectedGraph *G)
+int findOutputPinFromFuncCell(int signal, DirectedGraph *G)
 {
   vertex_descriptor signalVertex = vertex(signal, *G);
   out_edge_iterator eo, eo_end;
@@ -252,8 +252,8 @@ void ripUpRouting(int signal, DirectedGraph *G)
   toDel.clear();
 
   std::list<int>::iterator it = RT->nodes.begin();
-  int driverFuncell = findFunCellFromOutputPin(*it, G);
-  toDel.push_back(driverFuncell);
+  int driverFuncCell = findFuncCellFromOutputPin(*it, G);
+  toDel.push_back(driverFuncCell);
   for (; it != RT->nodes.end(); it++)
   {
     toDel.push_back(*it);
@@ -433,16 +433,16 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     if(invUsers[load] == -1)
       continue; // load should be placed for the routing purpose!!
 
-    // Since driver will always be the outPin of the FunCell, the type of loadOutPinCellLoc will be "pinCell"
+    // Since driver will always be the outPin of the FuncCell, the type of loadOutPinCellLoc will be "pinCell"
     // int loadOutPinCellLoc = findRoot(load, gConfig);
 
     // Converting the driver(pinCell) to the actual input pin of FuncCell:
-    // Step 1: Fetching "FunCell" ID from the edge: FunCell --> OutPin
-    // int loadFunCellLoc = findFunCellFromOutputPin(loadOutPinCellLoc, G);
-    int loadFunCellLoc = invUsers[load];
+    // Step 1: Fetching "FuncCell" ID from the edge: FuncCell --> OutPin
+    // int loadFuncCellLoc = findFuncCellFromOutputPin(loadOutPinCellLoc, G);
+    int loadFuncCellLoc = invUsers[load];
 
-    // Step 2: Fetching given "inPin" ID from the edge: inPin --> FunCell (Note: there could be multiple input pins for the given FunCell)
-    vertex_descriptor yD = vertex(loadFunCellLoc, *G);
+    // Step 2: Fetching given "inPin" ID from the edge: inPin --> FuncCell (Note: there could be multiple input pins for the given FuncCell)
+    vertex_descriptor yD = vertex(loadFuncCellLoc, *G);
     in_edge_iterator ei, ei_end;
     boost::tie(ei, ei_end) = in_edges(yD, *G);
     int loadInPinCellLoc = 0;
@@ -454,7 +454,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     }
 
     UGRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], H_LoadPin);
-    UGRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFunCellLoc], gNames[loadInPinCellLoc]);
+    UGRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFuncCellLoc], gNames[loadInPinCellLoc]);
 
     if (loadInPinCellLoc < 0)
     {

@@ -1,0 +1,15 @@
+# Ignore .vscode directory
+.vscode/
+
+# Ignoe UGRAMM binary
+UGRAMM
+
+# Ignore build directory
+build/
+
+# Ignore dot files in script folder (Device model dot files):
+scripts/*.dot
+
+# Ignore specific dot files
+positioned_dot_output.dot
+unpositioned_dot_output.dot

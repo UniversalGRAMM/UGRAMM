@@ -52,7 +52,7 @@ bool compatibilityCheck(const std::string &gType, const std::string &hOpcode);
  * @param G Pointer to the directed graph representing the device model.
  * @return int Returns the FunCell node corresponding to the given output pin.
  */
-int findFunCellFromOutputPin(int signal, DirectedGraph *G);
+int findFuncCellFromOutputPin(int signal, DirectedGraph *G);
 
 /**
  * For the given FunCell (signal), finds the associated outputPin node from the device model.
@@ -66,7 +66,7 @@ int findFunCellFromOutputPin(int signal, DirectedGraph *G);
  * @param G Pointer to the directed graph representing the device model.
  * @return int Returns the outputPin node corresponding to the given FunCell.
  */
-int findOutputPinFromFuncell(int signal, DirectedGraph *G);
+int findOutputPinFromFuncCell(int signal, DirectedGraph *G);
 
 /**
  * Finds the root of the vertex model for the given signal.

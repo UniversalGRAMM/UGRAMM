@@ -628,7 +628,7 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
         // The begining node in the resource tree will be always outPin for the FunCell
         //   - Finding the FuncCell based on this outPin ID.
         //   - finding ID for alu_x_y from this: "alu_x_y.outPinA"
-        int FunCellLoc = findFunCellFromOutputPin(*it, G);
+        int FunCellLoc = findFuncCellFromOutputPin(*it, G);
 
         // For concatinating the mapped applicationNodeID name in device model cell
         funCellMapping[gNames[FunCellLoc]] = hNames[i];
@@ -674,9 +674,9 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     vertex_descriptor v = vertex(i, *G);
 
     // Contains the Node type of Device Model Graph (FuncCell, RouteCell, PinCell)
-    std::string arch_NodeCell = boost::get(&DotVertex::G_NodeCell, *G, v);
-    std::string upperCaseNodeCell = boost::to_upper_copy(arch_NodeCell);
-    (*gConfig)[i].Cell = upperCaseNodeCell;
+    std::string archCellType = boost::get(&DotVertex::G_CellType, *G, v);
+    std::string upperCaseCellType = boost::to_upper_copy(archCellType);
+    (*gConfig)[i].Cell = upperCaseCellType;
 
     // Contains the Opcode of the NodeType (For example "ALU" for NodeType "FuncCell")
     std::string arch_NodeType = boost::get(&DotVertex::G_NodeType, *G, v);
@@ -698,7 +698,7 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
       }
     }
 
-    UGRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseNodeCell, upperCaseType);
+    UGRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseCellType, upperCaseType);
   }
 }
 
