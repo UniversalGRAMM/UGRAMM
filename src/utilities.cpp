@@ -694,7 +694,7 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
       if (pos != std::string::npos)
       {
         // UGRAMM->info("loadPin for {} is {}", gNames[i], gNames[i].substr(pos + 1));
-        (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
+        (*gConfig)[i].pinName = gNames[i].substr(pos + 1);
       }
     }
 

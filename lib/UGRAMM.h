@@ -37,6 +37,7 @@
 #define DEBUG 0                 //For enbaling the print-statements 
 #define computeTopoEnable 0     //Compute topological order and sort the graph based on it while finding the minor.
 #define maxIterations 39
+#define NOT_PLACED -1           //For InvUsers
 //-------------------------------------------------------------------//
 
 //Struct for defining the node configuration in hConfig and gConfig data-structures:
@@ -48,7 +49,7 @@ struct NodeConfig {
 
     // For [H] --> Application Graph
     std::string Opcode;        //OpcodeType --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
-    std::string loadPin;       //Load pin of the PinCell node --> inPinA, inPinB
+    std::string pinName;       //Load pin of the PinCell node --> inPinA, inPinB
     std::pair<int, int> Location = {0,0}; //Optional  
 };
 
@@ -72,7 +73,7 @@ struct DotVertex {
 //Struct for defining the edge types in the H graph to determine the pin layout
 struct EdgeProperty {
     // For [H] --> Application Graph
-    std::string H_LoadPin;   //[Required]
+    std::string H_LoadPin;     //[Required]
     std::string H_DriverPin;   //[Required]
     // For [H] --> Application Graph and [G] --> Device Model Graph
     int weight;

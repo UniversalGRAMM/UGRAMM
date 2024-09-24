@@ -246,7 +246,7 @@ void ripup(int signal, std::list<int> *nodes)
 */
 void ripUpRouting(int signal, DirectedGraph *G)
 { 
-  invUsers[signal] = -1;  //ripUp of invUsers as well!!
+  invUsers[signal] = NOT_PLACED;  //ripUp of invUsers as well!!
   struct RoutingTree *RT = &((*Trees)[signal]);
   std::list<int> toDel;
   toDel.clear();
@@ -418,54 +418,110 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
   vertex_descriptor yD = vertex(y, *H);
   int totalCost = 0;
 
-  // i is a candidate root for signal y
+  // Calculating cost for routing outgoing edges of signal y.
   out_edge_iterator eo, eo_end;
   boost::tie(eo, eo_end) = out_edges(yD, *H);
   for (; eo != eo_end; eo++)
   {
     int load = target(*eo, *H);
+
+    //---------------------------------------------------------------//
+    //------------------------- safety checks -----------------------//
+    //---------------------------------------------------------------//
+
     std::string H_LoadPin = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
     std::string H_DriverPin = boost::get(&EdgeProperty::H_DriverPin, *H, *eo);
 
     if (load == y)
       continue; // JANDERS ignore feedback connections for the moment
 
-    if(invUsers[load] == -1)
+    //UserCheck for load:
+    if(invUsers[load] == NOT_PLACED)
       continue; // load should be placed for the routing purpose!!
 
-    // Since driver will always be the outPin of the FuncCell, the type of loadOutPinCellLoc will be "pinCell"
-    // int loadOutPinCellLoc = findRoot(load, gConfig);
-
-    // Converting the driver(pinCell) to the actual input pin of FuncCell:
-    // Step 1: Fetching "FuncCell" ID from the edge: FuncCell --> OutPin
-    // int loadFuncCellLoc = findFuncCellFromOutputPin(loadOutPinCellLoc, G);
-    int loadFuncCellLoc = invUsers[load];
-
-    // Step 2: Fetching given "inPin" ID from the edge: inPin --> FuncCell (Note: there could be multiple input pins for the given FuncCell)
-    vertex_descriptor yD = vertex(loadFuncCellLoc, *G);
-    in_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = in_edges(yD, *G);
-    int loadInPinCellLoc = 0;
-    for (; ei != ei_end; ei++)
+    //UserCheck for driver:
+    if(invUsers[y] == NOT_PLACED)
     {
-      int source_id = source(*ei, *G);
-      if ((*gConfig)[source_id].loadPin == H_LoadPin)
-        loadInPinCellLoc = source_id;
-    }
-
-    UGRAMM->trace("SOURCE : {} TARGET : {} TARGET-Pin : {}", hNames[y], hNames[load], H_LoadPin);
-    UGRAMM->trace("ROUTING LOAD: {} :: (InputPin) :: {}", gNames[loadFuncCellLoc], gNames[loadInPinCellLoc]);
-
-    if (loadInPinCellLoc < 0)
-    {
-      UGRAMM->error("SIGNAL WITHOUT A DRIVER.\n");
+      UGRAMM->error("While routing, invUsers for node {} found to be NULL", hNames[y]);
       exit(-1);
     }
+
+    //Routing tree should be empty for the current application-node (signal y) 
+    if((*Trees)[y].nodes.size() != 0)
+    {
+      UGRAMM->error("For application node {}, the routing tree already has elements", hNames[y]);
+      printRouting(y);
+      exit(-1);
+    }
+    //-------------------------------------------------------------//
+
+    //----------------------------------------------------------------//
+    //--------- Finding appropriate outputPin for the driver ---------//
+    //----------------------------------------------------------------//
+    int driverFunCell = invUsers[y];
+    int driverOutPin = -1;
+
+    //Finding the outputPin based on attribute given in the benchmark:
+    std::string driverPinName = boost::get(&EdgeProperty::H_DriverPin, *H, *eo);
+    vertex_descriptor driverD = vertex(driverFunCell, *G);
+    out_edge_iterator eoY, eoY_end;
+    boost::tie(eoY, eoY_end) = out_edges(driverD, *G);
+    for (; eoY != eoY_end; eoY++)
+    {
+      int outPinID = target(*eoY, *G);
+      if ((*gConfig)[outPinID].pinName == driverPinName)
+        driverOutPin = outPinID;
+    }
+
+    //Check:
+    if (driverOutPin < 0)
+    {
+      UGRAMM->error("Could not find outputPin for the driver\n");
+      exit(-1);
+    }
+
+    //Adding outputPin in routing data structure:
+    (*Users)[driverOutPin].push_back(y);
+    (*Trees)[y].nodes.push_back(driverOutPin);
+    //----------------------------------------------------------------//
+
+    //----------------------------------------------------------------//
+    //--------- Finding appropriate inputPin for the load ------------//
+    //----------------------------------------------------------------//
+    int loadFunCell = invUsers[load];
+    int loadInPin = -1;
+
+    //Finding the inputPin based on attribute given in the benchmark:
+    std::string loadPinName = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
+    vertex_descriptor loadD = vertex(loadFunCell, *G);
+    in_edge_iterator eiL, eiL_end;
+    boost::tie(eiL, eiL_end) = in_edges(loadD, *G);
+    for (; eiL != eiL_end; eiL++)
+    {
+      int inPinId = source(*eiL, *G);
+      if ((*gConfig)[inPinId].pinName == loadPinName)
+        loadInPin = inPinId;
+    }
+
+    //Check:
+    if (loadInPin < 0)
+    {
+      UGRAMM->error("Could not find inputPin for the dloadriver\n");
+      exit(-1);
+    }
+
+    //[TODO] Check: Adding inputPin in routing data structure:
+
+    //----------------------------------------------------------------//
+
+    //Debugging statement:
+    UGRAMM->debug("ROUTING => hSOURCE : {} :: hTARGET : {} || dSource : {} dTarget : {} || SOURCE-Pin : {} :: TARGET-Pin : {} ", hNames[y], hNames[load], gNames[driverOutPin], gNames[loadInPin], driverPinName, loadPinName);
+    //----------------------------------------------------------------//
 
     int cost;
     std::list<int> path;
 
-    cost = route(G, y, loadInPinCellLoc, &path, gConfig);
+    cost = route(G, y, loadInPin, &path, gConfig);
 
     totalCost += cost;
 
@@ -480,6 +536,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
       UGRAMM->trace("Skipped the routing for this application node {} due to high cost", hNames[y]);
     }
   }
+  
   return totalCost;
 }
 

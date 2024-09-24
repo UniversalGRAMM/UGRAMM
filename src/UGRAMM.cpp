@@ -58,7 +58,8 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   boost::tie(ei, ei_end) = in_edges(yD, *H);
   for (; ei != ei_end; ei++)
   {
-    if ((*Trees)[source(*ei, *G)].nodes.size())
+    //if ((*Trees)[source(*ei, *G)].nodes.size())
+    if (invUsers[source(*ei, *G)] != NOT_PLACED)
       allEmpty = false;
   }
 
@@ -66,14 +67,14 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   boost::tie(eo, eo_end) = out_edges(yD, *H);
   for (; eo != eo_end; eo++)
   {
-    if ((*Trees)[target(*eo, *H)].nodes.size())
+    //if ((*Trees)[target(*eo, *H)].nodes.size())
+    if (invUsers[target(*eo, *H)] != NOT_PLACED)
       allEmpty = false;
   }
 
   if (allEmpty)
   {
     // choose a random unused node of G to be the vertex model for y because NONE of its fanins or fanouts have vertex models
-    int selectedCellOutputPin = 0;
     int chooseRand = (rand() % num_vertices(*G));
     bool vertex_found = false;
 
@@ -82,28 +83,22 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       chooseRand = (chooseRand + 1) % num_vertices(*G);
       if (compatibilityCheck((*gConfig)[chooseRand].Type, (*hConfig)[y].Opcode))
       {
-        //  Finding the output Pin for the selected FuncCell:
-        selectedCellOutputPin = findOutputPinFromFuncCell(chooseRand, G);
         vertex_found = true;
       }
     }
 
-    UGRAMM->debug("[RandomSelection] for application node :: {} :: Choosing starting vertex model as :: {} :: {}", hNames[y], gNames[chooseRand], gNames[selectedCellOutputPin]);
+    UGRAMM->debug("[RandomSelection] for application node :: {} :: Choosing starting vertex model as :: {}", hNames[y], gNames[chooseRand]);
 
-    // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FuncCell node.
-    //     But note that costing is still done with respect to the FuncCell node as costing based on output pin may not show overlap correctly
-
-    (*Trees)[y].nodes.push_back(selectedCellOutputPin); // Routing data structure starts with outpin itself
-    (*Users)[chooseRand].push_back(y);                  // Users and history cost is primarily tracked for FuncCell nodes.
-    (*Users)[selectedCellOutputPin].push_back(y);       
+    //--- InvUsers and Users registering ----//
     invUsers[y] = chooseRand;
+    (*Users)[chooseRand].push_back(y);
+    //---------------------------------------//
 
     return 0;
   }
 
   // At least one of y's fanins or fanouts have a vertex model [not allEmpty cases]
   int bestCost = MAX_DIST;
-  int bestIndexPincell = -1;
   int bestIndexFuncCell = -1;
 
   int totalCosts[num_vertices(*G)];
@@ -122,26 +117,22 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       continue;
     }
 
-    // Finding the output Pin for the selected FuncCell:
-    int outputPin = findOutputPinFromFuncCell(i, G);
-    
-    // OB: In pin to pin mapping: adding outPin in the routing tree instead of the driver FuncCell node.
-    //     But note that costing is still done with respect to the FuncCell node as costing based on output pin may not show overlap correctly
-    ripUpRouting(y, G);
-    (*Users)[i].push_back(y);                   
-    (*Users)[outputPin].push_back(y);
-    (*Trees)[y].nodes.push_back(outputPin);
-    invUsers[y] = i;
+    //------------------ Routing Setup ---------------------//
+    ripUpRouting(y, G);         //Ripup the previous routing
+    (*Users)[i].push_back(y);   //Users update                 
+    invUsers[y] = i;            //InvUsers update
+    //------------------------------------------------------//
 
     // Cost and history costs are calculated for the FuncCell:
     totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
 
+    //Placement of the signal Y:
     totalCosts[i] += routeSignal(G, H, y, gConfig);
 
     //-------- Debugging statements ------------//
     if (UGRAMM->level() <= spdlog::level::trace)
       printRouting(y);
-    UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[outputPin], totalCosts[i]);
+    UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], totalCosts[i]);
     //------------------------------------------//
 
     //Early exit if the cost is greater than bestCost:
@@ -155,27 +146,24 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     boost::tie(ei, ei_end) = in_edges(yD, *H);
     for (; (ei != ei_end); ei++)
     {
-      int driver = source(*ei, *H);
+      int driverHNode = source(*ei, *H);
 
-      if ((*Trees)[driver].nodes.size() == 0)
+      if (invUsers[driverHNode] == NOT_PLACED)
         continue; // driver is not placed
+      
+      int driverGNode = invUsers[driverHNode];
 
-      int driverPinNode = findRoot(driver, gConfig);
-
-      ripUpRouting(driver, G);
-      (*Trees)[driver].nodes.push_back(driverPinNode);
-
-      // Need to find the FuncCell associated with driverPinNode (which is PinCell)
-      int driverFuncCellNode = findFuncCellFromOutputPin(driverPinNode, G);
-      (*Users)[driverFuncCellNode].push_back(driver); // Users and history cost is primarily tracked for FuncCell nodes.
-      (*Users)[driverPinNode].push_back(driver);
-      invUsers[driver] = driverFuncCellNode;
+      //------------------ Routing Setup ---------------------//
+      ripUpRouting(driverHNode, G);
+      (*Users)[driverGNode].push_back(driverHNode); //Users update
+      invUsers[driverHNode] = driverGNode;          //InvUsers update
+      //------------------------------------------------------//
 
       // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
-      totalCosts[i] += routeSignal(G, H, driver, gConfig);
+      totalCosts[i] += routeSignal(G, H, driverHNode, gConfig);
 
       UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
-      UGRAMM->debug("For {} -> {} :: {} -> {}'s input-pin has cost {}", hNames[driver], hNames[y], gNames[driverPinNode], gNames[i], totalCosts[i]);
+      UGRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[i], totalCosts[i]);
 
       if (totalCosts[i] > bestCost)
         break;
@@ -189,7 +177,6 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     if (totalCosts[i] < bestCost)
     {
       bestIndexFuncCell = i;
-      bestIndexPincell = outputPin;
       bestCost = totalCosts[i];
       compatibilityStatus = true;
     }
@@ -198,13 +185,12 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       if (!(rand() % 2))
       {
         bestIndexFuncCell = i;
-        bestIndexPincell = outputPin;
       }
       compatibilityStatus = true;
     }
   }
 
-  if ((bestIndexPincell == -1) || (bestIndexFuncCell == -1))
+  if (bestIndexFuncCell == -1)
   {
     UGRAMM->error("FATAL ERROR -- COULD NOT FIND A VERTEX MODEL FOR VERTEX {} {}", y, hNames[y]);
     if (!compatibilityStatus)
@@ -212,25 +198,15 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     exit(-1);
   }
 
-  UGRAMM->debug("The bertIndex found for {} from the device-model is {} with cost of {}", hNames[y], gNames[bestIndexPincell], bestCost);
+  UGRAMM->debug("The bertIndex found for {} from the device-model is {} with cost of {}", hNames[y], gNames[bestIndexFuncCell], bestCost);
 
   // Final rig-up before doing final routing:
-  ripUpRouting(y, G);
-  invUsers[y] = bestIndexFuncCell;
-  (*Users)[bestIndexFuncCell].push_back(y); // Users and history cost is primarily tracked for FuncCell nodes.
-  
-  //------------------------- Corner case: -------------------------------//
-  // Checking whether current application node has any Fan-outs or not:
-  // If fan-outs available for the current application-node, then only adding placement information into 
-  // the vertex model.
-  out_edge_iterator eout, eout_end;
-  boost::tie(eout, eout_end) = out_edges(yD, *H);
-  if (eout != eout_end) //Fanout available
-  { 
-    (*Trees)[y].nodes.push_back(bestIndexPincell);
-    (*Users)[bestIndexPincell].push_back(y);
-  }
-  //-----------------------------------------------------------------------//
+
+  //------------- Final Routing Setup ---------------------//
+  ripUpRouting(y, G);         //Ripup the previous routing
+  invUsers[y] = bestIndexFuncCell;           //InvUsers update
+  (*Users)[bestIndexFuncCell].push_back(y);  //Users update                 
+  //------------------------------------------------------//
 
   // Final-placement for node 'y':
   routeSignal(G, H, y, gConfig);
@@ -239,22 +215,20 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   boost::tie(ei, ei_end) = in_edges(yD, *H);
   for (; ei != ei_end; ei++)
   {
-    int driver = source(*ei, *H);
-    if ((*Trees)[driver].nodes.size() == 0)
+    int driverHNode = source(*ei, *H);
+
+    if (invUsers[driverHNode] == NOT_PLACED)
       continue; // driver is not placed
 
-    int driverPinNode = findRoot(driver, gConfig);
+    int driverGNode = invUsers[driverHNode];
 
-    ripUpRouting(driver, G);
-    (*Trees)[driver].nodes.push_back(driverPinNode);
+    //------------------ Routing Setup ---------------------//
+    ripUpRouting(driverHNode, G);
+    (*Users)[driverGNode].push_back(driverHNode); //Users update
+    invUsers[driverHNode] = driverGNode;          //InvUsers update
+    //------------------------------------------------------//
 
-    // Need to find the FuncCell associated with driverPinNode (which is PinCell)
-    int driverFuncCellNode = findFuncCellFromOutputPin(driverPinNode, G);
-    (*Users)[driverFuncCellNode].push_back(driver); // Users and history cost is primarily tracked for FuncCell nodes.
-    (*Users)[driverPinNode].push_back(driver);
-    invUsers[driver] = driverFuncCellNode;
-
-    routeSignal(G, H, driver, gConfig);
+    routeSignal(G, H, driverHNode, gConfig);
   }
 
   return 0;
