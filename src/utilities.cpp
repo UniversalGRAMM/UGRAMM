@@ -609,7 +609,7 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
     struct RoutingTree *RT = &((*Trees)[i]);
 
-    UGRAMM->info("** routing for {}'s output pin :: ", hNames[i]);
+    UGRAMM->info("** routing for {} | ({})'s output pin :: ",  hNames[i], gNames[invUsers[i]]);
     std::list<int>::iterator it = RT->nodes.begin();
 
     //Checking for the elements with zero vertex model size (for the nodes without any fanout)
@@ -632,6 +632,7 @@ void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
         // For concatinating the mapped applicationNodeID name in device model cell
         funCellMapping[gNames[FunCellLoc]] = hNames[i];
+
       }
 
       it++;
@@ -694,7 +695,7 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
       if (pos != std::string::npos)
       {
         // UGRAMM->info("loadPin for {} is {}", gNames[i], gNames[i].substr(pos + 1));
-        (*gConfig)[i].loadPin = gNames[i].substr(pos + 1);
+        (*gConfig)[i].pinName = gNames[i].substr(pos + 1);
       }
     }
 
