@@ -249,9 +249,11 @@ struct CustomComparator {
  * Sorting the nodes of H according to the size (number of vertices) of their vertex model
 */ 
 void sortList(/*int *list*/ int list[], int n, std::map<int, NodeConfig> *hConfig)
-{
-   //qsort(list, n, sizeof(int), cmpfunc);
-  std::sort(list, list+n, CustomComparator(hConfig));
+{ 
+   if (!sortAlgorithm)
+    qsort(list, n, sizeof(int), cmpfunc);
+   else
+    std::sort(list, list+n, CustomComparator(hConfig));
 }
 
 
