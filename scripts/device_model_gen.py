@@ -386,6 +386,7 @@ def create_riken(args):
             alu_scalar           = alu_out_pin_scalar + 0.2
             
             base_name = "pe" + ".w" + str(width)  + ".c" + str(x_coordinate) + ".r" + str(y_coordinate) 
+            MUX_NAME  = ["S", "SW", "W", "NW", "N", "NE", "E", "SE", "PEinA", "PEinB"]
 
             for k in range(sb_max+2):       
                 if (k == sb_max):
@@ -393,7 +394,7 @@ def create_riken(args):
                 elif (k == (sb_max+1)):
                     G.nodes[PEindex + k]["G_Name"]         = base_name + ".mux_b"
                 else:   
-                    G.nodes[PEindex + k]["G_Name"]         = base_name + ".crossbar_mux_" + str(k)  
+                    G.nodes[PEindex + k]["G_Name"]         = base_name + ".crossbar_mux_" + MUX_NAME[k]  
 
                 G.nodes[PEindex + k]["G_CellType"]     = "RouteCell";
                 G.nodes[PEindex + k]["G_NodeType"]       = "Mux";

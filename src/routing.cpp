@@ -246,14 +246,25 @@ void ripup(int signal, std::list<int> *nodes)
 */
 void ripUpRouting(int signal, DirectedGraph *G)
 { 
-  invUsers[signal] = NOT_PLACED;  //ripUp of invUsers as well!!
   struct RoutingTree *RT = &((*Trees)[signal]);
   std::list<int> toDel;
   toDel.clear();
 
   std::list<int>::iterator it = RT->nodes.begin();
-  int driverFuncCell = findFuncCellFromOutputPin(*it, G);
-  toDel.push_back(driverFuncCell);
+
+  if(invUsers[signal] != NOT_PLACED)
+  { 
+    //Safety Check
+    if( RT->nodes.size() != 0)
+    {
+      if (findFuncCellFromOutputPin(*it, G) != invUsers[signal])
+        UGRAMM->error("For {} Fatal error, the invUsers [{}] not matching the routing tree [{}]", hNames[signal], gNames[invUsers[signal]], gNames[findFuncCellFromOutputPin(*it, G)]);
+    }
+
+    toDel.push_back(invUsers[signal]); //ripUp of invUsers as well!!
+    invUsers[signal] = NOT_PLACED;    
+  }
+    
   for (; it != RT->nodes.end(); it++)
   {
     toDel.push_back(*it);
@@ -480,9 +491,14 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
       exit(-1);
     }
 
-    //Adding outputPin in routing data structure:
+    //------------------------------------------------------//
+    //    Adding outputPin in routing data structure:       //
+    //(This is used as a starting point in route() function)//
+    //------------------------------------------------------//
     (*Users)[driverOutPin].push_back(y);
     (*Trees)[y].nodes.push_back(driverOutPin);
+    //------------------------------------------------------//
+
     //----------------------------------------------------------------//
 
     //----------------------------------------------------------------//
@@ -509,8 +525,6 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
       UGRAMM->error("Could not find inputPin for the dloadriver\n");
       exit(-1);
     }
-
-    //[TODO] Check: Adding inputPin in routing data structure:
 
     //----------------------------------------------------------------//
 

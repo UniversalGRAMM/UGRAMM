@@ -58,8 +58,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   boost::tie(ei, ei_end) = in_edges(yD, *H);
   for (; ei != ei_end; ei++)
   {
-    //if ((*Trees)[source(*ei, *G)].nodes.size())
-    if (invUsers[source(*ei, *G)] != NOT_PLACED)
+    if (invUsers[source(*ei, *G)] != NOT_PLACED) //invUsers hold the information whether the current HID is placed or not
       allEmpty = false;
   }
 
@@ -67,8 +66,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   boost::tie(eo, eo_end) = out_edges(yD, *H);
   for (; eo != eo_end; eo++)
   {
-    //if ((*Trees)[target(*eo, *H)].nodes.size())
-    if (invUsers[target(*eo, *H)] != NOT_PLACED)
+    if (invUsers[target(*eo, *H)] != NOT_PLACED) //invUsers hold the information whether the current HID is placed or not
       allEmpty = false;
   }
 
@@ -132,7 +130,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     //-------- Debugging statements ------------//
     if (UGRAMM->level() <= spdlog::level::trace)
       printRouting(y);
-    UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], totalCosts[i]);
+    UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[i], totalCosts[i]);
     //------------------------------------------//
 
     //Early exit if the cost is greater than bestCost:
