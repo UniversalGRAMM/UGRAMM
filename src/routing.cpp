@@ -206,12 +206,55 @@ int cmpfunc(const void *a, const void *b)
   return ret;
 }
 
+
+struct CustomComparator {
+    std::map<int, NodeConfig>* hConfig;  // Pointer to the graph for comparison
+
+    // Constructor to initialize the graph pointer
+    CustomComparator(std::map<int, NodeConfig>* graphConfig) : hConfig(graphConfig) {}
+
+    // Overload operator() to behave like a comparison function for std::sort
+    bool operator()(int aI, int bI) const {
+        // // Get the vertex name property using Boost's get method
+        // auto vertexNameMap = get(vertex_name, *H);
+        int ret;
+
+        //------- Sorting the nodes with priority constraints ------------//
+        //------- Placement constraints 
+        bool has_aI_Placement = ((*hConfig)[aI].Location.first != -1); //&& ((*hConfig)[aI].Location.second != -1);
+        bool has_bI_Placement = ((*hConfig)[bI].Location.first != -1); //&& ((*hConfig)[bI].Location.second != -1);
+
+        if (has_aI_Placement || has_bI_Placement){
+          if (has_aI_Placement)
+            return true;
+          else
+            return false;
+        }
+
+        //------- Randomly sorting the remaining non-priority nodes ------------//
+        ret = ((*Trees)[bI].nodes.size() - (*Trees)[aI].nodes.size());
+        if (ret == 0)
+          ret = (rand() % 3 - 1);
+
+
+
+        if (ret == -1){
+          return true;
+        } else {
+          return rand() % 2;
+        }
+    }
+};
+
 /**
  * Sorting the nodes of H according to the size (number of vertices) of their vertex model
 */ 
-void sortList(int *list, int n)
+void sortList(int list[], int n, std::map<int, NodeConfig> *hConfig)
 {
-  qsort(list, n, sizeof(int), cmpfunc);
+  if (!sortAlgorithm)
+    qsort(list, n, sizeof(int), cmpfunc);
+   else
+    std::sort(list, list+n, CustomComparator(hConfig));
 }
 
 //-------------------------------------------------------------------//

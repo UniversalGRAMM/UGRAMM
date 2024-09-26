@@ -105,7 +105,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
   bool compatibilityStatus = true;
 
-  for (int i = 0; i < num_vertices(*G); i++)
+  for (int i = 0; i < num_vertices(*G); i++) // don't care for locking
   { // first route the signal on the output of y
 
     // Confriming the Vertex correct type:
@@ -243,8 +243,8 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   int ordering[num_vertices(*H)];
   for (int i = 0; i < num_vertices(*H); i++)
   {
-    UGRAMM->trace("{} ", ordering[i]);
     ordering[i] = i;
+    UGRAMM->trace("Ordering[{}]: {} ", i, ordering[i]);
   }
 
   bool done = false;
@@ -265,7 +265,10 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     //randomizeList(ordering, num_vertices(*H));
     
     // Sorting the nodes of H according to the size (number of vertices) of their vertex model
-    sortList(ordering, num_vertices(*H));
+    sortList(ordering, num_vertices(*H), hConfig);
+    for (int i = 0; i < num_vertices(*H); i++){
+      UGRAMM->info("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], ordering[i], hNames[ordering[i]]);
+    }
 
     for (int k = 0; k < num_vertices(*H); k++)
     {

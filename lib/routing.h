@@ -137,7 +137,7 @@ int cmpfunc(const void *a, const void *b);
  * @param list Pointer to the integer array describing the ordering of the vertices of H graph.
  * @param n The number of elements/vertices in the H graph
  */
-void sortList(int *list, int n);
+void sortList(int list[], int n, std::map<int, NodeConfig> *hConfig);
 
 //-------------------------------------------------------------------//
 //-------------------- [Routing] Main function ----------------------//

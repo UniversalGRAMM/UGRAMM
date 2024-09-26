@@ -746,6 +746,23 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
       hNames[i] = "NULL";              //Keeping the opcode Null for the removed vertex
     }
 
-    UGRAMM->trace("[H] name {} :: applicationOpcode {} ", hNames[i], upperCaseOpcode);
+    // Fetching the placement from the application-graph
+    if (!boost::get(&DotVertex::H_PlacementX, *H, v).empty()){
+      int placementX = std::stoi(boost::get(&DotVertex::H_PlacementX, *H, v));
+      (*hConfig)[i].Location.first = placementX;
+    } else {
+      (*hConfig)[i].Location.first = -1;
+    }
+
+    if (!boost::get(&DotVertex::H_PlacementY, *H, v).empty()){
+      int placementY = std::stoi(boost::get(&DotVertex::H_PlacementY, *H, v));
+      (*hConfig)[i].Location.second = placementY;
+    } else {
+      //set to -1 to indicated placement location is out of bounds
+      (*hConfig)[i].Location.second = -1;
+    }
+
+
+    UGRAMM->trace("[H] name {} :: applicationOpcode {} :: placement {},{}", hNames[i], upperCaseOpcode, (*hConfig)[i].Location.first, (*hConfig)[i].Location.second);
   }
 }
