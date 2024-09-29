@@ -26,6 +26,9 @@ std::vector<int> *TraceBack;
 std::vector<int> *TopoOrder;
 std::map<int, std::string> hNames;
 std::map<int, std::string> gNames;
+std::map<std::string, int> invGNames;
+std::map<std::string, int> invGNames_FuncNodes;
+std::set<int> *LockNodes;
 std::bitset<100000> explored;
 
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
@@ -104,39 +107,48 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     totalCosts[i] = 0;
 
   bool compatibilityStatus = true;
+  bool lockingStatus; 
+  lockingStatus = hasNodeLock((*hConfig)[y].Location.first, (*hConfig)[y].Location.second);
 
-  for (int i = 0; i < num_vertices(*G); i++) // don't care for locking
-  { // first route the signal on the output of y
 
-    // Confriming the Vertex correct type:
-    if (!compatibilityCheck((*gConfig)[i].Type, (*hConfig)[y].Opcode))
-    {
-      compatibilityStatus = false;
-      continue;
+  if (lockingStatus){
+    UGRAMM->info("For application node {} :: has been locked at [{}, {}] ", hNames[y], (*hConfig)[y].Location.first, (*hConfig)[y].Location.second);
+    
+    //Get the node type suitable for the operation
+    std::string nodetype;
+    bool foundNodeType = getDeviceModelNodeType((*hConfig)[y].Opcode, nodetype);
+    if (!foundNodeType){
+      UGRAMM->error("There is no nodes in the device model that can be locked and also does supports {} Opcode", (*hConfig)[y].Opcode);
+      exit(-1);
+    }
+    UGRAMM->info("[Locking] NodeType {} ", nodetype);
+    
+    //Get the GID for the locked node in the device model graph
+    int GID = findGNodeID((*hConfig)[y].Location.first, (*hConfig)[y].Location.second, nodetype);
+    if (GID == -1){
+      UGRAMM->error("There is no nodes in the device model that can be locked and also does supports {} Opcode at Location <{}, {}> ", (*hConfig)[y].Opcode, (*hConfig)[y].Location.first, (*hConfig)[y].Location.second);
+      exit(-1);
     }
 
     //------------------ Routing Setup ---------------------//
     ripUpRouting(y, G);         //Ripup the previous routing
-    (*Users)[i].push_back(y);   //Users update                 
-    invUsers[y] = i;            //InvUsers update
+    (*Users)[GID].push_back(y);   //Users update                 
+    invUsers[y] = GID;            //InvUsers update
     //------------------------------------------------------//
 
     // Cost and history costs are calculated for the FuncCell:
-    totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
+    totalCosts[GID] += (1 + (*HistoryCosts)[GID]) * ((*Users)[GID].size() * PFac);
 
     //Placement of the signal Y:
-    totalCosts[i] += routeSignal(G, H, y, gConfig);
+    totalCosts[GID] += routeSignal(G, H, y, gConfig);
 
     //-------- Debugging statements ------------//
     if (UGRAMM->level() <= spdlog::level::trace)
       printRouting(y);
-    UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[i], totalCosts[i]);
+    UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[GID], gNames[GID], totalCosts[GID]);
     //------------------------------------------//
 
-    //Early exit if the cost is greater than bestCost:
-    if (totalCosts[i] > bestCost)
-      continue;
-
+    
     //----------------------------------------------
     // now route the signals on the input of y
     //----------------------------------------------
@@ -158,33 +170,104 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       //------------------------------------------------------//
 
       // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
-      totalCosts[i] += routeSignal(G, H, driverHNode, gConfig);
+      totalCosts[GID] += routeSignal(G, H, driverHNode, gConfig);
 
       UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
-      UGRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[i], totalCosts[i]);
+      UGRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[GID], totalCosts[GID]);
 
-      if (totalCosts[i] > bestCost)
+      if (totalCosts[GID] > bestCost)
         break;
     }
 
-    UGRAMM->debug("Total cost for {} is {}\n", hNames[y], totalCosts[i]);
-
-    if (totalCosts[i] >= MAX_DIST)
-      continue;
-
-    if (totalCosts[i] < bestCost)
-    {
-      bestIndexFuncCell = i;
-      bestCost = totalCosts[i];
+    if (totalCosts[GID] < bestCost) {
+      bestIndexFuncCell = GID;
+      bestCost = totalCosts[GID];
       compatibilityStatus = true;
     }
-    else if (totalCosts[i] == bestCost)
-    {
-      if (!(rand() % 2))
+
+  } else {
+
+    for (int i = 0; i < num_vertices(*G); i++) // don't care for locking
+    { // first route the signal on the output of y
+
+      // Confriming the Vertex correct type:
+      if (!compatibilityCheck((*gConfig)[i].Type, (*hConfig)[y].Opcode))
+      {
+        compatibilityStatus = false;
+        continue;
+      }
+
+      //------------------ Routing Setup ---------------------//
+      ripUpRouting(y, G);         //Ripup the previous routing
+      (*Users)[i].push_back(y);   //Users update                 
+      invUsers[y] = i;            //InvUsers update
+      //------------------------------------------------------//
+
+      // Cost and history costs are calculated for the FuncCell:
+      totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
+
+      //Placement of the signal Y:
+      totalCosts[i] += routeSignal(G, H, y, gConfig);
+
+      //-------- Debugging statements ------------//
+      if (UGRAMM->level() <= spdlog::level::trace)
+        printRouting(y);
+      UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[i], totalCosts[i]);
+      //------------------------------------------//
+
+      //Early exit if the cost is greater than bestCost:
+      if (totalCosts[i] > bestCost)
+        continue;
+
+      //----------------------------------------------
+      // now route the signals on the input of y
+      //----------------------------------------------
+
+      boost::tie(ei, ei_end) = in_edges(yD, *H);
+      for (; (ei != ei_end); ei++)
+      {
+        int driverHNode = source(*ei, *H);
+
+        if (invUsers[driverHNode] == NOT_PLACED)
+          continue; // driver is not placed
+        
+        int driverGNode = invUsers[driverHNode];
+
+        //------------------ Routing Setup ---------------------//
+        ripUpRouting(driverHNode, G);
+        (*Users)[driverGNode].push_back(driverHNode); //Users update
+        invUsers[driverHNode] = driverGNode;          //InvUsers update
+        //------------------------------------------------------//
+
+        // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
+        totalCosts[i] += routeSignal(G, H, driverHNode, gConfig);
+
+        UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
+        UGRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[i], totalCosts[i]);
+
+        if (totalCosts[i] > bestCost)
+          break;
+      }
+
+      UGRAMM->debug("Total cost for {} is {}\n", hNames[y], totalCosts[i]);
+
+      if (totalCosts[i] >= MAX_DIST)
+        continue;
+
+      if (totalCosts[i] < bestCost)
       {
         bestIndexFuncCell = i;
+        bestCost = totalCosts[i];
+        compatibilityStatus = true;
       }
-      compatibilityStatus = true;
+      else if (totalCosts[i] == bestCost)
+      {
+        if (!(rand() % 2))
+        {
+          bestIndexFuncCell = i;
+        }
+        compatibilityStatus = true;
+      }
     }
   }
 
@@ -253,6 +336,17 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
   explored.reset();
   float frac;
+
+  for (const auto& pair : invGNames_FuncNodes) {
+      UGRAMM->info("[invGNames_FuncNodes] key {} :: value {}", pair.first, pair.second);
+  }
+
+  for (const auto& pair : ugrammConfig) {
+      UGRAMM->info("[ugrammConfig] key {}", pair.first);
+      for (int i = 0; i < pair.second.size(); i++){
+        UGRAMM->info("\t[ugrammConfig ] Value {}", pair.second[i]);
+      }
+  }
 
   while (!done)
   {

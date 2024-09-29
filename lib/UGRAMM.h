@@ -102,14 +102,17 @@ struct RoutingTree {
 };
 
 // Routing related variables:
-extern std::vector<RoutingTree> *Trees;      // routing trees for every node in H
-extern std::vector<std::list<int>> *Users;   // for every node in device model G track its users
-extern std::map<int, int> invUsers;          // InvUsers, key = hID, value = current_mapped gID   
-extern std::vector<int> *HistoryCosts;       // for history of congestion in PathFinder
+extern std::vector<RoutingTree> *Trees;                    // routing trees for every node in H
+extern std::vector<std::list<int>> *Users;                 // for every node in device model G track its users
+extern std::map<int, int> invUsers;                        // InvUsers, key = hID, value = current_mapped gID   
+extern std::vector<int> *HistoryCosts;                     // for history of congestion in PathFinder
 extern std::vector<int> *TraceBack;          
-extern std::vector<int> *TopoOrder;          // NOT USED: for topological order
-extern std::map<int, std::string> hNames;    //Map for storing the unique names of Application graph
-extern std::map<int, std::string> gNames;    //Map for storing the unique names of device model graph
+extern std::vector<int> *TopoOrder;                        // NOT USED: for topological order
+extern std::map<int, std::string> hNames;                  // Map for storing the unique names of Application graph
+extern std::map<int, std::string> gNames;                  // Map for storing the unique names of device model graph
+extern std::map<std::string, int> invGNames;               // Map for storing the GID retrieved from the gNames
+extern std::map<std::string, int> invGNames_FuncNodes;     // Map for storing the GID retrieved from the gNames for only FuncCell node
+extern std::set<int> *LockNodes;                           // For listing the nodes that are locked
 extern std::bitset<100000> explored;
 
 //Pathefinder cost parameters:

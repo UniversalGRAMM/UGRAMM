@@ -38,6 +38,86 @@ bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
 }
 
 /*
+ * This function gets the device model node type that is best suited for the application
+ * graph opcode
+
+ */
+bool getDeviceModelNodeType(const std::string &hOpcode, std::string &nodeType){
+  for (const auto& pair : ugrammConfig) {
+    for (int i = 0; i < pair.second.size(); i++){
+      if (pair.second[i] == hOpcode)
+      {
+        UGRAMM->trace("{} node from device model supports {} Opcode", pair.first, hOpcode);
+        nodeType = pair.first;
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/*
+ * This function gets the GID for the the funcCell node in the device model graph that
+ * meets the locking requirements. That is, the funcCell node must have a type that
+ * can support the operation as well must be located in specified x and y locations
+ * 
+ */
+int findGNodeID(int xLocation, int yLocation, const std::string &nodeType){
+  
+  for (const auto& pair : invGNames_FuncNodes) {
+
+    // Find the positions of 'c', 'r', and the last '.'
+    size_t posC = pair.first.find('c');
+    size_t posR = pair.first.find('r', posC);  // Start searching after 'c'
+    size_t posLastDot = pair.first.rfind('.');  // Find the last dot
+
+    // Extract "C#"
+    std::string xValue = pair.first.substr(posC, posR - posC - 1);
+
+    // Extract "r#"
+    std::string yValue = pair.first.substr(posR, posLastDot - posR);
+
+    // Extract node type
+    std::string nodeTypeG = pair.first.substr(posLastDot + 1);
+
+    // Convert to uppercase using std::transform
+    std::transform(xValue.begin(), xValue.end(), xValue.begin(), ::toupper);
+    std::transform(yValue.begin(), yValue.end(), yValue.begin(), ::toupper);
+    std::transform(nodeTypeG.begin(), nodeTypeG.end(), nodeTypeG.begin(), ::toupper);
+
+    UGRAMM->trace("[Locking - G Node] C Location {}:: R Location {} :: NodeTypeG {}", xValue, yValue, nodeTypeG);
+
+    // Get the string for x and y location
+    std::string xLoc = "c" + std::to_string(xLocation);
+    std::string yLoc = "r" + std::to_string(yLocation);
+    std::string reqNodeType = nodeType;
+
+    // Convert to uppercase using std::transform
+    std::transform(xLoc.begin(), xLoc.end(), xLoc.begin(), ::toupper);
+    std::transform(yLoc.begin(), yLoc.end(), yLoc.begin(), ::toupper);
+    std::transform(reqNodeType.begin(), reqNodeType.end(), reqNodeType.begin(), ::toupper);
+
+    UGRAMM->trace("\t[Locking] Required C Location {}:: Required R Location {} ::Required NodeTypeG {}", xLoc, yLoc, reqNodeType);
+
+    if (xValue != xLoc)
+      continue;
+
+    if (yValue != yLoc)
+      continue;
+
+    if (nodeTypeG != reqNodeType)
+      continue;
+
+    int GID = pair.second;
+
+    UGRAMM->info("\t[Locking] GID {}", GID);
+    return GID;
+  }
+
+  return -1;
+}
+
+/*
  * For the given outputPin (signal), finds the associated FuncCell node from the device model.
  * 
  * This function identifies the FuncCell node in the device model graph G associated with the 
@@ -255,6 +335,26 @@ void sortList(int list[], int n, std::map<int, NodeConfig> *hConfig)
     qsort(list, n, sizeof(int), cmpfunc);
    else
     std::sort(list, list+n, CustomComparator(hConfig));
+}
+
+
+/**
+ * Checking if the current node in the H-Graph is lock or not
+*/ 
+bool hasNodeLock(int xLocation, int yLocation)
+{
+  bool xLock = false;
+  bool yLock = false;
+
+  if (xLocation != -1){
+    xLock = true;
+  }
+
+  if (yLocation != -1){
+    yLock = true;
+  }
+
+  return xLock && yLock; 
 }
 
 //-------------------------------------------------------------------//

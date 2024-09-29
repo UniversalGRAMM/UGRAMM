@@ -40,6 +40,30 @@
  */
 bool compatibilityCheck(const std::string &gType, const std::string &hOpcode);
 
+
+/**
+ * This function gets the device model node type that is best suited for the application
+ * graph opcode
+ * 
+ * @param hOpcode The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT]
+ * @param nodeType Passes the nodeType string for the device model graph
+ * @return bool Returns true if the suitable node type in the device model graph is found, false otherwise.
+ */
+bool getDeviceModelNodeType(const std::string &hOpcode, std::string &nodeType);
+
+
+/**
+ * This function gets the GID for the the funcCell node in the device model graph that
+ * meets the locking requirements. That is, the funcCell node must have a type that
+ * can support the operation as well must be located in specified x and y locations
+ * 
+ * @param xLocation x location of the locked node in the device model graph
+ * @param yLocation y location of the locked node in the device model graph
+ * @param nodeType Passes the nodeType string (ALU, MEMPORT, etc) for the device model graph
+ * @return int Returns the GID for the funcCell node
+ */
+int findGNodeID(int xLocation, int yLocation, const std::string &nodeType);
+
 /**
  * For the given outputPin (signal), finds the associated FunCell node from the device model.
  * 
@@ -138,6 +162,18 @@ int cmpfunc(const void *a, const void *b);
  * @param n The number of elements/vertices in the H graph
  */
 void sortList(int list[], int n, std::map<int, NodeConfig> *hConfig);
+
+
+/**
+ * Checks if the application node is locked or not
+ * in both the X and Y coordinate. For CGRA distinction
+ * X coordinate is the colomn and Y coordinate is the row
+ * 
+ * @param xLocation The X location for the placement of node on the device if given by the users to lock
+ * @param yLocation The Y location for the placement of node on the device if given by the users to lock
+ * @return bool True if there is the application node is locked, false otherwise.
+ */
+bool hasNodeLock(int xLocation, int yLocation);
 
 //-------------------------------------------------------------------//
 //-------------------- [Routing] Main function ----------------------//

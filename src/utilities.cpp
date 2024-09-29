@@ -687,6 +687,11 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     // Contains the node name
     std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);
     gNames[i] = arch_NodeName;
+    invGNames[arch_NodeName] = i;
+
+    if ((*gConfig)[i].Cell == "FUNCCELL"){
+      invGNames_FuncNodes[arch_NodeName] = i;
+    }
 
     // Obtaining the loadPin name for PinCell type:
     if ((*gConfig)[i].Cell == "PINCELL")
@@ -700,6 +705,9 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     }
 
     UGRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseCellType, upperCaseType);
+    UGRAMM->trace("\t[G] i {} :: arch_NodeName {} :: gNames[{}] {} :: invGNames[{}] {}", i, arch_NodeName, i, gNames[i], arch_NodeName, invGNames[arch_NodeName]);
+    if (invGNames_FuncNodes.find(arch_NodeName) != invGNames_FuncNodes.end())
+      UGRAMM->trace("\t\t[G] i {} :: arch_NodeName {} :: CellType {} :: gNames[{}] {} :: invGNames_FuncNodes[{}] {}", i, arch_NodeName, (*gConfig)[i].Cell, i, gNames[i], arch_NodeName, invGNames_FuncNodes[arch_NodeName]);
   }
 }
 
