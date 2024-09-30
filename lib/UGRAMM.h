@@ -39,6 +39,8 @@
 #define maxIterations 39
 #define NOT_PLACED -1           //For InvUsers
 #define sortAlgorithm 1         //Randomly sorting the H-graph nodes either with the sort or qsort algorithms (1 --> use Sort algorithm, 0 --> qSort algorithm)
+#define skipLockedNodes 1       //When routing nodes that does is not locked, the router has a choice to skip over any pre-determined locked nodes
+                                //in the device model graph (1 --> skip over locked nodes in device mode graph when mapping, 0 --> don't skip over locked nodes in device mode graph when mapping)
 //-------------------------------------------------------------------//
 
 //Struct for defining the node configuration in hConfig and gConfig data-structures:
@@ -112,7 +114,7 @@ extern std::map<int, std::string> hNames;                  // Map for storing th
 extern std::map<int, std::string> gNames;                  // Map for storing the unique names of device model graph
 extern std::map<std::string, int> invGNames;               // Map for storing the GID retrieved from the gNames
 extern std::map<std::string, int> invGNames_FuncNodes;     // Map for storing the GID retrieved from the gNames for only FuncCell node
-extern std::set<int> *LockNodes;                           // For listing the nodes that are locked
+extern std::set<int> LockNodes;                            // For listing the nodes that are locked
 extern std::bitset<100000> explored;
 
 //Pathefinder cost parameters:

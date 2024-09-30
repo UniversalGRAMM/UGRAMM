@@ -65,6 +65,18 @@ bool getDeviceModelNodeType(const std::string &hOpcode, std::string &nodeType);
 int findGNodeID(int xLocation, int yLocation, const std::string &nodeType);
 
 /**
+ * This function gets the GID for all funcCell nodes in the device model graph that
+ * needs to be locked. It then gets added into the a set of LockNodes, that will notify
+ * the UGRAMM router that these nodes are special.
+ * 
+ * @param H Pointer to the directed graph H (original application graph read from a DOT file)
+ * @param hConfig Pointer to a map containing configuration information about nodes in graph H.
+ * @return void
+ */
+void getLockedGIDs(DirectedGraph *H, std::map<int, NodeConfig> *hConfig);
+
+
+/**
  * For the given outputPin (signal), finds the associated FunCell node from the device model.
  * 
  * This function identifies the FunCell node in the device model graph G associated with the 

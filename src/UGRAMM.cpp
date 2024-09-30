@@ -28,7 +28,7 @@ std::map<int, std::string> hNames;
 std::map<int, std::string> gNames;
 std::map<std::string, int> invGNames;
 std::map<std::string, int> invGNames_FuncNodes;
-std::set<int> *LockNodes;
+std::set<int> LockNodes;
 std::bitset<100000> explored;
 
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
@@ -197,6 +197,12 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
         continue;
       }
 
+      if (skipLockedNodes){
+        if (LockNodes.find(i) != LockNodes.end()){
+          continue;
+        }
+      }
+
       //------------------ Routing Setup ---------------------//
       ripUpRouting(y, G);         //Ripup the previous routing
       (*Users)[i].push_back(y);   //Users update                 
@@ -363,6 +369,9 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     for (int i = 0; i < num_vertices(*H); i++){
       UGRAMM->info("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], ordering[i], hNames[ordering[i]]);
     }
+
+    // Find the locking nodes
+    getLockedGIDs(H, hConfig);
 
     for (int k = 0; k < num_vertices(*H); k++)
     {

@@ -110,11 +110,34 @@ int findGNodeID(int xLocation, int yLocation, const std::string &nodeType){
 
     int GID = pair.second;
 
-    UGRAMM->info("\t[Locking] GID {}", GID);
+    UGRAMM->trace("\t[Locking] GID {}", GID);
     return GID;
   }
 
   return -1;
+}
+
+/**
+ * This function gets the GID for all funcCell nodes in the device model graph that
+ * needs to be locked. It then gets added into the a set of LockNodes, that will notify
+ * the UGRAMM router that these nodes are special.
+ */
+void getLockedGIDs(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
+  for (int i = 0; i < num_vertices(*H); i++){
+    //Check if the application node is locked or not
+    if (hasNodeLock((*hConfig)[i].Location.first, (*hConfig)[i].Location.second)){
+      //Get the compatible node type for the operations
+      std::string nodeType;
+      getDeviceModelNodeType((*hConfig)[i].Opcode, nodeType);
+
+      //Get the GID for the locked node in the device model graph
+      int GID = findGNodeID((*hConfig)[i].Location.first, (*hConfig)[i].Location.second, nodeType);
+      UGRAMM->info("\t GID {} -  gNames {} has been locked at <{}, {}>", GID, gNames[GID], (*hConfig)[i].Location.first, (*hConfig)[i].Location.second);
+
+      //Add lock nodes GID to a set to keep track
+      LockNodes.insert(GID);
+    }
+  }
 }
 
 /*
