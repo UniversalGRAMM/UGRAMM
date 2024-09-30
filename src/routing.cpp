@@ -132,7 +132,7 @@ void getLockedGIDs(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
 
       //Get the GID for the locked node in the device model graph
       int GID = findGNodeID((*hConfig)[i].Location.first, (*hConfig)[i].Location.second, nodeType);
-      UGRAMM->info("\t GID {} -  gNames {} has been locked at <{}, {}>", GID, gNames[GID], (*hConfig)[i].Location.first, (*hConfig)[i].Location.second);
+      UGRAMM->trace("\t GID {} -  gNames {} has been locked at <{}, {}>", GID, gNames[GID], (*hConfig)[i].Location.first, (*hConfig)[i].Location.second);
 
       //Add lock nodes GID to a set to keep track
       LockNodes.insert(GID);

@@ -112,7 +112,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
 
   if (lockingStatus){
-    UGRAMM->info("For application node {} :: has been locked at [{}, {}] ", hNames[y], (*hConfig)[y].Location.first, (*hConfig)[y].Location.second);
+    UGRAMM->trace("For application node {} :: has been locked at [{}, {}] ", hNames[y], (*hConfig)[y].Location.first, (*hConfig)[y].Location.second);
     
     //Get the node type suitable for the operation
     std::string nodetype;
@@ -121,7 +121,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       UGRAMM->error("There is no nodes in the device model that can be locked and also does supports {} Opcode", (*hConfig)[y].Opcode);
       exit(-1);
     }
-    UGRAMM->info("[Locking] NodeType {} ", nodetype);
+    UGRAMM->trace("[Locking] NodeType {} ", nodetype);
     
     //Get the GID for the locked node in the device model graph
     int GID = findGNodeID((*hConfig)[y].Location.first, (*hConfig)[y].Location.second, nodetype);
@@ -344,13 +344,13 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   float frac;
 
   for (const auto& pair : invGNames_FuncNodes) {
-      UGRAMM->info("[invGNames_FuncNodes] key {} :: value {}", pair.first, pair.second);
+      UGRAMM->trace("[invGNames_FuncNodes] key {} :: value {}", pair.first, pair.second);
   }
 
   for (const auto& pair : ugrammConfig) {
-      UGRAMM->info("[ugrammConfig] key {}", pair.first);
+      UGRAMM->trace("[ugrammConfig] key {}", pair.first);
       for (int i = 0; i < pair.second.size(); i++){
-        UGRAMM->info("\t[ugrammConfig ] Value {}", pair.second[i]);
+        UGRAMM->trace("\t[ugrammConfig ] Value {}", pair.second[i]);
       }
   }
 
@@ -367,7 +367,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     // Sorting the nodes of H according to the size (number of vertices) of their vertex model
     sortList(ordering, num_vertices(*H), hConfig);
     for (int i = 0; i < num_vertices(*H); i++){
-      UGRAMM->info("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], ordering[i], hNames[ordering[i]]);
+      UGRAMM->trace("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], ordering[i], hNames[ordering[i]]);
     }
 
     // Find the locking nodes
