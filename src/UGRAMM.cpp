@@ -333,8 +333,8 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
   int ordering[num_vertices(*H)];
   for (int i = 0; i < num_vertices(*H); i++)
   {
+    UGRAMM->trace("{} ", ordering[i]);
     ordering[i] = i;
-    UGRAMM->trace("Ordering[{}]: {} ", i, ordering[i]);
   }
 
   bool done = false;
