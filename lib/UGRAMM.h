@@ -53,17 +53,17 @@ struct NodeConfig {
     // For [H] --> Application Graph
     std::string Opcode;        //OpcodeType --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
     std::string pinName;       //Load pin of the PinCell node --> inPinA, inPinB
-    std::pair<int, int> Location = {0,0}; //Optional  
+    std::string LockGNode;     //gName for which the node is to be locked
+    std::pair<int, int> Location = {0,0}; //Optional  // Remove this
 };
 
 //Struct for defining the expected attributes defined in the h and g graph:
 struct DotVertex {
     // For [H] --> Application Graph
-    std::string H_Name;       //[Required] Contains name of the operation in Application graph (ex: Load_0)
-    std::string H_Opcode;     //[Required] Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
-    std::string H_Latency;    //[Optional] Contains the latency of the operation
-    std::string H_PlacementX; //[Optional] Contains the placement location of X
-    std::string H_PlacementY; //[Optional] Contains the placement location of Y
+    std::string H_Name;        //[Required] Contains name of the operation in Application graph (ex: Load_0)
+    std::string H_Opcode;      //[Required] Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
+    std::string H_Latency;     //[Optional] Contains the latency of the operation
+    std::string H_LockedGNode; //[Optional] Contains the placement location of X
 
     // For [G] --> Device Model Graph
     std::string G_Name;       //[Required] Contains the unique name of the cell in the device model graph.

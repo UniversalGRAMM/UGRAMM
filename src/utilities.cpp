@@ -755,22 +755,10 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     }
 
     // Fetching the placement from the application-graph
-    if (!boost::get(&DotVertex::H_PlacementX, *H, v).empty()){
-      int placementX = std::stoi(boost::get(&DotVertex::H_PlacementX, *H, v));
-      (*hConfig)[i].Location.first = placementX;
-    } else {
-      (*hConfig)[i].Location.first = -1;
+    if (!boost::get(&DotVertex::H_LockedGNode, *H, v).empty()){
+      (*hConfig)[i].LockGNode = boost::get(&DotVertex::H_LockedGNode, *H, v);
     }
 
-    if (!boost::get(&DotVertex::H_PlacementY, *H, v).empty()){
-      int placementY = std::stoi(boost::get(&DotVertex::H_PlacementY, *H, v));
-      (*hConfig)[i].Location.second = placementY;
-    } else {
-      //set to -1 to indicated placement location is out of bounds
-      (*hConfig)[i].Location.second = -1;
-    }
-
-
-    UGRAMM->trace("[H] name {} :: applicationOpcode {} :: placement {},{}", hNames[i], upperCaseOpcode, (*hConfig)[i].Location.first, (*hConfig)[i].Location.second);
+    UGRAMM->info("[H] name {} :: applicationOpcode {} :: Lock GNode {}", hNames[i], upperCaseOpcode, (*hConfig)[i].LockGNode);
   }
 }

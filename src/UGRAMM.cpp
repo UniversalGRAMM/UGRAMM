@@ -107,28 +107,29 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     totalCosts[i] = 0;
 
   bool compatibilityStatus = true;
-  bool lockingStatus; 
-  lockingStatus = hasNodeLock((*hConfig)[y].Location.first, (*hConfig)[y].Location.second);
+  bool lockingStatus = false;
 
 
   if (lockingStatus){
-    UGRAMM->trace("For application node {} :: has been locked at [{}, {}] ", hNames[y], (*hConfig)[y].Location.first, (*hConfig)[y].Location.second);
+    // UGRAMM->trace("For application node {} :: has been locked at [{}, {}] ", hNames[y], (*hConfig)[y].Location.first, (*hConfig)[y].Location.second);
     
-    //Get the node type suitable for the operation
-    std::string nodetype;
-    bool foundNodeType = getDeviceModelNodeType((*hConfig)[y].Opcode, nodetype);
-    if (!foundNodeType){
-      UGRAMM->error("There is no nodes in the device model that can be locked and also does supports {} Opcode", (*hConfig)[y].Opcode);
-      exit(-1);
-    }
-    UGRAMM->trace("[Locking] NodeType {} ", nodetype);
+    // //Get the node type suitable for the operation
+    // std::string nodetype;
+    // bool foundNodeType = getDeviceModelNodeType((*hConfig)[y].Opcode, nodetype);
+    // if (!foundNodeType){
+    //   UGRAMM->error("There is no nodes in the device model that can be locked and also does supports {} Opcode", (*hConfig)[y].Opcode);
+    //   exit(-1);
+    // }
+    // UGRAMM->trace("[Locking] NodeType {} ", nodetype);
     
-    //Get the GID for the locked node in the device model graph
-    int GID = findGNodeID((*hConfig)[y].Location.first, (*hConfig)[y].Location.second, nodetype);
-    if (GID == -1){
-      UGRAMM->error("There is no nodes in the device model that can be locked and also does supports {} Opcode at Location <{}, {}> ", (*hConfig)[y].Opcode, (*hConfig)[y].Location.first, (*hConfig)[y].Location.second);
-      exit(-1);
-    }
+    // //Get the GID for the locked node in the device model graph
+    // int GID = findGNodeID((*hConfig)[y].Location.first, (*hConfig)[y].Location.second, nodetype);
+    // if (GID == -1){
+    //   UGRAMM->error("There is no nodes in the device model that can be locked and also does supports {} Opcode at Location <{}, {}> ", (*hConfig)[y].Opcode, (*hConfig)[y].Location.first, (*hConfig)[y].Location.second);
+    //   exit(-1);
+    // }
+
+    int GID = 0;
 
     //------------------ Routing Setup ---------------------//
     ripUpRouting(y, G);         //Ripup the previous routing
@@ -197,11 +198,11 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
         continue;
       }
 
-      if (skipLockedNodes){
-        if (LockNodes.find(i) != LockNodes.end()){
-          continue;
-        }
-      }
+      // if (skipLockedNodes){
+      //   if (LockNodes.find(i) != LockNodes.end()){
+      //     continue;
+      //   }
+      // }
 
       //------------------ Routing Setup ---------------------//
       ripUpRouting(y, G);         //Ripup the previous routing
@@ -450,8 +451,7 @@ int main(int argc, char **argv)
   dp.property("load", boost::get(&EdgeProperty::H_LoadPin, H));            //--> [Required] Edge property describing the loadPin to use for the edge
   dp.property("driver", boost::get(&EdgeProperty::H_DriverPin, H));        //--> [Required] Edge property describing the driverPin to use for the edge
   dp.property("latency", boost::get(&DotVertex::H_Latency, H));            //--> [Required] Contains for latency of the node --> check this as it needs to be between the edges
-  dp.property("placementX", boost::get(&DotVertex::H_PlacementX, H));      //--> [Required] Contains the property describing the fixed X location for placing the node
-  dp.property("placementY", boost::get(&DotVertex::H_PlacementY, H));      //--> [Required] Contains the property describing the fixed Y location for placing the node
+  dp.property("lockGNode", boost::get(&DotVertex::H_LockedGNode, H));      //--> [Optional] Contains the name for gNode that will be locked
 
   //---------------- For [G] --> Device Model Graph --------------------//
   dp.property("G_Name", boost::get(&DotVertex::G_Name, G));         //--> [Required] Contains the unique name of the cell in the device model graph.

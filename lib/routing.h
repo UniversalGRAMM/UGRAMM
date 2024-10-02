@@ -54,26 +54,13 @@ bool getDeviceModelNodeType(const std::string &hOpcode, std::string &nodeType);
 
 /**
  * This function gets the GID for the the funcCell node in the device model graph that
- * meets the locking requirements. That is, the funcCell node must have a type that
- * can support the operation as well must be located in specified x and y locations
+ * meets the the lockedNodeName
  * 
- * @param xLocation x location of the locked node in the device model graph
- * @param yLocation y location of the locked node in the device model graph
- * @param nodeType Passes the nodeType string (ALU, MEMPORT, etc) for the device model graph
+ * @param lockedNodeName Passes the name for the locked PE node
  * @return int Returns the GID for the funcCell node
  */
-int findGNodeID(int xLocation, int yLocation, const std::string &nodeType);
+int findGNodeID(const std::string &lockedNodeName);
 
-/**
- * This function gets the GID for all funcCell nodes in the device model graph that
- * needs to be locked. It then gets added into the a set of LockNodes, that will notify
- * the UGRAMM router that these nodes are special.
- * 
- * @param H Pointer to the directed graph H (original application graph read from a DOT file)
- * @param hConfig Pointer to a map containing configuration information about nodes in graph H.
- * @return void
- */
-void getLockedGIDs(DirectedGraph *H, std::map<int, NodeConfig> *hConfig);
 
 
 /**

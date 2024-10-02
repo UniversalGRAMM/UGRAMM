@@ -14,7 +14,7 @@ Load_5 [label="{Load_5}", opcode=input, shape=record];
 Load_6 [label="{Load_6}", opcode=input, shape=record];
 Load_7 [label="{Load_7}", opcode=input, shape=record];
 Load_8 [label="{Load_8}", opcode=input, shape=record];
-FMUL_9 [label="{FMUL_9}", opcode=FMUL, shape=record, type=op, placementX=3, placementY=6];
+FMUL_9 [label="{FMUL_9}", opcode=FMUL, shape=record, type=op, lockGNode="pe.w32.c4.r6.alu"];
 FMUL_10 [label="{FMUL_10}", opcode=FMUL, shape=record, type=op];
 FMUL_11 [label="{FMUL_11}", opcode=FMUL, shape=record, type=op];
 FMUL_12 [label="{FMUL_12}", opcode=FMUL, shape=record, type=op];

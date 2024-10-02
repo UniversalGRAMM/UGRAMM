@@ -62,82 +62,28 @@ bool getDeviceModelNodeType(const std::string &hOpcode, std::string &nodeType){
  * can support the operation as well must be located in specified x and y locations
  * 
  */
-int findGNodeID(int xLocation, int yLocation, const std::string &nodeType){
+int findGNodeID(const std::string &lockedNodeName){
   
   for (const auto& pair : invGNames_FuncNodes) {
 
-    // Find the positions of 'c', 'r', and the last '.'
-    size_t posC = pair.first.find('c');
-    size_t posR = pair.first.find('r', posC);  // Start searching after 'c'
-    size_t posLastDot = pair.first.rfind('.');  // Find the last dot
-
-    // Extract "C#"
-    std::string xValue = pair.first.substr(posC, posR - posC - 1);
-
-    // Extract "r#"
-    std::string yValue = pair.first.substr(posR, posLastDot - posR);
-
-    // Extract node type
-    std::string nodeTypeG = pair.first.substr(posLastDot + 1);
+    //Get the current name for the gNode and the lock node
+    std::string gNode = pair.first;
+    std::string lockedNode = lockedNodeName;
 
     // Convert to uppercase using std::transform
-    std::transform(xValue.begin(), xValue.end(), xValue.begin(), ::toupper);
-    std::transform(yValue.begin(), yValue.end(), yValue.begin(), ::toupper);
-    std::transform(nodeTypeG.begin(), nodeTypeG.end(), nodeTypeG.begin(), ::toupper);
+    std::transform(gNode.begin(), gNode.end(), gNode.begin(), ::toupper);
+    std::transform(lockedNode.begin(), lockedNode.end(), lockedNode.begin(), ::toupper);
 
-    UGRAMM->trace("[Locking - G Node] C Location {}:: R Location {} :: NodeTypeG {}", xValue, yValue, nodeTypeG);
-
-    // Get the string for x and y location
-    std::string xLoc = "c" + std::to_string(xLocation);
-    std::string yLoc = "r" + std::to_string(yLocation);
-    std::string reqNodeType = nodeType;
-
-    // Convert to uppercase using std::transform
-    std::transform(xLoc.begin(), xLoc.end(), xLoc.begin(), ::toupper);
-    std::transform(yLoc.begin(), yLoc.end(), yLoc.begin(), ::toupper);
-    std::transform(reqNodeType.begin(), reqNodeType.end(), reqNodeType.begin(), ::toupper);
-
-    UGRAMM->trace("\t[Locking] Required C Location {}:: Required R Location {} ::Required NodeTypeG {}", xLoc, yLoc, reqNodeType);
-
-    if (xValue != xLoc)
-      continue;
-
-    if (yValue != yLoc)
-      continue;
-
-    if (nodeTypeG != reqNodeType)
+    if (gNode != lockedNode)
       continue;
 
     int GID = pair.second;
 
-    UGRAMM->trace("\t[Locking] GID {}", GID);
+    UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, GID);
     return GID;
   }
 
   return -1;
-}
-
-/**
- * This function gets the GID for all funcCell nodes in the device model graph that
- * needs to be locked. It then gets added into the a set of LockNodes, that will notify
- * the UGRAMM router that these nodes are special.
- */
-void getLockedGIDs(DirectedGraph *H, std::map<int, NodeConfig> *hConfig){
-  for (int i = 0; i < num_vertices(*H); i++){
-    //Check if the application node is locked or not
-    if (hasNodeLock((*hConfig)[i].Location.first, (*hConfig)[i].Location.second)){
-      //Get the compatible node type for the operations
-      std::string nodeType;
-      getDeviceModelNodeType((*hConfig)[i].Opcode, nodeType);
-
-      //Get the GID for the locked node in the device model graph
-      int GID = findGNodeID((*hConfig)[i].Location.first, (*hConfig)[i].Location.second, nodeType);
-      UGRAMM->trace("\t GID {} -  gNames {} has been locked at <{}, {}>", GID, gNames[GID], (*hConfig)[i].Location.first, (*hConfig)[i].Location.second);
-
-      //Add lock nodes GID to a set to keep track
-      LockNodes.insert(GID);
-    }
-  }
 }
 
 /*
