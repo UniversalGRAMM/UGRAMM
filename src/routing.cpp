@@ -220,12 +220,12 @@ struct CustomComparator {
         int ret;
 
         //------- Sorting the nodes with priority constraints ------------//
-        //------- Placement constraints 
-        bool has_aI_Placement = ((*hConfig)[aI].Location.first != -1); //&& ((*hConfig)[aI].Location.second != -1);
-        bool has_bI_Placement = ((*hConfig)[bI].Location.first != -1); //&& ((*hConfig)[bI].Location.second != -1);
+        //------- Locking constraints 
+        bool has_aI_LockGNode = (!(*hConfig)[aI].LockGNode.empty()); //&& ((*hConfig)[aI].Location.second != -1);
+        bool has_bI_LockGNode = (!(*hConfig)[bI].LockGNode.empty()); //&& ((*hConfig)[bI].Location.second != -1);
 
-        if (has_aI_Placement || has_bI_Placement){
-          if (has_aI_Placement)
+        if (has_aI_LockGNode || has_bI_LockGNode){
+          if (has_aI_LockGNode)
             return true;
           else
             return false;
@@ -516,7 +516,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     int driverOutPin = -1;
 
     //Finding the outputPin based on attribute given in the benchmark:
-    std::string driverPinName = boost::get(&EdgeProperty::H_DriverPin, *H, *eo);
+    std::string driverPinName = boost::to_upper_copy(boost::get(&EdgeProperty::H_DriverPin, *H, *eo));
     vertex_descriptor driverD = vertex(driverFunCell, *G);
     out_edge_iterator eoY, eoY_end;
     boost::tie(eoY, eoY_end) = out_edges(driverD, *G);
@@ -551,7 +551,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     int loadInPin = -1;
 
     //Finding the inputPin based on attribute given in the benchmark:
-    std::string loadPinName = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
+    std::string loadPinName = boost::to_upper_copy(boost::get(&EdgeProperty::H_LoadPin, *H, *eo));
     vertex_descriptor loadD = vertex(loadFunCell, *G);
     in_edge_iterator eiL, eiL_end;
     boost::tie(eiL, eiL_end) = in_edges(loadD, *G);

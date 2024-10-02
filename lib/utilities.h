@@ -133,6 +133,16 @@ void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string,
  */
 void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &ugrammConfig);
 
+/**
+ * This function gets the device model node type that is best suited for the application
+ * graph opcode
+ * 
+ * @param hOpcode The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT]
+ * @param nodeType Passes the nodeType string for the device model graph
+ * @return bool Returns true if the suitable node type in the device model graph is found, false otherwise.
+ */
+bool getDeviceModelNodeType(const std::string &hOpcode, std::string &nodeType);
+
 
 //------------------------------------------------------------------------------------//
 //---------------------- [Utilities] Printing and visualization ----------------------//

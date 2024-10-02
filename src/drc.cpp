@@ -268,18 +268,6 @@ void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<i
       UGRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional latency attribute", H_Name);
     }
 
-    //Check if the placementX attribute in the application DFG.
-    std::string H_PlacementX = boost::get(&DotVertex::H_PlacementX, *H, v);
-    if (H_PlacementX.empty()){
-      UGRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional placementX attribute", H_Name);
-    }
-
-    //Check if the placementY attribute in the application DFG.
-    std::string H_PlacementY = boost::get(&DotVertex::H_PlacementY, *H, v);
-    if (H_PlacementY.empty()){
-      UGRAMM->warn("[DRC Warning] Vertex {} in application DFG does not have an optional placementY attribute", H_Name);
-    }
-
   }
 }
 

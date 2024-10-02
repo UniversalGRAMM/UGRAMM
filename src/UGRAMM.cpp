@@ -25,7 +25,10 @@ std::vector<int> *HistoryCosts;
 std::vector<int> *TraceBack;
 std::vector<int> *TopoOrder;
 std::map<int, std::string> hNames;
+std::map<std::string, int> hNamesInv;
 std::map<int, std::string> gNames;
+std::map<std::string, int> gNamesInv;
+std::map<std::string, int> gNamesInv_FuncCell;
 std::bitset<100000> explored;
 
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
@@ -347,8 +350,7 @@ int main(int argc, char **argv)
   dp.property("load", boost::get(&EdgeProperty::H_LoadPin, H));            //--> [Required] Edge property describing the loadPin to use for the edge
   dp.property("driver", boost::get(&EdgeProperty::H_DriverPin, H));        //--> [Required] Edge property describing the driverPin to use for the edge
   dp.property("latency", boost::get(&DotVertex::H_Latency, H));            //--> [Required] Contains for latency of the node --> check this as it needs to be between the edges
-  dp.property("placementX", boost::get(&DotVertex::H_PlacementX, H));      //--> [Required] Contains the property describing the fixed X location for placing the node
-  dp.property("placementY", boost::get(&DotVertex::H_PlacementY, H));      //--> [Required] Contains the property describing the fixed Y location for placing the node
+  dp.property("lockGNode", boost::get(&DotVertex::H_LockGNode, H));        //--> [Required] Contains the property describing the fixed X location for placing the node
 
   //---------------- For [G] --> Device Model Graph --------------------//
   dp.property("G_Name", boost::get(&DotVertex::G_Name, G));         //--> [Required] Contains the unique name of the cell in the device model graph.

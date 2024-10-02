@@ -362,6 +362,24 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<st
   }
 }
 
+/*
+ * This function gets the device model node type that is best suited for the application
+ * graph opcode
+ */
+bool getDeviceModelNodeType(const std::string &hOpcode, std::string &nodeType){
+  for (const auto& pair : ugrammConfig) {
+    for (int i = 0; i < pair.second.size(); i++){
+      if (pair.second[i] == hOpcode)
+      {
+        UGRAMM->trace("{} node from device model supports {} Opcode", pair.first, hOpcode);
+        nodeType = pair.first;
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 //------------------------------------------------------------------------------------//
 //---------------------- [Utilities] Printing and visualization ----------------------//
 //------------------------------------------------------------------------------------//
@@ -685,8 +703,13 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     (*gConfig)[i].Type = upperCaseType;
 
     // Contains the node name
-    std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);
+    std::string arch_NodeName = boost::to_upper_copy(boost::get(&DotVertex::G_Name, *G, v));
     gNames[i] = arch_NodeName;
+    gNamesInv[arch_NodeName] = i;
+
+    if ((*gConfig)[i].Cell == "FUNCCELL"){
+      gNamesInv_FuncCell[arch_NodeName] = i;
+    }
 
     // Obtaining the loadPin name for PinCell type:
     if ((*gConfig)[i].Cell == "PINCELL")
@@ -700,6 +723,13 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     }
 
     UGRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseCellType, upperCaseType);
+    if ((*gConfig)[i].Cell == "FUNCCELL"){
+      UGRAMM->trace("\t\t[G] gNames[{}] {} :: gNamesInv[{}] {} :: gNamesInv_FuncCell[{}] {}", i, gNames[i], arch_NodeName, gNamesInv[arch_NodeName], arch_NodeName, gNamesInv_FuncCell[arch_NodeName]);
+       UGRAMM->trace("\t\t[G] gName size {} :: gNameInv size {} :: gNameInv_FuncCell size {}", gNames.size(), gNamesInv.size(), gNamesInv_FuncCell.size());
+    } else {
+       UGRAMM->trace("\t\t[G] gNames[{}] {} :: gNamesInv[{}] {}", i, gNames[i], arch_NodeName, gNamesInv[arch_NodeName]);
+       UGRAMM->trace("\t\t[G] gName size {} :: gNameInv {} :: gNameInv_FuncCell size() {}", gNames.size(), gNamesInv.size(), gNamesInv_FuncCell.size());
+    }
   }
 }
 
@@ -728,6 +758,9 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     std::replace(hNames[i].begin(), hNames[i].end(), '=', '_');
     std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
 
+    hNamesInv[hNames[i]] = i;
+    UGRAMM->trace(" hNames[{}] {} :: hNamesInv[{}] {}", i, hNames[i], hNames[i], hNamesInv[hNames[i]]);
+
     // Fetching opcode from the application-graph:
     // Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
     std::string applicationOpcode = boost::get(&DotVertex::H_Opcode, *H, v);
@@ -747,22 +780,10 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     }
 
     // Fetching the placement from the application-graph
-    if (!boost::get(&DotVertex::H_PlacementX, *H, v).empty()){
-      int placementX = std::stoi(boost::get(&DotVertex::H_PlacementX, *H, v));
-      (*hConfig)[i].Location.first = placementX;
-    } else {
-      (*hConfig)[i].Location.first = -1;
+    if (!boost::get(&DotVertex::H_LockGNode, *H, v).empty()){
+      (*hConfig)[i].LockGNode = boost::to_upper_copy(boost::get(&DotVertex::H_LockGNode, *H, v));
     }
 
-    if (!boost::get(&DotVertex::H_PlacementY, *H, v).empty()){
-      int placementY = std::stoi(boost::get(&DotVertex::H_PlacementY, *H, v));
-      (*hConfig)[i].Location.second = placementY;
-    } else {
-      //set to -1 to indicated placement location is out of bounds
-      (*hConfig)[i].Location.second = -1;
-    }
-
-
-    UGRAMM->trace("[H] name {} :: applicationOpcode {} :: placement {},{}", hNames[i], upperCaseOpcode, (*hConfig)[i].Location.first, (*hConfig)[i].Location.second);
+    UGRAMM->trace("[H] name {} :: applicationOpcode {} :: GNode Lock {}", hNames[i], upperCaseOpcode, (*hConfig)[i].LockGNode);
   }
 }

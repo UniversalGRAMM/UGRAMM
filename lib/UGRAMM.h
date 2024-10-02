@@ -51,7 +51,7 @@ struct NodeConfig {
     // For [H] --> Application Graph
     std::string Opcode;        //OpcodeType --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
     std::string pinName;       //Load pin of the PinCell node --> inPinA, inPinB
-    std::pair<int, int> Location = {0,0}; //Optional  
+    std::string LockGNode;     //Contains the name of the G Node for locking
 };
 
 //Struct for defining the expected attributes defined in the h and g graph:
@@ -60,8 +60,7 @@ struct DotVertex {
     std::string H_Name;       //[Required] Contains name of the operation in Application graph (ex: Load_0)
     std::string H_Opcode;     //[Required] Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
     std::string H_Latency;    //[Optional] Contains the latency of the operation
-    std::string H_PlacementX; //[Optional] Contains the placement location of X
-    std::string H_PlacementY; //[Optional] Contains the placement location of Y
+    std::string H_LockGNode;  //[Optional] Contains the name of the G Node for locking
 
     // For [G] --> Device Model Graph
     std::string G_Name;       //[Required] Contains the unique name of the cell in the device model graph.
@@ -102,14 +101,17 @@ struct RoutingTree {
 };
 
 // Routing related variables:
-extern std::vector<RoutingTree> *Trees;      // routing trees for every node in H
-extern std::vector<std::list<int>> *Users;   // for every node in device model G track its users
-extern std::map<int, int> invUsers;          // InvUsers, key = hID, value = current_mapped gID   
-extern std::vector<int> *HistoryCosts;       // for history of congestion in PathFinder
+extern std::vector<RoutingTree> *Trees;                 // routing trees for every node in H
+extern std::vector<std::list<int>> *Users;              // for every node in device model G track its users
+extern std::map<int, int> invUsers;                     // InvUsers, key = hID, value = current_mapped gID   
+extern std::vector<int> *HistoryCosts;                  // for history of congestion in PathFinder
 extern std::vector<int> *TraceBack;          
-extern std::vector<int> *TopoOrder;          // NOT USED: for topological order
-extern std::map<int, std::string> hNames;    //Map for storing the unique names of Application graph
-extern std::map<int, std::string> gNames;    //Map for storing the unique names of device model graph
+extern std::vector<int> *TopoOrder;                     // NOT USED: for topological order
+extern std::map<int, std::string> hNames;               // Map for storing the unique names of Application graph
+extern std::map<std::string, int> hNamesInv;            // Inverse map for getting HID using the unique names of Application graph
+extern std::map<int, std::string> gNames;               // Map for storing the unique names of device model graph
+extern std::map<std::string, int> gNamesInv;            // Inverse map for getting GID using the unique names of device model graph
+extern std::map<std::string, int> gNamesInv_FuncCell;   // Inverse map for getting GID using the unique names of device model graph. Map only funcCell in gNames
 extern std::bitset<100000> explored;
 
 //Pathefinder cost parameters:
