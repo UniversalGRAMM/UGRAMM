@@ -38,6 +38,33 @@ bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
 }
 
 /*
+ * This function gets the GID for the the funcCell node in the device model graph that
+ * meets the locking requirements. That is, the funcCell node must have a type that
+ * can support the operation as well must be located in specified x and y locations
+ * 
+ */
+int findGNodeID_FuncCell(const std::string &lockedNodeName){
+  
+  for (const auto& pair : gNamesInv_FuncCell) {
+
+    //Get the current name for the gNode and the lock node
+    std::string gNode = pair.first;
+    std::string lockedNode = lockedNodeName;
+
+    if (gNode != lockedNode)
+      continue;
+
+    int GID = pair.second;
+
+    UGRAMM->info("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, GID);
+    return GID;
+  }
+
+  return -1;
+}
+
+
+/*
  * For the given outputPin (signal), finds the associated FuncCell node from the device model.
  * 
  * This function identifies the FuncCell node in the device model graph G associated with the 

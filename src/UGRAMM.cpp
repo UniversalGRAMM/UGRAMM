@@ -108,86 +108,179 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
   bool compatibilityStatus = true;
 
-  for (int i = 0; i < num_vertices(*G); i++) // don't care for locking
-  { // first route the signal on the output of y
+  //UGRAMM->info("[Locking] LockGNode {} :: Not Empty {}", (*hConfig)[y].LockGNode, !(*hConfig)[y].LockGNode.empty());
+  bool lockingNodeStatus = !(*hConfig)[y].LockGNode.empty();
 
-    // Confriming the Vertex correct type:
-    if (!compatibilityCheck((*gConfig)[i].Type, (*hConfig)[y].Opcode))
-    {
-      compatibilityStatus = false;
-      continue;
-    }
+  if (lockingNodeStatus){
+    int GID = findGNodeID_FuncCell((*hConfig)[y].LockGNode);
+    UGRAMM->info("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, GID, gNames[GID]);
+    
+    for (int k = 0; k < 1; k++)
+    { // first route the signal on the output of y
 
-    //------------------ Routing Setup ---------------------//
-    ripUpRouting(y, G);         //Ripup the previous routing
-    (*Users)[i].push_back(y);   //Users update                 
-    invUsers[y] = i;            //InvUsers update
-    //------------------------------------------------------//
-
-    // Cost and history costs are calculated for the FuncCell:
-    totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
-
-    //Placement of the signal Y:
-    totalCosts[i] += routeSignal(G, H, y, gConfig);
-
-    //-------- Debugging statements ------------//
-    if (UGRAMM->level() <= spdlog::level::trace)
-      printRouting(y);
-    UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[i], totalCosts[i]);
-    //------------------------------------------//
-
-    //Early exit if the cost is greater than bestCost:
-    if (totalCosts[i] > bestCost)
-      continue;
-
-    //----------------------------------------------
-    // now route the signals on the input of y
-    //----------------------------------------------
-
-    boost::tie(ei, ei_end) = in_edges(yD, *H);
-    for (; (ei != ei_end); ei++)
-    {
-      int driverHNode = source(*ei, *H);
-
-      if (invUsers[driverHNode] == NOT_PLACED)
-        continue; // driver is not placed
-      
-      int driverGNode = invUsers[driverHNode];
+      // Confriming the Vertex correct type:
+      if (!compatibilityCheck((*gConfig)[GID].Type, (*hConfig)[y].Opcode))
+      {
+        compatibilityStatus = false;
+        continue;
+      }
 
       //------------------ Routing Setup ---------------------//
-      ripUpRouting(driverHNode, G);
-      (*Users)[driverGNode].push_back(driverHNode); //Users update
-      invUsers[driverHNode] = driverGNode;          //InvUsers update
+      ripUpRouting(y, G);         //Ripup the previous routing
+      (*Users)[GID].push_back(y);   //Users update                 
+      invUsers[y] = GID;            //InvUsers update
       //------------------------------------------------------//
 
-      // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
-      totalCosts[i] += routeSignal(G, H, driverHNode, gConfig);
+      // Cost and history costs are calculated for the FuncCell:
+      totalCosts[GID] += (1 + (*HistoryCosts)[GID]) * ((*Users)[GID].size() * PFac);
 
-      UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
-      UGRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[i], totalCosts[i]);
+      //Placement of the signal Y:
+      totalCosts[GID] += routeSignal(G, H, y, gConfig);
 
+      //-------- Debugging statements ------------//
+      if (UGRAMM->level() <= spdlog::level::trace)
+        printRouting(y);
+      UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[GID], totalCosts[GID]);
+      //------------------------------------------//
+
+      //Early exit if the cost is greater than bestCost:
+      if (totalCosts[GID] > bestCost)
+        continue;
+
+      //----------------------------------------------
+      // now route the signals on the input of y
+      //----------------------------------------------
+
+      boost::tie(ei, ei_end) = in_edges(yD, *H);
+      for (; (ei != ei_end); ei++)
+      {
+        int driverHNode = source(*ei, *H);
+
+        if (invUsers[driverHNode] == NOT_PLACED)
+          continue; // driver is not placed
+        
+        int driverGNode = invUsers[driverHNode];
+
+        //------------------ Routing Setup ---------------------//
+        ripUpRouting(driverHNode, G);
+        (*Users)[driverGNode].push_back(driverHNode); //Users update
+        invUsers[driverHNode] = driverGNode;          //InvUsers update
+        //------------------------------------------------------//
+
+        // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
+        totalCosts[GID] += routeSignal(G, H, driverHNode, gConfig);
+
+        UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
+        UGRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[GID], totalCosts[GID]);
+
+        if (totalCosts[GID] > bestCost)
+          break;
+      }
+
+      UGRAMM->debug("Total cost for {} is {}\n", hNames[y], totalCosts[GID]);
+
+      if (totalCosts[GID] >= MAX_DIST)
+        continue;
+
+      if (totalCosts[GID] < bestCost)
+      {
+        bestIndexFuncCell = GID;
+        bestCost = totalCosts[GID];
+        compatibilityStatus = true;
+      }
+      else if (totalCosts[GID] == bestCost)
+      {
+        if (!(rand() % 2))
+        {
+          bestIndexFuncCell = GID;
+        }
+        compatibilityStatus = true;
+      }
+    }
+  }
+
+  if (!lockingNodeStatus){
+    for (int i = 0; i < num_vertices(*G); i++) // don't care for locking
+    { // first route the signal on the output of y
+
+      // Confriming the Vertex correct type:
+      if (!compatibilityCheck((*gConfig)[i].Type, (*hConfig)[y].Opcode))
+      {
+        compatibilityStatus = false;
+        continue;
+      }
+
+      //------------------ Routing Setup ---------------------//
+      ripUpRouting(y, G);         //Ripup the previous routing
+      (*Users)[i].push_back(y);   //Users update                 
+      invUsers[y] = i;            //InvUsers update
+      //------------------------------------------------------//
+
+      // Cost and history costs are calculated for the FuncCell:
+      totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
+
+      //Placement of the signal Y:
+      totalCosts[i] += routeSignal(G, H, y, gConfig);
+
+      //-------- Debugging statements ------------//
+      if (UGRAMM->level() <= spdlog::level::trace)
+        printRouting(y);
+      UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[i], totalCosts[i]);
+      //------------------------------------------//
+
+      //Early exit if the cost is greater than bestCost:
       if (totalCosts[i] > bestCost)
-        break;
-    }
+        continue;
 
-    UGRAMM->debug("Total cost for {} is {}\n", hNames[y], totalCosts[i]);
+      //----------------------------------------------
+      // now route the signals on the input of y
+      //----------------------------------------------
 
-    if (totalCosts[i] >= MAX_DIST)
-      continue;
+      boost::tie(ei, ei_end) = in_edges(yD, *H);
+      for (; (ei != ei_end); ei++)
+      {
+        int driverHNode = source(*ei, *H);
 
-    if (totalCosts[i] < bestCost)
-    {
-      bestIndexFuncCell = i;
-      bestCost = totalCosts[i];
-      compatibilityStatus = true;
-    }
-    else if (totalCosts[i] == bestCost)
-    {
-      if (!(rand() % 2))
+        if (invUsers[driverHNode] == NOT_PLACED)
+          continue; // driver is not placed
+        
+        int driverGNode = invUsers[driverHNode];
+
+        //------------------ Routing Setup ---------------------//
+        ripUpRouting(driverHNode, G);
+        (*Users)[driverGNode].push_back(driverHNode); //Users update
+        invUsers[driverHNode] = driverGNode;          //InvUsers update
+        //------------------------------------------------------//
+
+        // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
+        totalCosts[i] += routeSignal(G, H, driverHNode, gConfig);
+
+        UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
+        UGRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[i], totalCosts[i]);
+
+        if (totalCosts[i] > bestCost)
+          break;
+      }
+
+      UGRAMM->debug("Total cost for {} is {}\n", hNames[y], totalCosts[i]);
+
+      if (totalCosts[i] >= MAX_DIST)
+        continue;
+
+      if (totalCosts[i] < bestCost)
       {
         bestIndexFuncCell = i;
+        bestCost = totalCosts[i];
+        compatibilityStatus = true;
       }
-      compatibilityStatus = true;
+      else if (totalCosts[i] == bestCost)
+      {
+        if (!(rand() % 2))
+        {
+          bestIndexFuncCell = i;
+        }
+        compatibilityStatus = true;
+      }
     }
   }
 
