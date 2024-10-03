@@ -43,7 +43,7 @@ bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
  * can support the operation as well must be located in specified x and y locations
  * 
  */
-int findGNodeID_FuncCell(const std::string &lockedNodeName){
+int findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs){
   
   for (const auto& pair : gNamesInv_FuncCell) {
 
@@ -51,13 +51,12 @@ int findGNodeID_FuncCell(const std::string &lockedNodeName){
     std::string gNode = pair.first;
     std::string lockedNode = lockedNodeName;
 
-    if (gNode != lockedNode)
+    if (gNode.find(lockedNode) == std::string::npos)
       continue;
 
-    int GID = pair.second;
+    suitableGIDs.push_back(pair.second);
 
-    UGRAMM->info("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, GID);
-    return GID;
+    UGRAMM->info("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
   }
 
   return -1;

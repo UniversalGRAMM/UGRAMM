@@ -47,7 +47,7 @@ bool compatibilityCheck(const std::string &gType, const std::string &hOpcode);
  * @param lockedNodeName Passes the name for the locked PE node
  * @return int Returns the GID for the funcCell node
  */
-int findGNodeID_FuncCell(const std::string &lockedNodeName);
+int findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs);
 
 /**
  * For the given outputPin (signal), finds the associated FunCell node from the device model.

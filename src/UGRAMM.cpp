@@ -112,12 +112,18 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   bool lockingNodeStatus = !(*hConfig)[y].LockGNode.empty();
 
   if (lockingNodeStatus){
-    int GID = findGNodeID_FuncCell((*hConfig)[y].LockGNode);
-    UGRAMM->info("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, GID, gNames[GID]);
+    std::vector<int> suitableGIDs;
+
+    int GID = findGNodeID_FuncCell((*hConfig)[y].LockGNode, suitableGIDs);
     
-    for (int k = 0; k < 1; k++)
+    for (int i = 0; i < suitableGIDs.size(); i++){
+      UGRAMM->info("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, suitableGIDs[i], gNames[suitableGIDs[i]]);
+    }
+    
+    for (int i = 0; i < suitableGIDs.size(); i++)
     { // first route the signal on the output of y
 
+      int GID = suitableGIDs[i];
       // Confriming the Vertex correct type:
       if (!compatibilityCheck((*gConfig)[GID].Type, (*hConfig)[y].Opcode))
       {
@@ -131,16 +137,13 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       invUsers[y] = GID;            //InvUsers update
       //------------------------------------------------------//
 
-      // Cost and history costs are calculated for the FuncCell:
-      totalCosts[GID] += (1 + (*HistoryCosts)[GID]) * ((*Users)[GID].size() * PFac);
-
       //Placement of the signal Y:
       totalCosts[GID] += routeSignal(G, H, y, gConfig);
 
       //-------- Debugging statements ------------//
       if (UGRAMM->level() <= spdlog::level::trace)
         printRouting(y);
-      UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[GID], totalCosts[GID]);
+        UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[GID], totalCosts[GID]);
       //------------------------------------------//
 
       //Early exit if the cost is greater than bestCost:
@@ -170,14 +173,14 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
         // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
         totalCosts[GID] += routeSignal(G, H, driverHNode, gConfig);
 
-        UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
-        UGRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[GID], totalCosts[GID]);
+        UGRAMM->info("Routing the signals on the input of {}", hNames[y]);
+        UGRAMM->info("For {} -> {} :: {} -> {} has cost {} :: best cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[GID], totalCosts[GID], bestCost);
 
         if (totalCosts[GID] > bestCost)
           break;
       }
 
-      UGRAMM->debug("Total cost for {} is {}\n", hNames[y], totalCosts[GID]);
+      UGRAMM->info("Total cost for {} is {} :: best cost {}", hNames[y], totalCosts[GID], bestCost);
 
       if (totalCosts[GID] >= MAX_DIST)
         continue;

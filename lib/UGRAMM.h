@@ -38,7 +38,7 @@
 #define computeTopoEnable 0     //Compute topological order and sort the graph based on it while finding the minor.
 #define maxIterations 39
 #define NOT_PLACED -1           //For InvUsers
-#define sortAlgorithm 1         //Randomly sorting the H-graph nodes either with the sort or qsort algorithms (1 --> use Sort algorithm, 0 --> qSort algorithm)
+#define sortAlgorithm 0         //Randomly sorting the H-graph nodes either with the sort or qsort algorithms (1 --> use Sort algorithm, 0 --> qSort algorithm)
 //-------------------------------------------------------------------//
 
 //Struct for defining the node configuration in hConfig and gConfig data-structures:
