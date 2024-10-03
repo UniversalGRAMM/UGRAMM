@@ -108,7 +108,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
   bool compatibilityStatus = true;
 
-  //UGRAMM->info("[Locking] LockGNode {} :: Not Empty {}", (*hConfig)[y].LockGNode, !(*hConfig)[y].LockGNode.empty());
+  UGRAMM->trace("[Locking] LockGNode {} :: Not Empty {}", (*hConfig)[y].LockGNode, !(*hConfig)[y].LockGNode.empty());
   bool lockingNodeStatus = !(*hConfig)[y].LockGNode.empty();
 
   if (lockingNodeStatus){
@@ -117,7 +117,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     int GID = findGNodeID_FuncCell((*hConfig)[y].LockGNode, suitableGIDs);
     
     for (int i = 0; i < suitableGIDs.size(); i++){
-      UGRAMM->info("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, suitableGIDs[i], gNames[suitableGIDs[i]]);
+      UGRAMM->trace("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, suitableGIDs[i], gNames[suitableGIDs[i]]);
     }
     
     for (int i = 0; i < suitableGIDs.size(); i++)
@@ -136,6 +136,9 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       (*Users)[GID].push_back(y);   //Users update                 
       invUsers[y] = GID;            //InvUsers update
       //------------------------------------------------------//
+
+      // Cost and history costs are calculated for the FuncCell:
+      totalCosts[GID] += (1 + (*HistoryCosts)[GID]) * ((*Users)[GID].size() * PFac);
 
       //Placement of the signal Y:
       totalCosts[GID] += routeSignal(G, H, y, gConfig);
@@ -173,14 +176,14 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
         // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
         totalCosts[GID] += routeSignal(G, H, driverHNode, gConfig);
 
-        UGRAMM->info("Routing the signals on the input of {}", hNames[y]);
-        UGRAMM->info("For {} -> {} :: {} -> {} has cost {} :: best cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[GID], totalCosts[GID], bestCost);
+        UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
+        UGRAMM->debug("For {} -> {} :: {} -> {} has cost {} :: best cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[GID], totalCosts[GID], bestCost);
 
         if (totalCosts[GID] > bestCost)
           break;
       }
 
-      UGRAMM->info("Total cost for {} is {} :: best cost {}", hNames[y], totalCosts[GID], bestCost);
+      UGRAMM->debug("Total cost for {} is {} :: best cost {}", hNames[y], totalCosts[GID], bestCost);
 
       if (totalCosts[GID] >= MAX_DIST)
         continue;

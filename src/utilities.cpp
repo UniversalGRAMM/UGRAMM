@@ -180,7 +180,7 @@ bool skipPlacement(std::string hOpcode, json &jsonParsed)
     // First case: Opcode itself is mentioned in the json file to be skipped.
     if (std::find(jsonParsed["SKIP-PLACEMENT"].begin(), jsonParsed["SKIP-PLACEMENT"].end(), hOpcode) != jsonParsed["SKIP-PLACEMENT"].end())
     { 
-      UGRAMM->trace(" [Case-1] : Skipping found Opcode {} in JSON",  hOpcode);
+      UGRAMM->info(" [Case-1] : Skipping found Opcode {} in JSON",  hOpcode);
       return true;
     }
 
@@ -197,7 +197,7 @@ bool skipPlacement(std::string hOpcode, json &jsonParsed)
     { 
       if (std::find(jsonParsed["SKIP-PLACEMENT"].begin(), jsonParsed["SKIP-PLACEMENT"].end(), value) != jsonParsed["SKIP-PLACEMENT"].end())
       {
-        UGRAMM->trace(" [Case-2] : Skipping found NodeType {} in JSON",  value);
+        UGRAMM->info(" [Case-2] : Skipping found NodeType {} in JSON",  value);
         return true;
       }
     }

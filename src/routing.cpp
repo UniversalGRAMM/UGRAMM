@@ -56,7 +56,7 @@ int findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &su
 
     suitableGIDs.push_back(pair.second);
 
-    UGRAMM->info("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
+    UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
   }
 
   return -1;
