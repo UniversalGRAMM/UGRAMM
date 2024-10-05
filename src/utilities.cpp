@@ -180,7 +180,7 @@ bool skipPlacement(std::string hOpcode, json &jsonParsed)
     // First case: Opcode itself is mentioned in the json file to be skipped.
     if (std::find(jsonParsed["SKIP-PLACEMENT"].begin(), jsonParsed["SKIP-PLACEMENT"].end(), hOpcode) != jsonParsed["SKIP-PLACEMENT"].end())
     { 
-      UGRAMM->info(" [Case-1] : Skipping found Opcode {} in JSON",  hOpcode);
+      UGRAMM->trace(" [Case-1] : Skipping found Opcode {} in JSON",  hOpcode);
       return true;
     }
 
@@ -197,11 +197,36 @@ bool skipPlacement(std::string hOpcode, json &jsonParsed)
     { 
       if (std::find(jsonParsed["SKIP-PLACEMENT"].begin(), jsonParsed["SKIP-PLACEMENT"].end(), value) != jsonParsed["SKIP-PLACEMENT"].end())
       {
-        UGRAMM->info(" [Case-2] : Skipping found NodeType {} in JSON",  value);
+        UGRAMM->trace(" [Case-2] : Skipping found NodeType {} in JSON",  value);
         return true;
       }
     }
     return false;
+  }
+}
+
+
+/**
+ * Checks whether locking is required for the given hNamed based on the information given in the JSON.
+ * In JSON, we define the locking code as "hName::gName"
+*/ 
+bool getLockPE(int HID, json &jsonParsed, std::string& jsonLockNode)
+{
+  if (jsonParsed["LOCK-NODES"].empty()){
+    return false;
+  } else {
+    return std::any_of(jsonParsed["LOCK-NODES"].begin(), jsonParsed["LOCK-NODES"].end(), [&](const std::string& lockGNode) {
+        // Capitalize the current element for comparison
+        std::string lockGNodeCap = boost::to_upper_copy(lockGNode);
+        // Check if the element is found
+        if (lockGNodeCap.find(hNames[HID]) != std::string::npos){
+          UGRAMM->trace(" [Locking] : Found hNames {} is substring {}",  hNames[HID], lockGNodeCap);
+          jsonLockNode = lockGNodeCap;
+          return true;
+        } else {
+          return false;
+        }
+    });
   }
 }
 
@@ -759,7 +784,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
 
     hNamesInv[hNames[i]] = i;
-    UGRAMM->trace(" hNames[{}] {} :: hNamesInv[{}] {}", i, hNames[i], hNames[i], hNamesInv[hNames[i]]);
+    UGRAMM->info(" hNames[{}] {} :: hNamesInv[{}] {}", i, hNames[i], hNames[i], hNamesInv[hNames[i]]);
 
     // Fetching opcode from the application-graph:
     // Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
@@ -779,10 +804,23 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
       hNames[i] = "NULL";              //Keeping the opcode Null for the removed vertex
     }
 
-    // Fetching the placement from the application-graph
-    if (!boost::get(&DotVertex::H_LockGNode, *H, v).empty()){
-      (*hConfig)[i].LockGNode = boost::to_upper_copy(boost::get(&DotVertex::H_LockGNode, *H, v));
+    //Lock
+    std::string jsonLockNode;
+    if (getLockPE(i, jsonParsed, jsonLockNode)){
+      std::string delimiter = "::";
+      size_t pos = jsonLockNode.find(delimiter);
+      if (pos != std::string::npos) {
+        (*hConfig)[i].LockGNode = boost::to_upper_copy(jsonLockNode.substr(pos + delimiter.length()));
+        UGRAMM->info("[Locking] [H] name {} :: applicationOpcode {} :: GNode Lock {}", hNames[i], upperCaseOpcode, (*hConfig)[i].LockGNode);
+      } else {
+        UGRAMM->error(" Lock {} in the json file does not have \"::\" ", jsonLockNode);
+      }
     }
+
+    // Fetching the placement from the application-graph
+    // if (!boost::get(&DotVertex::H_LockGNode, *H, v).empty()){
+    //   (*hConfig)[i].LockGNode = boost::to_upper_copy(boost::get(&DotVertex::H_LockGNode, *H, v));
+    // }
 
     UGRAMM->trace("[H] name {} :: applicationOpcode {} :: GNode Lock {}", hNames[i], upperCaseOpcode, (*hConfig)[i].LockGNode);
   }

@@ -95,6 +95,17 @@ std::string readCommentSection(std::ifstream &inputFile);
 bool skipPlacement(std::string hOpcode, json& jsonParsed);
 
 /**
+ * Checks whether locking is required for the given hNamed based on the information given in the JSON.
+ * In JSON, we define the locking code as "hName::gName"
+ *
+ * @param HID Current HID of the application graph 
+ * @param jsonParsed Reference to the parsed JSON object containing node type information.
+ * @param jsonLockNode Retrieved full string of the lock node from the JSON file only is a lock exist for a specific node in application graph
+ * @return bool Returns true if locking is required, false otherwise.
+*/ 
+bool getLockPE(int HID, json &jsonParsed, std::string& jsonLockNode);
+
+/**
  * Parses PRAGMA vectors from the comment section of the device model graph.
  * 
  * This function extracts and parses vectors of strings associated with the given keyword 
