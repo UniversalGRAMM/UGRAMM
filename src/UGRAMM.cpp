@@ -29,6 +29,7 @@ std::map<std::string, int> hNamesInv;
 std::map<int, std::string> gNames;
 std::map<std::string, int> gNamesInv;
 std::map<std::string, int> gNamesInv_FuncCell;
+std::set<int> fullyLockedNodes;
 std::bitset<100000> explored;
 
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
@@ -214,6 +215,14 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       {
         compatibilityStatus = false;
         continue;
+      }
+
+      // Skip Fully Locked Nodes
+      if (skipFullyLockedNodes){
+        if (fullyLockedNodes.find(i) != fullyLockedNodes.end()){
+          UGRAMM->info("Skipping locked device model node {} for mapping application graph node {} ", gNames[i], hNames[y]);
+          continue;
+        }
       }
 
       //------------------ Routing Setup ---------------------//

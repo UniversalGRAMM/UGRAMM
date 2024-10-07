@@ -39,6 +39,7 @@
 #define maxIterations 39
 #define NOT_PLACED -1           //For InvUsers
 #define sortAlgorithm 0         //Randomly sorting the H-graph nodes either with the sort or qsort algorithms (1 --> use Sort algorithm, 0 --> qSort algorithm)
+#define skipFullyLockedNodes 1  //Skip fully locked nodes when mapping application nodes that are not locked (1 --> Skip Fully Locked Nodes, 0 --> otherwise)
 //-------------------------------------------------------------------//
 
 //Struct for defining the node configuration in hConfig and gConfig data-structures:
@@ -112,6 +113,7 @@ extern std::map<std::string, int> hNamesInv;            // Inverse map for getti
 extern std::map<int, std::string> gNames;               // Map for storing the unique names of device model graph
 extern std::map<std::string, int> gNamesInv;            // Inverse map for getting GID using the unique names of device model graph
 extern std::map<std::string, int> gNamesInv_FuncCell;   // Inverse map for getting GID using the unique names of device model graph. Map only funcCell in gNames
+extern std::set<int> fullyLockedNodes;                  // List of Nodes that are fully locked (i.e. LockGNode for an application graph completely matches to a perticular gNames in device model graph)
 extern std::bitset<100000> explored;
 
 //Pathefinder cost parameters:

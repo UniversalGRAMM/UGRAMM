@@ -784,7 +784,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
 
     hNamesInv[hNames[i]] = i;
-    UGRAMM->info(" hNames[{}] {} :: hNamesInv[{}] {}", i, hNames[i], hNames[i], hNamesInv[hNames[i]]);
+    UGRAMM->trace(" hNames[{}] {} :: hNamesInv[{}] {}", i, hNames[i], hNames[i], hNamesInv[hNames[i]]);
 
     // Fetching opcode from the application-graph:
     // Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
@@ -804,7 +804,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
       hNames[i] = "NULL";              //Keeping the opcode Null for the removed vertex
     }
 
-    //Lock
+    //Locking the device model nodes to a perticular node in the device model graph
     std::string jsonLockNode;
     if (getLockPE(i, jsonParsed, jsonLockNode)){
       std::string delimiter = "::";
@@ -817,10 +817,17 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
       }
     }
 
-    // Fetching the placement from the application-graph
-    // if (!boost::get(&DotVertex::H_LockGNode, *H, v).empty()){
-    //   (*hConfig)[i].LockGNode = boost::to_upper_copy(boost::get(&DotVertex::H_LockGNode, *H, v));
-    // }
+    // Storing the GID of nodes that are fully locked in set fullyLockedNodes. 
+    // Fully locked noded means that LockGNode for an application graph completely matches to a perticular gNames in device model graph
+   if (!(*hConfig)[i].LockGNode.empty()){
+    for (const auto& pair : gNamesInv_FuncCell) {
+      if ((*hConfig)[i].LockGNode == pair.first){
+        UGRAMM->trace("Locked Node {} :: gName {} :: GID {}", (*hConfig)[i].LockGNode, pair.first, pair.second);
+        fullyLockedNodes.insert(pair.second);
+      }
+    }
+   }
+
 
     UGRAMM->trace("[H] name {} :: applicationOpcode {} :: GNode Lock {}", hNames[i], upperCaseOpcode, (*hConfig)[i].LockGNode);
   }
