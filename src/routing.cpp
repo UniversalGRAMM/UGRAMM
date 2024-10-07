@@ -38,6 +38,36 @@ bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
 }
 
 /*
+ * This function enables wildcard naming for the locked. 
+ *
+ * It breaks the provided lock Name string into substrings based on a key. Once a list of 
+ * substrings have been created, it checks in the gNamesInv map to see if all substring is 
+ * present within a gName.
+*/
+bool matchesPattern(const std::string& key, const std::string& gName, const std::string& lockName) {
+    size_t gNamePos = 0;  // Current position in the gName
+    size_t lockNamePos = 0;  // Current position in the lockName
+
+    UGRAMM->trace("\t[Matches Pattern - Locking] key {} :: lockNode {} :: gNode {}", key, lockName, gName);
+
+    while (lockNamePos < lockName.size()) {
+        size_t nextKey = lockName.find(key, lockNamePos);
+        std::string part = lockName.substr(lockNamePos, nextKey - lockNamePos);  // Extract the part between keys
+        
+        if (!part.empty()) {
+            gNamePos = gName.find(part, gNamePos);  // Find the part in the gName starting from 'pos'
+            if (gNamePos == std::string::npos) return false;  // If part not found, return false
+            gNamePos += part.size();  // Move position past the matched part
+        }
+
+        if (nextKey == std::string::npos) break;  // If no more keys in the lockName, we're done
+        lockNamePos = nextKey + 1;  // Move lockName position past keys
+    }
+
+    return true;
+}
+
+/*
  * This function gets the GID for the the funcCell node in the device model graph that
  * meets the locking requirements. That is, the funcCell node must have a type that
  * can support the operation as well must be located in specified x and y locations
@@ -51,10 +81,23 @@ int findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &su
     std::string gNode = pair.first;
     std::string lockedNode = lockedNodeName;
 
-    if (gNode.find(lockedNode) == std::string::npos)
-      continue;
+    // Normal string matching for lock nodes
+    if (!allowWildcardInLocking){
+      if (gNode.find(lockedNode) == std::string::npos)
+        continue;
 
-    suitableGIDs.push_back(pair.second);
+      suitableGIDs.push_back(pair.second);
+    }
+
+    // String matching when locked nodes contains a wildcard
+    if (allowWildcardInLocking){
+      //wildcard key is "*""
+      std::string key = "*";
+
+      if (matchesPattern(key, gNode, lockedNode)) {
+        suitableGIDs.push_back(pair.second);
+      }
+    }
 
     UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
   }

@@ -118,7 +118,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     int GID = findGNodeID_FuncCell((*hConfig)[y].LockGNode, suitableGIDs);
     
     for (int i = 0; i < suitableGIDs.size(); i++){
-      UGRAMM->trace("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, suitableGIDs[i], gNames[suitableGIDs[i]]);
+      UGRAMM->info("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, suitableGIDs[i], gNames[suitableGIDs[i]]);
     }
     
     for (int i = 0; i < suitableGIDs.size(); i++)
@@ -220,7 +220,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       // Skip Fully Locked Nodes
       if (skipFullyLockedNodes){
         if (fullyLockedNodes.find(i) != fullyLockedNodes.end()){
-          UGRAMM->info("Skipping locked device model node {} for mapping application graph node {} ", gNames[i], hNames[y]);
+          UGRAMM->trace("Skipping locked device model node {} for mapping application graph node {} ", gNames[i], hNames[y]);
           continue;
         }
       }

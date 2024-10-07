@@ -41,6 +41,20 @@
 bool compatibilityCheck(const std::string &gType, const std::string &hOpcode);
 
 /**
+ * This function enables wildcard naming for the locked. 
+ *
+ * It breaks the provided lock Name string into substrings based on a key. Once a list of 
+ * substrings have been created, it checks in the gNamesInv map to see if all substring is 
+ * present within a gName.
+ *
+ * @param key a char used to split the string into substrings
+ * @param gName name of node in the device model graph
+ * @param lockName name of the locked name with wildcard included
+ * @return bool Returns true if all of the substrings of the locked name are found in gName, false otherwise.
+ */
+bool matchesPattern(const std::string& key, const std::string& gName, const std::string& lockName);
+
+/**
  * This function gets the GID for the the funcCell node in the device model graph that
  * meets the the lockedNodeName
  * 
