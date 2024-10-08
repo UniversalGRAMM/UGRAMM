@@ -145,12 +145,11 @@ void applicationGraphDRC_CheckDupplicationInLockNodes(DirectedGraph *H, std::map
  *  Check that the locked device model node is the correct node type for the application graph's vertecies
  * 
  * @param H A pointer to the application graph.
- * @param G A pointer to the device-model graph.
  * @param hConfig A map containing node configuration details of application graph.
  * @param gConfig A map containing node configuration details of device-model graph.
  * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
  */
-void applicationGraphDRC_CheckLockNodeType(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
+void applicationGraphDRC_CheckLockNodeType(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
 
 
 //------------ The following sections is the functions that runs all DRC rules -----------//

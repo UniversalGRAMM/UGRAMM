@@ -288,7 +288,7 @@ void applicationGraphDRC_CheckDupplicationInLockNodes(DirectedGraph *H, std::map
           if(lockedNodesID.find(pair.second) == lockedNodesID.end()){
             lockedNodesID.insert(pair.second);
           } else {
-            UGRAMM->error("[DRC Error] Device model graph node {} for application graph {} is already locked. Please choose another node to locked into", pair.first, hNames[i]);
+            UGRAMM->error("[DRC Error] Device model graph node {} for application graph {} is already locked.", pair.first, hNames[i]);
             *errorDetected  = true;
           }
         }
@@ -296,6 +296,34 @@ void applicationGraphDRC_CheckDupplicationInLockNodes(DirectedGraph *H, std::map
     }
 
   }
+}
+
+
+void applicationGraphDRC_CheckLockNodeType(DirectedGraph *H,  std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, bool *errorDetected){
+
+  for (int i = 0; i < num_vertices(*H); i++){
+
+    //Check if the lockNode exist for the application vertex
+    if (!(*hConfig)[i].LockGNode.empty()){
+      //Check if the application vertex is fully locked (i.e has only one node in device model that it can map to)
+      for (const auto& pair : gNamesInv){
+        if(pair.first == (*hConfig)[i].LockGNode){
+          // Ok, the found that this application vertex is fully locked a perticular device model node
+          // now get the GID of the locked node
+          int GID = pair.second;
+          // check if the nodeType matches between the application vertex and the locked device model graph node
+          std::string nodeTypeH; 
+          getDeviceModelNodeType((*hConfig)[i].Opcode, nodeTypeH);
+          if (nodeTypeH != (*gConfig)[GID].Type){
+            UGRAMM->error("[DRC Error] Application graph {} is locking device model graph node {} but is not compatable ", pair.first, hNames[i]);
+            *errorDetected  = true;
+          }
+        }
+      }
+    }
+
+  }
+
 }
 
 //------------ The following sections is the functions that runs all DRC rules -----------//
@@ -329,6 +357,7 @@ double runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hCo
   //applicationGraphDRC_CheckApplicationDFGWeaklyConnected(H, hConfig, &errorDetected);
   applicationGraphDRC_CheckDeviceModelAttributes(H, hConfig, &errorDetected);
   applicationGraphDRC_CheckDupplicationInLockNodes(H, hConfig, &errorDetected);
+  applicationGraphDRC_CheckLockNodeType(H, hConfig, gConfig, &errorDetected);
 
   //--------------- get elapsed time -------------------------//
   gettimeofday(&drcTime, NULL);
