@@ -1,4 +1,4 @@
 {
   "skip-placement" : ["Constant"],
-  "lock-nodes" : ["FMUL_9::pe.w32.c4.r6.alu", "FMUL_11::pe.w32.c4.r7.alu", "FMUL_13::LS.w32.c0.r0.memport"]
+  "lock-nodes" : ["FMUL_9::pe.w32.c4.r6.alu", "FMUL_11::pe.w32.c4.r7.alu", "FMUL_13::pe.w32.c2"]
 }

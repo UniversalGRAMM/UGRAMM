@@ -25,6 +25,8 @@ afile=${4}
 cfile=${5}
 verbose_level=0 #Hardcoded, can be run with 0 -> info : 1-> debug : 2-> trace
 
+# To disable DRC, add the following flag "--drc_disable"
+
 # Generating device model:
 echo "---------------------Generating device model using external script:---------------------"
 echo "cd scripts && ./device_model_gen.py -NR $NR -NC $NC -Arch $Arch && cd .."

@@ -482,9 +482,17 @@ int main(int argc, char **argv)
   std::string configFile;      // Config file
   int seed_value;              // Seed number
   int verbose_level;           // Verbosity level => [0: info], [1: debug], [2: trace]
+  bool drc_disable = false;    // drc disable => default to false
 
   po::options_description desc("[UGRAMM] allowed options =");
-  desc.add_options()("help,h", "Print help messages")("seed", po::value<int>(&seed_value)->required(), "Seed for the run")("verbose_level", po::value<int>(&verbose_level)->required(), "0: info, 1: debug, 2: trace")("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file")("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file")("config", po::value<std::string>(&configFile)->required(), "UGRAMM config file");
+  desc.add_options()
+      ("help,h", "Print help messages")
+      ("seed", po::value<int>(&seed_value)->required(), "Seed for the run")
+      ("verbose_level", po::value<int>(&verbose_level)->required(), "0: info, 1: debug, 2: trace")
+      ("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file")
+      ("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file")
+      ("config", po::value<std::string>(&configFile)->required(), "UGRAMM config file")
+      ("drc_disable", po::bool_switch(&drc_disable), "disable DRC [optional]");
 
   po::store(po::parse_command_line(argc, argv, desc), vm);
 
@@ -543,7 +551,9 @@ int main(int argc, char **argv)
   //----------------- STEP 2: DRC Verification -------------------------//
   //--------------------------------------------------------------------//
   double secondsDRC;
-  secondsDRC = runDRC(&H, &G, &hConfig, &gConfig);
+  if (!drc_disable){
+    secondsDRC = runDRC(&H, &G, &hConfig, &gConfig);
+  }
 
   //--------------------------------------------------------------------//
   //--------- STEP 3: Initializing the mapping-datastructures ----------//
@@ -592,7 +602,9 @@ int main(int argc, char **argv)
   }
 
   //--------------- get elapsed time -------------------------
-  UGRAMM->info("Total time taken for [DRC] :: {} Seconds", secondsDRC);
+  if (!drc_disable){
+    UGRAMM->info("Total time taken for [DRC] :: {} Seconds", secondsDRC);
+  }
   //------------------------------------------------------------
 
   //--------------- get elapsed time -------------------------
