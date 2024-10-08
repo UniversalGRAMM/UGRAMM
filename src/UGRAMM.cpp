@@ -37,6 +37,7 @@ std::vector<std::string> outPin = {"outPinA"};
 
 // Logger & CLI global variables:
 std::shared_ptr<spdlog::logger> UGRAMM = spdlog::stdout_color_mt("UGRAMM");
+std::shared_ptr<spdlog::logger> drcLogger = spdlog::stdout_color_mt("DRC Checks");
 namespace po = boost::program_options;
 
 //ugrammConfig structure which is parsed from Pragma's of Device and application graph
@@ -482,6 +483,7 @@ int main(int argc, char **argv)
   std::string configFile;      // Config file
   int seed_value;              // Seed number
   int verbose_level;           // Verbosity level => [0: info], [1: debug], [2: trace]
+  int drc_verbose_level = 0;   // DRC Verbosity level => [0: err], [1: warn], [2: info], [3: debug]
   bool drc_disable = false;    // drc disable => default to false
 
   po::options_description desc("[UGRAMM] allowed options =");
@@ -492,7 +494,8 @@ int main(int argc, char **argv)
       ("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file")
       ("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file")
       ("config", po::value<std::string>(&configFile)->required(), "UGRAMM config file")
-      ("drc_disable", po::bool_switch(&drc_disable), "disable DRC [optional]");
+      ("drc_disable", po::bool_switch(&drc_disable), "disable DRC [optional]")
+      ("drc_verbose_level", po::value<int>(&drc_verbose_level), "0: err [Default], 1: warn, 2: info, 3: debug [optional]");
 
   po::store(po::parse_command_line(argc, argv, desc), vm);
 
@@ -552,7 +555,7 @@ int main(int argc, char **argv)
   //--------------------------------------------------------------------//
   double secondsDRC;
   if (!drc_disable){
-    secondsDRC = runDRC(&H, &G, &hConfig, &gConfig);
+    secondsDRC = runDRC(&H, &G, &hConfig, &gConfig, drc_verbose_level);
   }
 
   //--------------------------------------------------------------------//

@@ -123,6 +123,7 @@ extern float HFac;  //History cost factor
 
 //Logger variable:
 extern std::shared_ptr<spdlog::logger>  UGRAMM;
+extern std::shared_ptr<spdlog::logger> drcLogger;
 
 extern std::vector<std::string> inPin;
 extern std::vector<std::string> outPin;

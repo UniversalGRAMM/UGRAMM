@@ -161,6 +161,7 @@ void applicationGraphDRC_CheckLockNodeType(DirectedGraph *H, std::map<int, NodeC
  * @param hConfig A map containing node configuration details of application-model graph.
  * @param gConfig A map containing node configuration details of device-model graph.
  */
-double runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
+double runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, int drc_verbose_level);
 
 #endif
+
