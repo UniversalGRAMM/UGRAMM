@@ -118,7 +118,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     int GID = findGNodeID_FuncCell((*hConfig)[y].LockGNode, suitableGIDs);
     
     for (int i = 0; i < suitableGIDs.size(); i++){
-      UGRAMM->info("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, suitableGIDs[i], gNames[suitableGIDs[i]]);
+      UGRAMM->trace("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, suitableGIDs[i], gNames[suitableGIDs[i]]);
     }
     
     for (int i = 0; i < suitableGIDs.size(); i++)
@@ -378,7 +378,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     // Sorting the nodes of H according to the size (number of vertices) of their vertex model
     sortList(ordering, num_vertices(*H), hConfig);
     for (int i = 0; i < num_vertices(*H); i++){
-      UGRAMM->info("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], ordering[i], hNames[ordering[i]]);
+      UGRAMM->trace("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], ordering[i], hNames[ordering[i]]);
     }
 
     for (int k = 0; k < num_vertices(*H); k++)

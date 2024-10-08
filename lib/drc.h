@@ -35,7 +35,7 @@ typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Dot
 
 //------------ The following sections is for DRC Rules check for Device Model Graph -----------//
 /**
- * @brief Input PinCell nodes in the Device Model Graph must have one fanout edges that is connected to a funcCell. While output PinCell nodes in the Device Model Graph must also have 
+ * Input PinCell nodes in the Device Model Graph must have one fanout edges that is connected to a funcCell. While output PinCell nodes in the Device Model Graph must also have 
  * one fanin edges that is also connected to a funcCells
  * 
  * @param G A pointer to the device-model graph.
@@ -45,7 +45,7 @@ typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Dot
 void deviceModelDRC_VerifyPinNodes(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
 
 /**
- * @brief Device model graphs should not have any floating nodes
+ * Device model graphs should not have any floating nodes
  * 
  * @param G A pointer to the device-model graph.
  * @param gConfig A map containing node configuration details of device-model graph.
@@ -54,7 +54,7 @@ void deviceModelDRC_VerifyPinNodes(DirectedGraph *G, std::map<int, NodeConfig> *
 void deviceModelDRC_CheckFloatingNodes(DirectedGraph *G, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
 
 /**
- * @brief  Check if the device model graph is weakly conencted
+ *  Check if the device model graph is weakly conencted
  * 
  * @param G A pointer to the device-model graph.
  * @param gConfig A map containing node configuration details of device-model graph.
@@ -64,7 +64,7 @@ void deviceModelDRC_CheckDeviceModelWeaklyConnected(DirectedGraph *G, std::map<i
 
 
 /**
- * @brief  Check if FuncCells in the Device Model Graph is connected to other FuncCell. If any two FuncCell does not have a path, this means that the graph is disjointed.
+ *  Check if FuncCells in the Device Model Graph is connected to other FuncCell. If any two FuncCell does not have a path, this means that the graph is disjointed.
  * 
  * @param G A pointer to the device-model graph.
  * @param gConfig A map containing node configuration details of device-model graph.
@@ -74,7 +74,7 @@ void deviceModelDRC_CheckFuncCellConnectivity(DirectedGraph *G, std::map<int, No
 
 
 /**
- * @brief  Check if the device model dot files has the correct attributes and also verify if the attributes haves been correctly loaded into the gConfig data structure
+ *  Check if the device model dot files has the correct attributes and also verify if the attributes haves been correctly loaded into the gConfig data structure
  * 
  * @param G A pointer to the device-model graph.
  * @param gConfig A map containing node configuration details of device-model graph.
@@ -85,7 +85,7 @@ void deviceModelDRC_CheckDeviceModelAttributes(DirectedGraph *G, std::map<int, N
 
 //------------ The following sections is for DRC Rules check for Application Model Graph -----------//
 /**
- * @brief Application graph should not have any floating nodes
+ * Application graph should not have any floating nodes
  * 
  * @param H A pointer to the application graph.
  * @param hConfig A map containing node configuration details of application graph.
@@ -95,7 +95,7 @@ void applicationGraphDRC_CheckFloatingNodes(DirectedGraph *H, std::map<int, Node
 
 
 /**
- * @brief Pin names used in the application DFG must follow the names defined in inPin  and outPin vectors in GRAMM.cpp
+ * Pin names used in the application DFG must follow the names defined in inPin  and outPin vectors in GRAMM.cpp
  * 
  * @param H A pointer to the application graph.
  * @param hConfig A map containing node configuration details of application graph.
@@ -105,7 +105,7 @@ void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfi
 
 
 /**
- * @brief Check if the application DFG is weakly conencted
+ * Check if the application DFG is weakly conencted
  * 
  * @param H A pointer to the application graph.
  * @param hConfig A map containing node configuration details of application graph.
@@ -114,7 +114,7 @@ void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfi
 void applicationGraphDRC_CheckApplicationDFGWeaklyConnected(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
 
 /**
- * @brief  Check if the application DFG dot files has the correct attributes and also verify if the attributes haves been correctly loaded into the hConfig data structure
+ *  Check if the application DFG dot files has the correct attributes and also verify if the attributes haves been correctly loaded into the hConfig data structure
  * 
  * @param H A pointer to the application graph.
  * @param hConfig A map containing node configuration details of application graph.
@@ -123,10 +123,39 @@ void applicationGraphDRC_CheckApplicationDFGWeaklyConnected(DirectedGraph *H, st
 void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
 
 
+/**
+ *  Check if the application DFG dot files has the correct attributes and also verify if the attributes haves been correctly loaded into the hConfig data structure
+ * 
+ * @param H A pointer to the application graph.
+ * @param hConfig A map containing node configuration details of application graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
+
+/**
+ *  Check if there is a dupplication in locked device model nodes between different vertices of the application graph
+ * 
+ * @param H A pointer to the application graph.
+ * @param hConfig A map containing node configuration details of application graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void applicationGraphDRC_CheckDupplicationInLockNodes(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
+
+/**
+ *  Check that the locked device model node is the correct node type for the application graph's vertecies
+ * 
+ * @param H A pointer to the application graph.
+ * @param G A pointer to the device-model graph.
+ * @param hConfig A map containing node configuration details of application graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
+ * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
+ */
+void applicationGraphDRC_CheckLockNodeType(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
+
 
 //------------ The following sections is the functions that runs all DRC rules -----------//
 /**
- * @brief Main DRC function that run through all DRC rules check for both H and G graph seen above
+ * Main DRC function that run through all DRC rules check for both H and G graph seen above
  * 
  * @param H A pointer to the application-model graph.
  * @param G A pointer to the device-model graph.
