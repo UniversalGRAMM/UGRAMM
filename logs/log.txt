@@ -23,17 +23,17 @@ pragma for the device model:
  
  
 ---------------------Executing UGRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------
-make && ./UGRAMM --seed 16 --verbose_level 1 --dfile scripts/riken_8_8.dot --afile Kernels/Conv_nonBalance/conv_nounroll_Balance.dot --config config.json --drc_verbose_level 1
+make && ./UGRAMM --seed 16 --verbose_level 1 --dfile scripts/riken_8_8.dot --afile Kernels/Conv_nonBalance/Conv_nonBalance/conv_nounroll_Balance.dot --config config.json --drc_verbose_level 1
 make: 'UGRAMM' is up to date.
-[2024-10-09 18:40:27.648] [UGRAMM] [info] Parsed JSON file {"skip-placement":["Constant"]} 
-[2024-10-09 18:40:27.648] [UGRAMM] [info] Normalized JSON {"SKIP-PLACEMENT":["CONSTANT"]} 
-[2024-10-09 18:40:27.648] [UGRAMM] [info] Parsed Device-Model Pragma: 
+[2024-10-09 19:30:11.808] [UGRAMM] [info] Parsed JSON file {"skip-placement":["Constant"]} 
+[2024-10-09 19:30:11.808] [UGRAMM] [info] Normalized JSON {"SKIP-PLACEMENT":["CONSTANT"]} 
+[2024-10-09 19:30:11.808] [UGRAMM] [info] Parsed Device-Model Pragma: 
 [ALU] :: ALU :: FADD :: FSUB :: FMUL :: FDIV
 [CONSTANT] :: CONSTANT :: CONST
 [MEMPORT] :: MEMPORT :: INPUT :: OUTPUT
-[2024-10-09 18:40:27.695] [UGRAMM] [info] Checking compatibility of SupportedOps of [ALU]
-[2024-10-09 18:40:27.695] [UGRAMM] [error] FunCell ALU from device-model not found in the application graph pragma
-[2024-10-09 18:40:27.695] [UGRAMM] [error] FATAL ERROR -- application pragma are not compatiable with the device model pragma's
+[2024-10-09 19:30:11.892] [UGRAMM] [info] Checking compatibility of SupportedOps of [ALU]
+[2024-10-09 19:30:11.892] [UGRAMM] [error] FunCell ALU from device-model not found in the application graph pragma
+[2024-10-09 19:30:11.892] [UGRAMM] [error] FATAL ERROR -- application pragma are not compatiable with the device model pragma's
  
  
 ---------------------Converting the ordered-mapped  positioned_dot_output.dot file into positioned_dot_output.png:---------------------
