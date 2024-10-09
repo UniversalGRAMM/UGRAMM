@@ -58,6 +58,15 @@ def modify_application(args):
             if 'operand' in properties:
                 del properties['operand']
         
+        if 'shape' in G.nodes[node]:
+            del G.nodes[node]['shape']
+
+        if 'type' in G.nodes[node]:
+            del G.nodes[node]['type']
+        
+        if 'opcode' in G.nodes[node]:
+            G.nodes[node]['opcode'] = G.nodes[node]['opcode'].upper()
+        
         # currently_used_input_pins = set(valid_input_pins_name)
         # # Iterate over all outgoing edges for the current node and add the dedicated input 
         # # pins to the currently_used_input_pins set 
@@ -80,6 +89,17 @@ def modify_application(args):
     # -------------------------------------------------------
     #  Writing device model graph for Riken architecture
     # -------------------------------------------------------
+
+    #Pragma lines for the basic Riken benchmarks
+    pragmaComment = [
+        "/* ------- Application graph pragma -------\n",
+        "[SupportedOps] = {ALU, FADD, FMUL};\n"
+        "[SupportedOps] = {MEMPORT, INPUT, OUTPUT};\n"
+        "[SupportedOps] = {Constant, CONST};\n"
+        "*/\n"
+        "\n"
+    ]
+    
     # output_file = "modified_" + str(args.Benchmark)
     outputDir = str(args.OutputDir) + "/" + str(folderName)
 
@@ -88,7 +108,14 @@ def modify_application(args):
 
     os.chdir(outputDir)
     output_file = str(fileName)
-    nx.nx_pydot.write_dot(G, output_file)
+
+    with open(output_file, 'w') as f:
+        for pragma in pragmaComment:
+            f.write(pragma)
+
+            
+        nx.nx_pydot.write_dot(G, f)
+    
     
 # Main function for modifying the application graph for UGRAMM:
 def main(args):
