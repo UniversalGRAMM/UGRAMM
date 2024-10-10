@@ -1,5 +1,5 @@
 ---------------------Generating device model using external script:---------------------
-cd scripts && ./device_model_gen.py -NR 8 -NC 8 -Arch RIKEN && cd ..
+cd scripts && ./device_model_gen.py -NR 16 -NC 16 -Arch RIKEN && cd ..
 ====================================================
 ============ Universal GRAMM (UGRAMM) ==============
 ======= helper script: Device Model Generator ======
@@ -7,8 +7,8 @@ cd scripts && ./device_model_gen.py -NR 8 -NC 8 -Arch RIKEN && cd ..
 
 Generating device model for the following CGRA configuration: 
 > Arch: RIKEN
-> NR: 8
-> NC: 8
+> NR: 16
+> NC: 16
 Creating RIKEN architecture!!
 
 
@@ -23,22 +23,58 @@ pragma for the device model:
  
  
 ---------------------Executing UGRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------
-make && ./UGRAMM --seed 16 --verbose_level 1 --dfile scripts/riken_8_8.dot --afile Kernels/Conv_nonBalance/Conv_nonBalance/conv_nounroll_Balance.dot --config config.json --drc_verbose_level 1
+make && ./UGRAMM --seed 15 --verbose_level 0 --dfile scripts/riken_16_16.dot --afile Kernels/Conv_nonBalance/conv_unroll3_nonBalance.dot --config config.json --drc_verbose_level 1
 make: 'UGRAMM' is up to date.
-[2024-10-09 19:30:11.808] [UGRAMM] [info] Parsed JSON file {"skip-placement":["Constant"]} 
-[2024-10-09 19:30:11.808] [UGRAMM] [info] Normalized JSON {"SKIP-PLACEMENT":["CONSTANT"]} 
-[2024-10-09 19:30:11.808] [UGRAMM] [info] Parsed Device-Model Pragma: 
+[2024-10-09 23:31:37.786] [UGRAMM] [info] Parsed JSON file {"skip-placement":["Constant"]} 
+[2024-10-09 23:31:37.786] [UGRAMM] [info] Normalized JSON {"SKIP-PLACEMENT":["CONSTANT"]} 
+[2024-10-09 23:31:37.786] [UGRAMM] [info] Parsed Device-Model Pragma: 
 [ALU] :: ALU :: FADD :: FSUB :: FMUL :: FDIV
 [CONSTANT] :: CONSTANT :: CONST
 [MEMPORT] :: MEMPORT :: INPUT :: OUTPUT
-[2024-10-09 19:30:11.892] [UGRAMM] [info] Checking compatibility of SupportedOps of [ALU]
-[2024-10-09 19:30:11.892] [UGRAMM] [error] FunCell ALU from device-model not found in the application graph pragma
-[2024-10-09 19:30:11.892] [UGRAMM] [error] FATAL ERROR -- application pragma are not compatiable with the device model pragma's
- 
- 
----------------------Converting the ordered-mapped  positioned_dot_output.dot file into positioned_dot_output.png:---------------------
-neato -Tpng positioned_dot_output.dot -o positioned_dot_output.png
- 
- 
----------------------Converting the unordered-mapped  unpositioned_dot_output.dot file into unpositioned_dot_output.png:---------------------
-neato -Tpng unpositioned_dot_output.dot -o unpositioned_dot_output.png
+[2024-10-09 23:31:37.993] [UGRAMM] [info] Checking compatibility of SupportedOps of [ALU]
+[2024-10-09 23:31:37.994] [UGRAMM] [info] [PASSED] The token FADD found in ALU
+[2024-10-09 23:31:37.994] [UGRAMM] [info] [PASSED] The token FMUL found in ALU
+[2024-10-09 23:31:37.994] [UGRAMM] [info] Checking compatibility of SupportedOps of [CONSTANT]
+[2024-10-09 23:31:37.994] [UGRAMM] [info] [PASSED] The token CONST found in CONSTANT
+[2024-10-09 23:31:37.994] [UGRAMM] [info] Checking compatibility of SupportedOps of [MEMPORT]
+[2024-10-09 23:31:37.994] [UGRAMM] [info] [PASSED] The token INPUT found in MEMPORT
+[2024-10-09 23:31:37.994] [UGRAMM] [info] [PASSED] The token OUTPUT found in MEMPORT
+[2024-10-09 23:31:37.995] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_100|float32=11.00} 
+[2024-10-09 23:31:37.995] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_101|float32=7.00} 
+[2024-10-09 23:31:37.995] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_102|float32=9.00} 
+[2024-10-09 23:31:37.995] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_103|float32=9.00} 
+[2024-10-09 23:31:37.995] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_104|float32=13.00} 
+[2024-10-09 23:31:37.995] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_105|float32=3.00} 
+[2024-10-09 23:31:37.995] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_106|float32=5.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_107|float32=17.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_81|float32=7.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_82|float32=13.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_83|float32=3.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_84|float32=5.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_85|float32=13.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_86|float32=9.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_87|float32=7.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_88|float32=17.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_89|float32=11.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_90|float32=19.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_91|float32=15.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_92|float32=5.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_93|float32=11.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_94|float32=15.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_95|float32=3.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_96|float32=15.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_97|float32=17.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_98|float32=19.00} 
+[2024-10-09 23:31:37.996] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_99|float32=19.00} 
+[2024-10-09 23:31:37.996] [DRC Checks] [info] --------------------------------------------------
+[2024-10-09 23:31:37.996] [DRC Checks] [info] Executing DRC Rules Check
+[2024-10-09 23:31:37.996] [DRC Checks] [info] --------------------------------------------------
+[2024-10-09 23:31:41.091] [DRC Checks] [info] --------------------------------------------------
+[2024-10-09 23:31:41.091] [DRC Checks] [info] DRC Passed --- Continueing to UGRAMM Mapping
+[2024-10-09 23:31:41.091] [DRC Checks] [info] --------------------------------------------------
+[2024-10-09 23:31:41.091] [UGRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 1
+[2024-10-09 23:32:17.466] [UGRAMM] [info] TOTAL OVERUSE: 15
+[2024-10-09 23:32:17.466] [UGRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 2
+[2024-10-09 23:33:16.713] [UGRAMM] [info] TOTAL OVERUSE: 11
+[2024-10-09 23:33:16.714] [UGRAMM] [info] FRACTION OVERLAP: 0.018644068
+[2024-10-09 23:33:16.714] [UGRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 3
