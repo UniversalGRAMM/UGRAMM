@@ -72,6 +72,16 @@ def modify_application(args):
     # -------------------------------------------------------
     #  Writing device model graph for Riken architecture
     # -------------------------------------------------------
+    #Pragma lines for the basic Riken benchmarks
+    pragmaComment = [
+        "/* ------- Application graph pragma -------\n",
+        "[SupportedOps] = {ALU, FADD, FMUL};\n"
+        "[SupportedOps] = {MEMPORT, INPUT, OUTPUT};\n"
+        "[SupportedOps] = {Constant, CONST};\n"
+        "*/\n"
+        "\n"
+    ]
+    
     # output_file = "modified_" + str(args.Benchmark)
     outputDir = str(args.OutputDir) + "/" + str(folderName)
 
@@ -79,8 +89,13 @@ def modify_application(args):
         os.makedirs(outputDir)
 
     os.chdir(outputDir)
-    output_file = "modified_" + str(fileName)
-    nx.nx_pydot.write_dot(G, output_file)
+    output_file = str(fileName)
+
+    with open(output_file, 'w') as f:
+        for pragma in pragmaComment:
+            f.write(pragma)
+
+        nx.nx_pydot.write_dot(G, f)
     
 # Main function for modifying the application graph for UGRAMM:
 def main(args):
