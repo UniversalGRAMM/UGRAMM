@@ -47,7 +47,7 @@ def modify_application(args):
         # Getting the outedges for the node in question
         outEdges = list(G.out_edges(node, data=True))
         # Creating a new driver node for all fanout outedges except for the first one
-        for u, v, properties in outEdges[1:]:
+        for u, v, properties in outEdges:
             # Getting a new Unique ID
             newNodeID = len(G.nodes) + 1
             # Moddifying the newNode name to indicate the operation and node id (ex const_36)
@@ -65,26 +65,7 @@ def modify_application(args):
 
     # Deleting all the fan out edges between the constant
     for node in constFanoutNodes:
-        u, v, properties = outEdges[0]
-        out_edges = list(G.out_edges(node))
-        G.remove_edges_from(out_edges)
-        G.add_edge(u, v, **properties)
-
-    # for node in G.nodes():
-    #     # Get the out-edges of the current node
-    #     out_edges = list(G.out_edges(node))
-        
-    #     # If the node has more than one out-edge, add it to constFanoutNodes
-    #     if len(out_edges) > 1:
-    #         constFanoutNodes.append(node)
-
-    # # Step 2: Remove out-edges of nodes in constFanoutNodes
-    # for node in constFanoutNodes:
-    #     # Get the out-edges of the current node again (after identification)
-    #     out_edges = list(G.out_edges(node))
-        
-    #     # Remove all out-edges of the node
-    #     G.remove_edges_from(out_edges)
+        G.remove_node(node)
 
 
 
@@ -98,7 +79,7 @@ def modify_application(args):
         os.makedirs(outputDir)
 
     os.chdir(outputDir)
-    output_file = str(fileName)
+    output_file = "modified_" + str(fileName)
     nx.nx_pydot.write_dot(G, output_file)
     
 # Main function for modifying the application graph for UGRAMM:
