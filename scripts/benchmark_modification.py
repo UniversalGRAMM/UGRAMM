@@ -51,12 +51,6 @@ def modify_application(args):
             else:
                 G[u][v]['driver'] = currently_used_output_pins.pop()
             
-
-            # if desired_pin in valid_input_pins_name:
-            #     G[u][v]['driver'] = currently_used_output_pins.pop()
-            #     G[u][v]['load'] = desired_pin
-            #     currently_used_input_pins.remove(desired_pin)
-        
         for u, v, properties in G.in_edges(node, data=True):
             desired_pin = properties.get('operand')
             currently_used_output_pins = set(valid_output_pins_name)
@@ -72,29 +66,6 @@ def modify_application(args):
             else:
                 G[u][v]['driver'] = currently_used_output_pins.pop()
 
-            # if desired_pin not in valid_input_pins_name:
-            #     new_pin_name = currently_used_input_pins.pop()
-            #     G[u][v]['driver'] = currently_used_output_pins.pop()
-            #     G[u][v]['load'] = new_pin_name
-
-
-
-            # if 'opcode' in G.nodes[v] and G.nodes[v]['opcode'].upper() == 'OUTPUT':
-            #     G[u][v]['load'] = 'inPinA'
-            #     continue
-            # if 'opcode' in G.nodes[u] and G.nodes[u]['opcode'].upper() == 'INPUT':
-            #     G[u][v]['driver'] = 'outPinA'
-            #     continue
-        
-        # for u, v, properties in G.out_edges(node, data=True):
-        #     # print(G.nodes[u]['opcode'].upper())
-        #     if 'opcode' in G.nodes[v] and G.nodes[v]['opcode'].upper() == 'OUTPUT':
-        #         G[u][v]['load'] = 'inPinA'
-        #         #print('A')
-        #     if 'opcode' in G.nodes[u] and G.nodes[u]['opcode'].upper() == 'INPUT':
-        #         G[u][v]['driver'] = 'outPinA'
-        #         p#rint('B')
-
         for u, v, properties in G.in_edges(node, data=True):
             if 'operand' in properties:
                 del properties['operand']
@@ -108,25 +79,6 @@ def modify_application(args):
         if 'opcode' in G.nodes[node]:
             G.nodes[node]['opcode'] = G.nodes[node]['opcode'].upper()
         
-        # currently_used_input_pins = set(valid_input_pins_name)
-        # # Iterate over all outgoing edges for the current node and add the dedicated input 
-        # # pins to the currently_used_input_pins set 
-        # for u, v, properties in G.in_edges(node, data=True):
-        #     # print(f"Edge from {u} to {v} has properties {properties}")
-        #     desired_pin = properties.get('operand')
-        #     load = properties.get('load')
-        #     if load in valid_input_pins_name:
-        #         currently_used_input_pins.remove(load)
-        
-
-        # for u, v, properties in G.in_edges(node, data=True):
-        #     # print(f"Edge from {u} to {v} has properties {properties}")
-        #     load = properties.get('load')
-        #     if load not in valid_input_pins_name:
-        #         new_pin_name = currently_used_input_pins.pop()
-        #         G[u][v]['load'] = new_pin_name
-
-
     # -------------------------------------------------------
     #  Writing device model graph for Riken architecture
     # -------------------------------------------------------
