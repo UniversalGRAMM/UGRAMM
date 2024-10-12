@@ -2,9 +2,13 @@
 ###########   Makefile for GRAMM          ###########
 #######################################################
 
-CXX = g++
-CXXFLAGS = -I$(LIB_DIR) -g -lboost_graph -lspdlog -lfmt -lboost_program_options
+BOOST_INCLUDE = $(shell whereis boost | awk '{print $$2 "/include"}')
+BOOST_LIB = $(shell whereis boost | awk '{print $$2 "/lib"}')
 
+CXX = g++
+CXXFLAGS = -I$(LIB_DIR) -g -I$(BOOST_INCLUDE)
+
+LDFLAGS = -L$(BOOST_LIB) -lfmt -lboost_graph -lboost_program_options
 
 # Directories
 SRC_DIR = src
@@ -21,7 +25,7 @@ OBJS = $(BUILD_DIR)/UGRAMM.o $(BUILD_DIR)/routing.o $(BUILD_DIR)/utilities.o $(B
 
 # Target for the executable
 $(EXE): $(OBJS)
-	$(CXX) $(OBJS) $(CXXFLAGS) -o $(EXE)
+	$(CXX) $(OBJS) $(CXXFLAGS) -o $(EXE) $(LDFLAGS)
 
 # Rule to build object files
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(LIB_DIR)/%.h
