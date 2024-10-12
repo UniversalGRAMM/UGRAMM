@@ -6,9 +6,9 @@ BOOST_INCLUDE = $(shell whereis boost | awk '{print $$2 "/include"}')
 BOOST_LIB = $(shell whereis boost | awk '{print $$2 "/lib"}')
 
 CXX = g++
-CXXFLAGS = -I$(LIB_DIR) -g -I$(BOOST_INCLUDE)
+CXXFLAGS = -std=c++17 -I$(LIB_DIR) -g -I$(BOOST_INCLUDE)
 
-LDFLAGS = -L$(BOOST_LIB) -lfmt -lboost_graph -lboost_program_options
+LDFLAGS = -L$(BOOST_LIB) -lboost_graph -lboost_program_options
 
 # Directories
 SRC_DIR = src
