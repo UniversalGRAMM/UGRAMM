@@ -1,0 +1,5 @@
+<map id="detail::has_member_fn_begin_end_t&lt; T, void_t&lt; decltype(std::declval&lt; T &gt;().begin()), decltype(std::declval&lt; T &gt;().end())&gt; &gt;" name="detail::has_member_fn_begin_end_t&lt; T, void_t&lt; decltype(std::declval&lt; T &gt;().begin()), decltype(std::declval&lt; T &gt;().end())&gt; &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,163,180"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="35,5,133,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,47,87,78,81,78,81,47"/>
+</map>

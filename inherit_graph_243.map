@@ -1,0 +1,15 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,177,150,202"/>
+<area shape="rect" id="Node000001" href="$structdetail_1_1is__range___3_01T_00_01void_01_4.html" title=" " alt="" coords="226,5,348,46"/>
+<area shape="poly" id="edge140_Node000000_Node000001" title=" " alt="" coords="94,162,137,110,165,81,196,57,224,42,227,46,199,61,169,85,141,113,98,166"/>
+<area shape="rect" id="Node000002" href="$structdetail_1_1is__same__arithmetic__type.html" title=" " alt="" coords="202,71,373,111"/>
+<area shape="poly" id="edge141_Node000000_Node000002" title=" " alt="" coords="112,167,197,122,226,109,228,114,199,127,115,171"/>
+<area shape="rect" id="Node000003" href="$structdetail_1_1range__format__kind__.html" title=" " alt="" coords="220,136,354,177"/>
+<area shape="poly" id="edge142_Node000000_Node000003" title=" " alt="" coords="165,173,219,164,220,170,166,178"/>
+<area shape="rect" id="Node000004" href="$structdetail_1_1type__constant.html" title=" " alt="" coords="218,201,357,242"/>
+<area shape="poly" id="edge143_Node000000_Node000004" title=" " alt="" coords="166,200,217,208,217,214,165,206"/>
+<area shape="rect" id="Node000005" href="$structspdlog_1_1is__convertible__to__any__format__string.html" title=" " alt="" coords="198,267,377,307"/>
+<area shape="poly" id="edge144_Node000000_Node000005" title=" " alt="" coords="116,208,199,251,228,264,226,268,197,256,113,213"/>
+<area shape="rect" id="Node000006" href="$structspdlog_1_1is__convertible__to__basic__format__string.html" title=" " alt="" coords="207,331,368,387"/>
+<area shape="poly" id="edge145_Node000000_Node000006" title=" " alt="" coords="99,213,142,265,169,292,199,317,217,328,215,333,196,321,166,296,138,268,95,217"/>
+</map>

@@ -1,4 +1,23 @@
 var searchData=
 [
-  ['license_3a_0',['License:',['../md_README.html#autotoc_md1',1,'']]]
+  ['h_5fformatter_0',['H_formatter',['../classspdlog_1_1details_1_1H__formatter.html',1,'spdlog::details']]],
+  ['handle_1',['handle',['../classbasic__format__arg_1_1handle.html',1,'basic_format_arg']]],
+  ['has_5fconst_5fbegin_5fend_2',['has_const_begin_end',['../structdetail_1_1has__const__begin__end.html',1,'detail']]],
+  ['has_5fconst_5fbegin_5fend_3c_20t_2c_20void_5ft_3c_20decltype_28detail_3a_3arange_5fbegin_28std_3a_3adeclval_3c_20const_20remove_5fcvref_5ft_3c_20t_20_3e_20_26_20_3e_28_29_29_29_2c_20decltype_28detail_3a_3arange_5fend_28std_3a_3adeclval_3c_20const_20remove_5fcvref_5ft_3c_20t_20_3e_20_26_20_3e_28_29_29_29_3e_20_3e_3',['has_const_begin_end&lt; T, void_t&lt; decltype(detail::range_begin(std::declval&lt; const remove_cvref_t&lt; T &gt; &amp; &gt;())), decltype(detail::range_end(std::declval&lt; const remove_cvref_t&lt; T &gt; &amp; &gt;()))&gt; &gt;',['../structdetail_1_1has__const__begin__end_3_01T_00_01void__t_3_01decltype_07detail_1_1range__begin_da5b8c1778b39196d77eefc293dfa14c.html',1,'detail']]],
+  ['has_5fflip_4',['has_flip',['../structdetail_1_1has__flip.html',1,'detail']]],
+  ['has_5fflip_3c_20t_2c_20void_5ft_3c_20decltype_28std_3a_3adeclval_3c_20t_20_3e_28_29_2eflip_28_29_29_3e_20_3e_5',['has_flip&lt; T, void_t&lt; decltype(std::declval&lt; T &gt;().flip())&gt; &gt;',['../structdetail_1_1has__flip_3_01T_00_01void__t_3_01decltype_07std_1_1declval_3_01T_01_4_07_08_8flip_07_08_08_4_01_4.html',1,'detail']]],
+  ['has_5fformat_5fas_6',['has_format_as',['../structdetail_1_1has__format__as.html',1,'detail']]],
+  ['has_5fisfinite_7',['has_isfinite',['../structdetail_1_1has__isfinite.html',1,'detail']]],
+  ['has_5fisfinite_3c_20t_2c_20enable_5fif_5ft_3c_20sizeof_28std_3a_3aisfinite_28t_28_29_29_29_20_21_3d0_20_3e_20_3e_8',['has_isfinite&lt; T, enable_if_t&lt; sizeof(std::isfinite(T())) !=0 &gt; &gt;',['../structdetail_1_1has__isfinite_3_01T_00_01enable__if__t_3_01sizeof_07std_1_1isfinite_07T_07_08_08_08_01_9_0a0_01_4_01_4.html',1,'detail']]],
+  ['has_5fmember_5fdata_5ftm_5fgmtoff_9',['has_member_data_tm_gmtoff',['../structdetail_1_1has__member__data__tm__gmtoff.html',1,'detail']]],
+  ['has_5fmember_5fdata_5ftm_5fgmtoff_3c_20t_2c_20void_5ft_3c_20decltype_28t_3a_3atm_5fgmtoff_29_3e_20_3e_10',['has_member_data_tm_gmtoff&lt; T, void_t&lt; decltype(T::tm_gmtoff)&gt; &gt;',['../structdetail_1_1has__member__data__tm__gmtoff_3_01T_00_01void__t_3_01decltype_07T_1_1tm__gmtoff_08_4_01_4.html',1,'detail']]],
+  ['has_5fmember_5fdata_5ftm_5fzone_11',['has_member_data_tm_zone',['../structdetail_1_1has__member__data__tm__zone.html',1,'detail']]],
+  ['has_5fmember_5fdata_5ftm_5fzone_3c_20t_2c_20void_5ft_3c_20decltype_28t_3a_3atm_5fzone_29_3e_20_3e_12',['has_member_data_tm_zone&lt; T, void_t&lt; decltype(T::tm_zone)&gt; &gt;',['../structdetail_1_1has__member__data__tm__zone_3_01T_00_01void__t_3_01decltype_07T_1_1tm__zone_08_4_01_4.html',1,'detail']]],
+  ['has_5fmember_5ffn_5fbegin_5fend_5ft_13',['has_member_fn_begin_end_t',['../structdetail_1_1has__member__fn__begin__end__t.html',1,'detail']]],
+  ['has_5fmember_5ffn_5fbegin_5fend_5ft_3c_20t_2c_20void_5ft_3c_20decltype_28std_3a_3adeclval_3c_20t_20_3e_28_29_2ebegin_28_29_29_2c_20decltype_28std_3a_3adeclval_3c_20t_20_3e_28_29_2eend_28_29_29_3e_20_3e_14',['has_member_fn_begin_end_t&lt; T, void_t&lt; decltype(std::declval&lt; T &gt;().begin()), decltype(std::declval&lt; T &gt;().end())&gt; &gt;',['../structdetail_1_1has__member__fn__begin__end__t_3_01T_00_01void__t_3_01decltype_07std_1_1declval_7bfaf74b5a50caef111e70a0e029c9dc.html',1,'detail']]],
+  ['has_5fmutable_5fbegin_5fend_15',['has_mutable_begin_end',['../structdetail_1_1has__mutable__begin__end.html',1,'detail']]],
+  ['has_5fmutable_5fbegin_5fend_3c_20t_2c_20void_5ft_3c_20decltype_28detail_3a_3arange_5fbegin_28std_3a_3adeclval_3c_20t_20_3e_28_29_29_29_2c_20decltype_28detail_3a_3arange_5fend_28std_3a_3adeclval_3c_20t_20_3e_28_29_29_29_2c_20int_20_3e_20_3e_16',['has_mutable_begin_end&lt; T, void_t&lt; decltype(detail::range_begin(std::declval&lt; T &gt;())), decltype(detail::range_end(std::declval&lt; T &gt;())), int &gt; &gt;',['../structdetail_1_1has__mutable__begin__end_3_01T_00_01void__t_3_01decltype_07detail_1_1range__begif6fe79957647df09b3c7b25ba8c4c85b.html',1,'detail']]],
+  ['helper_20scripts_3a_17',['GRAMM helper scripts:',['../md_scripts_2README.html',1,'']]],
+  ['hourly_5ffile_5fsink_18',['hourly_file_sink',['../classspdlog_1_1sinks_1_1hourly__file__sink.html',1,'spdlog::sinks']]],
+  ['hourly_5ffilename_5fcalculator_19',['hourly_filename_calculator',['../structspdlog_1_1sinks_1_1hourly__filename__calculator.html',1,'spdlog::sinks']]]
 ];

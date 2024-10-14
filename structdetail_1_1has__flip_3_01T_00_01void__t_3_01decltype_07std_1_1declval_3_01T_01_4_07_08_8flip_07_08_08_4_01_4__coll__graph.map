@@ -1,0 +1,5 @@
+<map id="detail::has_flip&lt; T, void_t&lt; decltype(std::declval&lt; T &gt;().flip())&gt; &gt;" name="detail::has_flip&lt; T, void_t&lt; decltype(std::declval&lt; T &gt;().flip())&gt; &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,162,135"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="34,5,133,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,47,86,78,81,78,81,47"/>
+</map>

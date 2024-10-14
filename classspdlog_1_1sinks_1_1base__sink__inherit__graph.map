@@ -1,0 +1,43 @@
+<map id="spdlog::sinks::base_sink&lt; Mutex &gt;" name="spdlog::sinks::base_sink&lt; Mutex &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="180,588,310,629"/>
+<area shape="rect" id="Node000003" href="$classspdlog_1_1sinks_1_1basic__file__sink.html" title=" " alt="" coords="384,5,517,46"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="246,572,258,457,279,304,294,226,311,156,332,98,356,57,382,38,385,43,360,61,337,100,316,158,299,228,284,304,263,457,252,573"/>
+<area shape="rect" id="Node000004" href="$classspdlog_1_1sinks_1_1callback__sink.html" title=" " alt="" coords="375,71,525,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="247,572,260,469,283,335,298,268,315,207,334,156,356,121,373,108,376,112,360,125,339,159,320,208,303,269,288,336,266,470,253,573"/>
+<area shape="rect" id="Node000005" href="$classspdlog_1_1sinks_1_1daily__file__sink.html" title=" " alt="" coords="358,135,542,191"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="244,572,249,497,265,399,279,347,299,295,324,246,356,201,369,189,372,193,360,205,328,248,303,297,284,348,270,400,254,498,249,572"/>
+<area shape="rect" id="Node000006" href="$classspdlog_1_1sinks_1_1dist__sink.html" title=" " alt="" coords="388,215,512,255"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="245,572,253,507,271,425,285,382,304,340,327,300,356,265,387,245,390,250,360,269,331,304,308,343,290,384,276,427,258,508,251,573"/>
+<area shape="rect" id="Node000008" href="$classspdlog_1_1sinks_1_1hourly__file__sink.html" title=" " alt="" coords="358,279,542,335"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="250,572,263,522,283,462,314,400,334,371,356,345,370,333,374,337,360,349,338,375,319,403,288,464,268,524,255,573"/>
+<area shape="rect" id="Node000009" href="$classspdlog_1_1sinks_1_1kafka__sink.html" title=" " alt="" coords="383,359,517,399"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="255,572,270,535,292,492,321,448,356,410,381,395,384,399,360,414,325,451,297,494,275,537,260,574"/>
+<area shape="rect" id="Node000010" href="$classspdlog_1_1sinks_1_1mongo__sink.html" title=" " alt="" coords="380,424,521,465"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="265,574,304,524,329,498,356,475,379,463,381,468,360,480,332,502,308,527,269,577"/>
+<area shape="rect" id="Node000011" href="$classspdlog_1_1sinks_1_1null__sink.html" title=" " alt="" coords="389,489,511,530"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="289,578,357,541,388,528,390,533,359,545,292,582"/>
+<area shape="rect" id="Node000012" href="$classspdlog_1_1sinks_1_1ostream__sink.html" title=" " alt="" coords="376,555,525,595"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="325,593,374,585,375,590,325,598"/>
+<area shape="rect" id="Node000013" href="$classspdlog_1_1sinks_1_1qt__color__sink.html" title=" " alt="" coords="376,620,524,661"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="326,618,376,626,375,631,325,623"/>
+<area shape="rect" id="Node000014" href="$classspdlog_1_1sinks_1_1qt__sink.html" title=" " alt="" coords="378,685,522,726"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="293,635,359,670,389,682,387,687,357,675,291,639"/>
+<area shape="rect" id="Node000015" href="$classspdlog_1_1sinks_1_1ringbuffer__sink.html" title=" " alt="" coords="372,751,528,791"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="270,640,308,689,333,714,359,735,381,748,379,752,357,740,329,718,304,692,265,643"/>
+<area shape="rect" id="Node000016" href="$classspdlog_1_1sinks_1_1rotating__file__sink.html" title=" " alt="" coords="378,816,523,857"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="260,642,275,679,297,722,325,764,360,801,379,813,376,818,356,805,321,767,292,724,270,681,255,644"/>
+<area shape="rect" id="Node000017" href="$classspdlog_1_1sinks_1_1syslog__sink.html" title=" " alt="" coords="380,881,520,922"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="255,643,267,693,287,753,318,813,337,841,360,866,382,881,379,886,356,870,333,845,313,816,282,755,262,694,250,644"/>
+<area shape="rect" id="Node000018" href="$classspdlog_1_1sinks_1_1systemd__sink.html" title=" " alt="" coords="374,947,526,987"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="251,644,260,705,278,782,292,822,310,862,333,899,360,932,376,944,372,948,356,936,328,902,306,864,287,824,273,784,255,706,246,644"/>
+<area shape="rect" id="Node000019" href="$classspdlog_1_1sinks_1_1tcp__sink.html" title=" " alt="" coords="390,1012,510,1053"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="249,644,254,717,270,811,284,861,303,910,328,956,360,997,374,1009,391,1017,388,1022,371,1013,356,1001,324,959,298,912,279,863,265,812,248,718,243,644"/>
+<area shape="rect" id="Node000020" href="$classspdlog_1_1sinks_1_1udp__sink.html" title=" " alt="" coords="388,1077,512,1118"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="253,643,267,741,290,866,322,985,340,1031,360,1063,373,1074,389,1082,387,1087,370,1078,356,1066,335,1033,317,986,285,867,262,742,248,644"/>
+<area shape="rect" id="Node000021" href="$classspdlog_1_1sinks_1_1win__eventlog_1_1win__eventlog__sink.html" title=" " alt="" coords="370,1142,530,1198"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="252,644,265,754,287,898,302,970,319,1036,339,1090,360,1128,372,1139,368,1143,356,1131,334,1093,314,1038,297,971,282,899,260,754,247,645"/>
+<area shape="rect" id="Node000002" href="$classspdlog_1_1sinks_1_1sink.html" title=" " alt="" coords="5,596,132,621"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,606,179,606,179,611,147,611"/>
+<area shape="rect" id="Node000007" href="$classspdlog_1_1sinks_1_1dup__filter__sink.html" title=" " alt="" coords="590,215,731,255"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="527,232,590,232,590,238,527,238"/>
+</map>
