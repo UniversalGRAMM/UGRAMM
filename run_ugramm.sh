@@ -23,7 +23,7 @@ NC=${3}
 Arch=RIKEN #Harcoded, can be changed to ADRES
 afile=${4}
 cfile=${5}
-verbose_level=1 #Hardcoded, can be run with 0 -> info : 1-> debug : 2-> trace
+verbose_level=0 #Hardcoded, can be run with 0 -> info : 1-> debug : 2-> trace
 #drc_verbose_level=1 #Optional, can be run with 0 -> err [default] : 1-> trace : 2-> info, 2-> debug
 
 # To disable DRC, add the following flag "--drc_disable"
