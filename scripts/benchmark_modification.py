@@ -32,8 +32,6 @@ def modify_application(args):
     currently_used_input_pins = set()
 
     for node in G.nodes:
-        
-
         currently_used_input_pins = set(valid_input_pins_name)
         # Iterate over all outgoing edges for the current node and add the dedicated input 
         # pins to the currently_used_input_pins set 
@@ -41,45 +39,60 @@ def modify_application(args):
             # print(f"Edge from {u} to {v} has properties {properties}")
             desired_pin = properties.get('operand')
             currently_used_output_pins = set(valid_output_pins_name)
-            if desired_pin in valid_input_pins_name:
-                G[u][v]['driver'] = currently_used_output_pins.pop()
+
+            if 'opcode' in G.nodes[v] and G.nodes[v]['opcode'].upper() == 'OUTPUT':
+                G[u][v]['load'] = 'inPinA'
+            elif desired_pin in valid_input_pins_name:
                 G[u][v]['load'] = desired_pin
                 currently_used_input_pins.remove(desired_pin)
-        
+            
+            if 'opcode' in G.nodes[v] and G.nodes[v]['opcode'].upper() == 'INPUT':
+                G[u][v]['driver'] = 'outPinA'
+            else:
+                G[u][v]['driver'] = currently_used_output_pins.pop()
+            
         for u, v, properties in G.in_edges(node, data=True):
             desired_pin = properties.get('operand')
             currently_used_output_pins = set(valid_output_pins_name)
-            if desired_pin not in valid_input_pins_name:
+            
+            if 'opcode' in G.nodes[v] and G.nodes[v]['opcode'].upper() == 'OUTPUT':
+                G[u][v]['load'] = 'inPinA'
+            elif desired_pin not in valid_input_pins_name:
                 new_pin_name = currently_used_input_pins.pop()
-                G[u][v]['driver'] = currently_used_output_pins.pop()
                 G[u][v]['load'] = new_pin_name
+            
+            if 'opcode' in G.nodes[v] and G.nodes[v]['opcode'].upper() == 'INPUT':
+                G[u][v]['driver'] = 'outPinA'
+            else:
+                G[u][v]['driver'] = currently_used_output_pins.pop()
 
         for u, v, properties in G.in_edges(node, data=True):
             if 'operand' in properties:
                 del properties['operand']
         
-        # currently_used_input_pins = set(valid_input_pins_name)
-        # # Iterate over all outgoing edges for the current node and add the dedicated input 
-        # # pins to the currently_used_input_pins set 
-        # for u, v, properties in G.in_edges(node, data=True):
-        #     # print(f"Edge from {u} to {v} has properties {properties}")
-        #     desired_pin = properties.get('operand')
-        #     load = properties.get('load')
-        #     if load in valid_input_pins_name:
-        #         currently_used_input_pins.remove(load)
+        if 'shape' in G.nodes[node]:
+            del G.nodes[node]['shape']
+
+        if 'type' in G.nodes[node]:
+            del G.nodes[node]['type']
         
-
-        # for u, v, properties in G.in_edges(node, data=True):
-        #     # print(f"Edge from {u} to {v} has properties {properties}")
-        #     load = properties.get('load')
-        #     if load not in valid_input_pins_name:
-        #         new_pin_name = currently_used_input_pins.pop()
-        #         G[u][v]['load'] = new_pin_name
-
-
+        if 'opcode' in G.nodes[node]:
+            G.nodes[node]['opcode'] = G.nodes[node]['opcode'].upper()
+        
     # -------------------------------------------------------
     #  Writing device model graph for Riken architecture
     # -------------------------------------------------------
+
+    #Pragma lines for the basic Riken benchmarks
+    pragmaComment = [
+        "/* ------- Application graph pragma -------\n",
+        "[SupportedOps] = {ALU, FADD, FMUL};\n"
+        "[SupportedOps] = {MEMPORT, INPUT, OUTPUT};\n"
+        "[SupportedOps] = {Constant, CONST};\n"
+        "*/\n"
+        "\n"
+    ]
+    
     # output_file = "modified_" + str(args.Benchmark)
     outputDir = str(args.OutputDir) + "/" + str(folderName)
 
@@ -88,7 +101,14 @@ def modify_application(args):
 
     os.chdir(outputDir)
     output_file = str(fileName)
-    nx.nx_pydot.write_dot(G, output_file)
+
+    with open(output_file, 'w') as f:
+        for pragma in pragmaComment:
+            f.write(pragma)
+
+            
+        nx.nx_pydot.write_dot(G, f)
+    
     
 # Main function for modifying the application graph for UGRAMM:
 def main(args):
