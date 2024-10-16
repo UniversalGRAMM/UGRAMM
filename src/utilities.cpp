@@ -205,6 +205,31 @@ bool skipPlacement(std::string hOpcode, json &jsonParsed)
   }
 }
 
+
+/**
+ * Checks whether locking is required for the given hNamed based on the information given in the JSON.
+ * In JSON, we define the locking code as "hName::gName"
+*/ 
+bool getLockPE(int HID, json &jsonParsed, std::string& jsonLockNode)
+{
+  if (jsonParsed["LOCK-NODES"].empty()){
+    return false;
+  } else {
+    return std::any_of(jsonParsed["LOCK-NODES"].begin(), jsonParsed["LOCK-NODES"].end(), [&](const std::string& lockGNode) {
+        // Capitalize the current element for comparison
+        std::string lockGNodeCap = boost::to_upper_copy(lockGNode);
+        // Check if the element is found
+        if (lockGNodeCap.find(hNames[HID]) != std::string::npos){
+          UGRAMM->trace(" [Locking] : Found hNames {} is substring {}",  hNames[HID], lockGNodeCap);
+          jsonLockNode = lockGNodeCap;
+          return true;
+        } else {
+          return false;
+        }
+    });
+  }
+}
+
 /**
  * Parses PRAGMA vectors from the comment section of the device model graph.
  * 
@@ -360,6 +385,24 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<st
       exit(1);
     }
   }
+}
+
+/*
+ * This function gets the device model node type that is best suited for the application
+ * graph opcode
+ */
+bool getDeviceModelNodeType(const std::string &hOpcode, std::string &nodeType){
+  for (const auto& pair : ugrammConfig) {
+    for (int i = 0; i < pair.second.size(); i++){
+      if (pair.second[i] == hOpcode)
+      {
+        UGRAMM->trace("{} node from device model supports {} Opcode", pair.first, hOpcode);
+        nodeType = pair.first;
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 //------------------------------------------------------------------------------------//
@@ -685,8 +728,13 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     (*gConfig)[i].Type = upperCaseType;
 
     // Contains the node name
-    std::string arch_NodeName = boost::get(&DotVertex::G_Name, *G, v);
+    std::string arch_NodeName = boost::to_upper_copy(boost::get(&DotVertex::G_Name, *G, v));
     gNames[i] = arch_NodeName;
+    gNamesInv[arch_NodeName] = i;
+
+    if ((*gConfig)[i].Cell == "FUNCCELL"){
+      gNamesInv_FuncCell[arch_NodeName] = i;
+    }
 
     // Obtaining the loadPin name for PinCell type:
     if ((*gConfig)[i].Cell == "PINCELL")
@@ -700,6 +748,13 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
     }
 
     UGRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseCellType, upperCaseType);
+    if ((*gConfig)[i].Cell == "FUNCCELL"){
+      UGRAMM->trace("\t\t[G] gNames[{}] {} :: gNamesInv[{}] {} :: gNamesInv_FuncCell[{}] {}", i, gNames[i], arch_NodeName, gNamesInv[arch_NodeName], arch_NodeName, gNamesInv_FuncCell[arch_NodeName]);
+       UGRAMM->trace("\t\t[G] gName size {} :: gNameInv size {} :: gNameInv_FuncCell size {}", gNames.size(), gNamesInv.size(), gNamesInv_FuncCell.size());
+    } else {
+       UGRAMM->trace("\t\t[G] gNames[{}] {} :: gNamesInv[{}] {}", i, gNames[i], arch_NodeName, gNamesInv[arch_NodeName]);
+       UGRAMM->trace("\t\t[G] gName size {} :: gNameInv {} :: gNameInv_FuncCell size() {}", gNames.size(), gNamesInv.size(), gNamesInv_FuncCell.size());
+    }
   }
 }
 
@@ -728,6 +783,9 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
     std::replace(hNames[i].begin(), hNames[i].end(), '=', '_');
     std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
 
+    hNamesInv[hNames[i]] = i;
+    UGRAMM->trace(" hNames[{}] {} :: hNamesInv[{}] {}", i, hNames[i], hNames[i], hNamesInv[hNames[i]]);
+
     // Fetching opcode from the application-graph:
     // Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
     std::string applicationOpcode = boost::get(&DotVertex::H_Opcode, *H, v);
@@ -746,6 +804,31 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
       hNames[i] = "NULL";              //Keeping the opcode Null for the removed vertex
     }
 
-    UGRAMM->trace("[H] name {} :: applicationOpcode {} ", hNames[i], upperCaseOpcode);
+    //Locking the device model nodes to a perticular node in the device model graph
+    std::string jsonLockNode;
+    if (getLockPE(i, jsonParsed, jsonLockNode)){
+      std::string delimiter = "::";
+      size_t pos = jsonLockNode.find(delimiter);
+      if (pos != std::string::npos) {
+        (*hConfig)[i].LockGNode = boost::to_upper_copy(jsonLockNode.substr(pos + delimiter.length()));
+        UGRAMM->info("[Locking] [H] name {} :: applicationOpcode {} :: GNode Lock {}", hNames[i], upperCaseOpcode, (*hConfig)[i].LockGNode);
+      } else {
+        UGRAMM->error(" Lock {} in the json file does not have \"::\" ", jsonLockNode);
+      }
+    }
+
+    // Storing the GID of nodes that are fully locked in set fullyLockedNodes. 
+    // Fully locked noded means that LockGNode for an application graph completely matches to a perticular gNames in device model graph
+   if (!(*hConfig)[i].LockGNode.empty()){
+    for (const auto& pair : gNamesInv_FuncCell) {
+      if ((*hConfig)[i].LockGNode == pair.first){
+        UGRAMM->trace("Locked Node {} :: gName {} :: GID {}", (*hConfig)[i].LockGNode, pair.first, pair.second);
+        fullyLockedNodes.insert(pair.second);
+      }
+    }
+   }
+
+
+    UGRAMM->trace("[H] name {} :: applicationOpcode {} :: GNode Lock {}", hNames[i], upperCaseOpcode, (*hConfig)[i].LockGNode);
   }
 }
