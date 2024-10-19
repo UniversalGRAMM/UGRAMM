@@ -29,7 +29,6 @@ std::map<std::string, int> hNamesInv;
 std::map<int, std::string> gNames;
 std::map<std::string, int> gNamesInv;
 std::map<std::string, int> gNamesInv_FuncCell;
-std::set<int> fullyLockedNodes;
 std::bitset<100000> explored;
 
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
@@ -220,11 +219,13 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
       // Skip Fully Locked Nodes
       if (skipFullyLockedNodes){
-        if (fullyLockedNodes.find(i) != fullyLockedNodes.end()){
+        if ((*gConfig)[i].gLocked){
           UGRAMM->trace("Skipping locked device model node {} for mapping application graph node {} ", gNames[i], hNames[y]);
           continue;
         }
       }
+
+      
 
       //------------------ Routing Setup ---------------------//
       ripUpRouting(y, G);         //Ripup the previous routing
@@ -548,7 +549,7 @@ int main(int argc, char **argv)
   iFile.open(applicationFile);                    // Passing the application_dot file as an argument!
   readApplicationGraphPragma(iFile, ugrammConfig); // Reading the application-graph pragma from the device-model dot file.
   boost::read_graphviz(iFile, H, dp);             // Reading the dot file
-  readApplicationGraph(&H, &hConfig);             // Reading the Application graph file.
+  readApplicationGraph(&H, &hConfig, &gConfig);             // Reading the Application graph file.
 
   //--------------------------------------------------------------------//
   //----------------- STEP 2: DRC Verification -------------------------//

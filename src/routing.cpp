@@ -13,31 +13,6 @@
 //-------------------------------------------------------------------//
 
 /*
- * Checks whether the current opcode required by the application node is supported by the device model node.
- * 
- * This function determines if the opcode needed by the application node (represented by `hOpcode`)
- * is compatible with or supported by the device model node type (represented by `gType`).
-*/
-bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
-{
-  // For nodes such as RouteCell, PinCell the ugrammConfig array will be empty.
-  // Pragma array's are only parsed for the FuncCell types.
-  if (ugrammConfig[gType].size() == 0)
-    return false;
-
-  // Finding Opcode required by the application graph supported by the device model or not.
-  for (const auto pair : ugrammConfig[gType])
-  {
-    if (pair == hOpcode)
-    {
-      UGRAMM->debug("{} node from device model supports {} Opcode", gType, hOpcode);
-      return true;
-    }
-  }
-  return false;
-}
-
-/*
  * This function enables wildcard naming for the locked. 
  *
  * It breaks the provided lock Name string into substrings based on a key. Once a list of 

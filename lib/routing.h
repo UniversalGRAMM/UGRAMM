@@ -29,18 +29,6 @@
 //-------------------------------------------------------------------//
 
 /**
- * Checks whether the current opcode required by the application node is supported by the device model node.
- * 
- * This function determines if the opcode needed by the application node (represented by `hOpcode`)
- * is compatible with or supported by the device model node type (represented by `gType`).
- * 
- * @param gType The type of the device model node. [ALU, MemPort etc..]
- * @param hOpcode The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT]
- * @return bool Returns true if the opcode is supported by the device model node, false otherwise.
- */
-bool compatibilityCheck(const std::string &gType, const std::string &hOpcode);
-
-/**
  * This function enables wildcard naming for the locked. 
  *
  * It breaks the provided lock Name string into substrings based on a key. Once a list of 

@@ -48,7 +48,8 @@ struct NodeConfig {
     // For [G] --> Device Model Graph
     std::string Cell;          //Cell-type --> FuncCell, RouteCell, PinCell
     std::string Type;          //Node-Type --> io, alu, memport....
-    int Latency = 0;           //Optional            
+    int Latency = 0;           //Optional  
+    bool gLocked = false;              //True if the G is locked for a hNode; False otherwise        
 
     // For [H] --> Application Graph
     std::string Opcode;        //OpcodeType --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
@@ -114,7 +115,6 @@ extern std::map<std::string, int> hNamesInv;            // Inverse map for getti
 extern std::map<int, std::string> gNames;               // Map for storing the unique names of device model graph
 extern std::map<std::string, int> gNamesInv;            // Inverse map for getting GID using the unique names of device model graph
 extern std::map<std::string, int> gNamesInv_FuncCell;   // Inverse map for getting GID using the unique names of device model graph. Map only funcCell in gNames
-extern std::set<int> fullyLockedNodes;                  // List of Nodes that are fully locked (i.e. LockGNode for an application graph completely matches to a perticular gNames in device model graph)
 extern std::bitset<100000> explored;
 
 //Pathefinder cost parameters:

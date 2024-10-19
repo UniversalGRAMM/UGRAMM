@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <boost/graph/graph_traits.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/property_map/property_map.hpp>
@@ -103,7 +104,7 @@ bool skipPlacement(std::string hOpcode, json& jsonParsed);
  * @param jsonLockNode Retrieved full string of the lock node from the JSON file only is a lock exist for a specific node in application graph
  * @return bool Returns true if locking is required, false otherwise.
 */ 
-bool getLockPE(int HID, json &jsonParsed, std::string& jsonLockNode);
+bool needLocking(int HID, json &jsonParsed, std::string& jsonLockNode);
 
 /**
  * Parses PRAGMA vectors from the comment section of the device model graph.
@@ -145,14 +146,16 @@ void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string,
 void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &ugrammConfig);
 
 /**
- * This function gets the device model node type that is best suited for the application
- * graph opcode
+ * Checks whether the current opcode required by the application node is supported by the device model node.
  * 
+ * This function determines if the opcode needed by the application node (represented by `hOpcode`)
+ * is compatible with or supported by the device model node type (represented by `gType`).
+ * 
+ * @param gType The type of the device model node. [ALU, MemPort etc..]
  * @param hOpcode The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT]
- * @param nodeType Passes the nodeType string for the device model graph
- * @return bool Returns true if the suitable node type in the device model graph is found, false otherwise.
+ * @return bool Returns true if the opcode is supported by the device model node, false otherwise.
  */
-bool getDeviceModelNodeType(const std::string &hOpcode, std::string &nodeType);
+bool compatibilityCheck(const std::string &gType, const std::string &hOpcode);
 
 
 //------------------------------------------------------------------------------------//
@@ -248,7 +251,8 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig);
  * 
  * @param H Pointer to the directed graph representing the application graph.
  * @param hConfig Pointer to the map where node attributes will be stored.
+ * @param gConfig Pointer to the map where node attributes will be stored.
  */
-void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig);
+void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
 
 #endif

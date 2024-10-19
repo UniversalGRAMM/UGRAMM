@@ -210,7 +210,7 @@ bool skipPlacement(std::string hOpcode, json &jsonParsed)
  * Checks whether locking is required for the given hNamed based on the information given in the JSON.
  * In JSON, we define the locking code as "hName::gName"
 */ 
-bool getLockPE(int HID, json &jsonParsed, std::string& jsonLockNode)
+bool needLocking(int HID, json &jsonParsed, std::string& jsonLockNode)
 {
   if (jsonParsed["LOCK-NODES"].empty()){
     return false;
@@ -388,18 +388,25 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<st
 }
 
 /*
- * This function gets the device model node type that is best suited for the application
- * graph opcode
- */
-bool getDeviceModelNodeType(const std::string &hOpcode, std::string &nodeType){
-  for (const auto& pair : ugrammConfig) {
-    for (int i = 0; i < pair.second.size(); i++){
-      if (pair.second[i] == hOpcode)
-      {
-        UGRAMM->trace("{} node from device model supports {} Opcode", pair.first, hOpcode);
-        nodeType = pair.first;
-        return true;
-      }
+ * Checks whether the current opcode required by the application node is supported by the device model node.
+ * 
+ * This function determines if the opcode needed by the application node (represented by `hOpcode`)
+ * is compatible with or supported by the device model node type (represented by `gType`).
+*/
+bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
+{
+  // For nodes such as RouteCell, PinCell the ugrammConfig array will be empty.
+  // Pragma array's are only parsed for the FuncCell types.
+  if (ugrammConfig[gType].size() == 0)
+    return false;
+
+  // Finding Opcode required by the application graph supported by the device model or not.
+  for (const auto pair : ugrammConfig[gType])
+  {
+    if (pair == hOpcode)
+    {
+      UGRAMM->trace("{} node from device model supports {} Opcode", gType, hOpcode);
+      return true;
     }
   }
   return false;
@@ -761,7 +768,7 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
 /**
  * Reads a DOT file and stores attributes into the application graph.
 */ 
-void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
+void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
   /*
     Application DFG is inputed in UGRAMM as a directed graph using the Neato Dot file convenction. In neeto,
@@ -806,28 +813,31 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig)
 
     //Locking the device model nodes to a perticular node in the device model graph
     std::string jsonLockNode;
-    if (getLockPE(i, jsonParsed, jsonLockNode)){
+    if (needLocking(i, jsonParsed, jsonLockNode)){
       std::string delimiter = "::";
       size_t pos = jsonLockNode.find(delimiter);
       if (pos != std::string::npos) {
-        (*hConfig)[i].LockGNode = boost::to_upper_copy(jsonLockNode.substr(pos + delimiter.length()));
-        UGRAMM->info("[Locking] [H] name {} :: applicationOpcode {} :: GNode Lock {}", hNames[i], upperCaseOpcode, (*hConfig)[i].LockGNode);
+        std::string ParsedGName   = boost::to_upper_copy(jsonLockNode.substr(pos + delimiter.length()));
+        std::string delimiter = "*";
+        (*hConfig)[i].LockGNode = ParsedGName;
+        if (!boost::algorithm::contains(ParsedGName, delimiter)){
+          int gInverseID  = gNamesInv_FuncCell[ParsedGName];
+          (*gConfig)[gInverseID].gLocked = true;
+          UGRAMM->info("[Success] Application DFG node {} has one-to-one lock to the device model node {}", hNames[i], ParsedGName);
+          UGRAMM->trace("[H] name {} :: applicationOpcode {} :: GNode Lock {} :: GNode Lock ID {}", hNames[i], upperCaseOpcode, ParsedGName, gInverseID);
+        } else {
+          std::string subStrings = ParsedGName;
+          boost::trim_left_if(subStrings, boost::is_any_of("*"));
+          boost::replace_all(subStrings, "*", ", "); 
+          subStrings.insert(subStrings.begin(), '[');
+          subStrings += "]";
+          UGRAMM->info("[Success] Application DFG node {} can be locked to multiple device model node that contains the following substring {}", hNames[i], subStrings);
+          UGRAMM->trace("[H] name {} :: applicationOpcode {} :: GNode Lock {}", hNames[i], upperCaseOpcode, ParsedGName);
+        }
       } else {
-        UGRAMM->error(" Lock {} in the json file does not have \"::\" ", jsonLockNode);
+        UGRAMM->error("[ERROR] Application DFG node {} defined a lock {} that using an invalid format as it does not have \"::\" ", hNames[i], jsonLockNode);
       }
     }
-
-    // Storing the GID of nodes that are fully locked in set fullyLockedNodes. 
-    // Fully locked noded means that LockGNode for an application graph completely matches to a perticular gNames in device model graph
-   if (!(*hConfig)[i].LockGNode.empty()){
-    for (const auto& pair : gNamesInv_FuncCell) {
-      if ((*hConfig)[i].LockGNode == pair.first){
-        UGRAMM->trace("Locked Node {} :: gName {} :: GID {}", (*hConfig)[i].LockGNode, pair.first, pair.second);
-        fullyLockedNodes.insert(pair.second);
-      }
-    }
-   }
-
 
     UGRAMM->trace("[H] name {} :: applicationOpcode {} :: GNode Lock {}", hNames[i], upperCaseOpcode, (*hConfig)[i].LockGNode);
   }
