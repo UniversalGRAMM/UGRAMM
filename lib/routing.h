@@ -13,6 +13,7 @@
 #include <fstream>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graphviz.hpp>
@@ -27,18 +28,6 @@
 //-------------------------------------------------------------------//
 //------------------- [Routing] Helper function ---------------------//
 //-------------------------------------------------------------------//
-
-/**
- * Checks whether the current opcode required by the application node is supported by the device model node.
- * 
- * This function determines if the opcode needed by the application node (represented by `hOpcode`)
- * is compatible with or supported by the device model node type (represented by `gType`).
- * 
- * @param gType The type of the device model node. [ALU, MemPort etc..]
- * @param hOpcode The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT]
- * @return bool Returns true if the opcode is supported by the device model node, false otherwise.
- */
-bool compatibilityCheck(const std::string &gType, const std::string &hOpcode);
 
 /**
  * This function enables wildcard naming for the locked. 
@@ -59,9 +48,9 @@ bool matchesPattern(const std::string& key, const std::string& gName, const std:
  * meets the the lockedNodeName
  * 
  * @param lockedNodeName Passes the name for the locked PE node
- * @return int Returns the GID for the funcCell node
+ * @return void
  */
-int findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs);
+void findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs);
 
 /**
  * For the given outputPin (signal), finds the associated FunCell node from the device model.

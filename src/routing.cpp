@@ -13,31 +13,6 @@
 //-------------------------------------------------------------------//
 
 /*
- * Checks whether the current opcode required by the application node is supported by the device model node.
- * 
- * This function determines if the opcode needed by the application node (represented by `hOpcode`)
- * is compatible with or supported by the device model node type (represented by `gType`).
-*/
-bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
-{
-  // For nodes such as RouteCell, PinCell the ugrammConfig array will be empty.
-  // Pragma array's are only parsed for the FuncCell types.
-  if (ugrammConfig[gType].size() == 0)
-    return false;
-
-  // Finding Opcode required by the application graph supported by the device model or not.
-  for (const auto pair : ugrammConfig[gType])
-  {
-    if (pair == hOpcode)
-    {
-      UGRAMM->debug("{} node from device model supports {} Opcode", gType, hOpcode);
-      return true;
-    }
-  }
-  return false;
-}
-
-/*
  * This function enables wildcard naming for the locked. 
  *
  * It breaks the provided lock Name string into substrings based on a key. Once a list of 
@@ -73,36 +48,68 @@ bool matchesPattern(const std::string& key, const std::string& gName, const std:
  * can support the operation as well must be located in specified x and y locations
  * 
  */
-int findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs){
-  
-  for (const auto& pair : gNamesInv_FuncCell) {
+void findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs){
 
-    //Get the current name for the gNode and the lock node
-    std::string gNode = pair.first;
-    std::string lockedNode = lockedNodeName;
+  suitableGIDs.clear();
 
-    // Normal string matching for lock nodes
-    if (!allowWildcardInLocking){
-      if (gNode.find(lockedNode) == std::string::npos)
-        continue;
-
-      suitableGIDs.push_back(pair.second);
-    }
-
-    // String matching when locked nodes contains a wildcard
-    if (allowWildcardInLocking){
-      //wildcard key is "*""
-      std::string key = "*";
-
-      if (matchesPattern(key, gNode, lockedNode)) {
-        suitableGIDs.push_back(pair.second);
-      }
-    }
-
-    UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
+  // Get the GID on the lock when not using wildcards
+  if (!allowWildcardInLocking){
+    int GID = gNamesInv_FuncCell[lockedNodeName];
+    suitableGIDs.push_back(GID);
   }
 
-  return -1;
+  if (allowWildcardInLocking){
+    //wildcard key is "*""
+    std::string key = "*";
+    if (!boost::algorithm::contains(lockedNodeName, key)){
+      int GID = gNamesInv_FuncCell[lockedNodeName];
+      suitableGIDs.push_back(GID);
+    } else {
+      for (const auto& pair : gNamesInv_FuncCell) {
+        //Get the current name for the gNode and the lock node
+        std::string gNode = pair.first;
+        std::string lockedNode = lockedNodeName;
+        
+        // String matching when locked nodes contains a wildcard
+        if (allowWildcardInLocking){
+          if (matchesPattern(key, gNode, lockedNode)) {
+            suitableGIDs.push_back(pair.second);
+          }
+        }
+        UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
+      }
+    }
+  }
+
+  
+  // for (const auto& pair : gNamesInv_FuncCell) {
+
+  //   //Get the current name for the gNode and the lock node
+  //   std::string gNode = pair.first;
+  //   std::string lockedNode = lockedNodeName;
+
+  //   // Normal string matching for lock nodes
+  //   if (!allowWildcardInLocking){
+  //     if (gNode.find(lockedNode) == std::string::npos)
+  //       continue;
+
+  //     suitableGIDs.push_back(pair.second);
+  //   }
+
+  //   // String matching when locked nodes contains a wildcard
+  //   if (allowWildcardInLocking){
+  //     //wildcard key is "*""
+  //     std::string key = "*";
+
+  //     if (matchesPattern(key, gNode, lockedNode)) {
+  //       suitableGIDs.push_back(pair.second);
+  //     }
+  //   }
+
+  //   UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
+  // }
+
+  return;
 }
 
 

@@ -29,7 +29,6 @@ std::map<std::string, int> hNamesInv;
 std::map<int, std::string> gNames;
 std::map<std::string, int> gNamesInv;
 std::map<std::string, int> gNamesInv_FuncCell;
-std::set<int> fullyLockedNodes;
 std::bitset<100000> explored;
 
 std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
@@ -116,10 +115,12 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   if (lockingNodeStatus){
     std::vector<int> suitableGIDs;
 
-    int GID = findGNodeID_FuncCell((*hConfig)[y].LockGNode, suitableGIDs);
+    findGNodeID_FuncCell((*hConfig)[y].LockGNode, suitableGIDs);
     
-    for (int i = 0; i < suitableGIDs.size(); i++){
-      UGRAMM->trace("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, suitableGIDs[i], gNames[suitableGIDs[i]]);
+    if (UGRAMM->level() <= spdlog::level::trace){
+      for (int i = 0; i < suitableGIDs.size(); i++){
+        UGRAMM->trace("[Locking] hNames[{}] {} :: Lock gNames {} :: GID{} :: verify gNames {}", y, hNames[y], (*hConfig)[y].LockGNode, suitableGIDs[i], gNames[suitableGIDs[i]]);
+      }
     }
     
     for (int i = 0; i < suitableGIDs.size(); i++)
@@ -220,11 +221,13 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
       // Skip Fully Locked Nodes
       if (skipFullyLockedNodes){
-        if (fullyLockedNodes.find(i) != fullyLockedNodes.end()){
+        if ((*gConfig)[i].gLocked){
           UGRAMM->trace("Skipping locked device model node {} for mapping application graph node {} ", gNames[i], hNames[y]);
           continue;
         }
       }
+
+      
 
       //------------------ Routing Setup ---------------------//
       ripUpRouting(y, G);         //Ripup the previous routing
@@ -378,8 +381,10 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     
     // Sorting the nodes of H according to the size (number of vertices) of their vertex model
     sortList(ordering, num_vertices(*H), hConfig);
-    for (int i = 0; i < num_vertices(*H); i++){
-      UGRAMM->trace("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], ordering[i], hNames[ordering[i]]);
+    if (UGRAMM->level() <= spdlog::level::trace){
+      for (int i = 0; i < num_vertices(*H); i++){
+        UGRAMM->trace("Afer sortlist (sort) Interation {} | Ordering[{}]: {} | hNames[{}]: {}", iterCount, i, ordering[i], ordering[i], hNames[ordering[i]]);
+      }
     }
 
     for (int k = 0; k < num_vertices(*H); k++)
@@ -548,7 +553,7 @@ int main(int argc, char **argv)
   iFile.open(applicationFile);                    // Passing the application_dot file as an argument!
   readApplicationGraphPragma(iFile, ugrammConfig); // Reading the application-graph pragma from the device-model dot file.
   boost::read_graphviz(iFile, H, dp);             // Reading the dot file
-  readApplicationGraph(&H, &hConfig);             // Reading the Application graph file.
+  readApplicationGraph(&H, &hConfig, &gConfig);             // Reading the Application graph file.
 
   //--------------------------------------------------------------------//
   //----------------- STEP 2: DRC Verification -------------------------//
