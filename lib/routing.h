@@ -13,6 +13,7 @@
 #include <fstream>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graphviz.hpp>
@@ -47,9 +48,9 @@ bool matchesPattern(const std::string& key, const std::string& gName, const std:
  * meets the the lockedNodeName
  * 
  * @param lockedNodeName Passes the name for the locked PE node
- * @return int Returns the GID for the funcCell node
+ * @return void
  */
-int findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs);
+void findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs);
 
 /**
  * For the given outputPin (signal), finds the associated FunCell node from the device model.

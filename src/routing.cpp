@@ -48,36 +48,68 @@ bool matchesPattern(const std::string& key, const std::string& gName, const std:
  * can support the operation as well must be located in specified x and y locations
  * 
  */
-int findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs){
-  
-  for (const auto& pair : gNamesInv_FuncCell) {
+void findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs){
 
-    //Get the current name for the gNode and the lock node
-    std::string gNode = pair.first;
-    std::string lockedNode = lockedNodeName;
+  suitableGIDs.clear();
 
-    // Normal string matching for lock nodes
-    if (!allowWildcardInLocking){
-      if (gNode.find(lockedNode) == std::string::npos)
-        continue;
-
-      suitableGIDs.push_back(pair.second);
-    }
-
-    // String matching when locked nodes contains a wildcard
-    if (allowWildcardInLocking){
-      //wildcard key is "*""
-      std::string key = "*";
-
-      if (matchesPattern(key, gNode, lockedNode)) {
-        suitableGIDs.push_back(pair.second);
-      }
-    }
-
-    UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
+  // Get the GID on the lock when not using wildcards
+  if (!allowWildcardInLocking){
+    int GID = gNamesInv_FuncCell[lockedNodeName];
+    suitableGIDs.push_back(GID);
   }
 
-  return -1;
+  if (allowWildcardInLocking){
+    //wildcard key is "*""
+    std::string key = "*";
+    if (!boost::algorithm::contains(lockedNodeName, key)){
+      int GID = gNamesInv_FuncCell[lockedNodeName];
+      suitableGIDs.push_back(GID);
+    } else {
+      for (const auto& pair : gNamesInv_FuncCell) {
+        //Get the current name for the gNode and the lock node
+        std::string gNode = pair.first;
+        std::string lockedNode = lockedNodeName;
+        
+        // String matching when locked nodes contains a wildcard
+        if (allowWildcardInLocking){
+          if (matchesPattern(key, gNode, lockedNode)) {
+            suitableGIDs.push_back(pair.second);
+          }
+        }
+        UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
+      }
+    }
+  }
+
+  
+  // for (const auto& pair : gNamesInv_FuncCell) {
+
+  //   //Get the current name for the gNode and the lock node
+  //   std::string gNode = pair.first;
+  //   std::string lockedNode = lockedNodeName;
+
+  //   // Normal string matching for lock nodes
+  //   if (!allowWildcardInLocking){
+  //     if (gNode.find(lockedNode) == std::string::npos)
+  //       continue;
+
+  //     suitableGIDs.push_back(pair.second);
+  //   }
+
+  //   // String matching when locked nodes contains a wildcard
+  //   if (allowWildcardInLocking){
+  //     //wildcard key is "*""
+  //     std::string key = "*";
+
+  //     if (matchesPattern(key, gNode, lockedNode)) {
+  //       suitableGIDs.push_back(pair.second);
+  //     }
+  //   }
+
+  //   UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
+  // }
+
+  return;
 }
 
 
