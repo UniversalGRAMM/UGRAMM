@@ -1,0 +1,70 @@
+---------------------Generating device model using external script:---------------------
+cd scripts && ./device_model_gen.py -NR 8 -NC 8 -Arch RIKEN && cd ..
+====================================================
+============ Universal GRAMM (UGRAMM) ==============
+======= helper script: Device Model Generator ======
+====================================================
+
+Generating device model for the following CGRA configuration: 
+> Arch: RIKEN
+> NR: 8
+> NC: 8
+Creating RIKEN architecture!!
+
+
+pragma for the device model: 
+
+ /* ------- Device model pragma ------- 
+[SupportedOps] = {ALU, FADD, FSUB, FMUL, FDIV}; 
+[SupportedOps] = {MemPort, INPUT, OUTPUT}; 
+[SupportedOps] = {Constant, CONST}; 
+*/
+
+ 
+ 
+---------------------Executing UGRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------
+make && ./UGRAMM --seed 16 --verbose_level 0 --dfile scripts/riken_8_8.dot --afile Kernels/Conv_Balance/conv_nounroll_Balance.dot --config config.json --drc_verbose_level 1
+make: 'UGRAMM' is up to date.
+[2024-10-18 20:02:16.735] [UGRAMM] [info] Parsed JSON file {"lock-nodes":["FMUL_9::pe.w32.c4.r6.alu","FMUL_11::pe.w32.c4.r4.alu","FMUL_13::*r4.alu"],"skip-placement":["Constant"]} 
+[2024-10-18 20:02:16.735] [UGRAMM] [info] Normalized JSON {"LOCK-NODES":["FMUL_9::PE.W32.C4.R6.ALU","FMUL_11::PE.W32.C4.R4.ALU","FMUL_13::*R4.ALU"],"SKIP-PLACEMENT":["CONSTANT"]} 
+[2024-10-18 20:02:16.735] [UGRAMM] [info] Parsed Device-Model Pragma: 
+[ALU] :: ALU :: FADD :: FSUB :: FMUL :: FDIV
+[CONSTANT] :: CONSTANT :: CONST
+[MEMPORT] :: MEMPORT :: INPUT :: OUTPUT
+[2024-10-18 20:02:16.777] [UGRAMM] [info] Checking compatibility of SupportedOps of [ALU]
+[2024-10-18 20:02:16.777] [UGRAMM] [info] [PASSED] The token FADD found in ALU
+[2024-10-18 20:02:16.777] [UGRAMM] [info] [PASSED] The token FMUL found in ALU
+[2024-10-18 20:02:16.777] [UGRAMM] [info] Checking compatibility of SupportedOps of [CONSTANT]
+[2024-10-18 20:02:16.777] [UGRAMM] [info] [PASSED] The token CONST found in CONSTANT
+[2024-10-18 20:02:16.777] [UGRAMM] [info] Checking compatibility of SupportedOps of [MEMPORT]
+[2024-10-18 20:02:16.777] [UGRAMM] [info] [PASSED] The token INPUT found in MEMPORT
+[2024-10-18 20:02:16.777] [UGRAMM] [info] [PASSED] The token OUTPUT found in MEMPORT
+[2024-10-18 20:02:16.778] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_27|float32=5.00} 
+[2024-10-18 20:02:16.778] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_28|float32=13.00} 
+[2024-10-18 20:02:16.778] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_29|float32=9.00} 
+[2024-10-18 20:02:16.778] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_30|float32=11.00} 
+[2024-10-18 20:02:16.778] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_31|float32=3.00} 
+[2024-10-18 20:02:16.778] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_32|float32=15.00} 
+[2024-10-18 20:02:16.778] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_33|float32=17.00} 
+[2024-10-18 20:02:16.778] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_34|float32=7.00} 
+[2024-10-18 20:02:16.778] [UGRAMM] [info] [H] Ignoring placement for application node :: {Const_35|float32=19.00} 
+[2024-10-18 20:02:16.779] [UGRAMM] [info] [Locking] [H] name FMUL_11 :: applicationOpcode FMUL :: GNode Lock PE.W32.C4.R4.ALU
+[2024-10-18 20:02:16.779] [UGRAMM] [info] [Locking] [H] name FMUL_13 :: applicationOpcode FMUL :: GNode Lock *R4.ALU
+[2024-10-18 20:02:16.779] [UGRAMM] [info] [Locking] [H] name FMUL_9 :: applicationOpcode FMUL :: GNode Lock PE.W32.C4.R6.ALU
+[2024-10-18 20:02:16.779] [DRC Checks] [info] --------------------------------------------------
+[2024-10-18 20:02:16.779] [DRC Checks] [info] Executing DRC Rules Check
+[2024-10-18 20:02:16.779] [DRC Checks] [info] --------------------------------------------------
+[2024-10-18 20:02:16.981] [DRC Checks] [info] --------------------------------------------------
+[2024-10-18 20:02:16.981] [DRC Checks] [info] DRC Passed --- Continueing to UGRAMM Mapping
+[2024-10-18 20:02:16.981] [DRC Checks] [info] --------------------------------------------------
+[2024-10-18 20:02:16.981] [UGRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 1
+[2024-10-18 20:02:17.804] [UGRAMM] [info] TOTAL OVERUSE: 12
+[2024-10-18 20:02:17.804] [UGRAMM] [info] ***** BEGINNING OUTER WHILE LOOP ***** ITER 2
+ 
+ 
+---------------------Converting the ordered-mapped  positioned_dot_output.dot file into positioned_dot_output.png:---------------------
+neato -Tpng positioned_dot_output.dot -o positioned_dot_output.png
+ 
+ 
+---------------------Converting the unordered-mapped  unpositioned_dot_output.dot file into unpositioned_dot_output.png:---------------------
+neato -Tpng unpositioned_dot_output.dot -o unpositioned_dot_output.png

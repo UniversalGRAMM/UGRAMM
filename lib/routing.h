@@ -13,6 +13,7 @@
 #include <fstream>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graphviz.hpp>
@@ -29,16 +30,27 @@
 //-------------------------------------------------------------------//
 
 /**
- * Checks whether the current opcode required by the application node is supported by the device model node.
- * 
- * This function determines if the opcode needed by the application node (represented by `hOpcode`)
- * is compatible with or supported by the device model node type (represented by `gType`).
- * 
- * @param gType The type of the device model node. [ALU, MemPort etc..]
- * @param hOpcode The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT]
- * @return bool Returns true if the opcode is supported by the device model node, false otherwise.
+ * This function enables wildcard naming for the locked. 
+ *
+ * It breaks the provided lock Name string into substrings based on a key. Once a list of 
+ * substrings have been created, it checks in the gNamesInv map to see if all substring is 
+ * present within a gName.
+ *
+ * @param key a char used to split the string into substrings
+ * @param gName name of node in the device model graph
+ * @param lockName name of the locked name with wildcard included
+ * @return bool Returns true if all of the substrings of the locked name are found in gName, false otherwise.
  */
-bool compatibilityCheck(const std::string &gType, const std::string &hOpcode);
+bool matchesPattern(const std::string& key, const std::string& gName, const std::string& lockName);
+
+/**
+ * This function gets the GID for the the funcCell node in the device model graph that
+ * meets the the lockedNodeName
+ * 
+ * @param lockedNodeName Passes the name for the locked PE node
+ * @return void
+ */
+void findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs);
 
 /**
  * For the given outputPin (signal), finds the associated FunCell node from the device model.
@@ -137,7 +149,7 @@ int cmpfunc(const void *a, const void *b);
  * @param list Pointer to the integer array describing the ordering of the vertices of H graph.
  * @param n The number of elements/vertices in the H graph
  */
-void sortList(int *list, int n);
+void sortList(int list[], int n, std::map<int, NodeConfig> *hConfig);
 
 //-------------------------------------------------------------------//
 //-------------------- [Routing] Main function ----------------------//

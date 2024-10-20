@@ -12,6 +12,7 @@
 #include <fstream>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graphviz.hpp>
@@ -33,11 +34,14 @@
 //-------------------------------------------------------------------//
 //------------------------ GRAMM Configuration ----------------------//
 #define MAX_DIST 10000000
-#define RIKEN 1                 //Defining the architecture type (1 --> Riken, 0 --> Adres)
-#define DEBUG 0                 //For enbaling the print-statements 
-#define computeTopoEnable 0     //Compute topological order and sort the graph based on it while finding the minor.
+#define RIKEN 1                   //Defining the architecture type (1 --> Riken, 0 --> Adres)
+#define DEBUG 0                   //For enbaling the print-statements 
+#define computeTopoEnable 0       //Compute topological order and sort the graph based on it while finding the minor.
 #define maxIterations 39
-#define NOT_PLACED -1           //For InvUsers
+#define NOT_PLACED -1             //For InvUsers
+#define sortAlgorithm 1           //Randomly sorting the H-graph nodes either with the sort or qsort algorithms (1 --> use Sort algorithm, 0 --> qSort algorithm)
+#define skipFullyLockedNodes 1    //Skip fully locked nodes when mapping application nodes that are not locked (1 --> Skip Fully Locked Nodes, 0 --> otherwise)
+#define allowWildcardInLocking 0  //Allow wildcard in locking names. Wild card is defined as "*" (1 --> allow wildcard in locking name, 0 --> don't allow wildcard in locking name)
 //-------------------------------------------------------------------//
 
 //Struct for defining the node configuration in hConfig and gConfig data-structures:
@@ -45,12 +49,13 @@ struct NodeConfig {
     // For [G] --> Device Model Graph
     std::string Cell;          //Cell-type --> FuncCell, RouteCell, PinCell
     std::string Type;          //Node-Type --> io, alu, memport....
-    int Latency = 0;           //Optional            
+    int Latency = 0;           //Optional  
+    bool gLocked = false;              //True if the G is locked for a hNode; False otherwise        
 
     // For [H] --> Application Graph
     std::string Opcode;        //OpcodeType --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
     std::string pinName;       //Load pin of the PinCell node --> inPinA, inPinB
-    std::pair<int, int> Location = {0,0}; //Optional  
+    std::string LockGNode;     //Contains the name of the G Node for locking
 };
 
 //Struct for defining the expected attributes defined in the h and g graph:
@@ -59,8 +64,7 @@ struct DotVertex {
     std::string H_Name;       //[Required] Contains name of the operation in Application graph (ex: Load_0)
     std::string H_Opcode;     //[Required] Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
     std::string H_Latency;    //[Optional] Contains the latency of the operation
-    std::string H_PlacementX; //[Optional] Contains the placement location of X
-    std::string H_PlacementY; //[Optional] Contains the placement location of Y
+    std::string H_LockGNode;  //[Optional] Contains the name of the G Node for locking
 
     // For [G] --> Device Model Graph
     std::string G_Name;       //[Required] Contains the unique name of the cell in the device model graph.
@@ -101,14 +105,17 @@ struct RoutingTree {
 };
 
 // Routing related variables:
-extern std::vector<RoutingTree> *Trees;      // routing trees for every node in H
-extern std::vector<std::list<int>> *Users;   // for every node in device model G track its users
-extern std::map<int, int> invUsers;          // InvUsers, key = hID, value = current_mapped gID   
-extern std::vector<int> *HistoryCosts;       // for history of congestion in PathFinder
+extern std::vector<RoutingTree> *Trees;                 // routing trees for every node in H
+extern std::vector<std::list<int>> *Users;              // for every node in device model G track its users
+extern std::map<int, int> invUsers;                     // InvUsers, key = hID, value = current_mapped gID   
+extern std::vector<int> *HistoryCosts;                  // for history of congestion in PathFinder
 extern std::vector<int> *TraceBack;          
-extern std::vector<int> *TopoOrder;          // NOT USED: for topological order
-extern std::map<int, std::string> hNames;    //Map for storing the unique names of Application graph
-extern std::map<int, std::string> gNames;    //Map for storing the unique names of device model graph
+extern std::vector<int> *TopoOrder;                     // NOT USED: for topological order
+extern std::map<int, std::string> hNames;               // Map for storing the unique names of Application graph
+extern std::map<std::string, int> hNamesInv;            // Inverse map for getting HID using the unique names of Application graph
+extern std::map<int, std::string> gNames;               // Map for storing the unique names of device model graph
+extern std::map<std::string, int> gNamesInv;            // Inverse map for getting GID using the unique names of device model graph
+extern std::map<std::string, int> gNamesInv_FuncCell;   // Inverse map for getting GID using the unique names of device model graph. Map only funcCell in gNames
 extern std::bitset<100000> explored;
 
 //Pathefinder cost parameters:
@@ -117,6 +124,7 @@ extern float HFac;  //History cost factor
 
 //Logger variable:
 extern std::shared_ptr<spdlog::logger>  UGRAMM;
+extern std::shared_ptr<spdlog::logger> drcLogger;
 
 extern std::vector<std::string> inPin;
 extern std::vector<std::string> outPin;

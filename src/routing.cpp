@@ -13,29 +13,105 @@
 //-------------------------------------------------------------------//
 
 /*
- * Checks whether the current opcode required by the application node is supported by the device model node.
- * 
- * This function determines if the opcode needed by the application node (represented by `hOpcode`)
- * is compatible with or supported by the device model node type (represented by `gType`).
+ * This function enables wildcard naming for the locked. 
+ *
+ * It breaks the provided lock Name string into substrings based on a key. Once a list of 
+ * substrings have been created, it checks in the gNamesInv map to see if all substring is 
+ * present within a gName.
 */
-bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
-{
-  // For nodes such as RouteCell, PinCell the ugrammConfig array will be empty.
-  // Pragma array's are only parsed for the FuncCell types.
-  if (ugrammConfig[gType].size() == 0)
-    return false;
+bool matchesPattern(const std::string& key, const std::string& gName, const std::string& lockName) {
+    size_t gNamePos = 0;  // Current position in the gName
+    size_t lockNamePos = 0;  // Current position in the lockName
 
-  // Finding Opcode required by the application graph supported by the device model or not.
-  for (const auto pair : ugrammConfig[gType])
-  {
-    if (pair == hOpcode)
-    {
-      UGRAMM->debug("{} node from device model supports {} Opcode", gType, hOpcode);
-      return true;
+    UGRAMM->trace("\t[Matches Pattern - Locking] key {} :: lockNode {} :: gNode {}", key, lockName, gName);
+
+    while (lockNamePos < lockName.size()) {
+        size_t nextKey = lockName.find(key, lockNamePos);
+        std::string part = lockName.substr(lockNamePos, nextKey - lockNamePos);  // Extract the part between keys
+        
+        if (!part.empty()) {
+            gNamePos = gName.find(part, gNamePos);  // Find the part in the gName starting from 'pos'
+            if (gNamePos == std::string::npos) return false;  // If part not found, return false
+            gNamePos += part.size();  // Move position past the matched part
+        }
+
+        if (nextKey == std::string::npos) break;  // If no more keys in the lockName, we're done
+        lockNamePos = nextKey + 1;  // Move lockName position past keys
+    }
+
+    return true;
+}
+
+/*
+ * This function gets the GID for the the funcCell node in the device model graph that
+ * meets the locking requirements. That is, the funcCell node must have a type that
+ * can support the operation as well must be located in specified x and y locations
+ * 
+ */
+void findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs){
+
+  suitableGIDs.clear();
+
+  // Get the GID on the lock when not using wildcards
+  if (!allowWildcardInLocking){
+    int GID = gNamesInv_FuncCell[lockedNodeName];
+    suitableGIDs.push_back(GID);
+  }
+
+  if (allowWildcardInLocking){
+    //wildcard key is "*""
+    std::string key = "*";
+    if (!boost::algorithm::contains(lockedNodeName, key)){
+      int GID = gNamesInv_FuncCell[lockedNodeName];
+      suitableGIDs.push_back(GID);
+    } else {
+      for (const auto& pair : gNamesInv_FuncCell) {
+        //Get the current name for the gNode and the lock node
+        std::string gNode = pair.first;
+        std::string lockedNode = lockedNodeName;
+        
+        // String matching when locked nodes contains a wildcard
+        if (allowWildcardInLocking){
+          if (matchesPattern(key, gNode, lockedNode)) {
+            suitableGIDs.push_back(pair.second);
+          }
+        }
+        UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
+      }
     }
   }
-  return false;
+
+  
+  // for (const auto& pair : gNamesInv_FuncCell) {
+
+  //   //Get the current name for the gNode and the lock node
+  //   std::string gNode = pair.first;
+  //   std::string lockedNode = lockedNodeName;
+
+  //   // Normal string matching for lock nodes
+  //   if (!allowWildcardInLocking){
+  //     if (gNode.find(lockedNode) == std::string::npos)
+  //       continue;
+
+  //     suitableGIDs.push_back(pair.second);
+  //   }
+
+  //   // String matching when locked nodes contains a wildcard
+  //   if (allowWildcardInLocking){
+  //     //wildcard key is "*""
+  //     std::string key = "*";
+
+  //     if (matchesPattern(key, gNode, lockedNode)) {
+  //       suitableGIDs.push_back(pair.second);
+  //     }
+  //   }
+
+  //   UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
+  // }
+
+  return;
 }
+
 
 /*
  * For the given outputPin (signal), finds the associated FuncCell node from the device model.
@@ -206,12 +282,55 @@ int cmpfunc(const void *a, const void *b)
   return ret;
 }
 
+
+struct CustomComparator {
+    std::map<int, NodeConfig>* hConfig;  // Pointer to the graph for comparison
+
+    // Constructor to initialize the graph pointer
+    CustomComparator(std::map<int, NodeConfig>* graphConfig) : hConfig(graphConfig) {}
+
+    // Overload operator() to behave like a comparison function for std::sort
+    bool operator()(int aI, int bI) const {
+        // // Get the vertex name property using Boost's get method
+        // auto vertexNameMap = get(vertex_name, *H);
+        int ret;
+
+        //------- Sorting the nodes with priority constraints ------------//
+        //------- Locking constraints 
+        bool has_aI_LockGNode = (!(*hConfig)[aI].LockGNode.empty()); //&& ((*hConfig)[aI].Location.second != -1);
+        bool has_bI_LockGNode = (!(*hConfig)[bI].LockGNode.empty()); //&& ((*hConfig)[bI].Location.second != -1);
+
+        if (has_aI_LockGNode || has_bI_LockGNode){
+          if (has_aI_LockGNode)
+            return true;
+          else
+            return false;
+        }
+
+        //------- Randomly sorting the remaining non-priority nodes ------------//
+        ret = ((*Trees)[bI].nodes.size() - (*Trees)[aI].nodes.size());
+        if (ret == 0)
+          ret = (rand() % 3 - 1);
+
+
+
+        if (ret == -1){
+          return true;
+        } else {
+          return rand() % 2;
+        }
+    }
+};
+
 /**
  * Sorting the nodes of H according to the size (number of vertices) of their vertex model
 */ 
-void sortList(int *list, int n)
+void sortList(int list[], int n, std::map<int, NodeConfig> *hConfig)
 {
-  qsort(list, n, sizeof(int), cmpfunc);
+  if (!sortAlgorithm)
+    qsort(list, n, sizeof(int), cmpfunc);
+   else
+    std::sort(list, list+n, CustomComparator(hConfig));
 }
 
 //-------------------------------------------------------------------//
@@ -473,7 +592,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     int driverOutPin = -1;
 
     //Finding the outputPin based on attribute given in the benchmark:
-    std::string driverPinName = boost::get(&EdgeProperty::H_DriverPin, *H, *eo);
+    std::string driverPinName = boost::to_upper_copy(boost::get(&EdgeProperty::H_DriverPin, *H, *eo));
     vertex_descriptor driverD = vertex(driverFunCell, *G);
     out_edge_iterator eoY, eoY_end;
     boost::tie(eoY, eoY_end) = out_edges(driverD, *G);
@@ -508,7 +627,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     int loadInPin = -1;
 
     //Finding the inputPin based on attribute given in the benchmark:
-    std::string loadPinName = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
+    std::string loadPinName = boost::to_upper_copy(boost::get(&EdgeProperty::H_LoadPin, *H, *eo));
     vertex_descriptor loadD = vertex(loadFunCell, *G);
     in_edge_iterator eiL, eiL_end;
     boost::tie(eiL, eiL_end) = in_edges(loadD, *G);

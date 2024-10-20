@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <boost/graph/graph_traits.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/property_map/property_map.hpp>
@@ -95,6 +96,17 @@ std::string readCommentSection(std::ifstream &inputFile);
 bool skipPlacement(std::string hOpcode, json& jsonParsed);
 
 /**
+ * Checks whether locking is required for the given hNamed based on the information given in the JSON.
+ * In JSON, we define the locking code as "hName::gName"
+ *
+ * @param HID Current HID of the application graph 
+ * @param jsonParsed Reference to the parsed JSON object containing node type information.
+ * @param jsonLockNode Retrieved full string of the lock node from the JSON file only is a lock exist for a specific node in application graph
+ * @return bool Returns true if locking is required, false otherwise.
+*/ 
+bool needLocking(int HID, json &jsonParsed, std::string& jsonLockNode);
+
+/**
  * Parses PRAGMA vectors from the comment section of the device model graph.
  * 
  * This function extracts and parses vectors of strings associated with the given keyword 
@@ -132,6 +144,18 @@ void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string,
  * @param ugrammConfig Reference to the map where PRAGMA directives will be stored.
  */
 void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &ugrammConfig);
+
+/**
+ * Checks whether the current opcode required by the application node is supported by the device model node.
+ * 
+ * This function determines if the opcode needed by the application node (represented by `hOpcode`)
+ * is compatible with or supported by the device model node type (represented by `gType`).
+ * 
+ * @param gType The type of the device model node. [ALU, MemPort etc..]
+ * @param hOpcode The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT]
+ * @return bool Returns true if the opcode is supported by the device model node, false otherwise.
+ */
+bool compatibilityCheck(const std::string &gType, const std::string &hOpcode);
 
 
 //------------------------------------------------------------------------------------//
@@ -227,7 +251,8 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig);
  * 
  * @param H Pointer to the directed graph representing the application graph.
  * @param hConfig Pointer to the map where node attributes will be stored.
+ * @param gConfig Pointer to the map where node attributes will be stored.
  */
-void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig);
+void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
 
 #endif
