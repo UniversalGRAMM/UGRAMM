@@ -1,15 +1,33 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,177,150,202"/>
-<area shape="rect" id="Node000001" href="$structdetail_1_1is__range___3_01T_00_01void_01_4.html" title=" " alt="" coords="226,5,348,46"/>
-<area shape="poly" id="edge140_Node000000_Node000001" title=" " alt="" coords="94,162,137,110,165,81,196,57,224,42,227,46,199,61,169,85,141,113,98,166"/>
-<area shape="rect" id="Node000002" href="$structdetail_1_1is__same__arithmetic__type.html" title=" " alt="" coords="202,71,373,111"/>
-<area shape="poly" id="edge141_Node000000_Node000002" title=" " alt="" coords="112,167,197,122,226,109,228,114,199,127,115,171"/>
-<area shape="rect" id="Node000003" href="$structdetail_1_1range__format__kind__.html" title=" " alt="" coords="220,136,354,177"/>
-<area shape="poly" id="edge142_Node000000_Node000003" title=" " alt="" coords="165,173,219,164,220,170,166,178"/>
-<area shape="rect" id="Node000004" href="$structdetail_1_1type__constant.html" title=" " alt="" coords="218,201,357,242"/>
-<area shape="poly" id="edge143_Node000000_Node000004" title=" " alt="" coords="166,200,217,208,217,214,165,206"/>
-<area shape="rect" id="Node000005" href="$structspdlog_1_1is__convertible__to__any__format__string.html" title=" " alt="" coords="198,267,377,307"/>
-<area shape="poly" id="edge144_Node000000_Node000005" title=" " alt="" coords="116,208,199,251,228,264,226,268,197,256,113,213"/>
-<area shape="rect" id="Node000006" href="$structspdlog_1_1is__convertible__to__basic__format__string.html" title=" " alt="" coords="207,331,368,387"/>
-<area shape="poly" id="edge145_Node000000_Node000006" title=" " alt="" coords="99,213,142,265,169,292,199,317,217,328,215,333,196,321,166,296,138,268,95,217"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,497,110,522"/>
+<area shape="rect" id="Node000001" href="$structdetail_1_1has__const__begin__end.html" title=" " alt="" coords="181,5,337,46"/>
+<area shape="poly" id="edge125_Node000000_Node000001" title=" " alt="" coords="59,481,69,387,89,260,117,139,135,91,156,57,179,40,182,44,160,61,140,93,122,140,94,261,75,387,64,482"/>
+<area shape="rect" id="Node000002" href="$structdetail_1_1has__flip.html" title=" " alt="" coords="196,71,322,111"/>
+<area shape="poly" id="edge126_Node000000_Node000002" title=" " alt="" coords="60,481,73,398,93,292,121,190,138,150,156,123,174,108,195,99,197,103,177,113,160,126,142,153,126,192,98,293,78,399,65,481"/>
+<area shape="rect" id="Node000003" href="$structdetail_1_1has__isfinite.html" title=" " alt="" coords="197,136,320,177"/>
+<area shape="poly" id="edge127_Node000000_Node000003" title=" " alt="" coords="57,481,61,420,76,342,89,300,106,259,128,221,156,186,175,172,196,163,198,168,177,177,160,190,132,224,111,261,94,302,81,343,67,421,62,481"/>
+<area shape="rect" id="Node000004" href="$structdetail_1_1has__member__data__tm__gmtoff.html" title=" " alt="" coords="188,200,330,256"/>
+<area shape="poly" id="edge128_Node000000_Node000004" title=" " alt="" coords="60,481,70,435,88,378,116,319,134,291,156,266,186,246,189,250,159,270,139,294,121,322,93,380,76,437,66,482"/>
+<area shape="rect" id="Node000005" href="$structdetail_1_1has__member__data__tm__zone.html" title=" " alt="" coords="158,280,360,321"/>
+<area shape="poly" id="edge129_Node000000_Node000005" title=" " alt="" coords="65,481,77,446,97,406,123,365,156,330,173,319,176,323,159,334,127,369,101,409,82,449,70,483"/>
+<area shape="rect" id="Node000006" href="$structdetail_1_1has__member__fn__begin__end__t.html" title=" " alt="" coords="189,344,328,400"/>
+<area shape="poly" id="edge130_Node000000_Node000006" title=" " alt="" coords="77,483,112,446,156,410,187,393,190,398,159,415,116,450,81,487"/>
+<area shape="rect" id="Node000007" href="$structdetail_1_1has__mutable__begin__end.html" title=" " alt="" coords="177,424,340,465"/>
+<area shape="poly" id="edge131_Node000000_Node000007" title=" " alt="" coords="113,489,193,463,195,468,115,494"/>
+<area shape="rect" id="Node000008" href="$structdetail_1_1is__back__insert__iterator.html" title=" " alt="" coords="188,489,330,530"/>
+<area shape="poly" id="edge132_Node000000_Node000008" title=" " alt="" coords="125,507,187,507,187,512,125,512"/>
+<area shape="rect" id="Node000009" href="$structdetail_1_1is__named__arg.html" title=" " alt="" coords="174,554,344,580"/>
+<area shape="poly" id="edge133_Node000000_Node000009" title=" " alt="" coords="113,525,158,539,203,551,201,556,157,544,111,530"/>
+<area shape="rect" id="Node000010" href="$structdetail_1_1is__output__iterator.html" title=" " alt="" coords="180,604,338,645"/>
+<area shape="poly" id="edge134_Node000000_Node000010" title=" " alt="" coords="83,531,117,562,159,590,183,601,180,606,156,595,114,566,80,535"/>
+<area shape="rect" id="Node000011" href="$structdetail_1_1is__range__.html" title=" " alt="" coords="198,669,320,710"/>
+<area shape="poly" id="edge135_Node000000_Node000011" title=" " alt="" coords="73,535,106,595,130,627,159,654,199,674,196,679,156,659,126,631,102,598,68,538"/>
+<area shape="rect" id="Node000012" href="$structdetail_1_1is__reference__wrapper.html" title=" " alt="" coords="194,735,324,775"/>
+<area shape="poly" id="edge136_Node000000_Node000012" title=" " alt="" coords="67,537,78,578,96,627,123,677,159,720,176,731,195,740,193,745,173,736,156,724,119,680,91,629,73,579,62,538"/>
+<area shape="rect" id="Node000013" href="$structdetail_1_1is__statically__named__arg.html" title=" " alt="" coords="196,800,322,841"/>
+<area shape="poly" id="edge137_Node000000_Node000013" title=" " alt="" coords="64,538,71,590,87,656,116,725,136,757,159,785,176,798,196,807,194,811,174,802,156,789,131,760,111,728,82,658,66,591,58,538"/>
+<area shape="rect" id="Node000014" href="$structis__char.html" title=" " alt="" coords="212,865,306,890"/>
+<area shape="poly" id="edge138_Node000000_Node000014" title=" " alt="" coords="61,538,64,603,77,687,89,731,107,775,130,815,159,850,184,866,213,873,211,878,182,871,156,854,126,818,102,777,84,733,72,688,59,603,56,538"/>
+<area shape="rect" id="Node000015" href="$structis__contiguous.html" title=" " alt="" coords="193,914,324,940"/>
+<area shape="poly" id="edge139_Node000000_Node000015" title=" " alt="" coords="65,538,77,622,97,731,125,835,141,874,160,901,175,912,194,920,192,925,173,917,156,905,137,877,119,836,91,732,71,623,60,538"/>
 </map>

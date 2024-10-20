@@ -39,5 +39,6 @@ var searchData=
   ['custom_5fflag_5fformatter_36',['custom_flag_formatter',['../classspdlog_1_1custom__flag__formatter.html',1,'spdlog']]],
   ['custom_5fvalue_37',['custom_value',['../structdetail_1_1custom__value.html',1,'detail']]],
   ['custom_5fvalue_3c_20basic_5fformat_5fcontext_20_3e_38',['custom_value&lt; basic_format_context &gt;',['../structdetail_1_1custom__value.html',1,'detail']]],
-  ['custom_5fvalue_3c_20basic_5fprintf_5fcontext_20_3e_39',['custom_value&lt; basic_printf_context &gt;',['../structdetail_1_1custom__value.html',1,'detail']]]
+  ['custom_5fvalue_3c_20basic_5fprintf_5fcontext_20_3e_39',['custom_value&lt; basic_printf_context &gt;',['../structdetail_1_1custom__value.html',1,'detail']]],
+  ['customcomparator_40',['CustomComparator',['../structCustomComparator.html',1,'']]]
 ];
