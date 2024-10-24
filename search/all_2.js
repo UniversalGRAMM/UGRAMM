@@ -37,14 +37,13 @@ var searchData=
   ['conjunction_3c_20p1_2c_20pn_2e_2e_2e_20_3e_34',['conjunction&lt; P1, Pn... &gt;',['../structconjunction_3_01P1_00_01Pn_8_8_8_01_4.html',1,'']]],
   ['console_5fmutex_35',['console_mutex',['../structspdlog_1_1details_1_1console__mutex.html',1,'spdlog::details']]],
   ['console_5fnullmutex_36',['console_nullmutex',['../structspdlog_1_1details_1_1console__nullmutex.html',1,'spdlog::details']]],
-  ['conversion_20script_37',['Benchmarks conversion script',['../md_scripts_2README.html#autotoc_md4',1,'']]],
-  ['count_5ffractional_5fdigits_38',['count_fractional_digits',['../structdetail_1_1count__fractional__digits.html',1,'detail']]],
-  ['count_5ffractional_5fdigits_3c_20num_2c_20den_2c_20n_2c_20false_20_3e_39',['count_fractional_digits&lt; Num, Den, N, false &gt;',['../structdetail_1_1count__fractional__digits_3_01Num_00_01Den_00_01N_00_01false_01_4.html',1,'detail']]],
-  ['counting_5fbuffer_40',['counting_buffer',['../classdetail_1_1counting__buffer.html',1,'detail']]],
-  ['counting_5fiterator_41',['counting_iterator',['../classdetail_1_1counting__iterator.html',1,'detail']]],
-  ['custom_5fflag_5fformatter_42',['custom_flag_formatter',['../classspdlog_1_1custom__flag__formatter.html',1,'spdlog']]],
-  ['custom_5fvalue_43',['custom_value',['../structdetail_1_1custom__value.html',1,'detail']]],
-  ['custom_5fvalue_3c_20basic_5fformat_5fcontext_20_3e_44',['custom_value&lt; basic_format_context &gt;',['../structdetail_1_1custom__value.html',1,'detail']]],
-  ['custom_5fvalue_3c_20basic_5fprintf_5fcontext_20_3e_45',['custom_value&lt; basic_printf_context &gt;',['../structdetail_1_1custom__value.html',1,'detail']]],
-  ['customcomparator_46',['CustomComparator',['../structCustomComparator.html',1,'']]]
+  ['count_5ffractional_5fdigits_37',['count_fractional_digits',['../structdetail_1_1count__fractional__digits.html',1,'detail']]],
+  ['count_5ffractional_5fdigits_3c_20num_2c_20den_2c_20n_2c_20false_20_3e_38',['count_fractional_digits&lt; Num, Den, N, false &gt;',['../structdetail_1_1count__fractional__digits_3_01Num_00_01Den_00_01N_00_01false_01_4.html',1,'detail']]],
+  ['counting_5fbuffer_39',['counting_buffer',['../classdetail_1_1counting__buffer.html',1,'detail']]],
+  ['counting_5fiterator_40',['counting_iterator',['../classdetail_1_1counting__iterator.html',1,'detail']]],
+  ['custom_5fflag_5fformatter_41',['custom_flag_formatter',['../classspdlog_1_1custom__flag__formatter.html',1,'spdlog']]],
+  ['custom_5fvalue_42',['custom_value',['../structdetail_1_1custom__value.html',1,'detail']]],
+  ['custom_5fvalue_3c_20basic_5fformat_5fcontext_20_3e_43',['custom_value&lt; basic_format_context &gt;',['../structdetail_1_1custom__value.html',1,'detail']]],
+  ['custom_5fvalue_3c_20basic_5fprintf_5fcontext_20_3e_44',['custom_value&lt; basic_printf_context &gt;',['../structdetail_1_1custom__value.html',1,'detail']]],
+  ['customcomparator_45',['CustomComparator',['../structCustomComparator.html',1,'']]]
 ];

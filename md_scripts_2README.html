@@ -100,47 +100,29 @@ $(function(){ initResizable(false); });
 </li>
 </ul>
 </li>
-<li><b>application_graph_modification.py</b><ul>
-<li><b>Usage:</b></li>
-<li><b>Example:</b></li>
-<li>@HamasWaqar can you please add a small description here.</li>
+<li><b>benchmark_modification.py</b><ul>
+<li><b>Usage:</b> <code>./benchmark_modification.py [-Benchmark Path_To_Benchmark_File] [-OutputDir Path_To_Output_Kernal_Directory]</code></li>
+<li><b>Example:</b> <code>./benchmark_modification.py -Benchmark ../Kernels/Conv_Balance.dot -OutputDir ../Kernels_Modified</code></li>
+<li>Reformat the application kernels provided by CGRA-ME into dot files format that is supported by UGRAMM</li>
+<li>CGRA-ME kernels are formatted using DOT graphs. However, these kernels include both node and edge attributes that are not supported by UGRAMM. A detailed list of these differences is provided below:<ul>
+<li>Operand Attribute: CGRA-ME kernels define node pins as PinA, PinC, or Any2Pins, stored within the Operand attribute. However, UGRAMM requires more specificity in distinguishing between load and driver pins. Thus, the Operand attribute is replaced by Driver and Load attributes. Additionally, UGRAMM does not support the concept of Any2Pins, so each Driver and Load attribute must be assigned specific supported pins or a vector of supported pins.</li>
+<li>Shape Attribute: CGRA-ME kernels use shape attributes primarily to assist in generating graphical outputs. This is unnecessary for UGRAMM and is therefore removed.</li>
+<li>Type Attribute: CGRA-ME kernels use the type attribute to distinguish operation nodes in the application graph. In UGRAMM, this is handled through the pragma and opcode attributes, so the type attribute is not needed and is removed. Additionally, the current CGRA-ME kernels do not include the pragma support required by UGRAMM. Therefore, this script reformats the kernels into DOT graphs compatible with UGRAMM.</li>
 </ul>
 </li>
-<li><b>benchmark_modification.py</b><ul>
-<li><b>Usage:</b></li>
-<li><b>Example:</b></li>
-<li>@HamasWaqar can you please add a small description here.</li>
+<li>Do note that this will be the <b>primary script used</b> when converting CGRA-ME supported kernels</li>
+<li>When the script is executed, the output dot file will be saved as &lt;Benchmark_File_Name&gt;.dot (ex. <code>Conv_Balance.dot</code>)</li>
 </ul>
 </li>
 <li><b>constant_duplication.py</b><ul>
-<li><b>Usage:</b></li>
-<li><b>Example:</b></li>
-<li>@HamasWaqar can you please add a small description here.</li>
+<li><b>Usage:</b> <code>./constant_duplication.py [-Benchmark Path_To_Benchmark_File] [-OutputDir Path_To_Output_Kernal_Directory]</code></li>
+<li><b>Example:</b> <code>./constant_duplication.py -Benchmark ../Kernels/Conv_Balance.dot -OutputDir ../Kernels_Modified</code></li>
+<li>Duplicate fanout constant in the application graphs.</li>
+<li>In some architectures (ex. Riken CGRA) does not support fanout constantants as they can not route a signal back to the switch block. Hence, constant duplication is required to successfully map application graph onto the device model graph.</li>
+<li>When the script is executed, the output dot file will be saved as &lt;Benchmark_File_Name&gt;.dot (ex. <code>Conv_Balance.dot</code>) </li>
 </ul>
 </li>
 </ol>
-<hr  />
-<h1><a class="anchor" id="autotoc_md4"></a>
-Benchmarks conversion script</h1>
-<p>There are two scripts used to covert the current benchmarks. There scripts are</p><ul>
-<li>benchmark_modification.py</li>
-<li>application_graph_modification.py</li>
-</ul>
-<p>Most of the benchmark currently has the "Operand" property defined at the edges of the DFG graph. This property defines the load pin the DFG. Unfortunately, this convention will not be used in the GRAMM mapper. Instead, the edges will be defined through "driver" and "load" properties. These new properties will be used to define the input and output pins in the DFG path.</p>
-<p>The main script that everyone will be using is the benchmark_modification.py. Since most benchmarks in the kernel suite has edges with "Operand" property, the benchmark_modification.py will convert the edge properties to the new convention mentioned above. In addition, some of the "Operand" property can be set as "Any2Pins", meaning that the edge can be mapped to any load pins of the PEs. This creates some confusion, so this script will automatically assign a pins while adhearing to the pins that need to be mapped to certain pins in the PE.</p>
-<p>During testing, we created some benchmarks that has the extension "_Tester", for example "conv_nounroll_Balance_Tester". These benchmarks are already formarted their edges to have the "driver" and "load" properties. The only thing is that the "load" proporty can be set to "AnyPins, meaning that the edge can be mapped to any load pins of the PEs. This creates some confusion, so the application_graph_modification.py script will automatically assign a pins while adhearing to the pins that need to be mapped to certain pins in the PE.
-
-@subsection autotoc_md5 benchmark_modification.py
-&lt;blockquote&gt;&amp;zwj;./benchmark_modification.py -Benchmark &lt;Path_To_Benchmark_File&gt; -OutputDir &lt;Path_To_Output_Kernal_Directory&gt;
-./benchmark_modification.py -Benchmark ../Kernels/Conv_Balance/conv_unroll3.dot -OutputDir ../Kernels_Modified
-&lt;/blockquote&gt;
-@subsection autotoc_md6 benchmark_modification.py
-&lt;blockquote&gt;&amp;zwj;./application_graph_modification.py -Benchmark &lt;Path_To_Benchmark_File&gt; -OutputDir &lt;Path_To_Output_Kernal_Directory&gt;
-./application_graph_modification.py -Benchmark ../Kernels/Conv_Balance/conv_nounroll_Balance_Tester_Fanout.dot -OutputDir ../Kernels_Modified
-&lt;/blockquote&gt;
-For Riken architecture, constantant can not have a fan out as they can not be routed back to the switch block. In any typical mapping, we would say that the mapping failed as the device model graph does not allow this application DFG feature. However, we have created a helper script for Riken arhcitecture that duplicated the constant nodes to give the illusion of constant fanout. One important thing to mention is that the output dot file will be called "modified_{filename}.dot". This will be fixed in the future. </p><blockquote class="doxtable">
-<p>&zwj;./constant_duplication.py -Benchmark &lt;Path_To_Benchmark_File&gt; -OutputDir &lt;Path_To_Output_Kernal_Directory&gt; ./constant_duplication.py -Benchmark ../Kernels_Modified/Conv_Balance/conv_nounroll_Balance_Tester_Fanout_Constant.dot -OutputDir ../Kernels_Modified </p>
-</blockquote>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
