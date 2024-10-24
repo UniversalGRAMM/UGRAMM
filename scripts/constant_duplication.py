@@ -37,7 +37,7 @@ def modify_application(args):
         opcode = attributes.get('opcode')
         # Currently, we are only checking if const a fanout. Can
         # be modified to have more for other functions
-        if opcode == "const" and G.out_degree(node) > 1:
+        if opcode.upper() == "CONST" and G.out_degree(node) > 1:
             print (f"Constant Found that has a fanout at node {node}")
             constFanoutNodes.append(node)
 
@@ -47,7 +47,7 @@ def modify_application(args):
         # Getting the outedges for the node in question
         outEdges = list(G.out_edges(node, data=True))
         # Creating a new driver node for all fanout outedges except for the first one
-        for u, v, properties in outEdges[1:]:
+        for u, v, properties in outEdges:
             # Getting a new Unique ID
             newNodeID = len(G.nodes) + 1
             # Moddifying the newNode name to indicate the operation and node id (ex const_36)
@@ -65,32 +65,23 @@ def modify_application(args):
 
     # Deleting all the fan out edges between the constant
     for node in constFanoutNodes:
-        u, v, properties = outEdges[0]
-        out_edges = list(G.out_edges(node))
-        G.remove_edges_from(out_edges)
-        G.add_edge(u, v, **properties)
-
-    # for node in G.nodes():
-    #     # Get the out-edges of the current node
-    #     out_edges = list(G.out_edges(node))
-        
-    #     # If the node has more than one out-edge, add it to constFanoutNodes
-    #     if len(out_edges) > 1:
-    #         constFanoutNodes.append(node)
-
-    # # Step 2: Remove out-edges of nodes in constFanoutNodes
-    # for node in constFanoutNodes:
-    #     # Get the out-edges of the current node again (after identification)
-    #     out_edges = list(G.out_edges(node))
-        
-    #     # Remove all out-edges of the node
-    #     G.remove_edges_from(out_edges)
+        G.remove_node(node)
 
 
 
     # -------------------------------------------------------
     #  Writing device model graph for Riken architecture
     # -------------------------------------------------------
+    #Pragma lines for the basic Riken benchmarks
+    pragmaComment = [
+        "/* ------- Application graph pragma -------\n",
+        "[SupportedOps] = {ALU, FADD, FMUL};\n"
+        "[SupportedOps] = {MEMPORT, INPUT, OUTPUT};\n"
+        "[SupportedOps] = {Constant, CONST};\n"
+        "*/\n"
+        "\n"
+    ]
+    
     # output_file = "modified_" + str(args.Benchmark)
     outputDir = str(args.OutputDir) + "/" + str(folderName)
 
@@ -98,8 +89,13 @@ def modify_application(args):
         os.makedirs(outputDir)
 
     os.chdir(outputDir)
-    output_file = "modified_" + str(fileName)
-    nx.nx_pydot.write_dot(G, output_file)
+    output_file = str(fileName)
+
+    with open(output_file, 'w') as f:
+        for pragma in pragmaComment:
+            f.write(pragma)
+
+        nx.nx_pydot.write_dot(G, f)
     
 # Main function for modifying the application graph for UGRAMM:
 def main(args):
