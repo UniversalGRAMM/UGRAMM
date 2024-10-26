@@ -32,7 +32,8 @@ verbose_level=0 #Hardcoded, can be run with 0 -> info : 1-> debug : 2-> trace
 # Generating device model:
 echo "---------------------Generating device model using external script:---------------------"
 echo "cd scripts && ./device_model_gen.py -NR $NR -NC $NC -Arch $Arch && cd .."
-cd scripts && ./device_model_gen.py -NR $NR -NC $NC -Arch $Arch && cd ..
+python_version=python3	#replace with python if that's the default path
+cd scripts && $python_version device_model_gen.py -NR $NR -NC $NC -Arch $Arch && cd ..
 
 # Executes UGRAMM and producing mapping result in mapping_output.dot
 echo " "

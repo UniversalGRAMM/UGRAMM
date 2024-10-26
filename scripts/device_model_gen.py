@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 #-------------------------------------------
 #  UGRAMM    :: helper script
 #  Author    :: Omkar Bhilare

@@ -1,0 +1,17 @@
+ /* ------- Application graph pragma ------- 
+[SupportedOps] = {GATE, AND};           
+[SupportedOps] = {IO, INPUT, OUTPUT};  
+*/
+strict digraph "tutorialUGRAMM" {
+
+//Node information:
+Input1 [label="Input1", opcode=INPUT];  //Input-IO node 
+Input2 [label="Input2", opcode=INPUT];  //Input-IO node 
+And1 [label="And1", opcode=AND];        //And-gate defined as GATE node
+Output1 [label="Output1", opcode=OUTPUT]; //Output-IO node
+
+//Edge information:
+Input1 -> And1  [driver="outPinA", load="inPinA"];
+Input2 -> And1  [driver="outPinA", load="inPinB"];
+And1 -> Output1  [driver="outPinA", load="inPinA"];
+}

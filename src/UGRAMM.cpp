@@ -487,18 +487,18 @@ int main(int argc, char **argv)
   std::string applicationFile; // Application Model graph file
   std::string configFile;      // Config file
   int seed_value;              // Seed number
-  int verbose_level;           // Verbosity level => [0: info], [1: debug], [2: trace]
+  int verbose_level = 0;           // Verbosity level => [0: info], [1: debug], [2: trace]
   int drc_verbose_level = 0;   // DRC Verbosity level => [0: err], [1: warn], [2: info], [3: debug]
   bool drc_disable = false;    // drc disable => default to false
 
   po::options_description desc("[UGRAMM] allowed options =");
   desc.add_options()
       ("help,h", "Print help messages")
-      ("seed", po::value<int>(&seed_value)->required(), "Seed for the run")
-      ("verbose_level", po::value<int>(&verbose_level)->required(), "0: info, 1: debug, 2: trace")
+      ("seed", po::value<int>(&seed_value), "Seed for the run")
+      ("verbose_level", po::value<int>(&verbose_level), "0: info, 1: debug, 2: trace")
       ("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file")
       ("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file")
-      ("config", po::value<std::string>(&configFile)->required(), "UGRAMM config file")
+      ("config", po::value<std::string>(&configFile), "UGRAMM config file")
       ("drc_disable", po::bool_switch(&drc_disable), "disable DRC [optional]")
       ("drc_verbose_level", po::value<int>(&drc_verbose_level), "0: err [Default], 1: warn, 2: info, 3: debug [optional]");
 
