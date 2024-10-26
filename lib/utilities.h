@@ -26,6 +26,7 @@
 #define FunCell_Visual_Enable   1
 #define PinCell_Visual_Enable   1
 #define RouteCell_Visual_Enable 0
+#define VISUAL_SCALE 3
 
 extern  std::vector<std::string> colors;        //Color code for different FunCell nodes
 extern  std::string input_pin_color;            //Pre-defined color-code for the input-pin cell

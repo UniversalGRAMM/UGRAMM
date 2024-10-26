@@ -1,0 +1,58 @@
+ /* ------- Device model pragma ------- 
+[SupportedOps] = {GATE, AND};  
+[SupportedOps] = {IO, INPUT, OUTPUT};
+*/
+strict digraph  {
+0  [G_Name="IO1.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="0", G_VisualY="3"];
+1  [G_Name="IO1", G_CellType="FuncCell", G_NodeType="IO", G_VisualX="0.75", G_VisualY="3"];
+2  [G_Name="IO1.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="1.5", G_VisualY="3"];
+
+3  [G_Name="IO2.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="0", G_VisualY="1"];
+4  [G_Name="IO2", G_CellType="FuncCell", G_NodeType="IO", G_VisualX="0.75", G_VisualY="1"];
+5  [G_Name="IO2.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="1.5", G_VisualY="1"];
+
+6 [G_Name="MUX1", G_CellType="RouteCell", G_NodeType="MUX", G_VisualX="2.5", G_VisualY="3"];
+7 [G_Name="MUX2", G_CellType="RouteCell", G_NodeType="MUX", G_VisualX="2.5", G_VisualY="1"];
+
+8  [G_Name="Gate1.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="3", G_VisualY="3"];
+9  [G_Name="Gate1.inPinB", G_CellType="PinCell", G_NodeType="IN", G_VisualX="3", G_VisualY="1"];
+10  [G_Name="Gate1", G_CellType="FuncCell", G_NodeType="GATE", G_VisualX="3.75", G_VisualY="2"];
+11  [G_Name="Gate1.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="4.5", G_VisualY="2"];
+
+12 [G_Name="REG1", G_CellType="RouteCell", G_NodeType="REG", G_VisualX="5.5", G_VisualY="2"];
+
+13  [G_Name="IO3.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="6", G_VisualY="2"];
+14  [G_Name="IO3", G_CellType="FuncCell", G_NodeType="IO", G_VisualX="6.75", G_VisualY="2"];
+15  [G_Name="IO3.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="7.5", G_VisualY="2"];
+
+
+//1st I/O layer:
+0 -> 1; //Connection of input pin to the I/O block
+1 -> 2; //Connection of I/O block to the output pin 
+
+3 -> 4; //Connection of input pin to the I/O block
+4 -> 5; //Connection of I/O block to the output pin 
+
+//Interconnect layer:
+2 -> 6;
+5 -> 6;
+
+2 -> 7;
+5 -> 7;
+
+//Gate layer:
+6 -> 8;
+7 -> 9;
+8 -> 10;
+9 -> 10;
+10 -> 11;
+
+//Reg layer:
+11 -> 12;
+
+//I/O layer:
+12 -> 13;
+13 -> 14;
+14 -> 15;
+}
+
