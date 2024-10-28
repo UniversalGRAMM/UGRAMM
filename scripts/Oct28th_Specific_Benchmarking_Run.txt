@@ -1,0 +1,1639 @@
+Found benchmark files:
+ - ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot
+ - ../Kernels/Conv_Balance/conv_nounroll_Any.dot
+ - ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot
+ - ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot
+ - ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot
+ - ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot
+ - ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot
+ - ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot
+
+Running benchmark for Any: ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot...
+Running command: ./../UGRAMM --drc_disable --seed 419988 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 1/100: Seed = 419988, Passed = True, Time = 2.3892s
+Running command: ./../UGRAMM --drc_disable --seed 835017 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 2/100: Seed = 835017, Passed = True, Time = 3.2817s
+Running command: ./../UGRAMM --drc_disable --seed 145820 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 3/100: Seed = 145820, Passed = True, Time = 3.0985s
+Running command: ./../UGRAMM --drc_disable --seed 600001 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 4/100: Seed = 600001, Passed = True, Time = 2.4561s
+Running command: ./../UGRAMM --drc_disable --seed 868471 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 5/100: Seed = 868471, Passed = True, Time = 2.5678s
+Running command: ./../UGRAMM --drc_disable --seed 218299 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 6/100: Seed = 218299, Passed = True, Time = 3.1501s
+Running command: ./../UGRAMM --drc_disable --seed 140546 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 7/100: Seed = 140546, Passed = True, Time = 2.4719s
+Running command: ./../UGRAMM --drc_disable --seed 595755 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 8/100: Seed = 595755, Passed = True, Time = 1.5974s
+Running command: ./../UGRAMM --drc_disable --seed 416966 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 9/100: Seed = 416966, Passed = True, Time = 5.0595s
+Running command: ./../UGRAMM --drc_disable --seed 584732 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 10/100: Seed = 584732, Passed = True, Time = 3.4726s
+Running command: ./../UGRAMM --drc_disable --seed 617638 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 11/100: Seed = 617638, Passed = True, Time = 2.3239s
+Running command: ./../UGRAMM --drc_disable --seed 565325 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 12/100: Seed = 565325, Passed = True, Time = 5.0395s
+Running command: ./../UGRAMM --drc_disable --seed 290951 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 13/100: Seed = 290951, Passed = True, Time = 3.3287s
+Running command: ./../UGRAMM --drc_disable --seed 112610 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 14/100: Seed = 112610, Passed = True, Time = 2.3045s
+Running command: ./../UGRAMM --drc_disable --seed 835038 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 15/100: Seed = 835038, Passed = True, Time = 3.2703s
+Running command: ./../UGRAMM --drc_disable --seed 398688 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 16/100: Seed = 398688, Passed = True, Time = 1.4564s
+Running command: ./../UGRAMM --drc_disable --seed 975284 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 17/100: Seed = 975284, Passed = True, Time = 5.1534s
+Running command: ./../UGRAMM --drc_disable --seed 824904 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 18/100: Seed = 824904, Passed = True, Time = 2.5109s
+Running command: ./../UGRAMM --drc_disable --seed 647139 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 19/100: Seed = 647139, Passed = True, Time = 1.7717s
+Running command: ./../UGRAMM --drc_disable --seed 106784 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 20/100: Seed = 106784, Passed = True, Time = 1.1381s
+Running command: ./../UGRAMM --drc_disable --seed 680339 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 21/100: Seed = 680339, Passed = True, Time = 1.1028s
+Running command: ./../UGRAMM --drc_disable --seed 70710 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 22/100: Seed = 70710, Passed = True, Time = 3.8973s
+Running command: ./../UGRAMM --drc_disable --seed 311269 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 23/100: Seed = 311269, Passed = True, Time = 3.7239s
+Running command: ./../UGRAMM --drc_disable --seed 37952 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 24/100: Seed = 37952, Passed = True, Time = 2.4070s
+Running command: ./../UGRAMM --drc_disable --seed 170421 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 25/100: Seed = 170421, Passed = True, Time = 1.0603s
+Running command: ./../UGRAMM --drc_disable --seed 687506 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 26/100: Seed = 687506, Passed = True, Time = 4.0352s
+Running command: ./../UGRAMM --drc_disable --seed 102868 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 27/100: Seed = 102868, Passed = True, Time = 1.7450s
+Running command: ./../UGRAMM --drc_disable --seed 537223 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 28/100: Seed = 537223, Passed = True, Time = 3.1366s
+Running command: ./../UGRAMM --drc_disable --seed 939007 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 29/100: Seed = 939007, Passed = True, Time = 3.2660s
+Running command: ./../UGRAMM --drc_disable --seed 424036 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 30/100: Seed = 424036, Passed = True, Time = 1.0452s
+Running command: ./../UGRAMM --drc_disable --seed 669581 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 31/100: Seed = 669581, Passed = True, Time = 1.1032s
+Running command: ./../UGRAMM --drc_disable --seed 506190 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 32/100: Seed = 506190, Passed = True, Time = 1.7568s
+Running command: ./../UGRAMM --drc_disable --seed 596620 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 33/100: Seed = 596620, Passed = True, Time = 3.7745s
+Running command: ./../UGRAMM --drc_disable --seed 595323 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 34/100: Seed = 595323, Passed = True, Time = 1.3685s
+Running command: ./../UGRAMM --drc_disable --seed 686816 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 35/100: Seed = 686816, Passed = True, Time = 4.2004s
+Running command: ./../UGRAMM --drc_disable --seed 725302 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 36/100: Seed = 725302, Passed = True, Time = 2.3955s
+Running command: ./../UGRAMM --drc_disable --seed 574584 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 37/100: Seed = 574584, Passed = True, Time = 3.3420s
+Running command: ./../UGRAMM --drc_disable --seed 397946 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 38/100: Seed = 397946, Passed = True, Time = 1.5850s
+Running command: ./../UGRAMM --drc_disable --seed 522370 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 39/100: Seed = 522370, Passed = True, Time = 11.6290s
+Running command: ./../UGRAMM --drc_disable --seed 859696 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 40/100: Seed = 859696, Passed = True, Time = 8.3286s
+Running command: ./../UGRAMM --drc_disable --seed 428202 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 41/100: Seed = 428202, Passed = True, Time = 11.7945s
+Running command: ./../UGRAMM --drc_disable --seed 958511 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 42/100: Seed = 958511, Passed = True, Time = 19.1282s
+Running command: ./../UGRAMM --drc_disable --seed 284049 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 43/100: Seed = 284049, Passed = True, Time = 8.0500s
+Running command: ./../UGRAMM --drc_disable --seed 804322 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 44/100: Seed = 804322, Passed = True, Time = 11.4564s
+Running command: ./../UGRAMM --drc_disable --seed 404631 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 45/100: Seed = 404631, Passed = True, Time = 19.1372s
+Running command: ./../UGRAMM --drc_disable --seed 467763 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 46/100: Seed = 467763, Passed = True, Time = 14.8177s
+Running command: ./../UGRAMM --drc_disable --seed 361687 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 47/100: Seed = 361687, Passed = True, Time = 8.5969s
+Running command: ./../UGRAMM --drc_disable --seed 457503 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 48/100: Seed = 457503, Passed = True, Time = 4.5579s
+Running command: ./../UGRAMM --drc_disable --seed 269615 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 49/100: Seed = 269615, Passed = True, Time = 14.0727s
+Running command: ./../UGRAMM --drc_disable --seed 130185 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 50/100: Seed = 130185, Passed = True, Time = 11.7280s
+Running command: ./../UGRAMM --drc_disable --seed 380351 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 51/100: Seed = 380351, Passed = True, Time = 14.4763s
+Running command: ./../UGRAMM --drc_disable --seed 828804 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 52/100: Seed = 828804, Passed = True, Time = 4.2332s
+Running command: ./../UGRAMM --drc_disable --seed 695744 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 53/100: Seed = 695744, Passed = True, Time = 8.1719s
+Running command: ./../UGRAMM --drc_disable --seed 3633 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 54/100: Seed = 3633, Passed = True, Time = 11.1189s
+Running command: ./../UGRAMM --drc_disable --seed 607156 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 55/100: Seed = 607156, Passed = True, Time = 8.2042s
+Running command: ./../UGRAMM --drc_disable --seed 391600 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 56/100: Seed = 391600, Passed = True, Time = 20.3259s
+Running command: ./../UGRAMM --drc_disable --seed 322318 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 57/100: Seed = 322318, Passed = True, Time = 20.3972s
+Running command: ./../UGRAMM --drc_disable --seed 761120 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 58/100: Seed = 761120, Passed = True, Time = 9.1428s
+Running command: ./../UGRAMM --drc_disable --seed 830291 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 59/100: Seed = 830291, Passed = True, Time = 7.2776s
+Running command: ./../UGRAMM --drc_disable --seed 796570 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 60/100: Seed = 796570, Passed = True, Time = 12.1195s
+Running command: ./../UGRAMM --drc_disable --seed 272699 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 61/100: Seed = 272699, Passed = True, Time = 8.4587s
+Running command: ./../UGRAMM --drc_disable --seed 979660 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 62/100: Seed = 979660, Passed = True, Time = 5.2931s
+Running command: ./../UGRAMM --drc_disable --seed 707227 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 63/100: Seed = 707227, Passed = True, Time = 12.9888s
+Running command: ./../UGRAMM --drc_disable --seed 369266 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 64/100: Seed = 369266, Passed = True, Time = 5.5241s
+Running command: ./../UGRAMM --drc_disable --seed 206210 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 65/100: Seed = 206210, Passed = True, Time = 18.8738s
+Running command: ./../UGRAMM --drc_disable --seed 668532 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 66/100: Seed = 668532, Passed = True, Time = 12.9560s
+Running command: ./../UGRAMM --drc_disable --seed 299893 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 67/100: Seed = 299893, Passed = True, Time = 5.4296s
+Running command: ./../UGRAMM --drc_disable --seed 730435 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 68/100: Seed = 730435, Passed = True, Time = 15.4009s
+Running command: ./../UGRAMM --drc_disable --seed 957372 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 69/100: Seed = 957372, Passed = True, Time = 12.6644s
+Running command: ./../UGRAMM --drc_disable --seed 222528 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 70/100: Seed = 222528, Passed = True, Time = 12.0408s
+Running command: ./../UGRAMM --drc_disable --seed 297907 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 71/100: Seed = 297907, Passed = True, Time = 19.7788s
+Running command: ./../UGRAMM --drc_disable --seed 476050 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 72/100: Seed = 476050, Passed = True, Time = 3.9468s
+Running command: ./../UGRAMM --drc_disable --seed 390304 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 73/100: Seed = 390304, Passed = True, Time = 6.3324s
+Running command: ./../UGRAMM --drc_disable --seed 217297 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 74/100: Seed = 217297, Passed = True, Time = 15.7375s
+Running command: ./../UGRAMM --drc_disable --seed 90263 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 75/100: Seed = 90263, Passed = True, Time = 20.0426s
+Running command: ./../UGRAMM --drc_disable --seed 935359 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 76/100: Seed = 935359, Passed = True, Time = 14.0678s
+Running command: ./../UGRAMM --drc_disable --seed 615774 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 77/100: Seed = 615774, Passed = True, Time = 9.6706s
+Running command: ./../UGRAMM --drc_disable --seed 985717 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 78/100: Seed = 985717, Passed = True, Time = 11.8111s
+Running command: ./../UGRAMM --drc_disable --seed 923576 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 79/100: Seed = 923576, Passed = True, Time = 21.6162s
+Running command: ./../UGRAMM --drc_disable --seed 191533 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 80/100: Seed = 191533, Passed = True, Time = 8.9357s
+Running command: ./../UGRAMM --drc_disable --seed 109496 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 81/100: Seed = 109496, Passed = True, Time = 11.9775s
+Running command: ./../UGRAMM --drc_disable --seed 822214 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 82/100: Seed = 822214, Passed = True, Time = 7.4518s
+Running command: ./../UGRAMM --drc_disable --seed 157064 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 83/100: Seed = 157064, Passed = True, Time = 4.0659s
+Running command: ./../UGRAMM --drc_disable --seed 987374 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 84/100: Seed = 987374, Passed = True, Time = 17.5721s
+Running command: ./../UGRAMM --drc_disable --seed 914210 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 85/100: Seed = 914210, Passed = True, Time = 18.1380s
+Running command: ./../UGRAMM --drc_disable --seed 572784 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 86/100: Seed = 572784, Passed = True, Time = 4.9038s
+Running command: ./../UGRAMM --drc_disable --seed 75285 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 87/100: Seed = 75285, Passed = True, Time = 4.0717s
+Running command: ./../UGRAMM --drc_disable --seed 933506 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 88/100: Seed = 933506, Passed = True, Time = 12.9209s
+Running command: ./../UGRAMM --drc_disable --seed 578676 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 89/100: Seed = 578676, Passed = True, Time = 4.4940s
+Running command: ./../UGRAMM --drc_disable --seed 505126 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 90/100: Seed = 505126, Passed = True, Time = 17.0097s
+Running command: ./../UGRAMM --drc_disable --seed 907732 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 91/100: Seed = 907732, Passed = True, Time = 4.2585s
+Running command: ./../UGRAMM --drc_disable --seed 806934 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 92/100: Seed = 806934, Passed = True, Time = 21.7468s
+Running command: ./../UGRAMM --drc_disable --seed 687298 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 93/100: Seed = 687298, Passed = True, Time = 7.5142s
+Running command: ./../UGRAMM --drc_disable --seed 767792 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 94/100: Seed = 767792, Passed = True, Time = 7.5837s
+Running command: ./../UGRAMM --drc_disable --seed 774345 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 95/100: Seed = 774345, Passed = True, Time = 13.8890s
+Running command: ./../UGRAMM --drc_disable --seed 984817 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 96/100: Seed = 984817, Passed = True, Time = 4.7457s
+Running command: ./../UGRAMM --drc_disable --seed 101133 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 97/100: Seed = 101133, Passed = True, Time = 4.7560s
+Running command: ./../UGRAMM --drc_disable --seed 68845 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 98/100: Seed = 68845, Passed = True, Time = 6.7133s
+Running command: ./../UGRAMM --drc_disable --seed 422284 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 99/100: Seed = 422284, Passed = True, Time = 13.9320s
+Running command: ./../UGRAMM --drc_disable --seed 201007 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 100/100: Seed = 201007, Passed = True, Time = 5.1022s
+
+Running benchmark for Any: ../Kernels/Conv_Balance/conv_nounroll_Any.dot...
+Running command: ./../UGRAMM --drc_disable --seed 419988 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 1/100: Seed = 419988, Passed = True, Time = 7.3340s
+Running command: ./../UGRAMM --drc_disable --seed 835017 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 2/100: Seed = 835017, Passed = True, Time = 12.8830s
+Running command: ./../UGRAMM --drc_disable --seed 145820 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 3/100: Seed = 145820, Passed = True, Time = 14.6443s
+Running command: ./../UGRAMM --drc_disable --seed 600001 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 4/100: Seed = 600001, Passed = True, Time = 9.9634s
+Running command: ./../UGRAMM --drc_disable --seed 868471 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 5/100: Seed = 868471, Passed = True, Time = 11.8661s
+Running command: ./../UGRAMM --drc_disable --seed 218299 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 6/100: Seed = 218299, Passed = True, Time = 15.3127s
+Running command: ./../UGRAMM --drc_disable --seed 140546 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 7/100: Seed = 140546, Passed = True, Time = 8.1538s
+Running command: ./../UGRAMM --drc_disable --seed 595755 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 8/100: Seed = 595755, Passed = True, Time = 4.7288s
+Running command: ./../UGRAMM --drc_disable --seed 416966 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 9/100: Seed = 416966, Passed = True, Time = 16.8187s
+Running command: ./../UGRAMM --drc_disable --seed 584732 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 10/100: Seed = 584732, Passed = True, Time = 11.2111s
+Running command: ./../UGRAMM --drc_disable --seed 617638 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 11/100: Seed = 617638, Passed = True, Time = 7.7531s
+Running command: ./../UGRAMM --drc_disable --seed 565325 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 12/100: Seed = 565325, Passed = True, Time = 16.1562s
+Running command: ./../UGRAMM --drc_disable --seed 290951 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 13/100: Seed = 290951, Passed = True, Time = 11.0283s
+Running command: ./../UGRAMM --drc_disable --seed 112610 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 14/100: Seed = 112610, Passed = True, Time = 6.5958s
+Running command: ./../UGRAMM --drc_disable --seed 835038 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 15/100: Seed = 835038, Passed = True, Time = 9.9832s
+Running command: ./../UGRAMM --drc_disable --seed 398688 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 16/100: Seed = 398688, Passed = True, Time = 3.8080s
+Running command: ./../UGRAMM --drc_disable --seed 975284 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 17/100: Seed = 975284, Passed = True, Time = 10.0853s
+Running command: ./../UGRAMM --drc_disable --seed 824904 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 18/100: Seed = 824904, Passed = True, Time = 10.5457s
+Running command: ./../UGRAMM --drc_disable --seed 647139 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 19/100: Seed = 647139, Passed = True, Time = 5.6539s
+Running command: ./../UGRAMM --drc_disable --seed 106784 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 20/100: Seed = 106784, Passed = True, Time = 4.1518s
+Running command: ./../UGRAMM --drc_disable --seed 680339 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 21/100: Seed = 680339, Passed = True, Time = 3.7895s
+Running command: ./../UGRAMM --drc_disable --seed 70710 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 22/100: Seed = 70710, Passed = True, Time = 18.3818s
+Running command: ./../UGRAMM --drc_disable --seed 311269 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 23/100: Seed = 311269, Passed = True, Time = 15.1939s
+Running command: ./../UGRAMM --drc_disable --seed 37952 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 24/100: Seed = 37952, Passed = True, Time = 11.0810s
+Running command: ./../UGRAMM --drc_disable --seed 170421 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 25/100: Seed = 170421, Passed = True, Time = 5.3890s
+Running command: ./../UGRAMM --drc_disable --seed 687506 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 26/100: Seed = 687506, Passed = True, Time = 16.4982s
+Running command: ./../UGRAMM --drc_disable --seed 102868 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 27/100: Seed = 102868, Passed = True, Time = 7.4998s
+Running command: ./../UGRAMM --drc_disable --seed 537223 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 28/100: Seed = 537223, Passed = True, Time = 12.7233s
+Running command: ./../UGRAMM --drc_disable --seed 939007 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 29/100: Seed = 939007, Passed = True, Time = 12.0949s
+Running command: ./../UGRAMM --drc_disable --seed 424036 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 30/100: Seed = 424036, Passed = True, Time = 4.0599s
+Running command: ./../UGRAMM --drc_disable --seed 669581 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 31/100: Seed = 669581, Passed = True, Time = 4.4624s
+Running command: ./../UGRAMM --drc_disable --seed 506190 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 32/100: Seed = 506190, Passed = True, Time = 8.3825s
+Running command: ./../UGRAMM --drc_disable --seed 596620 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 33/100: Seed = 596620, Passed = True, Time = 14.2972s
+Running command: ./../UGRAMM --drc_disable --seed 595323 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 34/100: Seed = 595323, Passed = True, Time = 3.4661s
+Running command: ./../UGRAMM --drc_disable --seed 686816 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 35/100: Seed = 686816, Passed = True, Time = 13.4407s
+Running command: ./../UGRAMM --drc_disable --seed 725302 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 36/100: Seed = 725302, Passed = True, Time = 6.8263s
+Running command: ./../UGRAMM --drc_disable --seed 574584 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 37/100: Seed = 574584, Passed = True, Time = 9.6287s
+Running command: ./../UGRAMM --drc_disable --seed 397946 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 38/100: Seed = 397946, Passed = True, Time = 5.2725s
+Running command: ./../UGRAMM --drc_disable --seed 522370 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 39/100: Seed = 522370, Passed = True, Time = 16.4254s
+Running command: ./../UGRAMM --drc_disable --seed 859696 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 40/100: Seed = 859696, Passed = True, Time = 6.9497s
+Running command: ./../UGRAMM --drc_disable --seed 428202 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 41/100: Seed = 428202, Passed = True, Time = 7.6641s
+Running command: ./../UGRAMM --drc_disable --seed 958511 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 42/100: Seed = 958511, Passed = True, Time = 17.2342s
+Running command: ./../UGRAMM --drc_disable --seed 284049 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 43/100: Seed = 284049, Passed = True, Time = 7.3229s
+Running command: ./../UGRAMM --drc_disable --seed 804322 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 44/100: Seed = 804322, Passed = True, Time = 7.4037s
+Running command: ./../UGRAMM --drc_disable --seed 404631 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 45/100: Seed = 404631, Passed = True, Time = 16.6191s
+Running command: ./../UGRAMM --drc_disable --seed 467763 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 46/100: Seed = 467763, Passed = True, Time = 13.3100s
+Running command: ./../UGRAMM --drc_disable --seed 361687 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 47/100: Seed = 361687, Passed = True, Time = 7.6548s
+Running command: ./../UGRAMM --drc_disable --seed 457503 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 48/100: Seed = 457503, Passed = True, Time = 4.2901s
+Running command: ./../UGRAMM --drc_disable --seed 269615 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 49/100: Seed = 269615, Passed = True, Time = 12.2082s
+Running command: ./../UGRAMM --drc_disable --seed 130185 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 50/100: Seed = 130185, Passed = True, Time = 8.0147s
+Running command: ./../UGRAMM --drc_disable --seed 380351 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 51/100: Seed = 380351, Passed = True, Time = 11.6942s
+Running command: ./../UGRAMM --drc_disable --seed 828804 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 52/100: Seed = 828804, Passed = True, Time = 4.5977s
+Running command: ./../UGRAMM --drc_disable --seed 695744 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 53/100: Seed = 695744, Passed = True, Time = 6.8018s
+Running command: ./../UGRAMM --drc_disable --seed 3633 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 54/100: Seed = 3633, Passed = True, Time = 9.0623s
+Running command: ./../UGRAMM --drc_disable --seed 607156 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 55/100: Seed = 607156, Passed = True, Time = 5.2178s
+Running command: ./../UGRAMM --drc_disable --seed 391600 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 56/100: Seed = 391600, Passed = True, Time = 20.7800s
+Running command: ./../UGRAMM --drc_disable --seed 322318 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 57/100: Seed = 322318, Passed = True, Time = 20.2768s
+Running command: ./../UGRAMM --drc_disable --seed 761120 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 58/100: Seed = 761120, Passed = True, Time = 9.5253s
+Running command: ./../UGRAMM --drc_disable --seed 830291 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 59/100: Seed = 830291, Passed = True, Time = 9.3304s
+Running command: ./../UGRAMM --drc_disable --seed 796570 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 60/100: Seed = 796570, Passed = True, Time = 11.6411s
+Running command: ./../UGRAMM --drc_disable --seed 272699 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 61/100: Seed = 272699, Passed = True, Time = 8.8982s
+Running command: ./../UGRAMM --drc_disable --seed 979660 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 62/100: Seed = 979660, Passed = True, Time = 5.8792s
+Running command: ./../UGRAMM --drc_disable --seed 707227 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 63/100: Seed = 707227, Passed = True, Time = 11.6740s
+Running command: ./../UGRAMM --drc_disable --seed 369266 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 64/100: Seed = 369266, Passed = True, Time = 5.2290s
+Running command: ./../UGRAMM --drc_disable --seed 206210 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 65/100: Seed = 206210, Passed = True, Time = 19.2808s
+Running command: ./../UGRAMM --drc_disable --seed 668532 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 66/100: Seed = 668532, Passed = True, Time = 12.2629s
+Running command: ./../UGRAMM --drc_disable --seed 299893 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 67/100: Seed = 299893, Passed = True, Time = 5.5407s
+Running command: ./../UGRAMM --drc_disable --seed 730435 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 68/100: Seed = 730435, Passed = True, Time = 12.1892s
+Running command: ./../UGRAMM --drc_disable --seed 957372 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 69/100: Seed = 957372, Passed = True, Time = 9.3891s
+Running command: ./../UGRAMM --drc_disable --seed 222528 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 70/100: Seed = 222528, Passed = True, Time = 7.1462s
+Running command: ./../UGRAMM --drc_disable --seed 297907 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 71/100: Seed = 297907, Passed = True, Time = 20.8155s
+Running command: ./../UGRAMM --drc_disable --seed 476050 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 72/100: Seed = 476050, Passed = True, Time = 3.4789s
+Running command: ./../UGRAMM --drc_disable --seed 390304 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 73/100: Seed = 390304, Passed = True, Time = 5.3511s
+Running command: ./../UGRAMM --drc_disable --seed 217297 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 74/100: Seed = 217297, Passed = True, Time = 13.6781s
+Running command: ./../UGRAMM --drc_disable --seed 90263 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 75/100: Seed = 90263, Passed = True, Time = 16.2919s
+Running command: ./../UGRAMM --drc_disable --seed 935359 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 76/100: Seed = 935359, Passed = True, Time = 11.7374s
+Running command: ./../UGRAMM --drc_disable --seed 615774 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 77/100: Seed = 615774, Passed = True, Time = 9.8584s
+Running command: ./../UGRAMM --drc_disable --seed 985717 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 78/100: Seed = 985717, Passed = True, Time = 10.6468s
+Running command: ./../UGRAMM --drc_disable --seed 923576 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 79/100: Seed = 923576, Passed = True, Time = 17.4448s
+Running command: ./../UGRAMM --drc_disable --seed 191533 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 80/100: Seed = 191533, Passed = True, Time = 8.2778s
+Running command: ./../UGRAMM --drc_disable --seed 109496 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 81/100: Seed = 109496, Passed = True, Time = 10.0466s
+Running command: ./../UGRAMM --drc_disable --seed 822214 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 82/100: Seed = 822214, Passed = True, Time = 6.8818s
+Running command: ./../UGRAMM --drc_disable --seed 157064 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 83/100: Seed = 157064, Passed = True, Time = 3.1756s
+Running command: ./../UGRAMM --drc_disable --seed 987374 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 84/100: Seed = 987374, Passed = True, Time = 15.4799s
+Running command: ./../UGRAMM --drc_disable --seed 914210 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 85/100: Seed = 914210, Passed = True, Time = 15.3720s
+Running command: ./../UGRAMM --drc_disable --seed 572784 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 86/100: Seed = 572784, Passed = True, Time = 1.9998s
+Running command: ./../UGRAMM --drc_disable --seed 75285 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 87/100: Seed = 75285, Passed = True, Time = 3.1385s
+Running command: ./../UGRAMM --drc_disable --seed 933506 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 88/100: Seed = 933506, Passed = True, Time = 13.4002s
+Running command: ./../UGRAMM --drc_disable --seed 578676 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 89/100: Seed = 578676, Passed = True, Time = 2.7321s
+Running command: ./../UGRAMM --drc_disable --seed 505126 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 90/100: Seed = 505126, Passed = True, Time = 15.8711s
+Running command: ./../UGRAMM --drc_disable --seed 907732 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 91/100: Seed = 907732, Passed = True, Time = 3.4429s
+Running command: ./../UGRAMM --drc_disable --seed 806934 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 92/100: Seed = 806934, Passed = True, Time = 17.3781s
+Running command: ./../UGRAMM --drc_disable --seed 687298 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 93/100: Seed = 687298, Passed = True, Time = 7.7075s
+Running command: ./../UGRAMM --drc_disable --seed 767792 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 94/100: Seed = 767792, Passed = True, Time = 7.9161s
+Running command: ./../UGRAMM --drc_disable --seed 774345 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 95/100: Seed = 774345, Passed = True, Time = 10.0158s
+Running command: ./../UGRAMM --drc_disable --seed 984817 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 96/100: Seed = 984817, Passed = True, Time = 4.0480s
+Running command: ./../UGRAMM --drc_disable --seed 101133 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 97/100: Seed = 101133, Passed = True, Time = 2.6940s
+Running command: ./../UGRAMM --drc_disable --seed 68845 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 98/100: Seed = 68845, Passed = True, Time = 7.9560s
+Running command: ./../UGRAMM --drc_disable --seed 422284 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 99/100: Seed = 422284, Passed = True, Time = 12.4282s
+Running command: ./../UGRAMM --drc_disable --seed 201007 --dfile riken_6_6.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 100/100: Seed = 201007, Passed = True, Time = 4.4615s
+
+Running benchmark for Any: ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot...
+Running command: ./../UGRAMM --drc_disable --seed 419988 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 1/100: Seed = 419988, Passed = True, Time = 10.2145s
+Running command: ./../UGRAMM --drc_disable --seed 835017 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 2/100: Seed = 835017, Passed = True, Time = 12.8339s
+Running command: ./../UGRAMM --drc_disable --seed 145820 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 3/100: Seed = 145820, Passed = True, Time = 13.5040s
+Running command: ./../UGRAMM --drc_disable --seed 600001 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 4/100: Seed = 600001, Passed = True, Time = 13.4307s
+Running command: ./../UGRAMM --drc_disable --seed 868471 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 5/100: Seed = 868471, Passed = True, Time = 2.7273s
+Running command: ./../UGRAMM --drc_disable --seed 218299 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 6/100: Seed = 218299, Passed = True, Time = 7.7150s
+Running command: ./../UGRAMM --drc_disable --seed 140546 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 7/100: Seed = 140546, Passed = True, Time = 12.1503s
+Running command: ./../UGRAMM --drc_disable --seed 595755 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 8/100: Seed = 595755, Passed = True, Time = 14.3524s
+Running command: ./../UGRAMM --drc_disable --seed 416966 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 9/100: Seed = 416966, Passed = True, Time = 17.7954s
+Running command: ./../UGRAMM --drc_disable --seed 584732 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 10/100: Seed = 584732, Passed = True, Time = 24.9120s
+Running command: ./../UGRAMM --drc_disable --seed 617638 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 11/100: Seed = 617638, Passed = True, Time = 10.0948s
+Running command: ./../UGRAMM --drc_disable --seed 565325 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 12/100: Seed = 565325, Passed = True, Time = 14.6412s
+Running command: ./../UGRAMM --drc_disable --seed 290951 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 13/100: Seed = 290951, Passed = True, Time = 10.9639s
+Running command: ./../UGRAMM --drc_disable --seed 112610 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 14/100: Seed = 112610, Passed = True, Time = 8.6323s
+Running command: ./../UGRAMM --drc_disable --seed 835038 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 15/100: Seed = 835038, Passed = True, Time = 10.5135s
+Running command: ./../UGRAMM --drc_disable --seed 398688 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 16/100: Seed = 398688, Passed = True, Time = 16.4126s
+Running command: ./../UGRAMM --drc_disable --seed 975284 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 17/100: Seed = 975284, Passed = True, Time = 7.3471s
+Running command: ./../UGRAMM --drc_disable --seed 824904 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 18/100: Seed = 824904, Passed = True, Time = 8.6176s
+Running command: ./../UGRAMM --drc_disable --seed 647139 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 19/100: Seed = 647139, Passed = True, Time = 4.1563s
+Running command: ./../UGRAMM --drc_disable --seed 106784 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 20/100: Seed = 106784, Passed = True, Time = 10.2230s
+Running command: ./../UGRAMM --drc_disable --seed 680339 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 21/100: Seed = 680339, Passed = True, Time = 15.3082s
+Running command: ./../UGRAMM --drc_disable --seed 70710 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 22/100: Seed = 70710, Passed = True, Time = 8.0508s
+Running command: ./../UGRAMM --drc_disable --seed 311269 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 23/100: Seed = 311269, Passed = True, Time = 3.1786s
+Running command: ./../UGRAMM --drc_disable --seed 37952 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 24/100: Seed = 37952, Passed = True, Time = 8.9921s
+Running command: ./../UGRAMM --drc_disable --seed 170421 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 25/100: Seed = 170421, Passed = True, Time = 6.3448s
+Running command: ./../UGRAMM --drc_disable --seed 687506 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 26/100: Seed = 687506, Passed = True, Time = 10.1060s
+Running command: ./../UGRAMM --drc_disable --seed 102868 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 27/100: Seed = 102868, Passed = True, Time = 3.7379s
+Running command: ./../UGRAMM --drc_disable --seed 537223 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 28/100: Seed = 537223, Passed = True, Time = 5.2315s
+Running command: ./../UGRAMM --drc_disable --seed 939007 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 29/100: Seed = 939007, Passed = True, Time = 8.3855s
+Running command: ./../UGRAMM --drc_disable --seed 424036 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 30/100: Seed = 424036, Passed = True, Time = 5.9845s
+Running command: ./../UGRAMM --drc_disable --seed 669581 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 31/100: Seed = 669581, Passed = True, Time = 15.9038s
+Running command: ./../UGRAMM --drc_disable --seed 506190 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 32/100: Seed = 506190, Passed = True, Time = 10.2539s
+Running command: ./../UGRAMM --drc_disable --seed 596620 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 33/100: Seed = 596620, Passed = True, Time = 3.4180s
+Running command: ./../UGRAMM --drc_disable --seed 595323 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 34/100: Seed = 595323, Passed = True, Time = 9.9729s
+Running command: ./../UGRAMM --drc_disable --seed 686816 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 35/100: Seed = 686816, Passed = True, Time = 9.4711s
+Running command: ./../UGRAMM --drc_disable --seed 725302 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 36/100: Seed = 725302, Passed = True, Time = 18.2791s
+Running command: ./../UGRAMM --drc_disable --seed 574584 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 37/100: Seed = 574584, Passed = True, Time = 11.4620s
+Running command: ./../UGRAMM --drc_disable --seed 397946 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 38/100: Seed = 397946, Passed = True, Time = 10.9230s
+Running command: ./../UGRAMM --drc_disable --seed 522370 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 39/100: Seed = 522370, Passed = True, Time = 15.5926s
+Running command: ./../UGRAMM --drc_disable --seed 859696 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 40/100: Seed = 859696, Passed = True, Time = 13.5806s
+Running command: ./../UGRAMM --drc_disable --seed 428202 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 41/100: Seed = 428202, Passed = True, Time = 4.6234s
+Running command: ./../UGRAMM --drc_disable --seed 958511 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 42/100: Seed = 958511, Passed = True, Time = 4.9641s
+Running command: ./../UGRAMM --drc_disable --seed 284049 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 43/100: Seed = 284049, Passed = True, Time = 14.2041s
+Running command: ./../UGRAMM --drc_disable --seed 804322 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 44/100: Seed = 804322, Passed = True, Time = 3.8253s
+Running command: ./../UGRAMM --drc_disable --seed 404631 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 45/100: Seed = 404631, Passed = True, Time = 12.6226s
+Running command: ./../UGRAMM --drc_disable --seed 467763 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 46/100: Seed = 467763, Passed = True, Time = 15.2746s
+Running command: ./../UGRAMM --drc_disable --seed 361687 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 47/100: Seed = 361687, Passed = True, Time = 18.5482s
+Running command: ./../UGRAMM --drc_disable --seed 457503 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 48/100: Seed = 457503, Passed = True, Time = 12.9997s
+Running command: ./../UGRAMM --drc_disable --seed 269615 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 49/100: Seed = 269615, Passed = True, Time = 9.8121s
+Running command: ./../UGRAMM --drc_disable --seed 130185 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 50/100: Seed = 130185, Passed = True, Time = 15.5417s
+Running command: ./../UGRAMM --drc_disable --seed 380351 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 51/100: Seed = 380351, Passed = True, Time = 10.1295s
+Running command: ./../UGRAMM --drc_disable --seed 828804 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 52/100: Seed = 828804, Passed = True, Time = 5.7485s
+Running command: ./../UGRAMM --drc_disable --seed 695744 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 53/100: Seed = 695744, Passed = True, Time = 11.8981s
+Running command: ./../UGRAMM --drc_disable --seed 3633 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 54/100: Seed = 3633, Passed = True, Time = 6.2978s
+Running command: ./../UGRAMM --drc_disable --seed 607156 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 55/100: Seed = 607156, Passed = True, Time = 16.6774s
+Running command: ./../UGRAMM --drc_disable --seed 391600 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 56/100: Seed = 391600, Passed = True, Time = 7.5772s
+Running command: ./../UGRAMM --drc_disable --seed 322318 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 57/100: Seed = 322318, Passed = True, Time = 9.8969s
+Running command: ./../UGRAMM --drc_disable --seed 761120 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 58/100: Seed = 761120, Passed = True, Time = 17.4138s
+Running command: ./../UGRAMM --drc_disable --seed 830291 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 59/100: Seed = 830291, Passed = True, Time = 2.8853s
+Running command: ./../UGRAMM --drc_disable --seed 796570 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 60/100: Seed = 796570, Passed = True, Time = 9.2975s
+Running command: ./../UGRAMM --drc_disable --seed 272699 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 61/100: Seed = 272699, Passed = True, Time = 10.8757s
+Running command: ./../UGRAMM --drc_disable --seed 979660 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 62/100: Seed = 979660, Passed = True, Time = 12.2320s
+Running command: ./../UGRAMM --drc_disable --seed 707227 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 63/100: Seed = 707227, Passed = True, Time = 10.2639s
+Running command: ./../UGRAMM --drc_disable --seed 369266 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 64/100: Seed = 369266, Passed = True, Time = 4.8490s
+Running command: ./../UGRAMM --drc_disable --seed 206210 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 65/100: Seed = 206210, Passed = True, Time = 2.7640s
+Running command: ./../UGRAMM --drc_disable --seed 668532 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 66/100: Seed = 668532, Passed = True, Time = 8.3428s
+Running command: ./../UGRAMM --drc_disable --seed 299893 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 67/100: Seed = 299893, Passed = True, Time = 9.1261s
+Running command: ./../UGRAMM --drc_disable --seed 730435 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 68/100: Seed = 730435, Passed = True, Time = 10.6501s
+Running command: ./../UGRAMM --drc_disable --seed 957372 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 69/100: Seed = 957372, Passed = True, Time = 11.7233s
+Running command: ./../UGRAMM --drc_disable --seed 222528 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 70/100: Seed = 222528, Passed = True, Time = 2.5861s
+Running command: ./../UGRAMM --drc_disable --seed 297907 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 71/100: Seed = 297907, Passed = True, Time = 10.8485s
+Running command: ./../UGRAMM --drc_disable --seed 476050 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 72/100: Seed = 476050, Passed = True, Time = 14.0845s
+Running command: ./../UGRAMM --drc_disable --seed 390304 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 73/100: Seed = 390304, Passed = True, Time = 6.7885s
+Running command: ./../UGRAMM --drc_disable --seed 217297 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 74/100: Seed = 217297, Passed = True, Time = 3.0617s
+Running command: ./../UGRAMM --drc_disable --seed 90263 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 75/100: Seed = 90263, Passed = True, Time = 7.6081s
+Running command: ./../UGRAMM --drc_disable --seed 935359 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 76/100: Seed = 935359, Passed = True, Time = 4.7971s
+Running command: ./../UGRAMM --drc_disable --seed 615774 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 77/100: Seed = 615774, Passed = True, Time = 7.4188s
+Running command: ./../UGRAMM --drc_disable --seed 985717 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 78/100: Seed = 985717, Passed = True, Time = 3.4268s
+Running command: ./../UGRAMM --drc_disable --seed 923576 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 79/100: Seed = 923576, Passed = True, Time = 16.5656s
+Running command: ./../UGRAMM --drc_disable --seed 191533 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 80/100: Seed = 191533, Passed = True, Time = 8.8567s
+Running command: ./../UGRAMM --drc_disable --seed 109496 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 81/100: Seed = 109496, Passed = True, Time = 11.6546s
+Running command: ./../UGRAMM --drc_disable --seed 822214 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 82/100: Seed = 822214, Passed = True, Time = 6.1520s
+Running command: ./../UGRAMM --drc_disable --seed 157064 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 83/100: Seed = 157064, Passed = True, Time = 12.0428s
+Running command: ./../UGRAMM --drc_disable --seed 987374 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 84/100: Seed = 987374, Passed = True, Time = 6.4014s
+Running command: ./../UGRAMM --drc_disable --seed 914210 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 85/100: Seed = 914210, Passed = True, Time = 10.4866s
+Running command: ./../UGRAMM --drc_disable --seed 572784 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 86/100: Seed = 572784, Passed = True, Time = 16.7480s
+Running command: ./../UGRAMM --drc_disable --seed 75285 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 87/100: Seed = 75285, Passed = True, Time = 12.0610s
+Running command: ./../UGRAMM --drc_disable --seed 933506 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 88/100: Seed = 933506, Passed = True, Time = 11.9305s
+Running command: ./../UGRAMM --drc_disable --seed 578676 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 89/100: Seed = 578676, Passed = True, Time = 14.0229s
+Running command: ./../UGRAMM --drc_disable --seed 505126 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 90/100: Seed = 505126, Passed = True, Time = 9.5933s
+Running command: ./../UGRAMM --drc_disable --seed 907732 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 91/100: Seed = 907732, Passed = True, Time = 11.8660s
+Running command: ./../UGRAMM --drc_disable --seed 806934 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 92/100: Seed = 806934, Passed = True, Time = 6.4048s
+Running command: ./../UGRAMM --drc_disable --seed 687298 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 93/100: Seed = 687298, Passed = True, Time = 4.4163s
+Running command: ./../UGRAMM --drc_disable --seed 767792 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 94/100: Seed = 767792, Passed = True, Time = 18.1110s
+Running command: ./../UGRAMM --drc_disable --seed 774345 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 95/100: Seed = 774345, Passed = True, Time = 17.5270s
+Running command: ./../UGRAMM --drc_disable --seed 984817 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 96/100: Seed = 984817, Passed = True, Time = 5.4888s
+Running command: ./../UGRAMM --drc_disable --seed 101133 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 97/100: Seed = 101133, Passed = True, Time = 16.2456s
+Running command: ./../UGRAMM --drc_disable --seed 68845 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 98/100: Seed = 68845, Passed = True, Time = 9.2180s
+Running command: ./../UGRAMM --drc_disable --seed 422284 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 99/100: Seed = 422284, Passed = True, Time = 7.3780s
+Running command: ./../UGRAMM --drc_disable --seed 201007 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 100/100: Seed = 201007, Passed = True, Time = 6.3937s
+
+Running benchmark for Any: ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot...
+Running command: ./../UGRAMM --drc_disable --seed 419988 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 1/100: Seed = 419988, Passed = True, Time = 6.6307s
+Running command: ./../UGRAMM --drc_disable --seed 835017 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 2/100: Seed = 835017, Passed = True, Time = 13.2419s
+Running command: ./../UGRAMM --drc_disable --seed 145820 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 3/100: Seed = 145820, Passed = True, Time = 14.1344s
+Running command: ./../UGRAMM --drc_disable --seed 600001 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 4/100: Seed = 600001, Passed = True, Time = 6.9778s
+Running command: ./../UGRAMM --drc_disable --seed 868471 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 5/100: Seed = 868471, Passed = True, Time = 2.8672s
+Running command: ./../UGRAMM --drc_disable --seed 218299 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 6/100: Seed = 218299, Passed = True, Time = 8.7940s
+Running command: ./../UGRAMM --drc_disable --seed 140546 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 7/100: Seed = 140546, Passed = True, Time = 9.5011s
+Running command: ./../UGRAMM --drc_disable --seed 595755 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 8/100: Seed = 595755, Passed = True, Time = 12.0441s
+Running command: ./../UGRAMM --drc_disable --seed 416966 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 9/100: Seed = 416966, Passed = True, Time = 10.0666s
+Running command: ./../UGRAMM --drc_disable --seed 584732 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 10/100: Seed = 584732, Passed = True, Time = 21.7081s
+Running command: ./../UGRAMM --drc_disable --seed 617638 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 11/100: Seed = 617638, Passed = True, Time = 13.8234s
+Running command: ./../UGRAMM --drc_disable --seed 565325 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 12/100: Seed = 565325, Passed = True, Time = 10.5421s
+Running command: ./../UGRAMM --drc_disable --seed 290951 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 13/100: Seed = 290951, Passed = True, Time = 9.1577s
+Running command: ./../UGRAMM --drc_disable --seed 112610 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 14/100: Seed = 112610, Passed = True, Time = 9.2978s
+Running command: ./../UGRAMM --drc_disable --seed 835038 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 15/100: Seed = 835038, Passed = True, Time = 13.9962s
+Running command: ./../UGRAMM --drc_disable --seed 398688 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 16/100: Seed = 398688, Passed = True, Time = 8.6913s
+Running command: ./../UGRAMM --drc_disable --seed 975284 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 17/100: Seed = 975284, Passed = True, Time = 8.6406s
+Running command: ./../UGRAMM --drc_disable --seed 824904 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 18/100: Seed = 824904, Passed = True, Time = 9.0738s
+Running command: ./../UGRAMM --drc_disable --seed 647139 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 19/100: Seed = 647139, Passed = True, Time = 6.3777s
+Running command: ./../UGRAMM --drc_disable --seed 106784 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 20/100: Seed = 106784, Passed = True, Time = 10.4990s
+Running command: ./../UGRAMM --drc_disable --seed 680339 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 21/100: Seed = 680339, Passed = True, Time = 10.5064s
+Running command: ./../UGRAMM --drc_disable --seed 70710 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 22/100: Seed = 70710, Passed = True, Time = 7.9397s
+Running command: ./../UGRAMM --drc_disable --seed 311269 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 23/100: Seed = 311269, Passed = True, Time = 3.1770s
+Running command: ./../UGRAMM --drc_disable --seed 37952 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 24/100: Seed = 37952, Passed = True, Time = 13.8698s
+Running command: ./../UGRAMM --drc_disable --seed 170421 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 25/100: Seed = 170421, Passed = True, Time = 5.2379s
+Running command: ./../UGRAMM --drc_disable --seed 687506 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 26/100: Seed = 687506, Passed = True, Time = 6.4618s
+Running command: ./../UGRAMM --drc_disable --seed 102868 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 27/100: Seed = 102868, Passed = True, Time = 2.3568s
+Running command: ./../UGRAMM --drc_disable --seed 537223 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 28/100: Seed = 537223, Passed = True, Time = 2.1130s
+Running command: ./../UGRAMM --drc_disable --seed 939007 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 29/100: Seed = 939007, Passed = True, Time = 9.1473s
+Running command: ./../UGRAMM --drc_disable --seed 424036 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 30/100: Seed = 424036, Passed = True, Time = 6.7968s
+Running command: ./../UGRAMM --drc_disable --seed 669581 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 31/100: Seed = 669581, Passed = True, Time = 13.7171s
+Running command: ./../UGRAMM --drc_disable --seed 506190 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 32/100: Seed = 506190, Passed = True, Time = 8.5589s
+Running command: ./../UGRAMM --drc_disable --seed 596620 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 33/100: Seed = 596620, Passed = True, Time = 1.3637s
+Running command: ./../UGRAMM --drc_disable --seed 595323 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 34/100: Seed = 595323, Passed = True, Time = 13.6155s
+Running command: ./../UGRAMM --drc_disable --seed 686816 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 35/100: Seed = 686816, Passed = True, Time = 8.2027s
+Running command: ./../UGRAMM --drc_disable --seed 725302 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 36/100: Seed = 725302, Passed = True, Time = 14.8909s
+Running command: ./../UGRAMM --drc_disable --seed 574584 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 37/100: Seed = 574584, Passed = True, Time = 6.8168s
+Running command: ./../UGRAMM --drc_disable --seed 397946 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 38/100: Seed = 397946, Passed = True, Time = 9.8149s
+Running command: ./../UGRAMM --drc_disable --seed 522370 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 39/100: Seed = 522370, Passed = True, Time = 16.3448s
+Running command: ./../UGRAMM --drc_disable --seed 859696 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 40/100: Seed = 859696, Passed = True, Time = 13.2464s
+Running command: ./../UGRAMM --drc_disable --seed 428202 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 41/100: Seed = 428202, Passed = True, Time = 1.3927s
+Running command: ./../UGRAMM --drc_disable --seed 958511 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 42/100: Seed = 958511, Passed = True, Time = 3.7039s
+Running command: ./../UGRAMM --drc_disable --seed 284049 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 43/100: Seed = 284049, Passed = True, Time = 10.8157s
+Running command: ./../UGRAMM --drc_disable --seed 804322 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 44/100: Seed = 804322, Passed = True, Time = 5.4420s
+Running command: ./../UGRAMM --drc_disable --seed 404631 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 45/100: Seed = 404631, Passed = True, Time = 9.8328s
+Running command: ./../UGRAMM --drc_disable --seed 467763 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 46/100: Seed = 467763, Passed = True, Time = 11.4433s
+Running command: ./../UGRAMM --drc_disable --seed 361687 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 47/100: Seed = 361687, Passed = True, Time = 14.7547s
+Running command: ./../UGRAMM --drc_disable --seed 457503 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 48/100: Seed = 457503, Passed = True, Time = 16.1896s
+Running command: ./../UGRAMM --drc_disable --seed 269615 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 49/100: Seed = 269615, Passed = True, Time = 7.8660s
+Running command: ./../UGRAMM --drc_disable --seed 130185 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 50/100: Seed = 130185, Passed = True, Time = 10.7902s
+Running command: ./../UGRAMM --drc_disable --seed 380351 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 51/100: Seed = 380351, Passed = True, Time = 9.4242s
+Running command: ./../UGRAMM --drc_disable --seed 828804 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 52/100: Seed = 828804, Passed = True, Time = 9.6971s
+Running command: ./../UGRAMM --drc_disable --seed 695744 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 53/100: Seed = 695744, Passed = True, Time = 10.4205s
+Running command: ./../UGRAMM --drc_disable --seed 3633 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 54/100: Seed = 3633, Passed = True, Time = 4.2329s
+Running command: ./../UGRAMM --drc_disable --seed 607156 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 55/100: Seed = 607156, Passed = True, Time = 12.0743s
+Running command: ./../UGRAMM --drc_disable --seed 391600 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 56/100: Seed = 391600, Passed = True, Time = 13.5820s
+Running command: ./../UGRAMM --drc_disable --seed 322318 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 57/100: Seed = 322318, Passed = True, Time = 11.0666s
+Running command: ./../UGRAMM --drc_disable --seed 761120 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 58/100: Seed = 761120, Passed = True, Time = 13.5523s
+Running command: ./../UGRAMM --drc_disable --seed 830291 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 59/100: Seed = 830291, Passed = True, Time = 4.1777s
+Running command: ./../UGRAMM --drc_disable --seed 796570 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 60/100: Seed = 796570, Passed = True, Time = 12.1146s
+Running command: ./../UGRAMM --drc_disable --seed 272699 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 61/100: Seed = 272699, Passed = True, Time = 12.1786s
+Running command: ./../UGRAMM --drc_disable --seed 979660 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 62/100: Seed = 979660, Passed = True, Time = 6.9609s
+Running command: ./../UGRAMM --drc_disable --seed 707227 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 63/100: Seed = 707227, Passed = True, Time = 7.5751s
+Running command: ./../UGRAMM --drc_disable --seed 369266 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 64/100: Seed = 369266, Passed = True, Time = 4.4134s
+Running command: ./../UGRAMM --drc_disable --seed 206210 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 65/100: Seed = 206210, Passed = True, Time = 4.4326s
+Running command: ./../UGRAMM --drc_disable --seed 668532 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 66/100: Seed = 668532, Passed = True, Time = 9.7254s
+Running command: ./../UGRAMM --drc_disable --seed 299893 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 67/100: Seed = 299893, Passed = True, Time = 9.7183s
+Running command: ./../UGRAMM --drc_disable --seed 730435 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 68/100: Seed = 730435, Passed = True, Time = 6.1557s
+Running command: ./../UGRAMM --drc_disable --seed 957372 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 69/100: Seed = 957372, Passed = True, Time = 5.9987s
+Running command: ./../UGRAMM --drc_disable --seed 222528 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 70/100: Seed = 222528, Passed = True, Time = 4.6070s
+Running command: ./../UGRAMM --drc_disable --seed 297907 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 71/100: Seed = 297907, Passed = True, Time = 13.4084s
+Running command: ./../UGRAMM --drc_disable --seed 476050 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 72/100: Seed = 476050, Passed = True, Time = 9.5270s
+Running command: ./../UGRAMM --drc_disable --seed 390304 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 73/100: Seed = 390304, Passed = True, Time = 7.9869s
+Running command: ./../UGRAMM --drc_disable --seed 217297 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 74/100: Seed = 217297, Passed = True, Time = 2.6950s
+Running command: ./../UGRAMM --drc_disable --seed 90263 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 75/100: Seed = 90263, Passed = True, Time = 6.3592s
+Running command: ./../UGRAMM --drc_disable --seed 935359 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 76/100: Seed = 935359, Passed = True, Time = 4.6322s
+Running command: ./../UGRAMM --drc_disable --seed 615774 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 77/100: Seed = 615774, Passed = True, Time = 5.6773s
+Running command: ./../UGRAMM --drc_disable --seed 985717 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 78/100: Seed = 985717, Passed = True, Time = 4.7735s
+Running command: ./../UGRAMM --drc_disable --seed 923576 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 79/100: Seed = 923576, Passed = True, Time = 16.8155s
+Running command: ./../UGRAMM --drc_disable --seed 191533 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 80/100: Seed = 191533, Passed = True, Time = 7.0658s
+Running command: ./../UGRAMM --drc_disable --seed 109496 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 81/100: Seed = 109496, Passed = True, Time = 13.2013s
+Running command: ./../UGRAMM --drc_disable --seed 822214 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 82/100: Seed = 822214, Passed = True, Time = 5.3904s
+Running command: ./../UGRAMM --drc_disable --seed 157064 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 83/100: Seed = 157064, Passed = True, Time = 8.9040s
+Running command: ./../UGRAMM --drc_disable --seed 987374 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 84/100: Seed = 987374, Passed = True, Time = 5.4800s
+Running command: ./../UGRAMM --drc_disable --seed 914210 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 85/100: Seed = 914210, Passed = True, Time = 7.1684s
+Running command: ./../UGRAMM --drc_disable --seed 572784 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 86/100: Seed = 572784, Passed = True, Time = 13.5733s
+Running command: ./../UGRAMM --drc_disable --seed 75285 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 87/100: Seed = 75285, Passed = True, Time = 9.1531s
+Running command: ./../UGRAMM --drc_disable --seed 933506 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 88/100: Seed = 933506, Passed = True, Time = 13.5203s
+Running command: ./../UGRAMM --drc_disable --seed 578676 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 89/100: Seed = 578676, Passed = True, Time = 9.7017s
+Running command: ./../UGRAMM --drc_disable --seed 505126 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 90/100: Seed = 505126, Passed = True, Time = 10.0240s
+Running command: ./../UGRAMM --drc_disable --seed 907732 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 91/100: Seed = 907732, Passed = True, Time = 9.3761s
+Running command: ./../UGRAMM --drc_disable --seed 806934 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 92/100: Seed = 806934, Passed = True, Time = 8.4125s
+Running command: ./../UGRAMM --drc_disable --seed 687298 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 93/100: Seed = 687298, Passed = True, Time = 5.3208s
+Running command: ./../UGRAMM --drc_disable --seed 767792 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 94/100: Seed = 767792, Passed = True, Time = 9.7786s
+Running command: ./../UGRAMM --drc_disable --seed 774345 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 95/100: Seed = 774345, Passed = True, Time = 17.3724s
+Running command: ./../UGRAMM --drc_disable --seed 984817 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 96/100: Seed = 984817, Passed = True, Time = 9.7515s
+Running command: ./../UGRAMM --drc_disable --seed 101133 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 97/100: Seed = 101133, Passed = True, Time = 12.5457s
+Running command: ./../UGRAMM --drc_disable --seed 68845 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 98/100: Seed = 68845, Passed = True, Time = 4.4765s
+Running command: ./../UGRAMM --drc_disable --seed 422284 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 99/100: Seed = 422284, Passed = True, Time = 7.1999s
+Running command: ./../UGRAMM --drc_disable --seed 201007 --dfile riken_6_6.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 100/100: Seed = 201007, Passed = True, Time = 10.0639s
+
+Running benchmark for Any: ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot...
+Running command: ./../UGRAMM --drc_disable --seed 419988 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 1/100: Seed = 419988, Passed = True, Time = 2.4046s
+Running command: ./../UGRAMM --drc_disable --seed 835017 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 2/100: Seed = 835017, Passed = True, Time = 1.2484s
+Running command: ./../UGRAMM --drc_disable --seed 145820 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 3/100: Seed = 145820, Passed = True, Time = 2.7456s
+Running command: ./../UGRAMM --drc_disable --seed 600001 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 4/100: Seed = 600001, Passed = True, Time = 3.5641s
+Running command: ./../UGRAMM --drc_disable --seed 868471 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 5/100: Seed = 868471, Passed = True, Time = 3.8454s
+Running command: ./../UGRAMM --drc_disable --seed 218299 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 6/100: Seed = 218299, Passed = True, Time = 2.8785s
+Running command: ./../UGRAMM --drc_disable --seed 140546 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 7/100: Seed = 140546, Passed = True, Time = 1.5235s
+Running command: ./../UGRAMM --drc_disable --seed 595755 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 8/100: Seed = 595755, Passed = True, Time = 2.1372s
+Running command: ./../UGRAMM --drc_disable --seed 416966 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 9/100: Seed = 416966, Passed = True, Time = 2.4508s
+Running command: ./../UGRAMM --drc_disable --seed 584732 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 10/100: Seed = 584732, Passed = True, Time = 0.6150s
+Running command: ./../UGRAMM --drc_disable --seed 617638 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 11/100: Seed = 617638, Passed = True, Time = 0.6851s
+Running command: ./../UGRAMM --drc_disable --seed 565325 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 12/100: Seed = 565325, Passed = True, Time = 0.2808s
+Running command: ./../UGRAMM --drc_disable --seed 290951 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 13/100: Seed = 290951, Passed = True, Time = 1.0825s
+Running command: ./../UGRAMM --drc_disable --seed 112610 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 14/100: Seed = 112610, Passed = True, Time = 3.1583s
+Running command: ./../UGRAMM --drc_disable --seed 835038 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 15/100: Seed = 835038, Passed = True, Time = 2.4718s
+Running command: ./../UGRAMM --drc_disable --seed 398688 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 16/100: Seed = 398688, Passed = True, Time = 1.8365s
+Running command: ./../UGRAMM --drc_disable --seed 975284 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 17/100: Seed = 975284, Passed = True, Time = 6.8086s
+Running command: ./../UGRAMM --drc_disable --seed 824904 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 18/100: Seed = 824904, Passed = True, Time = 1.1620s
+Running command: ./../UGRAMM --drc_disable --seed 647139 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 19/100: Seed = 647139, Passed = True, Time = 1.2696s
+Running command: ./../UGRAMM --drc_disable --seed 106784 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 20/100: Seed = 106784, Passed = True, Time = 3.9306s
+Running command: ./../UGRAMM --drc_disable --seed 680339 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 21/100: Seed = 680339, Passed = True, Time = 2.3650s
+Running command: ./../UGRAMM --drc_disable --seed 70710 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 22/100: Seed = 70710, Passed = True, Time = 0.8980s
+Running command: ./../UGRAMM --drc_disable --seed 311269 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 23/100: Seed = 311269, Passed = True, Time = 4.0415s
+Running command: ./../UGRAMM --drc_disable --seed 37952 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 24/100: Seed = 37952, Passed = True, Time = 2.5844s
+Running command: ./../UGRAMM --drc_disable --seed 170421 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 25/100: Seed = 170421, Passed = True, Time = 1.1205s
+Running command: ./../UGRAMM --drc_disable --seed 687506 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 26/100: Seed = 687506, Passed = True, Time = 5.6712s
+Running command: ./../UGRAMM --drc_disable --seed 102868 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 27/100: Seed = 102868, Passed = True, Time = 1.7800s
+Running command: ./../UGRAMM --drc_disable --seed 537223 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 28/100: Seed = 537223, Passed = True, Time = 0.6184s
+Running command: ./../UGRAMM --drc_disable --seed 939007 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 29/100: Seed = 939007, Passed = True, Time = 0.6076s
+Running command: ./../UGRAMM --drc_disable --seed 424036 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 30/100: Seed = 424036, Passed = True, Time = 0.6266s
+Running command: ./../UGRAMM --drc_disable --seed 669581 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 31/100: Seed = 669581, Passed = True, Time = 1.7504s
+Running command: ./../UGRAMM --drc_disable --seed 506190 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 32/100: Seed = 506190, Passed = True, Time = 4.3248s
+Running command: ./../UGRAMM --drc_disable --seed 596620 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 33/100: Seed = 596620, Passed = True, Time = 1.7772s
+Running command: ./../UGRAMM --drc_disable --seed 595323 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 34/100: Seed = 595323, Passed = True, Time = 3.3439s
+Running command: ./../UGRAMM --drc_disable --seed 686816 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 35/100: Seed = 686816, Passed = True, Time = 2.3988s
+Running command: ./../UGRAMM --drc_disable --seed 725302 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 36/100: Seed = 725302, Passed = True, Time = 1.3266s
+Running command: ./../UGRAMM --drc_disable --seed 574584 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 37/100: Seed = 574584, Passed = True, Time = 5.9883s
+Running command: ./../UGRAMM --drc_disable --seed 397946 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 38/100: Seed = 397946, Passed = True, Time = 2.8785s
+Running command: ./../UGRAMM --drc_disable --seed 522370 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 39/100: Seed = 522370, Passed = True, Time = 3.2747s
+Running command: ./../UGRAMM --drc_disable --seed 859696 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 40/100: Seed = 859696, Passed = True, Time = 2.4392s
+Running command: ./../UGRAMM --drc_disable --seed 428202 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 41/100: Seed = 428202, Passed = True, Time = 6.0467s
+Running command: ./../UGRAMM --drc_disable --seed 958511 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 42/100: Seed = 958511, Passed = True, Time = 2.3068s
+Running command: ./../UGRAMM --drc_disable --seed 284049 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 43/100: Seed = 284049, Passed = True, Time = 1.8944s
+Running command: ./../UGRAMM --drc_disable --seed 804322 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 44/100: Seed = 804322, Passed = True, Time = 1.0981s
+Running command: ./../UGRAMM --drc_disable --seed 404631 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 45/100: Seed = 404631, Passed = True, Time = 0.5786s
+Running command: ./../UGRAMM --drc_disable --seed 467763 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 46/100: Seed = 467763, Passed = True, Time = 0.8643s
+Running command: ./../UGRAMM --drc_disable --seed 361687 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 47/100: Seed = 361687, Passed = True, Time = 1.0390s
+Running command: ./../UGRAMM --drc_disable --seed 457503 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 48/100: Seed = 457503, Passed = True, Time = 3.3510s
+Running command: ./../UGRAMM --drc_disable --seed 269615 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 49/100: Seed = 269615, Passed = True, Time = 4.1066s
+Running command: ./../UGRAMM --drc_disable --seed 130185 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 50/100: Seed = 130185, Passed = True, Time = 2.3146s
+Running command: ./../UGRAMM --drc_disable --seed 380351 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 51/100: Seed = 380351, Passed = True, Time = 5.3443s
+Running command: ./../UGRAMM --drc_disable --seed 828804 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 52/100: Seed = 828804, Passed = True, Time = 3.4553s
+Running command: ./../UGRAMM --drc_disable --seed 695744 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 53/100: Seed = 695744, Passed = True, Time = 4.9253s
+Running command: ./../UGRAMM --drc_disable --seed 3633 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 54/100: Seed = 3633, Passed = True, Time = 4.5930s
+Running command: ./../UGRAMM --drc_disable --seed 607156 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 55/100: Seed = 607156, Passed = True, Time = 1.0337s
+Running command: ./../UGRAMM --drc_disable --seed 391600 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 56/100: Seed = 391600, Passed = True, Time = 4.8706s
+Running command: ./../UGRAMM --drc_disable --seed 322318 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 57/100: Seed = 322318, Passed = True, Time = 5.8206s
+Running command: ./../UGRAMM --drc_disable --seed 761120 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 58/100: Seed = 761120, Passed = True, Time = 2.2228s
+Running command: ./../UGRAMM --drc_disable --seed 830291 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 59/100: Seed = 830291, Passed = True, Time = 0.9537s
+Running command: ./../UGRAMM --drc_disable --seed 796570 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 60/100: Seed = 796570, Passed = True, Time = 1.6517s
+Running command: ./../UGRAMM --drc_disable --seed 272699 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 61/100: Seed = 272699, Passed = True, Time = 3.4884s
+Running command: ./../UGRAMM --drc_disable --seed 979660 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 62/100: Seed = 979660, Passed = True, Time = 2.8643s
+Running command: ./../UGRAMM --drc_disable --seed 707227 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 63/100: Seed = 707227, Passed = True, Time = 6.1036s
+Running command: ./../UGRAMM --drc_disable --seed 369266 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 64/100: Seed = 369266, Passed = True, Time = 0.8826s
+Running command: ./../UGRAMM --drc_disable --seed 206210 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 65/100: Seed = 206210, Passed = True, Time = 1.5978s
+Running command: ./../UGRAMM --drc_disable --seed 668532 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 66/100: Seed = 668532, Passed = True, Time = 5.0067s
+Running command: ./../UGRAMM --drc_disable --seed 299893 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 67/100: Seed = 299893, Passed = True, Time = 7.0792s
+Running command: ./../UGRAMM --drc_disable --seed 730435 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 68/100: Seed = 730435, Passed = True, Time = 1.9415s
+Running command: ./../UGRAMM --drc_disable --seed 957372 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 69/100: Seed = 957372, Passed = True, Time = 6.7125s
+Running command: ./../UGRAMM --drc_disable --seed 222528 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 70/100: Seed = 222528, Passed = True, Time = 0.8306s
+Running command: ./../UGRAMM --drc_disable --seed 297907 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 71/100: Seed = 297907, Passed = True, Time = 2.2424s
+Running command: ./../UGRAMM --drc_disable --seed 476050 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 72/100: Seed = 476050, Passed = True, Time = 0.7117s
+Running command: ./../UGRAMM --drc_disable --seed 390304 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 73/100: Seed = 390304, Passed = True, Time = 0.8418s
+Running command: ./../UGRAMM --drc_disable --seed 217297 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 74/100: Seed = 217297, Passed = True, Time = 1.6426s
+Running command: ./../UGRAMM --drc_disable --seed 90263 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 75/100: Seed = 90263, Passed = True, Time = 0.2310s
+Running command: ./../UGRAMM --drc_disable --seed 935359 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 76/100: Seed = 935359, Passed = True, Time = 2.6185s
+Running command: ./../UGRAMM --drc_disable --seed 615774 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 77/100: Seed = 615774, Passed = True, Time = 4.1719s
+Running command: ./../UGRAMM --drc_disable --seed 985717 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 78/100: Seed = 985717, Passed = True, Time = 0.7771s
+Running command: ./../UGRAMM --drc_disable --seed 923576 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 79/100: Seed = 923576, Passed = True, Time = 6.4004s
+Running command: ./../UGRAMM --drc_disable --seed 191533 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 80/100: Seed = 191533, Passed = True, Time = 1.4800s
+Running command: ./../UGRAMM --drc_disable --seed 109496 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 81/100: Seed = 109496, Passed = True, Time = 3.0670s
+Running command: ./../UGRAMM --drc_disable --seed 822214 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 82/100: Seed = 822214, Passed = True, Time = 2.5019s
+Running command: ./../UGRAMM --drc_disable --seed 157064 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 83/100: Seed = 157064, Passed = True, Time = 1.6951s
+Running command: ./../UGRAMM --drc_disable --seed 987374 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 84/100: Seed = 987374, Passed = True, Time = 3.8105s
+Running command: ./../UGRAMM --drc_disable --seed 914210 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 85/100: Seed = 914210, Passed = True, Time = 2.5673s
+Running command: ./../UGRAMM --drc_disable --seed 572784 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 86/100: Seed = 572784, Passed = True, Time = 0.3602s
+Running command: ./../UGRAMM --drc_disable --seed 75285 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 87/100: Seed = 75285, Passed = True, Time = 1.2846s
+Running command: ./../UGRAMM --drc_disable --seed 933506 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 88/100: Seed = 933506, Passed = True, Time = 3.2797s
+Running command: ./../UGRAMM --drc_disable --seed 578676 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 89/100: Seed = 578676, Passed = True, Time = 2.2527s
+Running command: ./../UGRAMM --drc_disable --seed 505126 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 90/100: Seed = 505126, Passed = True, Time = 3.2871s
+Running command: ./../UGRAMM --drc_disable --seed 907732 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 91/100: Seed = 907732, Passed = True, Time = 0.9016s
+Running command: ./../UGRAMM --drc_disable --seed 806934 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 92/100: Seed = 806934, Passed = True, Time = 4.8177s
+Running command: ./../UGRAMM --drc_disable --seed 687298 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 93/100: Seed = 687298, Passed = True, Time = 1.8255s
+Running command: ./../UGRAMM --drc_disable --seed 767792 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 94/100: Seed = 767792, Passed = True, Time = 5.1259s
+Running command: ./../UGRAMM --drc_disable --seed 774345 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 95/100: Seed = 774345, Passed = True, Time = 3.9490s
+Running command: ./../UGRAMM --drc_disable --seed 984817 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 96/100: Seed = 984817, Passed = True, Time = 6.0487s
+Running command: ./../UGRAMM --drc_disable --seed 101133 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 97/100: Seed = 101133, Passed = True, Time = 7.0859s
+Running command: ./../UGRAMM --drc_disable --seed 68845 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 98/100: Seed = 68845, Passed = True, Time = 3.1851s
+Running command: ./../UGRAMM --drc_disable --seed 422284 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 99/100: Seed = 422284, Passed = True, Time = 3.7897s
+Running command: ./../UGRAMM --drc_disable --seed 201007 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 100/100: Seed = 201007, Passed = True, Time = 2.3714s
+
+Running benchmark for Any: ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot...
+Running command: ./../UGRAMM --drc_disable --seed 419988 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 1/100: Seed = 419988, Passed = True, Time = 1.3646s
+Running command: ./../UGRAMM --drc_disable --seed 835017 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 2/100: Seed = 835017, Passed = True, Time = 1.7878s
+Running command: ./../UGRAMM --drc_disable --seed 145820 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 3/100: Seed = 145820, Passed = True, Time = 1.4504s
+Running command: ./../UGRAMM --drc_disable --seed 600001 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 4/100: Seed = 600001, Passed = True, Time = 1.1056s
+Running command: ./../UGRAMM --drc_disable --seed 868471 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 5/100: Seed = 868471, Passed = True, Time = 2.6190s
+Running command: ./../UGRAMM --drc_disable --seed 218299 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 6/100: Seed = 218299, Passed = True, Time = 2.8761s
+Running command: ./../UGRAMM --drc_disable --seed 140546 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 7/100: Seed = 140546, Passed = True, Time = 2.7529s
+Running command: ./../UGRAMM --drc_disable --seed 595755 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 8/100: Seed = 595755, Passed = True, Time = 1.3690s
+Running command: ./../UGRAMM --drc_disable --seed 416966 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 9/100: Seed = 416966, Passed = True, Time = 5.9541s
+Running command: ./../UGRAMM --drc_disable --seed 584732 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 10/100: Seed = 584732, Passed = True, Time = 1.0232s
+Running command: ./../UGRAMM --drc_disable --seed 617638 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 11/100: Seed = 617638, Passed = True, Time = 0.3047s
+Running command: ./../UGRAMM --drc_disable --seed 565325 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 12/100: Seed = 565325, Passed = True, Time = 0.2241s
+Running command: ./../UGRAMM --drc_disable --seed 290951 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 13/100: Seed = 290951, Passed = True, Time = 2.8677s
+Running command: ./../UGRAMM --drc_disable --seed 112610 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 14/100: Seed = 112610, Passed = True, Time = 2.5665s
+Running command: ./../UGRAMM --drc_disable --seed 835038 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 15/100: Seed = 835038, Passed = True, Time = 1.4933s
+Running command: ./../UGRAMM --drc_disable --seed 398688 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 16/100: Seed = 398688, Passed = True, Time = 4.0724s
+Running command: ./../UGRAMM --drc_disable --seed 975284 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 17/100: Seed = 975284, Passed = True, Time = 4.1522s
+Running command: ./../UGRAMM --drc_disable --seed 824904 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 18/100: Seed = 824904, Passed = True, Time = 1.7637s
+Running command: ./../UGRAMM --drc_disable --seed 647139 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 19/100: Seed = 647139, Passed = True, Time = 3.6046s
+Running command: ./../UGRAMM --drc_disable --seed 106784 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 20/100: Seed = 106784, Passed = True, Time = 2.4802s
+Running command: ./../UGRAMM --drc_disable --seed 680339 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 21/100: Seed = 680339, Passed = True, Time = 1.9803s
+Running command: ./../UGRAMM --drc_disable --seed 70710 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 22/100: Seed = 70710, Passed = True, Time = 1.2096s
+Running command: ./../UGRAMM --drc_disable --seed 311269 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 23/100: Seed = 311269, Passed = True, Time = 1.1517s
+Running command: ./../UGRAMM --drc_disable --seed 37952 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 24/100: Seed = 37952, Passed = True, Time = 1.6165s
+Running command: ./../UGRAMM --drc_disable --seed 170421 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 25/100: Seed = 170421, Passed = True, Time = 0.6497s
+Running command: ./../UGRAMM --drc_disable --seed 687506 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 26/100: Seed = 687506, Passed = True, Time = 5.3799s
+Running command: ./../UGRAMM --drc_disable --seed 102868 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 27/100: Seed = 102868, Passed = True, Time = 1.9259s
+Running command: ./../UGRAMM --drc_disable --seed 537223 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 28/100: Seed = 537223, Passed = True, Time = 3.1431s
+Running command: ./../UGRAMM --drc_disable --seed 939007 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 29/100: Seed = 939007, Passed = True, Time = 2.7538s
+Running command: ./../UGRAMM --drc_disable --seed 424036 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 30/100: Seed = 424036, Passed = True, Time = 1.4286s
+Running command: ./../UGRAMM --drc_disable --seed 669581 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 31/100: Seed = 669581, Passed = True, Time = 1.2225s
+Running command: ./../UGRAMM --drc_disable --seed 506190 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 32/100: Seed = 506190, Passed = True, Time = 4.7689s
+Running command: ./../UGRAMM --drc_disable --seed 596620 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 33/100: Seed = 596620, Passed = True, Time = 1.4376s
+Running command: ./../UGRAMM --drc_disable --seed 595323 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 34/100: Seed = 595323, Passed = True, Time = 3.1920s
+Running command: ./../UGRAMM --drc_disable --seed 686816 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 35/100: Seed = 686816, Passed = True, Time = 3.0516s
+Running command: ./../UGRAMM --drc_disable --seed 725302 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 36/100: Seed = 725302, Passed = True, Time = 2.0760s
+Running command: ./../UGRAMM --drc_disable --seed 574584 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 37/100: Seed = 574584, Passed = True, Time = 5.7974s
+Running command: ./../UGRAMM --drc_disable --seed 397946 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 38/100: Seed = 397946, Passed = True, Time = 2.2593s
+Running command: ./../UGRAMM --drc_disable --seed 522370 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 39/100: Seed = 522370, Passed = True, Time = 1.4213s
+Running command: ./../UGRAMM --drc_disable --seed 859696 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 40/100: Seed = 859696, Passed = True, Time = 1.6860s
+Running command: ./../UGRAMM --drc_disable --seed 428202 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 41/100: Seed = 428202, Passed = True, Time = 2.8058s
+Running command: ./../UGRAMM --drc_disable --seed 958511 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 42/100: Seed = 958511, Passed = True, Time = 4.8132s
+Running command: ./../UGRAMM --drc_disable --seed 284049 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 43/100: Seed = 284049, Passed = True, Time = 1.7074s
+Running command: ./../UGRAMM --drc_disable --seed 804322 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 44/100: Seed = 804322, Passed = True, Time = 1.4991s
+Running command: ./../UGRAMM --drc_disable --seed 404631 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 45/100: Seed = 404631, Passed = True, Time = 2.5479s
+Running command: ./../UGRAMM --drc_disable --seed 467763 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 46/100: Seed = 467763, Passed = True, Time = 2.7490s
+Running command: ./../UGRAMM --drc_disable --seed 361687 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 47/100: Seed = 361687, Passed = True, Time = 0.8543s
+Running command: ./../UGRAMM --drc_disable --seed 457503 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 48/100: Seed = 457503, Passed = True, Time = 3.1292s
+Running command: ./../UGRAMM --drc_disable --seed 269615 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 49/100: Seed = 269615, Passed = True, Time = 5.0221s
+Running command: ./../UGRAMM --drc_disable --seed 130185 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 50/100: Seed = 130185, Passed = True, Time = 3.0543s
+Running command: ./../UGRAMM --drc_disable --seed 380351 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 51/100: Seed = 380351, Passed = True, Time = 5.0904s
+Running command: ./../UGRAMM --drc_disable --seed 828804 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 52/100: Seed = 828804, Passed = True, Time = 3.5366s
+Running command: ./../UGRAMM --drc_disable --seed 695744 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 53/100: Seed = 695744, Passed = True, Time = 4.8011s
+Running command: ./../UGRAMM --drc_disable --seed 3633 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 54/100: Seed = 3633, Passed = True, Time = 2.0923s
+Running command: ./../UGRAMM --drc_disable --seed 607156 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 55/100: Seed = 607156, Passed = True, Time = 0.7690s
+Running command: ./../UGRAMM --drc_disable --seed 391600 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 56/100: Seed = 391600, Passed = True, Time = 3.5406s
+Running command: ./../UGRAMM --drc_disable --seed 322318 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 57/100: Seed = 322318, Passed = True, Time = 6.0093s
+Running command: ./../UGRAMM --drc_disable --seed 761120 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 58/100: Seed = 761120, Passed = True, Time = 4.8486s
+Running command: ./../UGRAMM --drc_disable --seed 830291 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 59/100: Seed = 830291, Passed = True, Time = 1.7253s
+Running command: ./../UGRAMM --drc_disable --seed 796570 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 60/100: Seed = 796570, Passed = True, Time = 1.7116s
+Running command: ./../UGRAMM --drc_disable --seed 272699 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 61/100: Seed = 272699, Passed = True, Time = 3.6584s
+Running command: ./../UGRAMM --drc_disable --seed 979660 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 62/100: Seed = 979660, Passed = True, Time = 2.9524s
+Running command: ./../UGRAMM --drc_disable --seed 707227 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 63/100: Seed = 707227, Passed = True, Time = 5.7375s
+Running command: ./../UGRAMM --drc_disable --seed 369266 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 64/100: Seed = 369266, Passed = True, Time = 1.2192s
+Running command: ./../UGRAMM --drc_disable --seed 206210 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 65/100: Seed = 206210, Passed = True, Time = 2.0024s
+Running command: ./../UGRAMM --drc_disable --seed 668532 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 66/100: Seed = 668532, Passed = True, Time = 4.8638s
+Running command: ./../UGRAMM --drc_disable --seed 299893 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 67/100: Seed = 299893, Passed = True, Time = 2.9337s
+Running command: ./../UGRAMM --drc_disable --seed 730435 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 68/100: Seed = 730435, Passed = True, Time = 1.3818s
+Running command: ./../UGRAMM --drc_disable --seed 957372 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 69/100: Seed = 957372, Passed = True, Time = 4.6210s
+Running command: ./../UGRAMM --drc_disable --seed 222528 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 70/100: Seed = 222528, Passed = True, Time = 0.3398s
+Running command: ./../UGRAMM --drc_disable --seed 297907 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 71/100: Seed = 297907, Passed = True, Time = 1.8391s
+Running command: ./../UGRAMM --drc_disable --seed 476050 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 72/100: Seed = 476050, Passed = True, Time = 1.3566s
+Running command: ./../UGRAMM --drc_disable --seed 390304 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 73/100: Seed = 390304, Passed = True, Time = 2.8096s
+Running command: ./../UGRAMM --drc_disable --seed 217297 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 74/100: Seed = 217297, Passed = True, Time = 2.0763s
+Running command: ./../UGRAMM --drc_disable --seed 90263 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 75/100: Seed = 90263, Passed = True, Time = 0.2768s
+Running command: ./../UGRAMM --drc_disable --seed 935359 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 76/100: Seed = 935359, Passed = True, Time = 2.2346s
+Running command: ./../UGRAMM --drc_disable --seed 615774 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 77/100: Seed = 615774, Passed = True, Time = 3.8573s
+Running command: ./../UGRAMM --drc_disable --seed 985717 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 78/100: Seed = 985717, Passed = True, Time = 0.4754s
+Running command: ./../UGRAMM --drc_disable --seed 923576 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 79/100: Seed = 923576, Passed = True, Time = 6.5082s
+Running command: ./../UGRAMM --drc_disable --seed 191533 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 80/100: Seed = 191533, Passed = True, Time = 1.5510s
+Running command: ./../UGRAMM --drc_disable --seed 109496 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 81/100: Seed = 109496, Passed = True, Time = 2.7084s
+Running command: ./../UGRAMM --drc_disable --seed 822214 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 82/100: Seed = 822214, Passed = True, Time = 2.8651s
+Running command: ./../UGRAMM --drc_disable --seed 157064 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 83/100: Seed = 157064, Passed = True, Time = 1.4421s
+Running command: ./../UGRAMM --drc_disable --seed 987374 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 84/100: Seed = 987374, Passed = True, Time = 3.4362s
+Running command: ./../UGRAMM --drc_disable --seed 914210 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 85/100: Seed = 914210, Passed = True, Time = 1.1783s
+Running command: ./../UGRAMM --drc_disable --seed 572784 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 86/100: Seed = 572784, Passed = True, Time = 0.4717s
+Running command: ./../UGRAMM --drc_disable --seed 75285 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 87/100: Seed = 75285, Passed = True, Time = 0.7706s
+Running command: ./../UGRAMM --drc_disable --seed 933506 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 88/100: Seed = 933506, Passed = True, Time = 0.6206s
+Running command: ./../UGRAMM --drc_disable --seed 578676 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 89/100: Seed = 578676, Passed = True, Time = 0.6230s
+Running command: ./../UGRAMM --drc_disable --seed 505126 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 90/100: Seed = 505126, Passed = True, Time = 5.9226s
+Running command: ./../UGRAMM --drc_disable --seed 907732 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 91/100: Seed = 907732, Passed = True, Time = 1.9656s
+Running command: ./../UGRAMM --drc_disable --seed 806934 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 92/100: Seed = 806934, Passed = True, Time = 6.0265s
+Running command: ./../UGRAMM --drc_disable --seed 687298 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 93/100: Seed = 687298, Passed = True, Time = 0.9165s
+Running command: ./../UGRAMM --drc_disable --seed 767792 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 94/100: Seed = 767792, Passed = True, Time = 4.1494s
+Running command: ./../UGRAMM --drc_disable --seed 774345 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 95/100: Seed = 774345, Passed = True, Time = 4.9079s
+Running command: ./../UGRAMM --drc_disable --seed 984817 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 96/100: Seed = 984817, Passed = True, Time = 5.8106s
+Running command: ./../UGRAMM --drc_disable --seed 101133 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 97/100: Seed = 101133, Passed = True, Time = 4.5413s
+Running command: ./../UGRAMM --drc_disable --seed 68845 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 98/100: Seed = 68845, Passed = True, Time = 4.5311s
+Running command: ./../UGRAMM --drc_disable --seed 422284 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 99/100: Seed = 422284, Passed = True, Time = 3.0138s
+Running command: ./../UGRAMM --drc_disable --seed 201007 --dfile riken_6_6.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 100/100: Seed = 201007, Passed = True, Time = 1.5052s
+
+Running benchmark for Any: ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot...
+Running command: ./../UGRAMM --drc_disable --seed 419988 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 1/100: Seed = 419988, Passed = True, Time = 0.8001s
+Running command: ./../UGRAMM --drc_disable --seed 835017 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 2/100: Seed = 835017, Passed = True, Time = 0.7356s
+Running command: ./../UGRAMM --drc_disable --seed 145820 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 3/100: Seed = 145820, Passed = True, Time = 0.6936s
+Running command: ./../UGRAMM --drc_disable --seed 600001 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 4/100: Seed = 600001, Passed = True, Time = 1.0230s
+Running command: ./../UGRAMM --drc_disable --seed 868471 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 5/100: Seed = 868471, Passed = True, Time = 2.6870s
+Running command: ./../UGRAMM --drc_disable --seed 218299 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 6/100: Seed = 218299, Passed = True, Time = 2.3800s
+Running command: ./../UGRAMM --drc_disable --seed 140546 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 7/100: Seed = 140546, Passed = True, Time = 1.2441s
+Running command: ./../UGRAMM --drc_disable --seed 595755 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 8/100: Seed = 595755, Passed = True, Time = 0.5821s
+Running command: ./../UGRAMM --drc_disable --seed 416966 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 9/100: Seed = 416966, Passed = True, Time = 8.2575s
+Running command: ./../UGRAMM --drc_disable --seed 584732 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 10/100: Seed = 584732, Passed = True, Time = 0.6611s
+Running command: ./../UGRAMM --drc_disable --seed 617638 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 11/100: Seed = 617638, Passed = True, Time = 0.5133s
+Running command: ./../UGRAMM --drc_disable --seed 565325 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 12/100: Seed = 565325, Passed = True, Time = 0.9914s
+Running command: ./../UGRAMM --drc_disable --seed 290951 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 13/100: Seed = 290951, Passed = True, Time = 3.1099s
+Running command: ./../UGRAMM --drc_disable --seed 112610 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 14/100: Seed = 112610, Passed = True, Time = 1.0242s
+Running command: ./../UGRAMM --drc_disable --seed 835038 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 15/100: Seed = 835038, Passed = True, Time = 0.9970s
+Running command: ./../UGRAMM --drc_disable --seed 398688 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 16/100: Seed = 398688, Passed = True, Time = 0.9089s
+Running command: ./../UGRAMM --drc_disable --seed 975284 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 17/100: Seed = 975284, Passed = True, Time = 6.1929s
+Running command: ./../UGRAMM --drc_disable --seed 824904 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 18/100: Seed = 824904, Passed = True, Time = 2.4325s
+Running command: ./../UGRAMM --drc_disable --seed 647139 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 19/100: Seed = 647139, Passed = True, Time = 0.4216s
+Running command: ./../UGRAMM --drc_disable --seed 106784 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 20/100: Seed = 106784, Passed = True, Time = 1.0787s
+Running command: ./../UGRAMM --drc_disable --seed 680339 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 21/100: Seed = 680339, Passed = True, Time = 1.0900s
+Running command: ./../UGRAMM --drc_disable --seed 70710 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 22/100: Seed = 70710, Passed = True, Time = 1.8218s
+Running command: ./../UGRAMM --drc_disable --seed 311269 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 23/100: Seed = 311269, Passed = True, Time = 0.9965s
+Running command: ./../UGRAMM --drc_disable --seed 37952 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 24/100: Seed = 37952, Passed = True, Time = 1.4174s
+Running command: ./../UGRAMM --drc_disable --seed 170421 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 25/100: Seed = 170421, Passed = True, Time = 5.4905s
+Running command: ./../UGRAMM --drc_disable --seed 687506 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 26/100: Seed = 687506, Passed = True, Time = 2.7971s
+Running command: ./../UGRAMM --drc_disable --seed 102868 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 27/100: Seed = 102868, Passed = True, Time = 0.4735s
+Running command: ./../UGRAMM --drc_disable --seed 537223 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 28/100: Seed = 537223, Passed = True, Time = 4.1316s
+Running command: ./../UGRAMM --drc_disable --seed 939007 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 29/100: Seed = 939007, Passed = True, Time = 1.0407s
+Running command: ./../UGRAMM --drc_disable --seed 424036 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 30/100: Seed = 424036, Passed = True, Time = 1.9234s
+Running command: ./../UGRAMM --drc_disable --seed 669581 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 31/100: Seed = 669581, Passed = True, Time = 0.7003s
+Running command: ./../UGRAMM --drc_disable --seed 506190 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 32/100: Seed = 506190, Passed = True, Time = 2.7939s
+Running command: ./../UGRAMM --drc_disable --seed 596620 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 33/100: Seed = 596620, Passed = True, Time = 2.6560s
+Running command: ./../UGRAMM --drc_disable --seed 595323 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 34/100: Seed = 595323, Passed = True, Time = 1.1537s
+Running command: ./../UGRAMM --drc_disable --seed 686816 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 35/100: Seed = 686816, Passed = True, Time = 0.3713s
+Running command: ./../UGRAMM --drc_disable --seed 725302 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 36/100: Seed = 725302, Passed = True, Time = 2.1646s
+Running command: ./../UGRAMM --drc_disable --seed 574584 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 37/100: Seed = 574584, Passed = True, Time = 3.1875s
+Running command: ./../UGRAMM --drc_disable --seed 397946 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 38/100: Seed = 397946, Passed = True, Time = 1.8012s
+Running command: ./../UGRAMM --drc_disable --seed 522370 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 39/100: Seed = 522370, Passed = True, Time = 0.3283s
+Running command: ./../UGRAMM --drc_disable --seed 859696 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 40/100: Seed = 859696, Passed = True, Time = 0.3351s
+Running command: ./../UGRAMM --drc_disable --seed 428202 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 41/100: Seed = 428202, Passed = True, Time = 2.6449s
+Running command: ./../UGRAMM --drc_disable --seed 958511 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 42/100: Seed = 958511, Passed = True, Time = 3.4542s
+Running command: ./../UGRAMM --drc_disable --seed 284049 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 43/100: Seed = 284049, Passed = True, Time = 2.0377s
+Running command: ./../UGRAMM --drc_disable --seed 804322 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 44/100: Seed = 804322, Passed = True, Time = 1.6708s
+Running command: ./../UGRAMM --drc_disable --seed 404631 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 45/100: Seed = 404631, Passed = True, Time = 0.9720s
+Running command: ./../UGRAMM --drc_disable --seed 467763 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 46/100: Seed = 467763, Passed = True, Time = 0.9681s
+Running command: ./../UGRAMM --drc_disable --seed 361687 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 47/100: Seed = 361687, Passed = True, Time = 1.7633s
+Running command: ./../UGRAMM --drc_disable --seed 457503 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 48/100: Seed = 457503, Passed = True, Time = 0.7897s
+Running command: ./../UGRAMM --drc_disable --seed 269615 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 49/100: Seed = 269615, Passed = True, Time = 4.1437s
+Running command: ./../UGRAMM --drc_disable --seed 130185 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 50/100: Seed = 130185, Passed = True, Time = 2.7052s
+Running command: ./../UGRAMM --drc_disable --seed 380351 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 51/100: Seed = 380351, Passed = True, Time = 1.0151s
+Running command: ./../UGRAMM --drc_disable --seed 828804 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 52/100: Seed = 828804, Passed = True, Time = 0.8213s
+Running command: ./../UGRAMM --drc_disable --seed 695744 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 53/100: Seed = 695744, Passed = True, Time = 4.2875s
+Running command: ./../UGRAMM --drc_disable --seed 3633 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 54/100: Seed = 3633, Passed = True, Time = 1.0966s
+Running command: ./../UGRAMM --drc_disable --seed 607156 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 55/100: Seed = 607156, Passed = True, Time = 1.1938s
+Running command: ./../UGRAMM --drc_disable --seed 391600 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 56/100: Seed = 391600, Passed = True, Time = 2.7494s
+Running command: ./../UGRAMM --drc_disable --seed 322318 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 57/100: Seed = 322318, Passed = True, Time = 2.3149s
+Running command: ./../UGRAMM --drc_disable --seed 761120 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 58/100: Seed = 761120, Passed = True, Time = 1.6923s
+Running command: ./../UGRAMM --drc_disable --seed 830291 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 59/100: Seed = 830291, Passed = True, Time = 0.2859s
+Running command: ./../UGRAMM --drc_disable --seed 796570 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 60/100: Seed = 796570, Passed = True, Time = 0.7667s
+Running command: ./../UGRAMM --drc_disable --seed 272699 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 61/100: Seed = 272699, Passed = True, Time = 3.0328s
+Running command: ./../UGRAMM --drc_disable --seed 979660 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 62/100: Seed = 979660, Passed = True, Time = 2.7933s
+Running command: ./../UGRAMM --drc_disable --seed 707227 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 63/100: Seed = 707227, Passed = True, Time = 2.7768s
+Running command: ./../UGRAMM --drc_disable --seed 369266 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 64/100: Seed = 369266, Passed = True, Time = 0.9843s
+Running command: ./../UGRAMM --drc_disable --seed 206210 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 65/100: Seed = 206210, Passed = True, Time = 3.2330s
+Running command: ./../UGRAMM --drc_disable --seed 668532 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 66/100: Seed = 668532, Passed = True, Time = 0.5036s
+Running command: ./../UGRAMM --drc_disable --seed 299893 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 67/100: Seed = 299893, Passed = True, Time = 2.9063s
+Running command: ./../UGRAMM --drc_disable --seed 730435 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 68/100: Seed = 730435, Passed = True, Time = 0.3571s
+Running command: ./../UGRAMM --drc_disable --seed 957372 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 69/100: Seed = 957372, Passed = True, Time = 0.4506s
+Running command: ./../UGRAMM --drc_disable --seed 222528 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 70/100: Seed = 222528, Passed = True, Time = 0.7630s
+Running command: ./../UGRAMM --drc_disable --seed 297907 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 71/100: Seed = 297907, Passed = True, Time = 0.1930s
+Running command: ./../UGRAMM --drc_disable --seed 476050 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 72/100: Seed = 476050, Passed = True, Time = 0.2045s
+Running command: ./../UGRAMM --drc_disable --seed 390304 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 73/100: Seed = 390304, Passed = True, Time = 1.5291s
+Running command: ./../UGRAMM --drc_disable --seed 217297 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 74/100: Seed = 217297, Passed = True, Time = 1.4424s
+Running command: ./../UGRAMM --drc_disable --seed 90263 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 75/100: Seed = 90263, Passed = True, Time = 0.9320s
+Running command: ./../UGRAMM --drc_disable --seed 935359 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 76/100: Seed = 935359, Passed = True, Time = 3.0938s
+Running command: ./../UGRAMM --drc_disable --seed 615774 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 77/100: Seed = 615774, Passed = True, Time = 1.1901s
+Running command: ./../UGRAMM --drc_disable --seed 985717 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 78/100: Seed = 985717, Passed = True, Time = 7.4052s
+Running command: ./../UGRAMM --drc_disable --seed 923576 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 79/100: Seed = 923576, Passed = True, Time = 0.7129s
+Running command: ./../UGRAMM --drc_disable --seed 191533 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 80/100: Seed = 191533, Passed = True, Time = 0.3829s
+Running command: ./../UGRAMM --drc_disable --seed 109496 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 81/100: Seed = 109496, Passed = True, Time = 2.8076s
+Running command: ./../UGRAMM --drc_disable --seed 822214 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 82/100: Seed = 822214, Passed = True, Time = 2.6515s
+Running command: ./../UGRAMM --drc_disable --seed 157064 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 83/100: Seed = 157064, Passed = True, Time = 2.0154s
+Running command: ./../UGRAMM --drc_disable --seed 987374 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 84/100: Seed = 987374, Passed = True, Time = 1.7969s
+Running command: ./../UGRAMM --drc_disable --seed 914210 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 85/100: Seed = 914210, Passed = True, Time = 2.9274s
+Running command: ./../UGRAMM --drc_disable --seed 572784 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 86/100: Seed = 572784, Passed = True, Time = 0.9509s
+Running command: ./../UGRAMM --drc_disable --seed 75285 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 87/100: Seed = 75285, Passed = True, Time = 0.4212s
+Running command: ./../UGRAMM --drc_disable --seed 933506 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 88/100: Seed = 933506, Passed = True, Time = 0.9260s
+Running command: ./../UGRAMM --drc_disable --seed 578676 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 89/100: Seed = 578676, Passed = True, Time = 0.2039s
+Running command: ./../UGRAMM --drc_disable --seed 505126 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 90/100: Seed = 505126, Passed = True, Time = 2.2526s
+Running command: ./../UGRAMM --drc_disable --seed 907732 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 91/100: Seed = 907732, Passed = True, Time = 3.1913s
+Running command: ./../UGRAMM --drc_disable --seed 806934 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 92/100: Seed = 806934, Passed = True, Time = 0.3622s
+Running command: ./../UGRAMM --drc_disable --seed 687298 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 93/100: Seed = 687298, Passed = True, Time = 1.1530s
+Running command: ./../UGRAMM --drc_disable --seed 767792 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 94/100: Seed = 767792, Passed = True, Time = 2.3171s
+Running command: ./../UGRAMM --drc_disable --seed 774345 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 95/100: Seed = 774345, Passed = True, Time = 0.4422s
+Running command: ./../UGRAMM --drc_disable --seed 984817 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 96/100: Seed = 984817, Passed = True, Time = 1.0771s
+Running command: ./../UGRAMM --drc_disable --seed 101133 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 97/100: Seed = 101133, Passed = True, Time = 0.5694s
+Running command: ./../UGRAMM --drc_disable --seed 68845 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 98/100: Seed = 68845, Passed = True, Time = 0.2085s
+Running command: ./../UGRAMM --drc_disable --seed 422284 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 99/100: Seed = 422284, Passed = True, Time = 1.4364s
+Running command: ./../UGRAMM --drc_disable --seed 201007 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 100/100: Seed = 201007, Passed = True, Time = 0.7748s
+
+Running benchmark for Any: ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot...
+Running command: ./../UGRAMM --drc_disable --seed 419988 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 1/100: Seed = 419988, Passed = True, Time = 1.1295s
+Running command: ./../UGRAMM --drc_disable --seed 835017 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 2/100: Seed = 835017, Passed = True, Time = 3.4880s
+Running command: ./../UGRAMM --drc_disable --seed 145820 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 3/100: Seed = 145820, Passed = True, Time = 1.9072s
+Running command: ./../UGRAMM --drc_disable --seed 600001 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 4/100: Seed = 600001, Passed = True, Time = 0.8154s
+Running command: ./../UGRAMM --drc_disable --seed 868471 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 5/100: Seed = 868471, Passed = True, Time = 2.4653s
+Running command: ./../UGRAMM --drc_disable --seed 218299 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 6/100: Seed = 218299, Passed = True, Time = 3.0532s
+Running command: ./../UGRAMM --drc_disable --seed 140546 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 7/100: Seed = 140546, Passed = True, Time = 1.2656s
+Running command: ./../UGRAMM --drc_disable --seed 595755 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 8/100: Seed = 595755, Passed = True, Time = 0.3318s
+Running command: ./../UGRAMM --drc_disable --seed 416966 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 9/100: Seed = 416966, Passed = True, Time = 6.8361s
+Running command: ./../UGRAMM --drc_disable --seed 584732 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 10/100: Seed = 584732, Passed = True, Time = 0.6719s
+Running command: ./../UGRAMM --drc_disable --seed 617638 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 11/100: Seed = 617638, Passed = True, Time = 0.4091s
+Running command: ./../UGRAMM --drc_disable --seed 565325 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 12/100: Seed = 565325, Passed = True, Time = 3.0193s
+Running command: ./../UGRAMM --drc_disable --seed 290951 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 13/100: Seed = 290951, Passed = True, Time = 2.4768s
+Running command: ./../UGRAMM --drc_disable --seed 112610 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 14/100: Seed = 112610, Passed = True, Time = 0.3554s
+Running command: ./../UGRAMM --drc_disable --seed 835038 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 15/100: Seed = 835038, Passed = True, Time = 0.2538s
+Running command: ./../UGRAMM --drc_disable --seed 398688 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 16/100: Seed = 398688, Passed = True, Time = 0.8098s
+Running command: ./../UGRAMM --drc_disable --seed 975284 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 17/100: Seed = 975284, Passed = True, Time = 7.3104s
+Running command: ./../UGRAMM --drc_disable --seed 824904 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 18/100: Seed = 824904, Passed = True, Time = 2.8504s
+Running command: ./../UGRAMM --drc_disable --seed 647139 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 19/100: Seed = 647139, Passed = True, Time = 0.5146s
+Running command: ./../UGRAMM --drc_disable --seed 106784 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 20/100: Seed = 106784, Passed = True, Time = 0.3790s
+Running command: ./../UGRAMM --drc_disable --seed 680339 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 21/100: Seed = 680339, Passed = True, Time = 0.2212s
+Running command: ./../UGRAMM --drc_disable --seed 70710 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 22/100: Seed = 70710, Passed = True, Time = 0.5598s
+Running command: ./../UGRAMM --drc_disable --seed 311269 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 23/100: Seed = 311269, Passed = True, Time = 0.7076s
+Running command: ./../UGRAMM --drc_disable --seed 37952 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 24/100: Seed = 37952, Passed = True, Time = 4.7533s
+Running command: ./../UGRAMM --drc_disable --seed 170421 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 25/100: Seed = 170421, Passed = True, Time = 4.2421s
+Running command: ./../UGRAMM --drc_disable --seed 687506 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 26/100: Seed = 687506, Passed = True, Time = 4.8633s
+Running command: ./../UGRAMM --drc_disable --seed 102868 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 27/100: Seed = 102868, Passed = True, Time = 1.1445s
+Running command: ./../UGRAMM --drc_disable --seed 537223 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 28/100: Seed = 537223, Passed = True, Time = 1.4835s
+Running command: ./../UGRAMM --drc_disable --seed 939007 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 29/100: Seed = 939007, Passed = True, Time = 0.2146s
+Running command: ./../UGRAMM --drc_disable --seed 424036 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 30/100: Seed = 424036, Passed = True, Time = 2.9080s
+Running command: ./../UGRAMM --drc_disable --seed 669581 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 31/100: Seed = 669581, Passed = True, Time = 2.8809s
+Running command: ./../UGRAMM --drc_disable --seed 506190 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 32/100: Seed = 506190, Passed = True, Time = 1.2908s
+Running command: ./../UGRAMM --drc_disable --seed 596620 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 33/100: Seed = 596620, Passed = True, Time = 1.2632s
+Running command: ./../UGRAMM --drc_disable --seed 595323 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 34/100: Seed = 595323, Passed = True, Time = 2.4346s
+Running command: ./../UGRAMM --drc_disable --seed 686816 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 35/100: Seed = 686816, Passed = True, Time = 0.8250s
+Running command: ./../UGRAMM --drc_disable --seed 725302 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 36/100: Seed = 725302, Passed = True, Time = 2.5586s
+Running command: ./../UGRAMM --drc_disable --seed 574584 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 37/100: Seed = 574584, Passed = True, Time = 0.9933s
+Running command: ./../UGRAMM --drc_disable --seed 397946 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 38/100: Seed = 397946, Passed = True, Time = 0.7744s
+Running command: ./../UGRAMM --drc_disable --seed 522370 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 39/100: Seed = 522370, Passed = True, Time = 0.2301s
+Running command: ./../UGRAMM --drc_disable --seed 859696 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 40/100: Seed = 859696, Passed = True, Time = 1.0265s
+Running command: ./../UGRAMM --drc_disable --seed 428202 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 41/100: Seed = 428202, Passed = True, Time = 2.0306s
+Running command: ./../UGRAMM --drc_disable --seed 958511 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 42/100: Seed = 958511, Passed = True, Time = 2.5624s
+Running command: ./../UGRAMM --drc_disable --seed 284049 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 43/100: Seed = 284049, Passed = True, Time = 1.2758s
+Running command: ./../UGRAMM --drc_disable --seed 804322 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 44/100: Seed = 804322, Passed = True, Time = 0.5594s
+Running command: ./../UGRAMM --drc_disable --seed 404631 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 45/100: Seed = 404631, Passed = True, Time = 0.5479s
+Running command: ./../UGRAMM --drc_disable --seed 467763 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 46/100: Seed = 467763, Passed = True, Time = 0.6863s
+Running command: ./../UGRAMM --drc_disable --seed 361687 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 47/100: Seed = 361687, Passed = True, Time = 5.2634s
+Running command: ./../UGRAMM --drc_disable --seed 457503 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 48/100: Seed = 457503, Passed = True, Time = 2.4412s
+Running command: ./../UGRAMM --drc_disable --seed 269615 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 49/100: Seed = 269615, Passed = True, Time = 2.4346s
+Running command: ./../UGRAMM --drc_disable --seed 130185 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 50/100: Seed = 130185, Passed = True, Time = 4.3452s
+Running command: ./../UGRAMM --drc_disable --seed 380351 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 51/100: Seed = 380351, Passed = True, Time = 1.2353s
+Running command: ./../UGRAMM --drc_disable --seed 828804 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 52/100: Seed = 828804, Passed = True, Time = 0.1814s
+Running command: ./../UGRAMM --drc_disable --seed 695744 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 53/100: Seed = 695744, Passed = True, Time = 2.1220s
+Running command: ./../UGRAMM --drc_disable --seed 3633 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 54/100: Seed = 3633, Passed = True, Time = 3.0239s
+Running command: ./../UGRAMM --drc_disable --seed 607156 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 55/100: Seed = 607156, Passed = True, Time = 2.1815s
+Running command: ./../UGRAMM --drc_disable --seed 391600 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 56/100: Seed = 391600, Passed = True, Time = 1.3190s
+Running command: ./../UGRAMM --drc_disable --seed 322318 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 57/100: Seed = 322318, Passed = True, Time = 1.6754s
+Running command: ./../UGRAMM --drc_disable --seed 761120 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 58/100: Seed = 761120, Passed = True, Time = 3.0572s
+Running command: ./../UGRAMM --drc_disable --seed 830291 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 59/100: Seed = 830291, Passed = True, Time = 0.9096s
+Running command: ./../UGRAMM --drc_disable --seed 796570 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 60/100: Seed = 796570, Passed = True, Time = 0.6106s
+Running command: ./../UGRAMM --drc_disable --seed 272699 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 61/100: Seed = 272699, Passed = True, Time = 0.8500s
+Running command: ./../UGRAMM --drc_disable --seed 979660 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 62/100: Seed = 979660, Passed = True, Time = 5.1128s
+Running command: ./../UGRAMM --drc_disable --seed 707227 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 63/100: Seed = 707227, Passed = True, Time = 1.3945s
+Running command: ./../UGRAMM --drc_disable --seed 369266 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 64/100: Seed = 369266, Passed = True, Time = 0.5845s
+Running command: ./../UGRAMM --drc_disable --seed 206210 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 65/100: Seed = 206210, Passed = True, Time = 1.7896s
+Running command: ./../UGRAMM --drc_disable --seed 668532 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 66/100: Seed = 668532, Passed = True, Time = 0.3346s
+Running command: ./../UGRAMM --drc_disable --seed 299893 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 67/100: Seed = 299893, Passed = True, Time = 1.5252s
+Running command: ./../UGRAMM --drc_disable --seed 730435 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 68/100: Seed = 730435, Passed = True, Time = 0.2057s
+Running command: ./../UGRAMM --drc_disable --seed 957372 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 69/100: Seed = 957372, Passed = True, Time = 0.1979s
+Running command: ./../UGRAMM --drc_disable --seed 222528 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 70/100: Seed = 222528, Passed = True, Time = 0.5433s
+Running command: ./../UGRAMM --drc_disable --seed 297907 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 71/100: Seed = 297907, Passed = True, Time = 0.1865s
+Running command: ./../UGRAMM --drc_disable --seed 476050 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 72/100: Seed = 476050, Passed = True, Time = 0.2605s
+Running command: ./../UGRAMM --drc_disable --seed 390304 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 73/100: Seed = 390304, Passed = True, Time = 3.8500s
+Running command: ./../UGRAMM --drc_disable --seed 217297 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 74/100: Seed = 217297, Passed = True, Time = 1.5150s
+Running command: ./../UGRAMM --drc_disable --seed 90263 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 75/100: Seed = 90263, Passed = True, Time = 0.9422s
+Running command: ./../UGRAMM --drc_disable --seed 935359 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 76/100: Seed = 935359, Passed = True, Time = 3.0574s
+Running command: ./../UGRAMM --drc_disable --seed 615774 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 77/100: Seed = 615774, Passed = True, Time = 1.3056s
+Running command: ./../UGRAMM --drc_disable --seed 985717 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 78/100: Seed = 985717, Passed = True, Time = 6.6484s
+Running command: ./../UGRAMM --drc_disable --seed 923576 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 79/100: Seed = 923576, Passed = True, Time = 1.9807s
+Running command: ./../UGRAMM --drc_disable --seed 191533 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 80/100: Seed = 191533, Passed = True, Time = 0.4703s
+Running command: ./../UGRAMM --drc_disable --seed 109496 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 81/100: Seed = 109496, Passed = True, Time = 0.8473s
+Running command: ./../UGRAMM --drc_disable --seed 822214 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 82/100: Seed = 822214, Passed = True, Time = 2.8720s
+Running command: ./../UGRAMM --drc_disable --seed 157064 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 83/100: Seed = 157064, Passed = True, Time = 3.0149s
+Running command: ./../UGRAMM --drc_disable --seed 987374 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 84/100: Seed = 987374, Passed = True, Time = 1.1013s
+Running command: ./../UGRAMM --drc_disable --seed 914210 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 85/100: Seed = 914210, Passed = True, Time = 1.0747s
+Running command: ./../UGRAMM --drc_disable --seed 572784 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 86/100: Seed = 572784, Passed = True, Time = 0.9885s
+Running command: ./../UGRAMM --drc_disable --seed 75285 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 87/100: Seed = 75285, Passed = True, Time = 1.0629s
+Running command: ./../UGRAMM --drc_disable --seed 933506 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 88/100: Seed = 933506, Passed = True, Time = 2.7414s
+Running command: ./../UGRAMM --drc_disable --seed 578676 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 89/100: Seed = 578676, Passed = True, Time = 0.2778s
+Running command: ./../UGRAMM --drc_disable --seed 505126 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 90/100: Seed = 505126, Passed = True, Time = 0.9079s
+Running command: ./../UGRAMM --drc_disable --seed 907732 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 91/100: Seed = 907732, Passed = True, Time = 1.8380s
+Running command: ./../UGRAMM --drc_disable --seed 806934 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 92/100: Seed = 806934, Passed = True, Time = 0.3744s
+Running command: ./../UGRAMM --drc_disable --seed 687298 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 93/100: Seed = 687298, Passed = True, Time = 0.8324s
+Running command: ./../UGRAMM --drc_disable --seed 767792 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 94/100: Seed = 767792, Passed = True, Time = 1.3493s
+Running command: ./../UGRAMM --drc_disable --seed 774345 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 95/100: Seed = 774345, Passed = True, Time = 0.2177s
+Running command: ./../UGRAMM --drc_disable --seed 984817 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 96/100: Seed = 984817, Passed = True, Time = 1.0930s
+Running command: ./../UGRAMM --drc_disable --seed 101133 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 97/100: Seed = 101133, Passed = True, Time = 0.8970s
+Running command: ./../UGRAMM --drc_disable --seed 68845 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 98/100: Seed = 68845, Passed = True, Time = 0.2132s
+Running command: ./../UGRAMM --drc_disable --seed 422284 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 99/100: Seed = 422284, Passed = True, Time = 1.7171s
+Running command: ./../UGRAMM --drc_disable --seed 201007 --dfile riken_6_6.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 100/100: Seed = 201007, Passed = True, Time = 3.1176s
+
+Final Results:
++-------------------------------------------------------------------+------+-----------+--------------+
+|                             Benchmark                             | Type | Pass Rate | Average Time |
++-------------------------------------------------------------------+------+-----------+--------------+
+|       ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot       | Any  |  100.00%  |   7.9597s    |
+|           ../Kernels/Conv_Balance/conv_nounroll_Any.dot           | Any  |  100.00%  |   9.8640s    |
+|    ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot    | Any  |  100.00%  |   10.1666s   |
+|         ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot          | Any  |  100.00%  |   9.1394s    |
+|      ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot       | Any  |  100.00%  |   2.7522s    |
+| ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot | Any  |  100.00%  |   2.6639s    |
+|        ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot        | Any  |  100.00%  |   1.7415s    |
+|    ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot    | Any  |  100.00%  |   1.7347s    |
++-------------------------------------------------------------------+------+-----------+--------------+
