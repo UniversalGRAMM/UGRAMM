@@ -5,11 +5,11 @@ import time
 import random
 
 # Parameters
-num_runs = 25
+num_runs = 10
 NR = 8
 NC = 8
 config_file = "../config.json"  # Update to remove space before `--config`
-benchmark_1 = "../Kernels/Conv_Balance/conv_nounroll_Balance.dot"
+benchmark_1 = "../Kernels/Conv_Balance/conv_nounroll_Balance_Specific.dot"
 benchmark_2 = "../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot"
 command_to_run = "./../UGRAMM"
 

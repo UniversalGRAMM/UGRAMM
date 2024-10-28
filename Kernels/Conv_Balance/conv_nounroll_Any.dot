@@ -1,4 +1,4 @@
-/*
+ /*
 {
     "ALU" : ["FADD", "FMUL"],
     "MEMPORT" : ["input", "output"],
