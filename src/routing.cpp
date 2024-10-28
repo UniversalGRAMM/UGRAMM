@@ -422,7 +422,7 @@ void depositRoute(int signal, std::list<int> *nodes)
 /**
  * Pathfinder approach for routing signal -> sink
 */
-int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig)
+int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig)
 {
 
   route->clear(); // Clearing the route list.
@@ -460,7 +460,13 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     PRQ.push(eNode);
   }
 
-  UGRAMM->trace("EXPANSION TARGET : {}", gNames[sink]);
+  if (UGRAMM->level() <= spdlog::level::trace)
+  {
+      for (const auto& item : sink) // Use range-based for loop to iterate over the set
+      {
+          UGRAMM->trace("EXPANSION TARGET : {}", gNames[item]); // Access each item directly
+      }
+  }
 
   struct ExpNode popped;
   bool hit = false;
@@ -471,8 +477,10 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
     UGRAMM->trace("Popped element: ", gNames[popped.i]);
     UGRAMM->trace("PRQ POP COST: {}", popped.cost);
 
+    auto it = sink.find(popped.i);
+
     if ((popped.cost > 0) &&
-        (popped.i == sink))
+       (it != sink.end()))
     { // cost must be higher than 0 (otherwise sink was part of initial expansion list)
       hit = true;
       break;
@@ -490,8 +498,10 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
       explored.set(next);
       expInt.push_back(next);
 
+      it = sink.find(next);
+
       // Verifying if the node is type RouteCell or PinCell as ONLY they can be used along the way for routing
-      if ((next != sink) && (*gConfig)[next].Cell != "ROUTECELL" && (*gConfig)[next].Cell != "PINCELL")
+      if ( (it == sink.end()) && (*gConfig)[next].Cell != "ROUTECELL" && (*gConfig)[next].Cell != "PINCELL")
         continue;
 
       struct ExpNode eNodeNew;
@@ -500,7 +510,8 @@ int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::ma
       eNodeNew.cost = popped.cost + (1 + (*HistoryCosts)[next]) * (1 + (*Users)[next].size() * PFac);
 
       (*TraceBack)[next] = popped.i;
-      if ((eNodeNew.cost > 0) && (next == sink))
+      it = sink.find(next);
+      if ((eNodeNew.cost > 0) && (it != sink.end()))
       { // JANDERS fast targeting
         popped = eNodeNew;
         hit = true;
@@ -624,22 +635,67 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     //--------- Finding appropriate inputPin for the load ------------//
     //----------------------------------------------------------------//
     int loadFunCell = invUsers[load];
-    int loadInPin = -1;
+    std::set<int> loadIDList;
 
     //Finding the inputPin based on attribute given in the benchmark:
-    std::string loadPinName = boost::to_upper_copy(boost::get(&EdgeProperty::H_LoadPin, *H, *eo));
-    vertex_descriptor loadD = vertex(loadFunCell, *G);
-    in_edge_iterator eiL, eiL_end;
-    boost::tie(eiL, eiL_end) = in_edges(loadD, *G);
-    for (; eiL != eiL_end; eiL++)
+    std::string loadPinList = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
+    std::string upperCaseloadPinList = boost::to_upper_copy(loadPinList);
+
+    //OB: Find the better method upon better benchmarking.
+    bool set_search = true;
+
+    if(set_search)
     {
-      int inPinId = source(*eiL, *G);
-      if ((*gConfig)[inPinId].pinName == loadPinName)
-        loadInPin = inPinId;
+      //Converting above string into set of strings:
+      std::set<std::string> temp;
+      boost::split(temp, upperCaseloadPinList, boost::is_any_of(","));
+
+      // Convert the vector into a set to remove duplicates
+      std::set<std::string> loadPinSet(temp.begin(), temp.end());
+
+      /*
+        //OB [debugging]: print above strs 
+        // Debug print using UGRAMM->info (assuming UGRAMM->info is a logging mechanism)
+        for (const auto& s : loadPinSet) {
+            std::cout << "For " << hNames[y] << "::  Set item: " << s << " :: ";
+        }
+        std::cout << "\n";
+      */
+
+      vertex_descriptor loadD = vertex(loadFunCell, *G);
+      in_edge_iterator eiL, eiL_end;
+      boost::tie(eiL, eiL_end) = in_edges(loadD, *G);
+      for (; eiL != eiL_end; eiL++)
+      {
+        int inPinId = source(*eiL, *G);
+        auto it = loadPinSet.find((*gConfig)[inPinId].pinName);
+        //OB: UGRAMM->debug(" loadPinList : {} :: pinName : {}", loadPinList, (*gConfig)[inPinId].pinName );
+        if ( it != loadPinSet.end())
+        { 
+          loadIDList.insert(inPinId);
+          UGRAMM->debug("For {} || Found {}|{} in driverPinList : {}", hNames[y], gNames[inPinId], (*gConfig)[inPinId].pinName, loadPinList);
+        }
+      }
+    }
+    else 
+    {
+      vertex_descriptor loadD = vertex(loadFunCell, *G);
+      in_edge_iterator eiL, eiL_end;
+      boost::tie(eiL, eiL_end) = in_edges(loadD, *G);
+      for (; eiL != eiL_end; eiL++)
+      {
+        int inPinId = source(*eiL, *G);
+        //OB: UGRAMM->debug(" loadPinList : {} :: pinName : {}", loadPinList, (*gConfig)[inPinId].pinName );
+        if (upperCaseloadPinList.find((*gConfig)[inPinId].pinName) != std::string::npos)
+        { 
+          loadIDList.insert(inPinId);
+          UGRAMM->debug("For {} || Found {}|{} in driverPinList : {}", hNames[y], gNames[inPinId], (*gConfig)[inPinId].pinName, loadPinList);
+        }
+      }
     }
 
     //Check:
-    if (loadInPin < 0)
+    if (loadIDList.size() == 0)
     {
       UGRAMM->error("Could not find inputPin for the dloadriver\n");
       exit(-1);
@@ -648,13 +704,20 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     //----------------------------------------------------------------//
 
     //Debugging statement:
-    UGRAMM->debug("ROUTING => hSOURCE : {} :: hTARGET : {} || dSource : {} dTarget : {} || SOURCE-Pin : {} :: TARGET-Pin : {} ", hNames[y], hNames[load], gNames[driverOutPin], gNames[loadInPin], driverPinName, loadPinName);
+    if (UGRAMM->level() <= spdlog::level::debug)
+    {
+      for (const auto& load : loadIDList) // Use a range-based for loop
+      {
+          UGRAMM->debug("ROUTING => hSOURCE : {} :: hTARGET : {} || dSource : {} dTarget : {} || SOURCE-Pin : {} :: TARGET-Pin-List : {} ",
+              hNames[y], hNames[load], gNames[driverOutPin], gNames[load], driverPinName, loadPinList);
+      }
+    }
     //----------------------------------------------------------------//
 
     int cost;
     std::list<int> path;
 
-    cost = route(G, y, loadInPin, &path, gConfig);
+    cost = route(G, y, loadIDList, &path, gConfig);
 
     totalCost += cost;
 

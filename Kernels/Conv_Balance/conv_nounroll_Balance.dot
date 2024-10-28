@@ -1,7 +1,10 @@
- /* ------- Application graph pragma ------- 
-[SupportedOps] = {ALU, FADD, FMUL};  
-[SupportedOps] = {MEMPORT, input, output};
-[SupportedOps] = {Constant, const};
+/*
+{
+    "ALU" : ["FADD", "FMUL"],
+    "MEMPORT" : ["input", "output"],
+    "Constant" : ["const"],
+    "Any2Pins" : "inPinA,inPinB"
+}
 */
 strict digraph "omp.inner.for.body" {
 label="omp.inner.for.body";

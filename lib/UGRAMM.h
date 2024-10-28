@@ -129,11 +129,14 @@ extern std::shared_ptr<spdlog::logger> drcLogger;
 extern std::vector<std::string> inPin;
 extern std::vector<std::string> outPin;
 
+//Setting the JSON type:
+using  json = nlohmann::json;
+
 //New way for node and opcode types:
 extern std::map<std::string, std::vector<std::string>> ugrammConfig;    //New general way
+extern json UgrammPragmaConfig;
 
 //JSON parsing for the config file:
-using json = nlohmann::json;
 extern json jsonParsed;
 
 //Function declaration:

@@ -191,7 +191,7 @@ void depositRoute(int signal, std::list<int> *nodes);
  * @param gConfig Pointer to the map containing node configurations for the device model graph.
  * @return int Returns an integer cost of the routing path.
  */
-int route(DirectedGraph *G, int signal, int sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig);
+int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig);
 
 /**
  * Routes all fanout edges of the specified application-graph node.

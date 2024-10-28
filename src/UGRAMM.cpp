@@ -44,6 +44,7 @@ std::map<std::string, std::vector<std::string>> ugrammConfig;
 
 // Defining the JSON for the config file:
 json jsonParsed;
+json UgrammPragmaConfig;
 
 //---------------------------------------------------------------------//
 
@@ -403,13 +404,13 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
     int TO = totalOveruse(G);
 
-    if (iterCount >= 2)
+    if (iterCount >= 1)
     {
       frac = (float)TO / totalUsed(G);
       UGRAMM->info("FRACTION OVERLAP: {}", frac);
       if (TO == 0)
       {
-        UGRAMM->info("SUCCESS! :: [iterCount] :: {} :: [frac] :: {} :: [num_vertices(H)] :: {}", iterCount, frac, num_vertices(*H));
+        UGRAMM->info("UGRAMM_PASSED :: [iterCount] :: {} :: [frac] :: {} :: [num_vertices(H)] :: {}", iterCount, frac, num_vertices(*H));
         done = true;
         success = true;
       }
@@ -494,11 +495,11 @@ int main(int argc, char **argv)
   po::options_description desc("[UGRAMM] allowed options =");
   desc.add_options()
       ("help,h", "Print help messages")
-      ("seed", po::value<int>(&seed_value), "Seed for the run")
-      ("verbose_level", po::value<int>(&verbose_level), "0: info, 1: debug, 2: trace")
-      ("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file")
-      ("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file")
-      ("config", po::value<std::string>(&configFile), "UGRAMM config file")
+      ("seed", po::value<int>(&seed_value), "Seed for the run [optional]")
+      ("verbose_level", po::value<int>(&verbose_level), "0: info [Default], 1: debug, 2: trace [optional]")
+      ("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file [required]")
+      ("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file [required]")
+      ("config", po::value<std::string>(&configFile), "UGRAMM config file [optional]")
       ("drc_disable", po::bool_switch(&drc_disable), "disable DRC [optional]")
       ("drc_verbose_level", po::value<int>(&drc_verbose_level), "0: err [Default], 1: warn, 2: info, 3: debug [optional]");
 
@@ -538,21 +539,21 @@ int main(int argc, char **argv)
   //----------------- STEP 0 : READING DEVICE MODEL --------------------//
   //--------------------------------------------------------------------//
 
-  std::ifstream dFile;                       // Defining the input file stream for device model dot file
-  dFile.open(deviceModelFile);               // Passing the device_Model_dot file as an argument!
-  readDeviceModelPragma(dFile, ugrammConfig); // Reading the device model pragma from the device-model dot file.
-  boost::read_graphviz(dFile, G, dp);        // Reading the dot file
-  readDeviceModel(&G, &gConfig);             // Reading the device model file.
+  std::ifstream dFile;                                      // Defining the input file stream for device model dot file
+  dFile.open(deviceModelFile);                              // Passing the device_Model_dot file as an argument!
+  readDeviceModelPragma(dFile, UgrammPragmaConfig);         // Reading the device model pragma from the device-model dot file.
+  boost::read_graphviz(dFile, G, dp);                       // Reading the dot file
+  readDeviceModel(&G, &gConfig);                            // Reading the device model file.
 
   //--------------------------------------------------------------------//
   //----------------- STEP 1: READING APPLICATION DOT FILE -------------//
   //--------------------------------------------------------------------//
 
   // read the DFG from a file
-  std::ifstream iFile;                            // Defining the input file stream for application_dot file
-  iFile.open(applicationFile);                    // Passing the application_dot file as an argument!
-  readApplicationGraphPragma(iFile, ugrammConfig); // Reading the application-graph pragma from the device-model dot file.
-  boost::read_graphviz(iFile, H, dp);             // Reading the dot file
+  std::ifstream iFile;                                      // Defining the input file stream for application_dot file
+  iFile.open(applicationFile);                              // Passing the application_dot file as an argument!
+  readApplicationGraphPragma(iFile, UgrammPragmaConfig);    // Reading the application-graph pragma from the device-model dot file.
+  boost::read_graphviz(iFile, H, dp);                       // Reading the dot file
   readApplicationGraph(&H, &hConfig, &gConfig);             // Reading the Application graph file.
 
   //--------------------------------------------------------------------//
@@ -603,10 +604,10 @@ int main(int argc, char **argv)
   if (success)
   {
     // Printing vertex model:
-    printVertexModels(&H, &G, &hConfig, ugrammConfig, invUsers);
+    printVertexModels(&H, &G, &hConfig, invUsers);
 
     // Visualizing mapping result in neato:
-    printMappedResults(&H, &G, &hConfig, &gConfig, ugrammConfig);
+    printMappedResults(&H, &G, &hConfig, &gConfig, UgrammPragmaConfig);
   }
 
   //--------------- get elapsed time -------------------------

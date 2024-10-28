@@ -187,10 +187,11 @@ bool skipPlacement(std::string hOpcode, json &jsonParsed)
     // Second case: NodeType to be skipped is given in the JSON file:
     std::vector<std::string> gTypeSupported;
 
-    for (const auto &pair : ugrammConfig)
-    {
-      if (std::find(pair.second.begin(), pair.second.end(), hOpcode) != pair.second.end())
-        gTypeSupported.push_back(pair.first);
+    for (auto& [key, value] : UgrammPragmaConfig.items()) {
+      if (value.is_array()) {
+        if (std::find(UgrammPragmaConfig[key].begin(), UgrammPragmaConfig[key].end(), hOpcode) != UgrammPragmaConfig[key].end())
+          gTypeSupported.push_back(key);
+      }
     }
 
     for (const auto &value : gTypeSupported)
@@ -231,158 +232,63 @@ bool needLocking(int HID, json &jsonParsed, std::string& jsonLockNode)
 }
 
 /**
- * Parses PRAGMA vectors from the comment section of the device model graph.
- * 
- * This function extracts and parses vectors of strings associated with the given keyword 
- * from the comment section of the device model graph, and stores them in the provided 
- * ugrammConfig map.
- */
-void parseVectorofStrings(std::string commentSection, std::string keyword, std::map<std::string, std::vector<std::string>> &ugrammConfig)
-{
-  std::istringstream stream(commentSection);
-  std::string line;
-
-  while (std::getline(stream, line))
-  {
-    size_t keywordPos = line.find(keyword);
-    if (keywordPos != std::string::npos) // Keyword is found
-    {
-      size_t startBracket = line.find("{");
-      size_t endBracket = line.find("}");
-      if ((startBracket != std::string::npos) & (endBracket != std::string::npos))
-      {
-        std::string content = line.substr(startBracket + 1, endBracket - startBracket - 1);
-        std::istringstream content_stream(content);
-        std::string token;
-        std::string FunCellName;
-        int token_count = 0;
-        while (std::getline(content_stream, token, ','))
-        {
-          // Remove leading and/or trailing whitespaces:
-          token.erase(0, token.find_first_not_of(" \t\n\r"));
-          token.erase(token.find_last_not_of(" \t\n\r") + 1);
-          if (token_count == 0)
-          {
-            FunCellName = token;
-            ugrammConfig[token] = {};
-          }
-          ugrammConfig[FunCellName].push_back(token);
-          token_count++;
-        }
-      }
-    }
-  }
-}
-
-/**
- * Validates PRAGMA directives read from the application graph.
- */
-bool checkVectorofStrings(std::string commentSection, std::string keyword, std::vector<std::string> &Type)
-{
-  std::istringstream stream(commentSection);
-  std::string line;
-
-  while (std::getline(stream, line))
-  {
-    size_t keywordPos = line.find(keyword);
-    size_t PlacementLinePos = line.find("[PLACEMENT]");
-    // Confirming this is not a Placement line:
-    if ((keywordPos != std::string::npos) && (PlacementLinePos == std::string::npos))
-    {
-      size_t startBracket = line.find("{");
-      size_t endBracket = line.find("}");
-      if ((startBracket != std::string::npos) & (endBracket != std::string::npos))
-      {
-        std::string content = line.substr(startBracket + 1, endBracket - startBracket - 1);
-        std::istringstream content_stream(content);
-        std::string token;
-        int token_counter = 0;
-        while (std::getline(content_stream, token, ','))
-        {
-          // Remove leading and/or trailing whitespaces:
-          token.erase(0, token.find_first_not_of(" \t\n\r"));
-          token.erase(token.find_last_not_of(" \t\n\r") + 1);
-
-          if (token_counter == 0)
-          {
-            if (token != keyword)
-            {
-              UGRAMM->error("FunCell {} from application graph not found in the device model pragma", token);
-              return false;
-            }
-          }
-          else
-          {
-            // Checking the above token present in the device model description.
-            auto it = std::find(Type.begin(), Type.end(), token);
-            if (it != Type.end())
-            { // If iterator is not at the end, the string is present
-              UGRAMM->info("[PASSED] The token {} found in {}", token, keyword);
-            }
-            else
-            {
-              UGRAMM->error("[FAILED] The token {} not found in {}", token, keyword);
-              return false;
-            }
-          }
-          token_counter++;
-        }
-      }
-      return true;
-    }
-  }
-  UGRAMM->error("FunCell {} from device-model not found in the application graph pragma", keyword);
-  return false;
-}
-
-/**
  * Reads, checks, and stores PRAGMA directives from the device model file.
 */
-void readDeviceModelPragma(std::ifstream &deviceModelFile, std::map<std::string, std::vector<std::string>> &ugrammConfig)
-{
+void readDeviceModelPragma(std::ifstream &deviceModelFile, json &UgrammPragmaConfig)
+{ 
+  // Step 1: Parse the comment section into string.
   std::string commentSection = readCommentSection(deviceModelFile);
-  parseVectorofStrings(commentSection, "[SUPPORTEDOPS]", ugrammConfig);
-
-  // OB for debug
   UGRAMM->trace(" Device model pragma READ from the dot file :: {}", commentSection);
 
-  UGRAMM->info("Parsed Device-Model Pragma: ");
-  for (const auto &pair : ugrammConfig)
-  {
-    std::cout << "[" << pair.first << "] :: ";
+  // Step 2: Parse the JSON file from the comment Section
+  UgrammPragmaConfig = json::parse(commentSection);
 
-    // Iterate over the vector and print elements
-    for (size_t i = 0; i < pair.second.size(); ++i)
-    {
-      std::cout << pair.second[i];
-      if (i != pair.second.size() - 1)
-      {
-        std::cout << " :: "; // Add " :: " only if it's not the last element
+  // Step 3: Print all keys and values
+  for (auto& [key, value] : UgrammPragmaConfig.items()) {
+      std::cout << key << " : ";
+      if (value.is_array()) {
+          std::cout << "[ ";
+          for (const auto& item : value) {
+              std::cout << item << " ";
+          }
+          std::cout << "]";
+      } else {
+          std::cout << value;
       }
-    }
-    std::cout << std::endl;
+      std::cout << std::endl;
   }
 }
 
 /**
  * Reads, checks, and stores PRAGMA directives from the application graph file.
 */ 
-void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<std::string, std::vector<std::string>> &ugrammConfig)
-{
-
+void readApplicationGraphPragma(std::ifstream &applicationGraphFile, json &UgrammPragmaConfig)
+{ 
+  // Step 1: Parse the comment section into string.
   std::string commentSection = readCommentSection(applicationGraphFile);
 
-  // OB for debug
-  UGRAMM->trace(" Application graph pragma READ from the dot file :: {}", commentSection);
+  // Step 2: Parse the JSON file from the comment Section
+  json applicationGraphPragma = json::parse(commentSection);
 
-  for (const auto pair : ugrammConfig)
-  {
-    UGRAMM->info("Checking compatibility of SupportedOps of [{}]", pair.first);
-    bool status = checkVectorofStrings(commentSection, pair.first, ugrammConfig[pair.first]);
-    if (status == false)
-    {
-      UGRAMM->error("FATAL ERROR -- application pragma are not compatiable with the device model pragma's");
-      exit(1);
+  // Step 3: Check the content of applicationGraph matches with Device model or not.
+  for (auto& [key, value] : applicationGraphPragma.items()) {
+    if (value.is_array()) {
+      for (const auto& item : value) {
+        if (std::find(UgrammPragmaConfig[key].begin(), UgrammPragmaConfig[key].end(), item) == UgrammPragmaConfig[key].end()) {
+          // Item not found, so not a subset
+          UGRAMM->error("[H -- Compatibility check] Requested Opcode by H {} not found in supported operations of device model for {} failed", item.dump(), key);
+          exit(-1);
+        }
+      }
+      UGRAMM->info("[H] Compatibility of pragma for {} passed", key);
+    }
+    else {
+      // Convert `value` to string for logging
+      std::string valueStr = value.dump();
+      UGRAMM->info("[H] Key -> {}, Value -> {} added into UGRAMM Pragma Config", key, valueStr);
+
+      // Add key-value pair to UgrammPragmaConfig
+      UgrammPragmaConfig[key] = value;
     }
   }
 }
@@ -395,15 +301,15 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, std::map<st
 */
 bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
 {
-  // For nodes such as RouteCell, PinCell the ugrammConfig array will be empty.
+  // For nodes such as RouteCell, PinCell the UgrammPragmaConfig array will be empty.
   // Pragma array's are only parsed for the FuncCell types.
-  if (ugrammConfig[gType].size() == 0)
+  if (UgrammPragmaConfig[gType].size() == 0)
     return false;
 
   // Finding Opcode required by the application graph supported by the device model or not.
-  for (const auto pair : ugrammConfig[gType])
+  for (const auto& value : UgrammPragmaConfig[gType])
   {
-    if (pair == hOpcode)
+    if (value == hOpcode)
     {
       UGRAMM->trace("{} node from device model supports {} Opcode", gType, hOpcode);
       return true;
@@ -439,7 +345,7 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
     if (m == orign)
       continue;
 
-    if (boost::algorithm::contains(gNames[RT->parent[m]], "outPin"))
+    if (boost::algorithm::contains(gNames[RT->parent[m]], "OUTPIN"))
     {
       //  This else if loop is hit when the source is outPin and the while loop below traces the connection from the outPin and exits when found valid inPin.
       //  ex: outPin -> switchblock -> switchblock_pe_input -> pe_inPin
@@ -447,7 +353,7 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
       int current_sink = *it;
       while (it != RT->nodes.end())
       {
-        if (boost::algorithm::contains(gNames[current_sink], "inPin"))
+        if (boost::algorithm::contains(gNames[current_sink], "INPIN"))
         {
           positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
           unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
@@ -500,7 +406,7 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
 /**
  * Prints placement information to a mapping-output file.
 */
-void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &ugrammConfig)
+void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, json &UgrammPragmaConfig)
 {
   int scale = 6;
   float G_VisualX;
@@ -517,9 +423,9 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
   // Use for deciding the color of the FunCell based on the opcode
   // int opcode_gNumber = (*gConfig)[gNumber].opcode;
   int opcode_gNumber = 0;
-  for (const auto &pair : ugrammConfig)
+  for (const auto& [key, value] : UgrammPragmaConfig.items())
   {
-    if (pair.first == (*gConfig)[gNumber].Type)
+    if (key == (*gConfig)[gNumber].Type)
       break;
     else
       opcode_gNumber++;
@@ -565,7 +471,7 @@ void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std
 /**
  * Prints mapping results in neato format: First displays the layout and then shows connections between the nodes.
  */
-void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, std::map<std::string, std::vector<std::string>> &ugrammConfig)
+void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, json &UgrammPragmaConfig)
 {
 
   // Output stream for storing successful mapping: The positioned-output dot file stream (this contains actual co-ordinates of the node cells).
@@ -619,7 +525,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
     if ((FunCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "FUNCCELL")) || (PinCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "PINCELL")) || (RouteCell_Visual_Enable & ((*gConfig)[gNumber].Cell == "ROUTECELL")))
     {
       std::string gName = hElement.second;
-      printPlacementResults(gNumber, gName, G, positionedOutputFile, unpositionedOutputFile, gConfig, ugrammConfig);
+      printPlacementResults(gNumber, gName, G, positionedOutputFile, unpositionedOutputFile, gConfig, UgrammPragmaConfig);
     }
   }
 
@@ -649,7 +555,7 @@ void printName(int n)
 /**
  * Prints vertex models of the application graph's nodes.
  */
-void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<std::string, std::vector<std::string>> &ugrammConfig, std::map<int, int> &invUsers)
+void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, int> &invUsers)
 {
   for (int i = 0; i < num_vertices(*H); i++)
   {
@@ -843,4 +749,32 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, 
 
     UGRAMM->trace("[H] name {} :: applicationOpcode {} :: GNode Lock {}", hNames[i], upperCaseOpcode, (*hConfig)[i].LockGNode);
   }
+
+  
+  //Iterate over all edges of application graph:
+  std::pair<edge_iterator, edge_iterator> edgeRange = boost::edges(*H);
+  for (edge_iterator ei = edgeRange.first; ei != edgeRange.second; ++ei) {
+    auto current_edge = *ei;
+
+    vertex_descriptor currentEdgeSource = boost::source(current_edge, *H);
+    vertex_descriptor currentEdgeTarget = boost::target(current_edge, *H);
+
+    out_edge_iterator eo, eo_end;
+    boost::tie(eo, eo_end) = out_edges(currentEdgeSource, *H);
+    std::string H_LoadPin = boost::to_upper_copy(boost::get(&EdgeProperty::H_LoadPin, *H, *eo));
+    std::string H_DriverPin = boost::to_upper_copy(boost::get(&EdgeProperty::H_DriverPin, *H, *eo));    
+
+    UGRAMM->trace("[H] [BEFORE alias insertion ]edge from {} | {} -> {} | {}", hNames[currentEdgeSource], H_DriverPin, hNames[currentEdgeTarget], H_LoadPin);
+
+    for(const auto& [key, value] : UgrammPragmaConfig.items()){
+      if(key == H_LoadPin)
+      {
+        boost::put(&EdgeProperty::H_LoadPin, *H, *eo, value);
+        UGRAMM->info("[H] [ALIAS insertion] edge from {} -> {} with loadPin {} to {}", hNames[currentEdgeSource], hNames[currentEdgeTarget], H_LoadPin, boost::get(&EdgeProperty::H_LoadPin, *H, *eo));
+      }
+    }
+      
+    
+  }
+  
 }

@@ -499,7 +499,15 @@ def create_riken(args):
     #--------------------------------------------------------
     #  Writing the PRAGMA to the output file
     #--------------------------------------------------------
-    pragma_string = " /* ------- Device model pragma ------- \n[SupportedOps] = {ALU, FADD, FSUB, FMUL, FDIV}; \n[SupportedOps] = {MemPort, INPUT, OUTPUT}; \n[SupportedOps] = {Constant, CONST}; \n*/\n"
+    #pragma_string = " /* ------- Device model pragma ------- \n[SupportedOps] = {ALU, FADD, FSUB, FMUL, FDIV}; \n[SupportedOps] = {MemPort, INPUT, OUTPUT}; \n[SupportedOps] = {Constant, CONST}; \n*/\n"
+    pragma_string = """ /*
+{
+    "ALU" : ["FADD", "FMUL", "FSUB", "FDIV"],
+    "MEMPORT" : ["input", "output"],
+    "Constant" : ["const"]
+}
+*/
+    """
     print("\n\npragma for the device model: \n")
     print(pragma_string)
 
