@@ -123,6 +123,15 @@ void readDeviceModelPragma(std::ifstream &deviceModelFile, json &UgrammPragmaCon
 void readApplicationGraphPragma(std::ifstream &applicationGraphFile, json &UgrammPragmaConfig);
 
 /**
+ * @brief Checks if the application graph's node width is less than or equal to the device model's node width.
+ *
+ * @param hWidth Width of node in the application graph.
+ * @param gWidth Width of node in the device model.
+ * @return `true` if `hWidth` is less than or equal to `gWidth`, otherwise `false`.
+ */
+bool widthCheck(int hWidth, int gWidth);
+
+/**
  * Checks whether the current opcode required by the application node is supported by the device model node.
  * 
  * This function determines if the opcode needed by the application node (represented by `hOpcode`)

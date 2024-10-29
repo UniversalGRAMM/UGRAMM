@@ -293,6 +293,28 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, json &Ugram
   }
 }
 
+/**
+ * Checks if the application graph's node width is less than or equal to the device model's node width.
+ */
+bool widthCheck(int hWidth, int gWidth) 
+{
+  //Not doing widthCheck if any of the widths are not set or "0"
+  if ((gWidth == 0) || (hWidth == 0)) 
+  {
+    return true;
+  }
+
+  //Only doing width check when both of the arguments are available, if incase user has not provided width for any block then it is considered as '0' for which we don't do width check:
+  if(hWidth <= gWidth)
+  {
+    UGRAMM->trace("The width required by application-graph [{}] is supported by device-model graph[{}]", hWidth, gWidth);
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 /*
  * Checks whether the current opcode required by the application node is supported by the device model node.
  * 
@@ -315,11 +337,7 @@ bool compatibilityCheck(int gID, int hID, std::map<int, NodeConfig> *hConfig, st
     if (value == hOpcode)
     {
       UGRAMM->trace("{} node from device model supports {} Opcode", gType, hOpcode);
-      //Only doing width check when both of the arguments are available, if incase user has not provided width for any block then it is considered as '0' for which we don't do width check:
-      if( ((*hConfig)[hID].width <= (*gConfig)[gID].width) && ((*gConfig)[gID].width != 0) && ((*hConfig)[hID].width != 0) ) {
-        UGRAMM->trace("The width required by {} | {} is supported by {} | {}", hNames[hID], (*hConfig)[hID].width, gNames[gID], (*gConfig)[gID].width);
-        return true;
-      }
+      return widthCheck((*hConfig)[hID].width, (*gConfig)[gID].width);
     }
   }
 

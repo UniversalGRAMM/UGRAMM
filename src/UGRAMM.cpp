@@ -145,7 +145,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       totalCosts[GID] += (1 + (*HistoryCosts)[GID]) * ((*Users)[GID].size() * PFac);
 
       //Placement of the signal Y:
-      totalCosts[GID] += routeSignal(G, H, y, gConfig);
+      totalCosts[GID] += routeSignal(G, H, y, gConfig, hConfig);
 
       //-------- Debugging statements ------------//
       if (UGRAMM->level() <= spdlog::level::trace)
@@ -178,7 +178,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
         //------------------------------------------------------//
 
         // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
-        totalCosts[GID] += routeSignal(G, H, driverHNode, gConfig);
+        totalCosts[GID] += routeSignal(G, H, driverHNode, gConfig, hConfig);
 
         UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
         UGRAMM->debug("For {} -> {} :: {} -> {} has cost {} :: best cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[GID], totalCosts[GID], bestCost);
@@ -240,7 +240,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
 
       //Placement of the signal Y:
-      totalCosts[i] += routeSignal(G, H, y, gConfig);
+      totalCosts[i] += routeSignal(G, H, y, gConfig, hConfig);
 
       //-------- Debugging statements ------------//
       if (UGRAMM->level() <= spdlog::level::trace)
@@ -273,7 +273,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
         //------------------------------------------------------//
 
         // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
-        totalCosts[i] += routeSignal(G, H, driverHNode, gConfig);
+        totalCosts[i] += routeSignal(G, H, driverHNode, gConfig, hConfig);
 
         UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
         UGRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[i], totalCosts[i]);
@@ -323,7 +323,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   //------------------------------------------------------//
 
   // Final-placement for node 'y':
-  routeSignal(G, H, y, gConfig);
+  routeSignal(G, H, y, gConfig, hConfig);
 
   // Final routing all of the inputs of the node 'y':
   boost::tie(ei, ei_end) = in_edges(yD, *H);
@@ -342,7 +342,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     invUsers[driverHNode] = driverGNode;          //InvUsers update
     //------------------------------------------------------//
 
-    routeSignal(G, H, driverHNode, gConfig);
+    routeSignal(G, H, driverHNode, gConfig, hConfig);
   }
 
   return 0;

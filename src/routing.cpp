@@ -422,7 +422,7 @@ void depositRoute(int signal, std::list<int> *nodes)
 /**
  * Pathfinder approach for routing signal -> sink
 */
-int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig)
+int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig, std::map<int, NodeConfig> *hConfig)
 {
 
   route->clear(); // Clearing the route list.
@@ -462,9 +462,9 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
 
   if (UGRAMM->level() <= spdlog::level::trace)
   {
-      for (const auto& item : sink) // Use range-based for loop to iterate over the set
+      for (const auto& item : sink) 
       {
-          UGRAMM->trace("EXPANSION TARGET : {}", gNames[item]); // Access each item directly
+          UGRAMM->trace("EXPANSION TARGET : {}", gNames[item]); 
       }
   }
 
@@ -493,6 +493,10 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
     {
       vertex_descriptor next = target(*eo_G, *G);
       if (explored.test(next))
+        continue;
+
+      //OB: Routing-level check for width-compatibility 
+      if(!widthCheck((*hConfig)[signal].width, (*gConfig)[next].width))
         continue;
 
       explored.set(next);
@@ -552,7 +556,7 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
 /**
  * Routes all fanout edges of the specified application-graph node.
 */
-int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig)
+int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig, std::map<int, NodeConfig> *hConfig)
 {
   UGRAMM->trace("BEGINNING ROUTE OF NAME : {}", hNames[y]);
 
@@ -611,7 +615,18 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     {
       int outPinID = target(*eoY, *G);
       if ((*gConfig)[outPinID].pinName == driverPinName)
-        driverOutPin = outPinID;
+      { 
+        //Width-check:
+        if(widthCheck((*hConfig)[y].width, (*gConfig)[outPinID].width))
+        {
+          driverOutPin = outPinID;
+        }
+        else 
+        {
+          UGRAMM->error("The width of device-model node {} | {} is not compatibile with the requirement of {} | {}", gNames[outPinID], (*gConfig)[outPinID].width,hNames[y], (*hConfig)[y].width);
+          exit(-1);
+        }
+      }
     }
 
     //Check:
@@ -641,58 +656,46 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     std::string loadPinList = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
     std::string upperCaseloadPinList = boost::to_upper_copy(loadPinList);
 
-    //OB: Find the better method upon better benchmarking.
-    bool set_search = true;
+    //Converting above string into set of strings:
+    std::set<std::string> temp;
+    boost::split(temp, upperCaseloadPinList, boost::is_any_of(","));
 
-    if(set_search)
+    // Convert the vector into a set to remove duplicates
+    std::set<std::string> loadPinSet(temp.begin(), temp.end());
+
+    if (UGRAMM->level() <= spdlog::level::trace)
     {
-      //Converting above string into set of strings:
-      std::set<std::string> temp;
-      boost::split(temp, upperCaseloadPinList, boost::is_any_of(","));
+      //OB [debugging]: print above strs 
+      for (const auto& s : loadPinSet) {
+          std::cout << "For " << hNames[y] << "::  Set item: " << s << " :: ";
+      }
+      std::cout << "\n";
+    }
 
-      // Convert the vector into a set to remove duplicates
-      std::set<std::string> loadPinSet(temp.begin(), temp.end());
-
-      /*
-        //OB [debugging]: print above strs 
-        // Debug print using UGRAMM->info (assuming UGRAMM->info is a logging mechanism)
-        for (const auto& s : loadPinSet) {
-            std::cout << "For " << hNames[y] << "::  Set item: " << s << " :: ";
-        }
-        std::cout << "\n";
-      */
-
-      vertex_descriptor loadD = vertex(loadFunCell, *G);
-      in_edge_iterator eiL, eiL_end;
-      boost::tie(eiL, eiL_end) = in_edges(loadD, *G);
-      for (; eiL != eiL_end; eiL++)
-      {
-        int inPinId = source(*eiL, *G);
-        auto it = loadPinSet.find((*gConfig)[inPinId].pinName);
-        //OB: UGRAMM->debug(" loadPinList : {} :: pinName : {}", loadPinList, (*gConfig)[inPinId].pinName );
-        if ( it != loadPinSet.end())
-        { 
+    vertex_descriptor loadD = vertex(loadFunCell, *G);
+    in_edge_iterator eiL, eiL_end;
+    boost::tie(eiL, eiL_end) = in_edges(loadD, *G);
+    for (; eiL != eiL_end; eiL++)
+    {
+      int inPinId = source(*eiL, *G);
+      auto it = loadPinSet.find((*gConfig)[inPinId].pinName);
+      //OB: UGRAMM->debug(" loadPinList : {} :: pinName : {}", loadPinList, (*gConfig)[inPinId].pinName );
+      if ( it != loadPinSet.end())
+      { 
+        //Width-check:
+        if(widthCheck((*hConfig)[load].width, (*gConfig)[inPinId].width))
+        {
           loadIDList.insert(inPinId);
           UGRAMM->debug("For {} || Found {}|{} in driverPinList : {}", hNames[y], gNames[inPinId], (*gConfig)[inPinId].pinName, loadPinList);
         }
-      }
-    }
-    else 
-    {
-      vertex_descriptor loadD = vertex(loadFunCell, *G);
-      in_edge_iterator eiL, eiL_end;
-      boost::tie(eiL, eiL_end) = in_edges(loadD, *G);
-      for (; eiL != eiL_end; eiL++)
-      {
-        int inPinId = source(*eiL, *G);
-        //OB: UGRAMM->debug(" loadPinList : {} :: pinName : {}", loadPinList, (*gConfig)[inPinId].pinName );
-        if (upperCaseloadPinList.find((*gConfig)[inPinId].pinName) != std::string::npos)
-        { 
-          loadIDList.insert(inPinId);
-          UGRAMM->debug("For {} || Found {}|{} in driverPinList : {}", hNames[y], gNames[inPinId], (*gConfig)[inPinId].pinName, loadPinList);
+        else 
+        {
+          UGRAMM->error("The width of device-model node {} | {} is not compatibile with the requirement of {} | {}", gNames[inPinId], (*gConfig)[inPinId].width,hNames[load], (*hConfig)[load].width);
+          exit(-1);
         }
       }
     }
+
 
     //Check:
     if (loadIDList.size() == 0)
@@ -717,7 +720,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     int cost;
     std::list<int> path;
 
-    cost = route(G, y, loadIDList, &path, gConfig);
+    cost = route(G, y, loadIDList, &path, gConfig, hConfig);
 
     totalCost += cost;
 
