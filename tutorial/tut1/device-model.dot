@@ -1,6 +1,8 @@
- /* ------- Device model pragma ------- 
-[SupportedOps] = {GATE, AND};  
-[SupportedOps] = {IO, INPUT, OUTPUT};
+/*
+{
+    "GATE" : ["AND"],
+    "IO" : ["INPUT", "OUTPUT"]
+}
 */
 strict digraph  {
 0  [G_Name="IO1.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="0", G_VisualY="3"];

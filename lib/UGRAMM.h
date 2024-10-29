@@ -39,7 +39,7 @@
 #define computeTopoEnable 0       //Compute topological order and sort the graph based on it while finding the minor.
 #define maxIterations 39
 #define NOT_PLACED -1             //For InvUsers
-#define sortAlgorithm 0           //Randomly sorting the H-graph nodes either with the sort or qsort algorithms (1 --> use Sort algorithm, 0 --> qSort algorithm)
+#define sortAlgorithm 1           //Randomly sorting the H-graph nodes either with the sort or qsort algorithms (1 --> use Sort algorithm, 0 --> qSort algorithm)
 #define skipFullyLockedNodes 1    //Skip fully locked nodes when mapping application nodes that are not locked (1 --> Skip Fully Locked Nodes, 0 --> otherwise)
 #define allowWildcardInLocking 0  //Allow wildcard in locking names. Wild card is defined as "*" (1 --> allow wildcard in locking name, 0 --> don't allow wildcard in locking name)
 //-------------------------------------------------------------------//

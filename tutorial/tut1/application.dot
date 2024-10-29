@@ -1,6 +1,8 @@
- /* ------- Application graph pragma ------- 
-[SupportedOps] = {GATE, AND};           
-[SupportedOps] = {IO, INPUT, OUTPUT};  
+/*
+{
+    "GATE" : ["AND"],
+    "IO" : ["INPUT", "OUTPUT"]
+}
 */
 strict digraph "tutorialUGRAMM" {
 
