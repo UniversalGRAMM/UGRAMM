@@ -48,9 +48,9 @@ json UgrammPragmaConfig;
 
 //---------------------------------------------------------------------//
 
-/*
-  Description: For every application graph node, find a minimal vertex model.
-*/
+/**
+ * Finds the minimal vertex model for embedding.
+ */
 int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
   //--------------------------------------
@@ -84,7 +84,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     while (vertex_found == false)
     {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
-      if (compatibilityCheck((*gConfig)[chooseRand].Type, (*hConfig)[y].Opcode))
+      if (compatibilityCheck(chooseRand, y, hConfig, gConfig))
       {
         vertex_found = true;
       }
@@ -129,7 +129,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
       int GID = suitableGIDs[i];
       // Confriming the Vertex correct type:
-      if (!compatibilityCheck((*gConfig)[GID].Type, (*hConfig)[y].Opcode))
+      if (!compatibilityCheck(GID, y, hConfig, gConfig))
       {
         compatibilityStatus = false;
         continue;
@@ -214,7 +214,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     { // first route the signal on the output of y
 
       // Confriming the Vertex correct type:
-      if (!compatibilityCheck((*gConfig)[i].Type, (*hConfig)[y].Opcode))
+      if (!compatibilityCheck(i, y, hConfig, gConfig))
       {
         compatibilityStatus = false;
         continue;
@@ -350,9 +350,9 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
 //---------------------------------------------------------------------//
 
-/*
-  Description: Find minor embedding for all of the nodes of the application graph.
-*/
+/**
+ * Finds a minor embedding of graph H into graph G.
+ */
 int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
 
@@ -439,9 +439,9 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
 //---------------------------------------------------------------------//
 
-/*
-  Description: main function
-*/
+/**
+ * Main function entry point for the UGRAMM - program.
+ */
 int main(int argc, char **argv)
 {
 
@@ -464,15 +464,16 @@ int main(int argc, char **argv)
   dp.property("opcode", boost::get(&DotVertex::H_Opcode, H));              //--> [Required] Contains the Opcode of the operation (ex: op, const, input and output)
   dp.property("load", boost::get(&EdgeProperty::H_LoadPin, H));            //--> [Required] Edge property describing the loadPin to use for the edge
   dp.property("driver", boost::get(&EdgeProperty::H_DriverPin, H));        //--> [Required] Edge property describing the driverPin to use for the edge
-  dp.property("latency", boost::get(&DotVertex::H_Latency, H));            //--> [Required] Contains for latency of the node --> check this as it needs to be between the edges
-  dp.property("lockGNode", boost::get(&DotVertex::H_LockGNode, H));        //--> [Required] Contains the property describing the fixed X location for placing the node
+  dp.property("latency", boost::get(&DotVertex::H_Latency, H));            //--> [Optional] Contains for latency of the node --> check this as it needs to be between the edges
+  dp.property("width", boost::get(&DotVertex::H_Width, H));                //--> [Optional] Width of the application-node
 
   //---------------- For [G] --> Device Model Graph --------------------//
-  dp.property("G_Name", boost::get(&DotVertex::G_Name, G));         //--> [Required] Contains the unique name of the cell in the device model graph.
-  dp.property("G_CellType", boost::get(&DotVertex::G_CellType, G)); //--> [Required] Contains the Opcode of the CellType (FuncCell, RouteCell, PinCell)
-  dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G)); //--> [Required] Contains the NodeType of Device Model Graph (For example "ALU" for CellType "FuncCell") 
-  dp.property("G_VisualX", boost::get(&DotVertex::G_VisualX, G));   //--> [Optional] X location for only visualization purpose.
-  dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));   //--> [Optional] Y location for only visualization purpose.
+  dp.property("G_Name", boost::get(&DotVertex::G_Name, G));               //--> [Required] Contains the unique name of the cell in the device model graph.
+  dp.property("G_CellType", boost::get(&DotVertex::G_CellType, G));       //--> [Required] Contains the Opcode of the CellType (FuncCell, RouteCell, PinCell)
+  dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G));       //--> [Required] Contains the NodeType of Device Model Graph (For example "ALU" for CellType "FuncCell") 
+  dp.property("G_VisualX", boost::get(&DotVertex::G_VisualX, G));         //--> [Optional] X location for only visualization purpose.
+  dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));         //--> [Optional] Y location for only visualization purpose.
+  dp.property("G_Width", boost::get(&DotVertex::G_Width, G));             //--> [Optional] Width of the hardware-node.
 
   // gConfig and hConfig contains the configuration information about the particular node.
   std::map<int, NodeConfig> gConfig, hConfig;

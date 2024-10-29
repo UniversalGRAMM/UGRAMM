@@ -132,7 +132,7 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, json &Ugram
  * @param hOpcode The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT]
  * @return bool Returns true if the opcode is supported by the device model node, false otherwise.
  */
-bool compatibilityCheck(const std::string &gType, const std::string &hOpcode);
+bool compatibilityCheck(int gID, int hID, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
 
 
 //------------------------------------------------------------------------------------//

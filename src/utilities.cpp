@@ -299,8 +299,11 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, json &Ugram
  * This function determines if the opcode needed by the application node (represented by `hOpcode`)
  * is compatible with or supported by the device model node type (represented by `gType`).
 */
-bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
-{
+bool compatibilityCheck(int gID, int hID, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
+{ 
+  std::string gType   = (*gConfig)[gID].Type;
+  std::string hOpcode = (*hConfig)[hID].Opcode;
+
   // For nodes such as RouteCell, PinCell the UgrammPragmaConfig array will be empty.
   // Pragma array's are only parsed for the FuncCell types.
   if (UgrammPragmaConfig[gType].size() == 0)
@@ -312,9 +315,14 @@ bool compatibilityCheck(const std::string &gType, const std::string &hOpcode)
     if (value == hOpcode)
     {
       UGRAMM->trace("{} node from device model supports {} Opcode", gType, hOpcode);
-      return true;
+      //Only doing width check when both of the arguments are available, if incase user has not provided width for any block then it is considered as '0' for which we don't do width check:
+      if( ((*hConfig)[hID].width <= (*gConfig)[gID].width) && ((*gConfig)[gID].width != 0) && ((*hConfig)[hID].width != 0) ) {
+        UGRAMM->trace("The width required by {} | {} is supported by {} | {}", hNames[hID], (*hConfig)[hID].width, gNames[gID], (*gConfig)[gID].width);
+        return true;
+      }
     }
   }
+
   return false;
 }
 
@@ -660,14 +668,25 @@ void readDeviceModel(DirectedGraph *G, std::map<int, NodeConfig> *gConfig)
       }
     }
 
+    // Fetching the width information:
+    std::string G_width_readValue = boost::get(&DotVertex::G_Width, *G, v);
+    if(G_width_readValue.empty()){
+      (*gConfig)[i].width = 0;
+    }
+    else{
+      (*gConfig)[i].width = std::stoi(G_width_readValue);
+    }
+    //OB: Debug
+    UGRAMM->trace("[G] Width of {} = {}", gNames[i], (*gConfig)[i].width); 
+
     if (UGRAMM->level() <= spdlog::level::trace){
       UGRAMM->trace("[G] arch_NodeName {} :: arch_NodeCell {} :: arch_NodeType {}", arch_NodeName, upperCaseCellType, upperCaseType);
       if ((*gConfig)[i].Cell == "FUNCCELL"){
-        UGRAMM->trace("\t\t[G] gNames[{}] {} :: gNamesInv[{}] {} :: gNamesInv_FuncCell[{}] {}", i, gNames[i], arch_NodeName, gNamesInv[arch_NodeName], arch_NodeName, gNamesInv_FuncCell[arch_NodeName]);
-        UGRAMM->trace("\t\t[G] gName size {} :: gNameInv size {} :: gNameInv_FuncCell size {}", gNames.size(), gNamesInv.size(), gNamesInv_FuncCell.size());
+        UGRAMM->trace("[G] gNames[{}] {} :: gNamesInv[{}] {} :: gNamesInv_FuncCell[{}] {}", i, gNames[i], arch_NodeName, gNamesInv[arch_NodeName], arch_NodeName, gNamesInv_FuncCell[arch_NodeName]);
+        UGRAMM->trace("[G] gName size {} :: gNameInv size {} :: gNameInv_FuncCell size {}", gNames.size(), gNamesInv.size(), gNamesInv_FuncCell.size());
       } else {
-        UGRAMM->trace("\t\t[G] gNames[{}] {} :: gNamesInv[{}] {}", i, gNames[i], arch_NodeName, gNamesInv[arch_NodeName]);
-        UGRAMM->trace("\t\t[G] gName size {} :: gNameInv {} :: gNameInv_FuncCell size() {}", gNames.size(), gNamesInv.size(), gNamesInv_FuncCell.size());
+        UGRAMM->trace("[G] gNames[{}] {} :: gNamesInv[{}] {}", i, gNames[i], arch_NodeName, gNamesInv[arch_NodeName]);
+        UGRAMM->trace("[G] gName size {} :: gNameInv {} :: gNameInv_FuncCell size() {}", gNames.size(), gNamesInv.size(), gNamesInv_FuncCell.size());
       }
     }
   }
@@ -699,7 +718,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, 
     std::replace(hNames[i].begin(), hNames[i].end(), '.', '_');
 
     hNamesInv[hNames[i]] = i;
-    UGRAMM->trace(" hNames[{}] {} :: hNamesInv[{}] {}", i, hNames[i], hNames[i], hNamesInv[hNames[i]]);
+    UGRAMM->trace("hNames[{}] {} :: hNamesInv[{}] {}", i, hNames[i], hNames[i], hNamesInv[hNames[i]]);
 
     // Fetching opcode from the application-graph:
     // Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
@@ -707,7 +726,18 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, 
     std::string upperCaseOpcode = boost::to_upper_copy(applicationOpcode);
     (*hConfig)[i].Opcode = upperCaseOpcode;
 
-    UGRAMM->trace(" Condition :: {} :: Type :: {} ", skipPlacement((*hConfig)[i].Opcode, jsonParsed), (*hConfig)[i].Opcode);
+    // Fetching the width information:
+    std::string H_width_readValue = boost::get(&DotVertex::H_Width, *H, v);
+    if(H_width_readValue.empty()){
+      (*hConfig)[i].width = 0;
+    }
+    else{
+      (*hConfig)[i].width = std::stoi(H_width_readValue);
+    }
+    //OB: Debug
+    UGRAMM->trace("[H] Width of {} = {}", hNames[i], (*hConfig)[i].width); 
+
+    UGRAMM->trace("Condition :: {} :: Type :: {} ", skipPlacement((*hConfig)[i].Opcode, jsonParsed), (*hConfig)[i].Opcode);
  
     if (skipPlacement((*hConfig)[i].Opcode, jsonParsed))
     { 
@@ -773,8 +803,6 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, 
         UGRAMM->info("[H] [ALIAS insertion] edge from {} -> {} with loadPin {} to {}", hNames[currentEdgeSource], hNames[currentEdgeTarget], H_LoadPin, boost::get(&EdgeProperty::H_LoadPin, *H, *eo));
       }
     }
-      
-    
   }
   
 }

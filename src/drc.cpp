@@ -313,7 +313,7 @@ void applicationGraphDRC_CheckLockNodeType(DirectedGraph *H,  std::map<int, Node
           int GID = pair.second;
           // check if the nodeType matches between the application vertex and the locked device model graph node
           std::string nodeTypeH; 
-          if (!compatibilityCheck((*gConfig)[GID].Type, (*hConfig)[i].Opcode)){
+          if (!compatibilityCheck(GID, i, hConfig, gConfig)){
             drcLogger->error(" Application graph {} is locking device model graph node {} but is not compatable ", pair.first, hNames[i]);
             *errorDetected  = true;
           }
