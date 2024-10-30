@@ -49,13 +49,16 @@ struct NodeConfig {
     // For [G] --> Device Model Graph
     std::string Cell;          //Cell-type --> FuncCell, RouteCell, PinCell
     std::string Type;          //Node-Type --> io, alu, memport....
-    int Latency = 0;           //Optional  
-    bool gLocked = false;              //True if the G is locked for a hNode; False otherwise        
+    int Latency = 0;           //[Optional]  
+    bool gLocked = false;      //True if the G is locked for a hNode; False otherwise        
 
     // For [H] --> Application Graph
     std::string Opcode;        //OpcodeType --> FADD, FMUL, FSUB, INPUT, OUTPUT, etc.
     std::string pinName;       //Load pin of the PinCell node --> inPinA, inPinB
     std::string LockGNode;     //Contains the name of the G Node for locking
+    
+    // For both [G] and [H]
+    int width = 0;             //Width for this node
 };
 
 //Struct for defining the expected attributes defined in the h and g graph:
@@ -64,7 +67,7 @@ struct DotVertex {
     std::string H_Name;       //[Required] Contains name of the operation in Application graph (ex: Load_0)
     std::string H_Opcode;     //[Required] Contains the Opcode of the operation (ex: FMUL, FADD, INPUT, OUTPUT etc.)
     std::string H_Latency;    //[Optional] Contains the latency of the operation
-    std::string H_LockGNode;  //[Optional] Contains the name of the G Node for locking
+    std::string H_Width;      //[Optional] Width of the application-node
 
     // For [G] --> Device Model Graph
     std::string G_Name;       //[Required] Contains the unique name of the cell in the device model graph.
@@ -72,6 +75,7 @@ struct DotVertex {
     std::string G_NodeType;   //[Required] Contains the NodeType of Device Model Graph (For example "ALU" for CellType "FuncCell") 
     std::string G_VisualX;    //[Optional] Visual X co-ordinate
     std::string G_VisualY;    //[Optional] Visual Y co-ordinate
+    std::string G_Width;      //[Optional] Width of the hardware-node.
 };
 
 //Struct for defining the edge types in the H graph to determine the pin layout
@@ -129,11 +133,14 @@ extern std::shared_ptr<spdlog::logger> drcLogger;
 extern std::vector<std::string> inPin;
 extern std::vector<std::string> outPin;
 
+//Setting the JSON type:
+using  json = nlohmann::json;
+
 //New way for node and opcode types:
 extern std::map<std::string, std::vector<std::string>> ugrammConfig;    //New general way
+extern json UgrammPragmaConfig;
 
 //JSON parsing for the config file:
-using json = nlohmann::json;
 extern json jsonParsed;
 
 //Function declaration:

@@ -44,12 +44,13 @@ std::map<std::string, std::vector<std::string>> ugrammConfig;
 
 // Defining the JSON for the config file:
 json jsonParsed;
+json UgrammPragmaConfig;
 
 //---------------------------------------------------------------------//
 
-/*
-  Description: For every application graph node, find a minimal vertex model.
-*/
+/**
+ * Finds the minimal vertex model for embedding.
+ */
 int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
   //--------------------------------------
@@ -83,7 +84,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     while (vertex_found == false)
     {
       chooseRand = (chooseRand + 1) % num_vertices(*G);
-      if (compatibilityCheck((*gConfig)[chooseRand].Type, (*hConfig)[y].Opcode))
+      if (compatibilityCheck(chooseRand, y, hConfig, gConfig))
       {
         vertex_found = true;
       }
@@ -128,7 +129,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
       int GID = suitableGIDs[i];
       // Confriming the Vertex correct type:
-      if (!compatibilityCheck((*gConfig)[GID].Type, (*hConfig)[y].Opcode))
+      if (!compatibilityCheck(GID, y, hConfig, gConfig))
       {
         compatibilityStatus = false;
         continue;
@@ -144,7 +145,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       totalCosts[GID] += (1 + (*HistoryCosts)[GID]) * ((*Users)[GID].size() * PFac);
 
       //Placement of the signal Y:
-      totalCosts[GID] += routeSignal(G, H, y, gConfig);
+      totalCosts[GID] += routeSignal(G, H, y, gConfig, hConfig);
 
       //-------- Debugging statements ------------//
       if (UGRAMM->level() <= spdlog::level::trace)
@@ -177,7 +178,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
         //------------------------------------------------------//
 
         // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
-        totalCosts[GID] += routeSignal(G, H, driverHNode, gConfig);
+        totalCosts[GID] += routeSignal(G, H, driverHNode, gConfig, hConfig);
 
         UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
         UGRAMM->debug("For {} -> {} :: {} -> {} has cost {} :: best cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[GID], totalCosts[GID], bestCost);
@@ -213,7 +214,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     { // first route the signal on the output of y
 
       // Confriming the Vertex correct type:
-      if (!compatibilityCheck((*gConfig)[i].Type, (*hConfig)[y].Opcode))
+      if (!compatibilityCheck(i, y, hConfig, gConfig))
       {
         compatibilityStatus = false;
         continue;
@@ -239,7 +240,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
 
       //Placement of the signal Y:
-      totalCosts[i] += routeSignal(G, H, y, gConfig);
+      totalCosts[i] += routeSignal(G, H, y, gConfig, hConfig);
 
       //-------- Debugging statements ------------//
       if (UGRAMM->level() <= spdlog::level::trace)
@@ -272,7 +273,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
         //------------------------------------------------------//
 
         // Newfeature: rip up from load: ripUpLoad(G, driver, outputPin);
-        totalCosts[i] += routeSignal(G, H, driverHNode, gConfig);
+        totalCosts[i] += routeSignal(G, H, driverHNode, gConfig, hConfig);
 
         UGRAMM->debug("Routing the signals on the input of {}", hNames[y]);
         UGRAMM->debug("For {} -> {} :: {} -> {} has cost {}", hNames[driverHNode], hNames[y], gNames[driverGNode], gNames[i], totalCosts[i]);
@@ -322,7 +323,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
   //------------------------------------------------------//
 
   // Final-placement for node 'y':
-  routeSignal(G, H, y, gConfig);
+  routeSignal(G, H, y, gConfig, hConfig);
 
   // Final routing all of the inputs of the node 'y':
   boost::tie(ei, ei_end) = in_edges(yD, *H);
@@ -341,7 +342,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
     invUsers[driverHNode] = driverGNode;          //InvUsers update
     //------------------------------------------------------//
 
-    routeSignal(G, H, driverHNode, gConfig);
+    routeSignal(G, H, driverHNode, gConfig, hConfig);
   }
 
   return 0;
@@ -349,9 +350,9 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
 
 //---------------------------------------------------------------------//
 
-/*
-  Description: Find minor embedding for all of the nodes of the application graph.
-*/
+/**
+ * Finds a minor embedding of graph H into graph G.
+ */
 int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
 
@@ -403,13 +404,13 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
     int TO = totalOveruse(G);
 
-    if (iterCount >= 2)
+    if (iterCount >= 1)
     {
       frac = (float)TO / totalUsed(G);
       UGRAMM->info("FRACTION OVERLAP: {}", frac);
       if (TO == 0)
       {
-        UGRAMM->info("SUCCESS! :: [iterCount] :: {} :: [frac] :: {} :: [num_vertices(H)] :: {}", iterCount, frac, num_vertices(*H));
+        UGRAMM->info("UGRAMM_PASSED :: [iterCount] :: {} :: [frac] :: {} :: [num_vertices(H)] :: {}", iterCount, frac, num_vertices(*H));
         done = true;
         success = true;
       }
@@ -438,9 +439,9 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
 //---------------------------------------------------------------------//
 
-/*
-  Description: main function
-*/
+/**
+ * Main function entry point for the UGRAMM - program.
+ */
 int main(int argc, char **argv)
 {
 
@@ -463,15 +464,16 @@ int main(int argc, char **argv)
   dp.property("opcode", boost::get(&DotVertex::H_Opcode, H));              //--> [Required] Contains the Opcode of the operation (ex: op, const, input and output)
   dp.property("load", boost::get(&EdgeProperty::H_LoadPin, H));            //--> [Required] Edge property describing the loadPin to use for the edge
   dp.property("driver", boost::get(&EdgeProperty::H_DriverPin, H));        //--> [Required] Edge property describing the driverPin to use for the edge
-  dp.property("latency", boost::get(&DotVertex::H_Latency, H));            //--> [Required] Contains for latency of the node --> check this as it needs to be between the edges
-  dp.property("lockGNode", boost::get(&DotVertex::H_LockGNode, H));        //--> [Required] Contains the property describing the fixed X location for placing the node
+  dp.property("latency", boost::get(&DotVertex::H_Latency, H));            //--> [Optional] Contains for latency of the node --> check this as it needs to be between the edges
+  dp.property("width", boost::get(&DotVertex::H_Width, H));                //--> [Optional] Width of the application-node
 
   //---------------- For [G] --> Device Model Graph --------------------//
-  dp.property("G_Name", boost::get(&DotVertex::G_Name, G));         //--> [Required] Contains the unique name of the cell in the device model graph.
-  dp.property("G_CellType", boost::get(&DotVertex::G_CellType, G)); //--> [Required] Contains the Opcode of the CellType (FuncCell, RouteCell, PinCell)
-  dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G)); //--> [Required] Contains the NodeType of Device Model Graph (For example "ALU" for CellType "FuncCell") 
-  dp.property("G_VisualX", boost::get(&DotVertex::G_VisualX, G));   //--> [Optional] X location for only visualization purpose.
-  dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));   //--> [Optional] Y location for only visualization purpose.
+  dp.property("G_Name", boost::get(&DotVertex::G_Name, G));               //--> [Required] Contains the unique name of the cell in the device model graph.
+  dp.property("G_CellType", boost::get(&DotVertex::G_CellType, G));       //--> [Required] Contains the Opcode of the CellType (FuncCell, RouteCell, PinCell)
+  dp.property("G_NodeType", boost::get(&DotVertex::G_NodeType, G));       //--> [Required] Contains the NodeType of Device Model Graph (For example "ALU" for CellType "FuncCell") 
+  dp.property("G_VisualX", boost::get(&DotVertex::G_VisualX, G));         //--> [Optional] X location for only visualization purpose.
+  dp.property("G_VisualY", boost::get(&DotVertex::G_VisualY, G));         //--> [Optional] Y location for only visualization purpose.
+  dp.property("G_Width", boost::get(&DotVertex::G_Width, G));             //--> [Optional] Width of the hardware-node.
 
   // gConfig and hConfig contains the configuration information about the particular node.
   std::map<int, NodeConfig> gConfig, hConfig;
@@ -487,18 +489,18 @@ int main(int argc, char **argv)
   std::string applicationFile; // Application Model graph file
   std::string configFile;      // Config file
   int seed_value;              // Seed number
-  int verbose_level;           // Verbosity level => [0: info], [1: debug], [2: trace]
+  int verbose_level = 0;           // Verbosity level => [0: info], [1: debug], [2: trace]
   int drc_verbose_level = 0;   // DRC Verbosity level => [0: err], [1: warn], [2: info], [3: debug]
   bool drc_disable = false;    // drc disable => default to false
 
   po::options_description desc("[UGRAMM] allowed options =");
   desc.add_options()
       ("help,h", "Print help messages")
-      ("seed", po::value<int>(&seed_value)->required(), "Seed for the run")
-      ("verbose_level", po::value<int>(&verbose_level)->required(), "0: info, 1: debug, 2: trace")
-      ("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file")
-      ("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file")
-      ("config", po::value<std::string>(&configFile)->required(), "UGRAMM config file")
+      ("seed", po::value<int>(&seed_value), "Seed for the run [optional]")
+      ("verbose_level", po::value<int>(&verbose_level), "0: info [Default], 1: debug, 2: trace [optional]")
+      ("dfile", po::value<std::string>(&deviceModelFile)->required(), "Device model file [required]")
+      ("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file [required]")
+      ("config", po::value<std::string>(&configFile), "UGRAMM config file [optional]")
       ("drc_disable", po::bool_switch(&drc_disable), "disable DRC [optional]")
       ("drc_verbose_level", po::value<int>(&drc_verbose_level), "0: err [Default], 1: warn, 2: info, 3: debug [optional]");
 
@@ -538,21 +540,21 @@ int main(int argc, char **argv)
   //----------------- STEP 0 : READING DEVICE MODEL --------------------//
   //--------------------------------------------------------------------//
 
-  std::ifstream dFile;                       // Defining the input file stream for device model dot file
-  dFile.open(deviceModelFile);               // Passing the device_Model_dot file as an argument!
-  readDeviceModelPragma(dFile, ugrammConfig); // Reading the device model pragma from the device-model dot file.
-  boost::read_graphviz(dFile, G, dp);        // Reading the dot file
-  readDeviceModel(&G, &gConfig);             // Reading the device model file.
+  std::ifstream dFile;                                      // Defining the input file stream for device model dot file
+  dFile.open(deviceModelFile);                              // Passing the device_Model_dot file as an argument!
+  readDeviceModelPragma(dFile, UgrammPragmaConfig);         // Reading the device model pragma from the device-model dot file.
+  boost::read_graphviz(dFile, G, dp);                       // Reading the dot file
+  readDeviceModel(&G, &gConfig);                            // Reading the device model file.
 
   //--------------------------------------------------------------------//
   //----------------- STEP 1: READING APPLICATION DOT FILE -------------//
   //--------------------------------------------------------------------//
 
   // read the DFG from a file
-  std::ifstream iFile;                            // Defining the input file stream for application_dot file
-  iFile.open(applicationFile);                    // Passing the application_dot file as an argument!
-  readApplicationGraphPragma(iFile, ugrammConfig); // Reading the application-graph pragma from the device-model dot file.
-  boost::read_graphviz(iFile, H, dp);             // Reading the dot file
+  std::ifstream iFile;                                      // Defining the input file stream for application_dot file
+  iFile.open(applicationFile);                              // Passing the application_dot file as an argument!
+  readApplicationGraphPragma(iFile, UgrammPragmaConfig);    // Reading the application-graph pragma from the device-model dot file.
+  boost::read_graphviz(iFile, H, dp);                       // Reading the dot file
   readApplicationGraph(&H, &hConfig, &gConfig);             // Reading the Application graph file.
 
   //--------------------------------------------------------------------//
@@ -603,10 +605,10 @@ int main(int argc, char **argv)
   if (success)
   {
     // Printing vertex model:
-    printVertexModels(&H, &G, &hConfig, ugrammConfig, invUsers);
+    printVertexModels(&H, &G, &hConfig, invUsers);
 
     // Visualizing mapping result in neato:
-    printMappedResults(&H, &G, &hConfig, &gConfig, ugrammConfig);
+    printMappedResults(&H, &G, &hConfig, &gConfig, UgrammPragmaConfig);
   }
 
   //--------------- get elapsed time -------------------------

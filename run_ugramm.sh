@@ -12,7 +12,7 @@
 if [ "$1" == "--help" ]; then
   echo "This helper script will generate a specific CGRA device model file based on user input; Compile, and run UGRAMM with the generated device model file as input. It will also convert the output of UGRAMM into PNG format for easier debugging and visualization."
   echo "Usage: ./run_ugramm.sh [SEED] [NR] [NC] [APPLICATION_GRAPH] [CONFIG_FILE]"
-  echo "Example: ./run_ugramm.sh 15 8 8 Kernels/Conv_Balance/conv_nounroll_Balance.dot config.json"
+  echo "Example: ./run_ugramm.sh 15 8 8 Kernels/Conv_Balance/conv_nounroll_Balance_Specific.dot config.json"
   exit 0
 fi
 
@@ -32,7 +32,8 @@ verbose_level=0 #Hardcoded, can be run with 0 -> info : 1-> debug : 2-> trace
 # Generating device model:
 echo "---------------------Generating device model using external script:---------------------"
 echo "cd scripts && ./device_model_gen.py -NR $NR -NC $NC -Arch $Arch && cd .."
-cd scripts && ./device_model_gen.py -NR $NR -NC $NC -Arch $Arch && cd ..
+python_version=python3	#replace with python if that's the default path
+cd scripts && $python_version device_model_gen.py -NR $NR -NC $NC -Arch $Arch && cd ..
 
 # Executes UGRAMM and producing mapping result in mapping_output.dot
 echo " "
@@ -40,7 +41,7 @@ echo " "
 echo "---------------------Executing UGRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------"
 dfile="scripts/riken_${NR}_${NC}.dot"
 echo "make && ./UGRAMM --seed $SEED --verbose_level $verbose_level --dfile $dfile --afile $afile --config $cfile" --drc_verbose_level 1
-make && ./UGRAMM --seed $1 --verbose_level $verbose_level --dfile $dfile --afile $afile --config $cfile
+make && ./UGRAMM --drc_disable --seed $1 --verbose_level $verbose_level --dfile $dfile --afile $afile --config $cfile
 
 
 

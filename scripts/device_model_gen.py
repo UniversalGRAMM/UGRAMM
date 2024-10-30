@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 #-------------------------------------------
 #  UGRAMM    :: helper script
 #  Author    :: Omkar Bhilare
@@ -85,20 +83,23 @@ def create_riken(args):
         G.nodes[left_io_index]["G_NodeType"]         = "MemPort"     
         G.nodes[left_io_index]["G_VisualX"]          = str(0)
         G.nodes[left_io_index]["G_VisualY"]          = str(left_io_pin_scalar)       
-
+        G.nodes[left_io_index]["G_Width"]            = str(width)       
+        
         #Left-IO-input-Pin :
         G.nodes[left_io_inPin_index]["G_Name"]             = left_io_base_name + ".inPinA"
         G.nodes[left_io_inPin_index]["G_CellType"]         = "PinCell"   
         G.nodes[left_io_inPin_index]["G_NodeType"]         = "in"      
         G.nodes[left_io_inPin_index]["G_VisualX"]          = str(0)
         G.nodes[left_io_inPin_index]["G_VisualY"]          = str(left_io_input_pin_scalar)   
+        G.nodes[left_io_inPin_index]["G_Width"]                  = str(width)
 
         #Left-IO-output-Pin :
         G.nodes[left_io_outPin_index]["G_Name"]             = left_io_base_name + ".outPinA"
         G.nodes[left_io_outPin_index]["G_CellType"]         = "PinCell"   
-        G.nodes[left_io_outPin_index]["G_NodeType"]           = "out"      
+        G.nodes[left_io_outPin_index]["G_NodeType"]         = "out"      
         G.nodes[left_io_outPin_index]["G_VisualX"]          = str(0)
-        G.nodes[left_io_outPin_index]["G_VisualY"]          = str(left_io_output_pin_scalar)    
+        G.nodes[left_io_outPin_index]["G_VisualY"]          = str(left_io_output_pin_scalar)   
+        G.nodes[left_io_outPin_index]["G_Width"]            = str(width) 
         
         #----------------------------------
         #Connectivity of Left IO port and Pin cell:
@@ -124,6 +125,7 @@ def create_riken(args):
         G.nodes[right_io_index]["G_NodeType"] = "MemPort"               #Right-IOs
         G.nodes[right_io_index]["G_VisualX"]          = str(args.NC+1)
         G.nodes[right_io_index]["G_VisualY"]          = str(right_io_pin_scalar)     
+        G.nodes[right_io_index]["G_Width"]            = str(width) 
 
         #Right-IO-input-Pin :
         G.nodes[right_io_inPin_index]["G_Name"]             = right_io_base_name + ".inPinA"
@@ -131,6 +133,7 @@ def create_riken(args):
         G.nodes[right_io_inPin_index]["G_NodeType"]         = "in"      
         G.nodes[right_io_inPin_index]["G_VisualX"]          = str(args.NC+1)
         G.nodes[right_io_inPin_index]["G_VisualY"]          = str(right_io_input_pin_scalar)   
+        G.nodes[right_io_inPin_index]["G_Width"]            = str(width) 
 
         #Right-IO-output-Pin :
         G.nodes[right_io_outPin_index]["G_Name"]             = right_io_base_name + ".outPinA"
@@ -138,6 +141,7 @@ def create_riken(args):
         G.nodes[right_io_outPin_index]["G_NodeType"]         = "out"      
         G.nodes[right_io_outPin_index]["G_VisualX"]          = str(args.NC+1)
         G.nodes[right_io_outPin_index]["G_VisualY"]          = str(right_io_output_pin_scalar)   
+        G.nodes[right_io_outPin_index]["G_Width"]            = str(width) 
 
         #----------------------------------
         #Connectivity of Right IO port and Pin cell:
@@ -396,49 +400,55 @@ def create_riken(args):
                 else:   
                     G.nodes[PEindex + k]["G_Name"]         = base_name + ".crossbar_mux_" + MUX_NAME[k]  
 
-                G.nodes[PEindex + k]["G_CellType"]     = "RouteCell";
-                G.nodes[PEindex + k]["G_NodeType"]       = "Mux";
+                G.nodes[PEindex + k]["G_CellType"]     = "RouteCell"
+                G.nodes[PEindex + k]["G_NodeType"]     = "Mux"
+                G.nodes[PEindex + k]["G_Width"]        = str(width)
 
             # Assigning the constant type: 
             G.nodes[PEindex + pe_const_offset]["G_Name"]         =  base_name + ".const"
-            G.nodes[PEindex + pe_const_offset]["G_CellType"]     = "FuncCell";
-            G.nodes[PEindex + pe_const_offset]["G_NodeType"]       = "Constant";
+            G.nodes[PEindex + pe_const_offset]["G_CellType"]     = "FuncCell"
+            G.nodes[PEindex + pe_const_offset]["G_NodeType"]     = "Constant"
             G.nodes[PEindex + pe_const_offset]["G_VisualX"]      = str(x_coordinate)
             G.nodes[PEindex + pe_const_offset]["G_VisualY"]      = str(const_scalar)   
+            G.nodes[PEindex + pe_const_offset]["G_Width"]        = str(width)   
 
             # Assigning the Pin type
             G.nodes[PEindex + pe_const_pinO_offset]["G_Name"]         = base_name + ".const.outPinA" 
-            G.nodes[PEindex + pe_const_pinO_offset]["G_CellType"]     = "PinCell";
-            G.nodes[PEindex + pe_const_pinO_offset]["G_NodeType"]       = "out";
+            G.nodes[PEindex + pe_const_pinO_offset]["G_CellType"]     = "PinCell"
+            G.nodes[PEindex + pe_const_pinO_offset]["G_NodeType"]     = "out"
             G.nodes[PEindex + pe_const_pinO_offset]["G_VisualX"]      = str(x_coordinate)
             G.nodes[PEindex + pe_const_pinO_offset]["G_VisualY"]      = str(const_out_pin_scalar)  
-
+            G.nodes[PEindex + pe_const_pinO_offset]["G_Width"]        = str(width)
 
             # Assigning the ALU type:
             G.nodes[PEindex + pe_alu_offset]["G_Name"]         =  base_name + ".alu"
-            G.nodes[PEindex + pe_alu_offset]["G_CellType"]     = "FuncCell";
-            G.nodes[PEindex + pe_alu_offset]["G_NodeType"]       = "ALU";
+            G.nodes[PEindex + pe_alu_offset]["G_CellType"]     = "FuncCell"
+            G.nodes[PEindex + pe_alu_offset]["G_NodeType"]     = "ALU"
             G.nodes[PEindex + pe_alu_offset]["G_VisualX"]      = str(x_coordinate)
             G.nodes[PEindex + pe_alu_offset]["G_VisualY"]      = str(alu_scalar)
+            G.nodes[PEindex + pe_alu_offset]["G_Width"]        = str(width)
 
             # Assigning the Pin type
             G.nodes[PEindex + pe_alu_pinA_offset]["G_Name"]         = base_name + ".alu.inPinA"  
-            G.nodes[PEindex + pe_alu_pinA_offset]["G_CellType"]     = "PinCell";
-            G.nodes[PEindex + pe_alu_pinA_offset]["G_NodeType"]       = "in";
+            G.nodes[PEindex + pe_alu_pinA_offset]["G_CellType"]     = "PinCell"
+            G.nodes[PEindex + pe_alu_pinA_offset]["G_NodeType"]     = "in"
             G.nodes[PEindex + pe_alu_pinA_offset]["G_VisualX"]      = str((x_coordinate) - 0.25)
             G.nodes[PEindex + pe_alu_pinA_offset]["G_VisualY"]      = str(alu_in_pin_scalar)
+            G.nodes[PEindex + pe_alu_pinA_offset]["G_Width"]        = str(width)
 
             G.nodes[PEindex + pe_alu_pinB_offset]["G_Name"]         = base_name + ".alu.inPinB" 
-            G.nodes[PEindex + pe_alu_pinB_offset]["G_CellType"]     = "PinCell";
-            G.nodes[PEindex + pe_alu_pinB_offset]["G_NodeType"]       = "in";
+            G.nodes[PEindex + pe_alu_pinB_offset]["G_CellType"]     = "PinCell"
+            G.nodes[PEindex + pe_alu_pinB_offset]["G_NodeType"]     = "in"
             G.nodes[PEindex + pe_alu_pinB_offset]["G_VisualX"]      = str((x_coordinate) + 0.25)
             G.nodes[PEindex + pe_alu_pinB_offset]["G_VisualY"]      = str(alu_in_pin_scalar)
+            G.nodes[PEindex + pe_alu_pinB_offset]["G_Width"]        = str(width)
 
             G.nodes[PEindex + pe_alu_pinO_offset]["G_Name"]         = base_name + ".alu.outPinA" 
-            G.nodes[PEindex + pe_alu_pinO_offset]["G_CellType"]     = "PinCell";
-            G.nodes[PEindex + pe_alu_pinO_offset]["G_NodeType"]       = "out";
+            G.nodes[PEindex + pe_alu_pinO_offset]["G_CellType"]     = "PinCell"
+            G.nodes[PEindex + pe_alu_pinO_offset]["G_NodeType"]     = "out"
             G.nodes[PEindex + pe_alu_pinO_offset]["G_VisualX"]      = str(x_coordinate)
             G.nodes[PEindex + pe_alu_pinO_offset]["G_VisualY"]      = str(alu_out_pin_scalar)
+            G.nodes[PEindex + pe_alu_pinO_offset]["G_Width"]        = str(width)
 
     #--------------------------------------------------------
     #   Visualizing a PE
@@ -501,7 +511,14 @@ def create_riken(args):
     #--------------------------------------------------------
     #  Writing the PRAGMA to the output file
     #--------------------------------------------------------
-    pragma_string = " /* ------- Device model pragma ------- \n[SupportedOps] = {ALU, FADD, FSUB, FMUL, FDIV}; \n[SupportedOps] = {MemPort, INPUT, OUTPUT}; \n[SupportedOps] = {Constant, CONST}; \n*/\n"
+    pragma_string = """ /*
+{
+    "ALU" : ["FADD", "FMUL", "FSUB", "FDIV"],
+    "MEMPORT" : ["input", "output"],
+    "Constant" : ["const"]
+}
+*/
+    """
     print("\n\npragma for the device model: \n")
     print(pragma_string)
 
