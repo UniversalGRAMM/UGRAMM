@@ -5,27 +5,27 @@
 }
 */
 strict digraph  {
-0  [G_Name="IO1.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="0", G_VisualY="3"];
-1  [G_Name="IO1", G_CellType="FuncCell", G_NodeType="IO", G_VisualX="0.75", G_VisualY="3"];
-2  [G_Name="IO1.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="1.5", G_VisualY="3"];
+0  [G_Name="IO1.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="0", G_VisualY="3", G_Width="32"];
+1  [G_Name="IO1", G_CellType="FuncCell", G_NodeType="IO", G_VisualX="0.75", G_VisualY="3", G_Width="32"];
+2  [G_Name="IO1.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="1.5", G_VisualY="3", G_Width="32"];
 
-3  [G_Name="IO2.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="0", G_VisualY="1"];
-4  [G_Name="IO2", G_CellType="FuncCell", G_NodeType="IO", G_VisualX="0.75", G_VisualY="1"];
-5  [G_Name="IO2.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="1.5", G_VisualY="1"];
+3  [G_Name="IO2.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="0", G_VisualY="1", G_Width="32"];
+4  [G_Name="IO2", G_CellType="FuncCell", G_NodeType="IO", G_VisualX="0.75", G_VisualY="1", G_Width="32"];
+5  [G_Name="IO2.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="1.5", G_VisualY="1", G_Width="32"];
 
-6 [G_Name="MUX1", G_CellType="RouteCell", G_NodeType="MUX", G_VisualX="2.5", G_VisualY="3"];
-7 [G_Name="MUX2", G_CellType="RouteCell", G_NodeType="MUX", G_VisualX="2.5", G_VisualY="1"];
+6 [G_Name="MUX1", G_CellType="RouteCell", G_NodeType="MUX", G_VisualX="2.5", G_VisualY="3", G_Width="32"];
+7 [G_Name="MUX2", G_CellType="RouteCell", G_NodeType="MUX", G_VisualX="2.5", G_VisualY="1", G_Width="32"];
 
-8  [G_Name="Gate1.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="3", G_VisualY="3"];
-9  [G_Name="Gate1.inPinB", G_CellType="PinCell", G_NodeType="IN", G_VisualX="3", G_VisualY="1"];
-10  [G_Name="Gate1", G_CellType="FuncCell", G_NodeType="GATE", G_VisualX="3.75", G_VisualY="2"];
-11  [G_Name="Gate1.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="4.5", G_VisualY="2"];
+8  [G_Name="Gate1.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="3", G_VisualY="3", G_Width="32"];
+9  [G_Name="Gate1.inPinB", G_CellType="PinCell", G_NodeType="IN", G_VisualX="3", G_VisualY="1", G_Width="32"];
+10  [G_Name="Gate1", G_CellType="FuncCell", G_NodeType="GATE", G_VisualX="3.75", G_VisualY="2", G_Width="32"];
+11  [G_Name="Gate1.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="4.5", G_VisualY="2", G_Width="32"];
 
-12 [G_Name="REG1", G_CellType="RouteCell", G_NodeType="REG", G_VisualX="5.5", G_VisualY="2"];
+12 [G_Name="REG1", G_CellType="RouteCell", G_NodeType="REG", G_VisualX="5.5", G_VisualY="2", G_Width="32"];
 
-13  [G_Name="IO3.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="6", G_VisualY="2"];
-14  [G_Name="IO3", G_CellType="FuncCell", G_NodeType="IO", G_VisualX="6.75", G_VisualY="2"];
-15  [G_Name="IO3.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="7.5", G_VisualY="2"];
+13  [G_Name="IO3.inPinA", G_CellType="PinCell", G_NodeType="IN", G_VisualX="6", G_VisualY="2", G_Width="32"];
+14  [G_Name="IO3", G_CellType="FuncCell", G_NodeType="IO", G_VisualX="6.75", G_VisualY="2", G_Width="32"];
+15  [G_Name="IO3.outPinA", G_CellType="PinCell", G_NodeType="OUT", G_VisualX="7.5", G_VisualY="2", G_Width="32"];
 
 
 //1st I/O layer:

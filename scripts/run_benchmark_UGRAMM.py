@@ -8,7 +8,7 @@ import argparse
 from tabulate import tabulate  # Import tabulate for formatting tables
 
 # Parameters
-num_runs = 100
+num_runs = 1
 NR = 6
 NC = 6
 config_file = "../config.json"  # Update to remove space before `--config`

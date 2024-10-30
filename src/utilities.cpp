@@ -216,6 +216,7 @@ bool needLocking(int HID, json &jsonParsed, std::string& jsonLockNode)
   if (jsonParsed["LOCK-NODES"].empty()){
     return false;
   } else {
+
     return std::any_of(jsonParsed["LOCK-NODES"].begin(), jsonParsed["LOCK-NODES"].end(), [&](const std::string& lockGNode) {
         // Capitalize the current element for comparison
         std::string lockGNodeCap = boost::to_upper_copy(lockGNode);
@@ -728,7 +729,7 @@ void readApplicationGraph(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, 
     vertex_descriptor v = vertex(i, *H);
     // Fetching node name from the application-graph:
     std::string name = boost::get(&DotVertex::H_Name, *H, v);
-    hNames[i] = removeCurlyBrackets(name); // Removing if there are any curly brackets from the hNames.
+    hNames[i] = boost::to_upper_copy(removeCurlyBrackets(name)); // Removing if there are any curly brackets from the hNames.
 
     // Following characters are not supported in the neato visualizer: "|, =, ."
     std::replace(hNames[i].begin(), hNames[i].end(), '|', '_');

@@ -5,12 +5,11 @@
 }
 */
 strict digraph "tutorialUGRAMM" {
-
 //Node information:
-Input1 [label="Input1", opcode=INPUT];  //Input-IO node 
-Input2 [label="Input2", opcode=INPUT];  //Input-IO node 
-And1 [label="And1", opcode=AND];        //And-gate defined as GATE node
-Output1 [label="Output1", opcode=OUTPUT]; //Output-IO node
+Input1 [label="Input1", opcode=INPUT, width="32"];    //Input-IO node 
+Input2 [label="Input2", opcode=INPUT, width="32"];    //Input-IO node 
+And1 [label="And1", opcode=AND, width="32"];          //And-gate defined as GATE node
+Output1 [label="Output1", opcode=OUTPUT, width="32"]; //Output-IO node
 
 //Edge information:
 Input1 -> And1  [driver="outPinA", load="inPinA"];
