@@ -96,7 +96,7 @@ void applicationGraphDRC_CheckFloatingNodes(DirectedGraph *H, std::map<int, Node
 
 
 /**
- * Pin names used in the application DFG must follow the names defined in inPin  and outPin vectors in GRAMM.cpp
+ * Pin names used in the application DFG must follow the names defined in the  pragmas in GRAMM.cpp
  * 
  * @param H A pointer to the application graph.
  * @param hConfig A map containing node configuration details of application graph.
@@ -113,16 +113,6 @@ void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfi
  * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
  */
 void applicationGraphDRC_CheckApplicationDFGWeaklyConnected(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
-
-/**
- *  Check if the application DFG dot files has the correct attributes and also verify if the attributes haves been correctly loaded into the hConfig data structure
- * 
- * @param H A pointer to the application graph.
- * @param hConfig A map containing node configuration details of application graph.
- * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
- */
-void applicationGraphDRC_CheckDeviceModelAttributes(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
-
 
 /**
  *  Check if the application DFG dot files has the correct attributes and also verify if the attributes haves been correctly loaded into the hConfig data structure
