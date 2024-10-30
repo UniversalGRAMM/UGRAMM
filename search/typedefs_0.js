@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['char_5ftype_0',['char_type',['../classbasic__format__context.html#a71fea7d34edb618df612644dfd02a896',1,'basic_format_context']]]
+  ['directedgraph_0',['DirectedGraph',['../UGRAMM_8h.html#a90e7fca315eb6fdfeba3e3f961876833',1,'UGRAMM.h']]]
 ];

@@ -1,5 +1,0 @@
-<map id="detail::has_const_begin_end&lt; T, void_t&lt; decltype(detail::range_begin(std::declval&lt; const remove_cvref_t&lt; T &gt; &amp; &gt;())), decltype(detail::range_end(std::declval&lt; const remove_cvref_t&lt; T &gt; &amp; &gt;()))&gt; &gt;" name="detail::has_const_begin_end&lt; T, void_t&lt; decltype(detail::range_begin(std::declval&lt; const remove_cvref_t&lt; T &gt; &amp; &gt;())), decltype(detail::range_end(std::declval&lt; const remove_cvref_t&lt; T &gt; &amp; &gt;()))&gt; &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,208,195"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="57,5,156,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,47,109,79,104,79,104,47"/>
-</map>

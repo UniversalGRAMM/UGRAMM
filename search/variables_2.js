@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yellow_5fbold_0',['yellow_bold',['../classspdlog_1_1sinks_1_1ansicolor__sink.html#a91f7c688fda652cb33231a471a9aa5d4',1,'spdlog::sinks::ansicolor_sink']]]
+  ['explored_0',['explored',['../UGRAMM_8cpp.html#a860b80820a1de8407a60cb0dc740dbd2',1,'explored:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#a860b80820a1de8407a60cb0dc740dbd2',1,'explored:&#160;UGRAMM.cpp']]]
 ];

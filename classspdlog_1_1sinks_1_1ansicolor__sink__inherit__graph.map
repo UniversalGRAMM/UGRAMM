@@ -1,9 +1,0 @@
-<map id="spdlog::sinks::ansicolor_sink&lt; ConsoleMutex &gt;" name="spdlog::sinks::ansicolor_sink&lt; ConsoleMutex &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="180,39,336,79"/>
-<area shape="rect" id="Node000003" href="$classspdlog_1_1sinks_1_1ansicolor__stderr__sink.html" title=" " alt="" coords="386,5,582,46"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="351,43,385,38,385,43,352,48"/>
-<area shape="rect" id="Node000004" href="$classspdlog_1_1sinks_1_1ansicolor__stdout__sink.html" title=" " alt="" coords="384,71,583,111"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="352,70,384,74,383,79,351,75"/>
-<area shape="rect" id="Node000002" href="$classspdlog_1_1sinks_1_1sink.html" title=" " alt="" coords="5,46,132,72"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,56,179,56,179,62,147,62"/>
-</map>

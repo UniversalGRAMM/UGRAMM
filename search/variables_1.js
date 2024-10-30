@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['size_0',['size',['../structformat__to__n__result.html#ab1c815078e1a78716bb07b9ed8c7023b',1,'format_to_n_result']]]
+  ['drclogger_0',['drcLogger',['../UGRAMM_8cpp.html#abf6a662e3c32f0f7782a1b09ead70d62',1,'drcLogger:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#abf6a662e3c32f0f7782a1b09ead70d62',1,'drcLogger:&#160;UGRAMM.cpp']]]
 ];

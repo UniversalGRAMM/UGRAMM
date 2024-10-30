@@ -1,15 +1,8 @@
 var searchData=
 [
-  ['p_5fformatter_0',['p_formatter',['../classspdlog_1_1details_1_1p__formatter.html',1,'spdlog::details']]],
-  ['padding_5finfo_1',['padding_info',['../structspdlog_1_1details_1_1padding__info.html',1,'spdlog::details']]],
-  ['parse_5fempty_5fspecs_2',['parse_empty_specs',['../structdetail_1_1parse__empty__specs.html',1,'detail']]],
-  ['pattern_5fformatter_3',['pattern_formatter',['../classspdlog_1_1pattern__formatter.html',1,'spdlog']]],
-  ['periodic_5fworker_4',['periodic_worker',['../classspdlog_1_1details_1_1periodic__worker.html',1,'spdlog::details']]],
-  ['pid_5fformatter_5',['pid_formatter',['../classspdlog_1_1details_1_1pid__formatter.html',1,'spdlog::details']]],
-  ['precision_5fchecker_6',['precision_checker',['../structdetail_1_1precision__checker.html',1,'detail']]],
-  ['printf_5farg_5fformatter_7',['printf_arg_formatter',['../classdetail_1_1printf__arg__formatter.html',1,'detail']]],
-  ['printf_5fformatter_8',['printf_formatter',['../structprintf__formatter.html',1,'']]],
-  ['printf_5fprecision_5fhandler_9',['printf_precision_handler',['../structdetail_1_1printf__precision__handler.html',1,'detail']]],
-  ['printf_5fwidth_5fhandler_10',['printf_width_handler',['../classdetail_1_1printf__width__handler.html',1,'detail']]],
-  ['push_5fback_11',['push_back',['../classdynamic__format__arg__store.html#a710e994685e69fd1cd4f56d29efc0d95',1,'dynamic_format_arg_store::push_back(const T &amp;arg)'],['../classdynamic__format__arg__store.html#ac58637a7965cbfeab47c2f50e923dc07',1,'dynamic_format_arg_store::push_back(std::reference_wrapper&lt; T &gt; arg)'],['../classdynamic__format__arg__store.html#a14baaad39c59b82fdf86dc4276f7d7cc',1,'dynamic_format_arg_store::push_back(const detail::named_arg&lt; char_type, T &gt; &amp;arg)']]]
+  ['skipfullylockednodes_0',['skipFullyLockedNodes',['../UGRAMM_8h.html#a74b882e55672acdd97732bfdf5783635',1,'UGRAMM.h']]],
+  ['skipplacement_1',['skipPlacement',['../utilities_8cpp.html#ad2ce2bbc23468c8e6546408cf5a81b35',1,'skipPlacement(std::string hOpcode, json &amp;jsonParsed):&#160;utilities.cpp'],['../utilities_8h.html#ad2ce2bbc23468c8e6546408cf5a81b35',1,'skipPlacement(std::string hOpcode, json &amp;jsonParsed):&#160;utilities.cpp']]],
+  ['sortalgorithm_2',['sortAlgorithm',['../UGRAMM_8h.html#aee2f5ff71451b5b70972fce1aec48cc6',1,'UGRAMM.h']]],
+  ['sortlist_3',['sortList',['../routing_8cpp.html#a27709e3dad5dc45da2269de07b71ecb1',1,'sortList(int list[], int n, std::map&lt; int, NodeConfig &gt; *hConfig):&#160;routing.cpp'],['../routing_8h.html#a27709e3dad5dc45da2269de07b71ecb1',1,'sortList(int list[], int n, std::map&lt; int, NodeConfig &gt; *hConfig):&#160;routing.cpp']]],
+  ['string_5fremover_4',['string_remover',['../utilities_8cpp.html#a4243587ef0e4ba37f3c505cc850fbcef',1,'string_remover(std::string original_string, std::string toRemove):&#160;utilities.cpp'],['../utilities_8h.html#a4243587ef0e4ba37f3c505cc850fbcef',1,'string_remover(std::string original_string, std::string toRemove):&#160;utilities.cpp']]]
 ];

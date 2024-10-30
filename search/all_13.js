@@ -1,18 +1,6 @@
 var searchData=
 [
-  ['t_5fformatter_0',['T_formatter',['../classspdlog_1_1details_1_1T__formatter.html',1,'spdlog::details']]],
-  ['t_5fformatter_1',['t_formatter',['../classspdlog_1_1details_1_1t__formatter.html',1,'spdlog::details']]],
-  ['tcp_5fclient_2',['tcp_client',['../classspdlog_1_1details_1_1tcp__client.html',1,'spdlog::details']]],
-  ['tcp_5fsink_3',['tcp_sink',['../classspdlog_1_1sinks_1_1tcp__sink.html',1,'spdlog::sinks']]],
-  ['tcp_5fsink_5fconfig_4',['tcp_sink_config',['../structspdlog_1_1sinks_1_1tcp__sink__config.html',1,'spdlog::sinks']]],
-  ['text_5fstyle_5',['text_style',['../classtext__style.html',1,'']]],
-  ['thousands_5fsep_5fresult_6',['thousands_sep_result',['../structdetail_1_1thousands__sep__result.html',1,'detail']]],
-  ['thread_5fpool_7',['thread_pool',['../classspdlog_1_1details_1_1thread__pool.html',1,'spdlog::details']]],
-  ['tm_5fformat_5fchecker_8',['tm_format_checker',['../structdetail_1_1tm__format__checker.html',1,'detail']]],
-  ['tm_5fwriter_9',['tm_writer',['../classdetail_1_1tm__writer.html',1,'detail']]],
-  ['to_20ugramm_3a_10',['Introduction to UGRAMM:',['../md_README.html',1,'']]],
-  ['to_5futf8_11',['to_utf8',['../classdetail_1_1to__utf8.html',1,'detail']]],
-  ['tuple_5fjoin_5fview_12',['tuple_join_view',['../structtuple__join__view.html',1,'']]],
-  ['type_5fconstant_13',['type_constant',['../structdetail_1_1type__constant.html',1,'detail']]],
-  ['type_5fidentity_14',['type_identity',['../structtype__identity.html',1,'']]]
+  ['weight_0',['weight',['../structEdgeProperty.html#a9feb1c5e452467dcf79bd419c095109f',1,'EdgeProperty']]],
+  ['width_1',['width',['../structNodeConfig.html#a4893c29bb128c93eae35aff497dec6b2',1,'NodeConfig']]],
+  ['widthcheck_2',['widthCheck',['../utilities_8cpp.html#ac81cdd62de98d09e41890ec55aa8b464',1,'widthCheck(int hWidth, int gWidth):&#160;utilities.cpp'],['../utilities_8h.html#ac81cdd62de98d09e41890ec55aa8b464',1,'widthCheck(int hWidth, int gWidth):&#160;utilities.cpp']]]
 ];
