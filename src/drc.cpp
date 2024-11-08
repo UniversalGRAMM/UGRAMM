@@ -189,17 +189,43 @@ void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfi
     boost::tie(eo, eo_end) = out_edges(v, *H);
     for (; eo != eo_end; eo++){
 
-      auto it_inPin = std::find(inPin.begin(), inPin.end(), boost::get(&EdgeProperty::H_LoadPin, *H, *eo));
-      if (it_inPin == inPin.end()){
-        drcLogger->error(" load pin attribute {} for edge {} -> {} is not defined in inPin vector seen in UGRAMM.cpp", boost::get(&EdgeProperty::H_LoadPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
-        *errorDetected  = true;
+      //Finding the inputPin based on attribute given in the benchmark:
+      std::string loadPinList = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
+      std::string upperCaseloadPinList = boost::to_upper_copy(loadPinList);
+
+      //Converting above string into set of strings:
+      std::set<std::string> temp_load;
+      boost::split(temp_load, upperCaseloadPinList, boost::is_any_of(","));
+
+      // Convert the vector into a set to remove duplicates
+      std::set<std::string> loadPinSet(temp_load.begin(), temp_load.end());
+
+      for (const auto& s : loadPinSet) {
+        if (std::find(inPin.begin(), inPin.end(), s) == inPin.end()){
+          drcLogger->error(" load pin attribute {} for edge {} -> {} is not defined in inPin vector seen in UGRAMM.cpp", s, hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+          *errorDetected  = true;
+        }
       }
 
-      auto it_outPin = std::find(outPin.begin(), outPin.end(), boost::get(&EdgeProperty::H_DriverPin, *H, *eo));
-      if (it_outPin == outPin.end()){
-        drcLogger->error(" driver pin attribute {} for edge {} -> {} is not defined in outPin vector seen in UGRAMM.cpp", boost::get(&EdgeProperty::H_DriverPin, *H, *eo), hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
-        *errorDetected  = true;
+
+      //Finding the outputPin based on attribute given in the benchmark:
+      std::string driverPinList = boost::get(&EdgeProperty::H_DriverPin, *H, *eo);
+      std::string upperCasedriverPinList = boost::to_upper_copy(driverPinList);
+
+      //Converting above string into set of strings:
+      std::set<std::string> temp_driver;
+      boost::split(temp_driver, upperCasedriverPinList, boost::is_any_of(","));
+
+      // Convert the vector into a set to remove duplicates
+      std::set<std::string> driverPinSet(temp_driver.begin(), temp_driver.end());
+
+      for (const auto& s : driverPinSet) {
+        if (std::find(outPin.begin(), outPin.end(), s) == outPin.end()){
+          drcLogger->error(" driver pin attribute {} for edge {} -> {} is not defined in outPin vector seen in UGRAMM.cpp", s, hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+          *errorDetected  = true;
+        }
       }
+
     }
   }
 }

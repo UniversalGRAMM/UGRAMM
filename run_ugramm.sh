@@ -41,7 +41,7 @@ echo " "
 echo "---------------------Executing UGRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------"
 dfile="scripts/riken_${NR}_${NC}.dot"
 echo "make && ./UGRAMM --seed $SEED --verbose_level $verbose_level --dfile $dfile --afile $afile --config $cfile" --drc_verbose_level 1
-make && ./UGRAMM --drc_disable --seed $1 --verbose_level $verbose_level --dfile $dfile --afile $afile --config $cfile
+make && ./UGRAMM --seed $1 --verbose_level $verbose_level --dfile $dfile --afile $afile --config $cfile
 
 
 
