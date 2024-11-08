@@ -269,7 +269,7 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, json &Ugram
   std::string commentSection = readCommentSection(applicationGraphFile);
 
   // Step 2: Parse the JSON file from the comment Section
-  json applicationGraphPragma = json::parse(commentSection);
+  applicationGraphPragma = json::parse(commentSection);
 
   // Step 3: Check the content of applicationGraph matches with Device model or not.
   for (auto& [key, value] : applicationGraphPragma.items()) {
@@ -282,8 +282,7 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, json &Ugram
         }
       }
       UGRAMM->info("[H] Compatibility of pragma for {} passed", key);
-    }
-    else {
+    } else {
       // Convert `value` to string for logging
       std::string valueStr = value.dump();
       UGRAMM->info("[H] Key -> {}, Value -> {} added into UGRAMM Pragma Config", key, valueStr);
@@ -292,6 +291,15 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, json &Ugram
       UgrammPragmaConfig[key] = value;
     }
   }
+
+   // Step 4: Capitalize the inPin and outPin variables to that support accepted pin parameters
+   for (int i = 0; i < inPin.size(); i++){
+      inPin[i] = boost::to_upper_copy(inPin[i]);
+   }
+
+   for (int i = 0; i < outPin.size(); i++){
+      outPin[i] = boost::to_upper_copy(outPin[i]);
+   }
 }
 
 /**

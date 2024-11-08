@@ -31,8 +31,8 @@ std::map<std::string, int> gNamesInv;
 std::map<std::string, int> gNamesInv_FuncCell;
 std::bitset<100000> explored;
 
-std::vector<std::string> inPin = {"inPinA", "inPinB", "anyPins"};
-std::vector<std::string> outPin = {"outPinA"};
+std::vector<std::string> inPin = {"inPinA", "inPinB"}; // Should be removed
+std::vector<std::string> outPin = {"outPinA"}; // Should be removed
 
 // Logger & CLI global variables:
 std::shared_ptr<spdlog::logger> UGRAMM = spdlog::stdout_color_mt("UGRAMM");
@@ -45,6 +45,7 @@ std::map<std::string, std::vector<std::string>> ugrammConfig;
 // Defining the JSON for the config file:
 json jsonParsed;
 json UgrammPragmaConfig;
+json applicationGraphPragma;
 
 //---------------------------------------------------------------------//
 
