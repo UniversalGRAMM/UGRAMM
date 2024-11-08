@@ -180,6 +180,15 @@ void ripUpRouting(int signal, DirectedGraph *G);
  */
 void depositRoute(int signal, std::list<int> *nodes);
 
+
+/**
+ * Calculate Pathfinder-based cost for a given vertex.
+ *
+ * @param next Vertex for which to calculate the cost.
+ * @return Calculated cost for the vertex.
+ */
+float calculate_cost (vertex_descriptor next);
+
 /**
  * Pathfinder approach for routing signal -> sink
  * 

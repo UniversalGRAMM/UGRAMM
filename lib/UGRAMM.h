@@ -125,6 +125,8 @@ extern std::bitset<100000> explored;
 //Pathefinder cost parameters:
 extern float PFac;  //Congestion cost factor
 extern float HFac;  //History cost factor
+extern float pfac_mul; //Multiplier for present congestion cost
+extern float hfac_mul; //Multiplier for history congestion cost
 
 //Logger variable:
 extern std::shared_ptr<spdlog::logger>  UGRAMM;

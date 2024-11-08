@@ -81,34 +81,6 @@ void findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &s
     }
   }
 
-  
-  // for (const auto& pair : gNamesInv_FuncCell) {
-
-  //   //Get the current name for the gNode and the lock node
-  //   std::string gNode = pair.first;
-  //   std::string lockedNode = lockedNodeName;
-
-  //   // Normal string matching for lock nodes
-  //   if (!allowWildcardInLocking){
-  //     if (gNode.find(lockedNode) == std::string::npos)
-  //       continue;
-
-  //     suitableGIDs.push_back(pair.second);
-  //   }
-
-  //   // String matching when locked nodes contains a wildcard
-  //   if (allowWildcardInLocking){
-  //     //wildcard key is "*""
-  //     std::string key = "*";
-
-  //     if (matchesPattern(key, gNode, lockedNode)) {
-  //       suitableGIDs.push_back(pair.second);
-  //     }
-  //   }
-
-  //   UGRAMM->trace("\t[Locking] Lock node {} :: gNode {} :: GID {}", lockedNode, gNode, pair.second);
-  // }
-
   return;
 }
 
@@ -419,6 +391,18 @@ void depositRoute(int signal, std::list<int> *nodes)
   }
 }
 
+/*
+  Calculate Pathfinder based cost
+*/
+float calculate_cost (vertex_descriptor next)
+{
+  /*
+    wPathFinder(g) = (1 + |S(g)|) × P × (1 + H(g))
+    where S(g) is as defined previously: the set of vertices of H that use g in their vertex model. P(PFac) is a scalar constant reflecting the penalty for overuse. We set P to one initially, and increase it geometrically by pfac_mult in each iteration (determined empirically). H(g) is the history term, initialized to zero for each vertex. After each iteration of the while loop in Algorithm 2, we increase H(g) by one for each overused vertex g ∈ G (i.e., where |S(g)| > 1).
+  */
+  return (1 + (*HistoryCosts)[next]) * (1 + (*Users)[next].size() * PFac);
+}
+
 /**
  * Pathfinder approach for routing signal -> sink
 */
@@ -511,8 +495,13 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
       struct ExpNode eNodeNew;
       eNodeNew.i = next;
 
-      eNodeNew.cost = popped.cost + (1 + (*HistoryCosts)[next]) * (1 + (*Users)[next].size() * PFac);
+      //Cost function:
+      float nextNodeCost = calculate_cost(next);
 
+	  //Cost is accumulated upto sink node:
+      eNodeNew.cost = popped.cost + nextNodeCost;
+	  UGRAMM->trace("For {} :: Cost of popped node: {} | {} :: Cost of next node: {} | {} :: Accumulated cost: {}", hNames[signal], gNames[popped.i],popped.cost, gNames[next], nextNodeCost,eNodeNew.cost);
+	  
       (*TraceBack)[next] = popped.i;
       it = sink.find(next);
       if ((eNodeNew.cost > 0) && (it != sink.end()))
