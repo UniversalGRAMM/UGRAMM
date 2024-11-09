@@ -156,8 +156,9 @@ bool compatibilityCheck(int gID, int hID, std::map<int, NodeConfig> *hConfig, st
  * @param positionedOutputFile The positioned-output dot file stream (this dot-file contains actual co-ordinates of the node cells).
  * @param unpositionedOutputFile The unpositioned-output dot file stream (this dot-file does not contain any co-ordinates of the node cells).
  * @param hConfig A map containing node configuration details of device-model graph.
- */
-void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig);
+ * @param gConfig A map containing node configuration details of device-model graph.
+*/
+void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
 
 /**
  * Connects associated pins to the specified FunCell in the device model graph.

@@ -67,6 +67,7 @@ def create_riken(args):
         #---------------------------------------------------------------
         #Left-IO:
         #---------------------------------------------------------------
+
         left_io_index        = i*3
         left_io_inPin_index  = left_io_index + 1
         left_io_outPin_index = left_io_index + 2
@@ -100,7 +101,7 @@ def create_riken(args):
         G.nodes[left_io_outPin_index]["G_VisualX"]          = str(0)
         G.nodes[left_io_outPin_index]["G_VisualY"]          = str(left_io_output_pin_scalar)   
         G.nodes[left_io_outPin_index]["G_Width"]            = str(width) 
-        
+
         #----------------------------------
         #Connectivity of Left IO port and Pin cell:
         #----------------------------------
@@ -119,7 +120,7 @@ def create_riken(args):
         right_io_inPin_index    = right_io_index + 1
         right_io_outPin_index   = right_io_index + 2
         
-        right_io_base_name = "LS.w32.c" + str(args.NR+1) + ".r" + str(i) + ".memport"
+        right_io_base_name = "LS.w32.c" + str(args.NC+1) + ".r" + str(i) + ".memport"
         G.nodes[right_io_index]["G_Name"]     = right_io_base_name      #Right-IOs       
         G.nodes[right_io_index]["G_CellType"] = "FuncCell"              #Right-IOs
         G.nodes[right_io_index]["G_NodeType"] = "MemPort"               #Right-IOs
@@ -143,6 +144,9 @@ def create_riken(args):
         G.nodes[right_io_outPin_index]["G_VisualY"]          = str(right_io_output_pin_scalar)   
         G.nodes[right_io_outPin_index]["G_Width"]            = str(width) 
 
+        #print(f"left_io_index {left_io_index} for {left_io_base_name} | right_io_index {right_io_index} for {right_io_base_name}")
+        #print(f'Left pin: {G.nodes[left_io_outPin_index]["G_VisualX"]}, {G.nodes[left_io_outPin_index]["G_VisualY"]} || Right pin: {G.nodes[right_io_outPin_index]["G_VisualX"]}, {G.nodes[right_io_outPin_index]["G_VisualY"]}')
+        
         #----------------------------------
         #Connectivity of Right IO port and Pin cell:
         #----------------------------------
@@ -158,32 +162,32 @@ def create_riken(args):
             if (j == left_sb):
                 continue
             #Edge from current IO out-pin to adjacent SB's pins
-            G.add_edge(left_io_outPin_index, PEstart+ i*args.NC*PEstep + j)  
+            G.add_edge(left_io_outPin_index, PEstart+ i*args.NR*PEstep + j)  
 
             #Edge from current IO input-pin to adjacent SB's pins  
-            G.add_edge(PEstart+ i*args.NC*PEstep + j, left_io_inPin_index) 
+            G.add_edge(PEstart+ i*args.NR*PEstep + j, left_io_inPin_index) 
 
         #Edge from adjacent closest SB port to IO input-pin
-        G.add_edge(PEstart+ i*args.NC*PEstep + left_sb, left_io_inPin_index)  
+        G.add_edge(PEstart+ i*args.NR*PEstep + left_sb, left_io_inPin_index)  
 
         #Edge from adjacent closest SB port to IO output-pin
-        G.add_edge(left_io_outPin_index, PEstart+ i*args.NC*PEstep + left_sb) 
+        G.add_edge(left_io_outPin_index, PEstart+ i*args.NR*PEstep + left_sb) 
 
         #Right-most column:
         for j in range(sb_max):
             if (j == right_sb):
                 continue
             #Edge from current IO out-pin to adjacent SB's pins
-            G.add_edge(right_io_outPin_index, PEstart+ i*args.NC*PEstep + (args.NC-1)*PEstep + j)    
+            G.add_edge(right_io_outPin_index, PEstart+ i*args.NR*PEstep + (args.NC-1)*PEstep + j)    
 
             #Edge from current IO input-pin to adjacent SB's pins  
-            G.add_edge(PEstart+ i*args.NC*PEstep + (args.NC-1)*PEstep + j, right_io_inPin_index) 
+            G.add_edge(PEstart+ i*args.NR*PEstep + (args.NC-1)*PEstep + j, right_io_inPin_index) 
 
         #Edge from adjacent closest SB port to IO input-pin
-        G.add_edge(PEstart+ i*args.NC*PEstep + (args.NC-1)*PEstep + right_sb, right_io_inPin_index)   
+        G.add_edge(PEstart+ i*args.NR*PEstep + (args.NC-1)*PEstep + right_sb, right_io_inPin_index)   
 
         #Edge from adjacent closest SB port to IO output-pin
-        G.add_edge(right_io_outPin_index, PEstart+ i*args.NC*PEstep + (args.NC-1)*PEstep + right_sb)   
+        G.add_edge(right_io_outPin_index, PEstart+ i*args.NR*PEstep + (args.NC-1)*PEstep + right_sb)   
 
     #--------------------------------------------------------
     #Step 2: Add connection between Switch Blocks
@@ -378,8 +382,10 @@ def create_riken(args):
             # We have total 12 muxes, 10 from SB and 2 from PE:
             # Current PE number:
             current_pe_number = int((PEindex - PEstart)/PEstep)
-            x_coordinate = int(current_pe_number/args.NR) + 1
-            y_coordinate = current_pe_number%args.NR 
+            #x_coordinate = int(current_pe_number/args.NC) + 1   #x_coordinate is derived from NC 
+            #y_coordinate = current_pe_number%args.NR            #y_coordinate is derived from NR 
+            x_coordinate = j+1
+            y_coordinate = i
 
             #Visual X and Y calculation:
             pe_gap = 1
@@ -390,6 +396,7 @@ def create_riken(args):
             alu_scalar           = alu_out_pin_scalar + 0.2
             
             base_name = "pe" + ".w" + str(width)  + ".c" + str(x_coordinate) + ".r" + str(y_coordinate) 
+            #print(f'for {current_pe_number} | {base_name} :: {x_coordinate}, {y_coordinate} :: {j+1}, {i}')
             MUX_NAME  = ["S", "SW", "W", "NW", "N", "NE", "E", "SE", "PEinA", "PEinB"]
 
             for k in range(sb_max+2):       

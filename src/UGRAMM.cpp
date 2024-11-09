@@ -248,7 +248,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       //-------- Debugging statements ------------//
       if (UGRAMM->level() <= spdlog::level::trace)
         printRouting(y);
-      UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[i], totalCosts[i]);
+      UGRAMM->debug("[Placement] For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[i], totalCosts[i]);
       //------------------------------------------//
 
       //Early exit if the cost is greater than bestCost:
