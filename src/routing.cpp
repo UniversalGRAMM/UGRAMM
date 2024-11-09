@@ -437,7 +437,7 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
     eNode.cost = 0;
     eNode.i = rNode;
 
-    UGRAMM->trace("EXPANSION SOURCE : {}", gNames[rNode]);
+    UGRAMM->trace("(route) EXPANSION SOURCE : {}", gNames[rNode]);
 
     explored.set(rNode);
     expInt.push_back(rNode);
@@ -448,7 +448,7 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
   {
       for (const auto& item : sink) 
       {
-          UGRAMM->trace("EXPANSION TARGET : {}", gNames[item]); 
+          UGRAMM->trace("(route) EXPANSION TARGET : {}", gNames[item]); 
       }
   }
 
@@ -458,8 +458,9 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
   {
     popped = PRQ.top();
     PRQ.pop();
-    UGRAMM->trace("Popped element: ", gNames[popped.i]);
-    UGRAMM->trace("PRQ POP COST: {}", popped.cost);
+
+    UGRAMM->trace("(route) Popped element: {}", gNames[popped.i]);
+    UGRAMM->trace("(route) PRQ POP COST: {}", popped.cost);
 
     auto it = sink.find(popped.i);
 
@@ -473,6 +474,7 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
     vertex_descriptor vPopped = vertex(popped.i, *G);
     out_edge_iterator eo_G, eo_end_G;
     boost::tie(eo_G, eo_end_G) = out_edges(vPopped, *G);
+
     for (; eo_G != eo_end_G; eo_G++)
     {
       vertex_descriptor next = target(*eo_G, *G);
@@ -500,8 +502,8 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
 
 	  //Cost is accumulated upto sink node:
       eNodeNew.cost = popped.cost + nextNodeCost;
-	  UGRAMM->trace("For {} :: Cost of popped node: {} | {} :: Cost of next node: {} | {} :: Accumulated cost: {}", hNames[signal], gNames[popped.i],popped.cost, gNames[next], nextNodeCost,eNodeNew.cost);
-	  
+      UGRAMM->trace("(route) Cost of popped node: {} [{}] :: Cost of next node: {} [{}] :: Total: [{}]", gNames[popped.i],popped.cost, gNames[next], nextNodeCost,eNodeNew.cost);
+      
       (*TraceBack)[next] = popped.i;
       it = sink.find(next);
       if ((eNodeNew.cost > 0) && (it != sink.end()))
@@ -519,7 +521,9 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
   if (hit)
   {
     int current = popped.i;
-    //  std::cout << "CURRENT: " << current << "\n";
+
+    UGRAMM->trace("(route) ----------- HIT for {} at {} -----------", hNames[signal], gNames[current]);
+
     while (1)
     {
       route->push_back(current);
@@ -531,7 +535,11 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
     retVal = popped.cost;
   }
   else // if (!hit)
+  { 
+    UGRAMM->error("(route) ----------- FAILED routing for {} -----------", hNames[signal]);
     retVal = MAX_DIST;
+  }
+    
 
   for (int i = 0; i < expInt.size(); i++)
   {
@@ -547,7 +555,7 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
 */
 int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig, std::map<int, NodeConfig> *hConfig)
 {
-  UGRAMM->trace("BEGINNING ROUTE OF NAME : {}", hNames[y]);
+  UGRAMM->trace("(routeSignal) ----------- BEGINNING ROUTE OF NAME : {} -----------", hNames[y]);
 
   vertex_descriptor yD = vertex(y, *H);
   int totalCost = 0;
@@ -556,7 +564,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
   out_edge_iterator eo, eo_end;
   boost::tie(eo, eo_end) = out_edges(yD, *H);
   for (; eo != eo_end; eo++)
-  {
+  { 
     int load = target(*eo, *H);
 
     //---------------------------------------------------------------//
@@ -576,18 +584,20 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     //UserCheck for driver:
     if(invUsers[y] == NOT_PLACED)
     {
-      UGRAMM->error("While routing, invUsers for node {} found to be NULL", hNames[y]);
+      UGRAMM->error("(routeSignal) While routing, invUsers for node {} found to be NULL", hNames[y]);
       exit(-1);
     }
 
     //Routing tree should be empty for the current application-node (signal y) 
     if((*Trees)[y].nodes.size() != 0)
     {
-      UGRAMM->error("For application node {}, the routing tree already has elements", hNames[y]);
+      UGRAMM->error("(routeSignal) For application node {}, the routing tree already has elements", hNames[y]);
       printRouting(y);
       exit(-1);
     }
     //-------------------------------------------------------------//
+
+     UGRAMM->debug("(routeSignal) ----------- ROUTE: {} -> {} -----------", hNames[y], hNames[load]);
 
     //----------------------------------------------------------------//
     //--------- Finding appropriate outputPin for the driver ---------//
@@ -612,7 +622,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
         }
         else 
         {
-          UGRAMM->error("The width of device-model node {} | {} is not compatibile with the requirement of {} | {}", gNames[outPinID], (*gConfig)[outPinID].width,hNames[y], (*hConfig)[y].width);
+          UGRAMM->error("(routeSignal) The width of device-model node {} | {} is not compatibile with the requirement of {} | {}", gNames[outPinID], (*gConfig)[outPinID].width,hNames[y], (*hConfig)[y].width);
           exit(-1);
         }
       }
@@ -621,7 +631,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     //Check:
     if (driverOutPin < 0)
     {
-      UGRAMM->error("Could not find outputPin for the driver\n");
+      UGRAMM->error("(routeSignal) Could not find outputPin for the driver\n");
       exit(-1);
     }
 
@@ -652,15 +662,6 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     // Convert the vector into a set to remove duplicates
     std::set<std::string> loadPinSet(temp.begin(), temp.end());
 
-    if (UGRAMM->level() <= spdlog::level::trace)
-    {
-      //OB [debugging]: print above strs 
-      for (const auto& s : loadPinSet) {
-          std::cout << "For " << hNames[y] << "::  Set item: " << s << " :: ";
-      }
-      std::cout << "\n";
-    }
-
     vertex_descriptor loadD = vertex(loadFunCell, *G);
     in_edge_iterator eiL, eiL_end;
     boost::tie(eiL, eiL_end) = in_edges(loadD, *G);
@@ -675,11 +676,11 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
         if(widthCheck((*hConfig)[load].width, (*gConfig)[inPinId].width))
         {
           loadIDList.insert(inPinId);
-          UGRAMM->debug("For {} || Found {}|{} in driverPinList : {}", hNames[y], gNames[inPinId], (*gConfig)[inPinId].pinName, loadPinList);
+          UGRAMM->debug("(routeSignal) Load [{}] currently mapped at [{}] has driverPinList as {}", hNames[load], gNames[inPinId], loadPinList);
         }
         else 
         {
-          UGRAMM->error("The width of device-model node {} | {} is not compatibile with the requirement of {} | {}", gNames[inPinId], (*gConfig)[inPinId].width,hNames[load], (*hConfig)[load].width);
+          UGRAMM->error("(routeSignal) The width of device-model node {} | {} is not compatibile with the requirement of {} | {}", gNames[inPinId], (*gConfig)[inPinId].width,hNames[load], (*hConfig)[load].width);
           exit(-1);
         }
       }
@@ -689,7 +690,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     //Check:
     if (loadIDList.size() == 0)
     {
-      UGRAMM->error("Could not find inputPin for the dloadriver\n");
+      UGRAMM->error("(routeSignal) Could not find inputPin for the dloadriver\n");
       exit(-1);
     }
 
@@ -700,8 +701,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     {
       for (const auto& load : loadIDList) // Use a range-based for loop
       {
-          UGRAMM->debug("ROUTING => hSOURCE : {} :: hTARGET : {} || dSource : {} dTarget : {} || SOURCE-Pin : {} :: TARGET-Pin-List : {} ",
-              hNames[y], hNames[load], gNames[driverOutPin], gNames[load], driverPinName, loadPinList);
+          UGRAMM->debug("(routeSignal) ----------- D-ROUTE: {} -> {} -----------", gNames[driverOutPin], gNames[load]);
       }
     }
     //----------------------------------------------------------------//
@@ -721,7 +721,7 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     }
     else
     {
-      UGRAMM->trace("Skipped the routing for this application node {} due to high cost", hNames[y]);
+      UGRAMM->trace("(routeSignal) Skipped the routing for this application node {} due to high cost", hNames[y]);
     }
   }
   

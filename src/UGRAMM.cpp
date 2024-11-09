@@ -231,8 +231,6 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
         }
       }
 
-      
-
       //------------------ Routing Setup ---------------------//
       ripUpRouting(y, G);         //Ripup the previous routing
       (*Users)[i].push_back(y);   //Users update                 
@@ -625,7 +623,7 @@ int main(int argc, char **argv)
     // Visualizing mapping result in neato:
     printMappedResults(&H, &G, &hConfig, &gConfig, UgrammPragmaConfig);
 
-    UGRAMM->info("[RESULT] UGRAMM_PASSED");
+    UGRAMM->info("[RESULT] ----------- UGRAMM_PASSED -----------");
   }
   else 
   {
