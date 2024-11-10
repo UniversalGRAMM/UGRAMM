@@ -522,7 +522,7 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
   {
     int current = popped.i;
 
-    UGRAMM->trace("(route) ----------- HIT for {} at {} -----------", hNames[signal], gNames[current]);
+    UGRAMM->debug("(route) ----------- HIT for {} at {} -----------", hNames[signal], gNames[current]);
 
     while (1)
     {
@@ -536,7 +536,7 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
   }
   else // if (!hit)
   { 
-    UGRAMM->error("(route) ----------- FAILED routing for {} -----------", hNames[signal]);
+    UGRAMM->debug("(route) ----------- FAILED routing for {} -----------", hNames[signal]);
     retVal = MAX_DIST;
   }
     
