@@ -255,14 +255,8 @@ def create_riken(args):
             #Edge from current IO out-pin to adjacent SB's pins
             G.add_edge(left_io_outPin_index, left_adjacent_pe_number + j)  
 
-            #Edge from current IO input-pin to adjacent SB's pins  
-            #G.add_edge(left_adjacent_pe_number + j, left_io_inPin_index)  # NEEDs to be removed
-
         #Edge from adjacent closest SB port to IO input-pin
         G.add_edge(left_adjacent_pe_number + left_sb, left_io_inPin_index)  
-
-        #Edge from adjacent closest SB port to IO output-pin
-        #G.add_edge(left_io_outPin_index, left_adjacent_pe_number + left_sb) # NEEDs to be removed
 
         #Right-most column:
         for j in range(sb_max):
@@ -271,14 +265,8 @@ def create_riken(args):
             #Edge from current IO out-pin to adjacent SB's pins
             G.add_edge(right_io_outPin_index, right_adjacent_pe_number + j)    
 
-            #Edge from current IO input-pin to adjacent SB's pins  
-            #G.add_edge(right_adjacent_pe_number + j, right_io_inPin_index) # NEEDs to be removed
-
         #Edge from adjacent closest SB port to IO input-pin
         G.add_edge(right_adjacent_pe_number + right_sb, right_io_inPin_index)   
-
-        #Edge from adjacent closest SB port to IO output-pin
-        #G.add_edge(right_io_outPin_index, right_adjacent_pe_number + right_sb)   # NEEDs to be removed
 
     #--------------------------------------------------------
     #Step 2: Add connection between Switch Blocks
