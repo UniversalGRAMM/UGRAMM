@@ -48,6 +48,7 @@ bool matchesPattern(const std::string& key, const std::string& gName, const std:
  * meets the the lockedNodeName
  * 
  * @param lockedNodeName Passes the name for the locked PE node
+ * @param suitableGIDs Modifies this vector list with suitable G-graph node IDs 
  * @return void
  */
 void findGNodeID_FuncCell(const std::string &lockedNodeName, std::vector<int> &suitableGIDs);
@@ -180,15 +181,25 @@ void ripUpRouting(int signal, DirectedGraph *G);
  */
 void depositRoute(int signal, std::list<int> *nodes);
 
+
+/**
+ * Calculate Pathfinder-based cost for a given vertex.
+ *
+ * @param next Vertex for which to calculate the cost.
+ * @return Calculated cost for the vertex.
+ */
+float calculate_cost (vertex_descriptor next);
+
 /**
  * Pathfinder approach for routing signal -> sink
  * 
  * 
  * @param G Pointer to the device model graph.
  * @param signal The source node (signal) to be routed.
- * @param sink The destination node (sink) for the routing.
+ * @param sink-set :: The destination nodes (sink) for the routing.
  * @param route Pointer to the list where the route will be stored.
  * @param gConfig Pointer to the map containing node configurations for the device model graph.
+ * @param hConfig A map containing node configuration details of device-model graph.
  * @return int Returns an integer cost of the routing path.
  */
 int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *route, std::map<int, NodeConfig> *gConfig, std::map<int, NodeConfig> *hConfig);
@@ -200,6 +211,7 @@ int route(DirectedGraph *G, int signal, std::set<int> sink, std::list<int> *rout
  * @param H Pointer to the application graph.
  * @param y The application-graph node whose fanout edges are to be routed.
  * @param gConfig Pointer to the map containing node configurations for the device model graph.
+ * @param hConfig A map containing node configuration details of device-model graph.
  * @return int Returns an integer cost of the routing path.
  */
 int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeConfig> *gConfig, std::map<int, NodeConfig> *hConfig);

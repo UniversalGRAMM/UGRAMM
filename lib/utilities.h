@@ -139,6 +139,8 @@ bool widthCheck(int hWidth, int gWidth);
  * 
  * @param gType The type of the device model node. [ALU, MemPort etc..]
  * @param hOpcode The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT]
+ * @param hConfig A map containing node configuration details of device-model graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
  * @return bool Returns true if the opcode is supported by the device model node, false otherwise.
  */
 bool compatibilityCheck(int gID, int hID, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
@@ -156,8 +158,9 @@ bool compatibilityCheck(int gID, int hID, std::map<int, NodeConfig> *hConfig, st
  * @param positionedOutputFile The positioned-output dot file stream (this dot-file contains actual co-ordinates of the node cells).
  * @param unpositionedOutputFile The unpositioned-output dot file stream (this dot-file does not contain any co-ordinates of the node cells).
  * @param hConfig A map containing node configuration details of device-model graph.
- */
-void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig);
+ * @param gConfig A map containing node configuration details of device-model graph.
+*/
+void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
 
 /**
  * Connects associated pins to the specified FunCell in the device model graph.
@@ -207,7 +210,6 @@ void printName(int n);
  * @param H A pointer to the application graph.
  * @param G A pointer to the device-model graph.
  * @param hConfig A map containing node configuration details of device-model graph.
- * @param ugrammConfig A map containing parsed pragma and config related information.
  * @param invUsers A map of hIDs to mapped gIDs.
  */
 void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, int> &invUsers);

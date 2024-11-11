@@ -352,7 +352,7 @@ bool compatibilityCheck(int gID, int hID, std::map<int, NodeConfig> *hConfig, st
 /**
  * Prints routing information to a mapping-output file.
  */ 
-void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig)
+void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig)
 {
 
   struct RoutingTree *RT = &((*Trees)[y]);
@@ -372,7 +372,10 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
     if (m == orign)
       continue;
 
-    if (boost::algorithm::contains(gNames[RT->parent[m]], "OUTPIN"))
+    //if (boost::algorithm::contains(gNames[RT->parent[m]], "OUTPIN"))
+    //
+    //PIN Cell should be defined as OUT/IN in the alias of the device-model and applicationGraph 
+    if((*gConfig)[RT->parent[m]].Type == "OUT")
     {
       //  This else if loop is hit when the source is outPin and the while loop below traces the connection from the outPin and exits when found valid inPin.
       //  ex: outPin -> switchblock -> switchblock_pe_input -> pe_inPin
@@ -380,7 +383,8 @@ void printRoutingResults(int y, std::ofstream &positionedOutputFile, std::ofstre
       int current_sink = *it;
       while (it != RT->nodes.end())
       {
-        if (boost::algorithm::contains(gNames[current_sink], "INPIN"))
+        //if (boost::algorithm::contains(gNames[current_sink], "INPIN"))
+        if((*gConfig)[current_sink].Type == "IN")
         {
           positionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
           unpositionedOutputFile << gNames_deliemter_changes(gNames[RT->parent[m]]) << " -> " << gNames_deliemter_changes(gNames[current_sink]) << "\n";
@@ -563,7 +567,7 @@ void printMappedResults(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCo
   {
     if(hNames[i] == "NULL")
       continue;
-    printRoutingResults(i, positionedOutputFile, unpositionedOutputFile, hConfig);
+    printRoutingResults(i, positionedOutputFile, unpositionedOutputFile, hConfig, gConfig);
   }
 
   positionedOutputFile << "}\n";   // End of digraph

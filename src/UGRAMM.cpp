@@ -16,6 +16,9 @@
 // Pathefinder cost parameters:
 float PFac = 1; // Congestion cost factor
 float HFac = 1; // History cost factor
+float pfac_mul = 1.1; //Multiplier for present congestion cost [defaults to 1.1]
+float hfac_mul = 2;   //Multiplier for history congestion cost [defaults to 2]
+
 
 // Mapping related variables:
 std::vector<RoutingTree> *Trees;
@@ -228,8 +231,6 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
         }
       }
 
-      
-
       //------------------ Routing Setup ---------------------//
       ripUpRouting(y, G);         //Ripup the previous routing
       (*Users)[i].push_back(y);   //Users update                 
@@ -245,7 +246,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       //-------- Debugging statements ------------//
       if (UGRAMM->level() <= spdlog::level::trace)
         printRouting(y);
-      UGRAMM->debug("For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[i], totalCosts[i]);
+      UGRAMM->debug("[Placement] For application node {} :: routing for location [{}] has cost {}", hNames[y], gNames[i], totalCosts[i]);
       //------------------------------------------//
 
       //Early exit if the cost is greater than bestCost:
@@ -420,7 +421,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
     if (iterCount > maxIterations) // limit the iteration count to ~40 iterations!
     {
-      UGRAMM->error("FAILURE. OVERUSED: {} USED: {}", TO, totalUsed(G));
+      UGRAMM->error("UGRAMM_FAILURE. OVERUSED: {} USED: {}", TO, totalUsed(G));
       done = true;
     }
 
@@ -429,8 +430,8 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       return 1;
     }
 
-    PFac *= 1.1; // adjust present congestion penalty
-    HFac *= 2;   // adjust history of congestion penalty
+    PFac *= pfac_mul;    // adjust present congestion penalty
+    HFac *= hfac_mul ;   // adjust history of congestion penalty
 
   } // while !done
 
@@ -502,6 +503,8 @@ int main(int argc, char **argv)
       ("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file [required]")
       ("config", po::value<std::string>(&configFile), "UGRAMM config file [optional]")
       ("drc_disable", po::bool_switch(&drc_disable), "disable DRC [optional]")
+      ("pfac_mul", po::value<float>(&pfac_mul), "Multiplier for present congestion cost [optional; defaults to 1.1]")
+      ("hfac_mul", po::value<float>(&hfac_mul), "Multiplier for history congestion cost [optional; defaults to 2]")
       ("drc_verbose_level", po::value<int>(&drc_verbose_level), "0: err [Default], 1: warn, 2: info, 3: debug [optional]");
 
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -526,9 +529,19 @@ int main(int argc, char **argv)
   // Seed setup:
   srand(seed_value);
 
+  // -------------------- Printing out the config received -------------//
+  UGRAMM->info("[CONFIG] seed value set to {}", seed_value);
+  UGRAMM->info("[CONFIG] verbose_level set to {}", verbose_level);
+  UGRAMM->info("[CONFIG] dfile set to {}", deviceModelFile);
+  UGRAMM->info("[CONFIG] afile set to {}", applicationFile);
+  UGRAMM->info("[CONFIG] pfac_mul set to {}", pfac_mul);
+  UGRAMM->info("[CONFIG] hfac_mul set to {}", hfac_mul);
+  UGRAMM->info("[CONFIG] drc is {} with verboisty level {}", drc_disable, drc_verbose_level);
+
   // Config file parsing:
   if (!configFile.empty())
   {
+    UGRAMM->info("[CONFIG] config file set to {}", configFile);
     std::ifstream f(configFile);
     jsonParsed = json::parse(f);                            // Parsing the Json file.
     UGRAMM->info("Parsed JSON file {} ", jsonParsed.dump()); // Printing JSON file for the info purpose.
@@ -609,6 +622,12 @@ int main(int argc, char **argv)
 
     // Visualizing mapping result in neato:
     printMappedResults(&H, &G, &hConfig, &gConfig, UgrammPragmaConfig);
+
+    UGRAMM->info("[RESULT] ----------- UGRAMM_PASSED -----------");
+  }
+  else 
+  {
+    UGRAMM->error("[RESULT] UGRAMM_FAILED");
   }
 
   //--------------- get elapsed time -------------------------
@@ -622,7 +641,7 @@ int main(int argc, char **argv)
   uint64_t endGramm = grammTime.tv_sec * (uint64_t)1000000 + grammTime.tv_usec;
   uint64_t elapsedGramm = endGramm - startGramm;
   double secondsGramm = static_cast<double>(elapsedGramm) / 1000000.0;
-  UGRAMM->info("Total time taken for [mapping] :: {} Seconds", secondsGramm);
+  UGRAMM->info("[RESULT] Total time taken for [mapping] :: {} Seconds", secondsGramm);
   //------------------------------------------------------------
 
   //--------------- get elapsed time -------------------------
@@ -630,8 +649,40 @@ int main(int argc, char **argv)
   uint64_t endTotal = totalTime.tv_sec * (uint64_t)1000000 + totalTime.tv_usec;
   uint64_t elapsedTotal = endTotal - startTotal;
   double secondsTotal = static_cast<double>(elapsedTotal) / 1000000.0;
-  UGRAMM->info("Total time taken for [UGRAMM]:: {} Seconds", secondsTotal);
+  UGRAMM->info("[RESULT] Total time taken for [UGRAMM]:: {} Seconds", secondsTotal);
   //------------------------------------------------------------
+
+  //---- Experimentation:
+  float used_routing_resources = 0;
+  float total_routing_resources = 0;
+  
+  float used_functional_resources = 0;
+  float total_functional_resources = 0;
+
+  for (int i = 0; i < num_vertices(G); i++)
+  {
+    if(gConfig[i].Cell == "ROUTECELL")
+    {
+      if((*Users)[i].size() >= 1)
+        used_routing_resources += 1;
+      
+      total_routing_resources += 1; 
+    }
+
+    if(gConfig[i].Cell == "FUNCCELL")
+    {
+      if((*Users)[i].size() >= 1)
+        used_functional_resources += 1;
+       
+      total_functional_resources += 1; 
+    }
+  }
+  float RRUSED = (used_routing_resources/total_routing_resources) * 100;
+  float FFUSED = (used_functional_resources/total_functional_resources) * 100;
+ 
+  UGRAMM->info("[RESULT] Routing resources percentage usage : {} % ({}/{})",RRUSED,used_routing_resources,total_routing_resources);
+  UGRAMM->info("[RESULT] Functional resources percentage usage : {} % ({}/{})",FFUSED,used_functional_resources,total_functional_resources); 
+  //--------
 
   return 0;
 }
