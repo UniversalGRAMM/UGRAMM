@@ -139,6 +139,8 @@ bool widthCheck(int hWidth, int gWidth);
  * 
  * @param gType The type of the device model node. [ALU, MemPort etc..]
  * @param hOpcode The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT]
+ * @param hConfig A map containing node configuration details of device-model graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
  * @return bool Returns true if the opcode is supported by the device model node, false otherwise.
  */
 bool compatibilityCheck(int gID, int hID, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig);
@@ -208,7 +210,6 @@ void printName(int n);
  * @param H A pointer to the application graph.
  * @param G A pointer to the device-model graph.
  * @param hConfig A map containing node configuration details of device-model graph.
- * @param ugrammConfig A map containing parsed pragma and config related information.
  * @param invUsers A map of hIDs to mapped gIDs.
  */
 void printVertexModels(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, int> &invUsers);
