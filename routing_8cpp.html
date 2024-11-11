@@ -223,6 +223,8 @@ Functions</h2></td></tr>
 <tr class="separator:a8194ffc5a789a7a16f7b4482654e3f35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a968977a760fa53eb197fd5256e73b158" id="r_a968977a760fa53eb197fd5256e73b158"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a968977a760fa53eb197fd5256e73b158">depositRoute</a> (int signal, std::list&lt; int &gt; *nodes)</td></tr>
 <tr class="separator:a968977a760fa53eb197fd5256e73b158"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afae64ea8029f251b6ecdacf678ce100e" id="r_afae64ea8029f251b6ecdacf678ce100e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afae64ea8029f251b6ecdacf678ce100e">calculate_cost</a> (<a class="el" href="UGRAMM_8h.html#ae3c6dc430fd7453fd3c8e37db3bf727b">vertex_descriptor</a> next)</td></tr>
+<tr class="separator:afae64ea8029f251b6ecdacf678ce100e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3defc73f0bc39df0c6f91ed9d7a63fd4" id="r_a3defc73f0bc39df0c6f91ed9d7a63fd4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3defc73f0bc39df0c6f91ed9d7a63fd4">route</a> (<a class="el" href="UGRAMM_8h.html#a90e7fca315eb6fdfeba3e3f961876833">DirectedGraph</a> *G, int signal, std::set&lt; int &gt; sink, std::list&lt; int &gt; *route, std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *gConfig, std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *hConfig)</td></tr>
 <tr class="separator:a3defc73f0bc39df0c6f91ed9d7a63fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f220c721dded6a3406641857e9470a7" id="r_a2f220c721dded6a3406641857e9470a7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f220c721dded6a3406641857e9470a7">routeSignal</a> (<a class="el" href="UGRAMM_8h.html#a90e7fca315eb6fdfeba3e3f961876833">DirectedGraph</a> *G, <a class="el" href="UGRAMM_8h.html#a90e7fca315eb6fdfeba3e3f961876833">DirectedGraph</a> *H, int y, std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *gConfig, std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *hConfig)</td></tr>
@@ -244,6 +246,31 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Adjusts the history costs for the device model graph. </p>
+
+</div>
+</div>
+<a id="afae64ea8029f251b6ecdacf678ce100e" name="afae64ea8029f251b6ecdacf678ce100e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afae64ea8029f251b6ecdacf678ce100e">&#9670;&#160;</a></span>calculate_cost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float calculate_cost </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="UGRAMM_8h.html#ae3c6dc430fd7453fd3c8e37db3bf727b">vertex_descriptor</a></td>          <td class="paramname"><span class="paramname"><em>next</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculate Pathfinder-based cost for a given vertex.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">next</td><td>Vertex for which to calculate the cost. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Calculated cost for the vertex. </dd></dl>
 
 </div>
 </div>
@@ -345,6 +372,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">lockedNodeName</td><td>Passes the name for the locked PE node </td></tr>
+    <tr><td class="paramname">suitableGIDs</td><td>Modifies this vector list with suitable G-graph node IDs </td></tr>
   </table>
   </dd>
 </dl>

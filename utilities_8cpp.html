@@ -211,8 +211,8 @@ Functions</h2></td></tr>
 <tr class="separator:ac81cdd62de98d09e41890ec55aa8b464"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae484281e81309cc37aa2c35047ff8521" id="r_ae484281e81309cc37aa2c35047ff8521"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae484281e81309cc37aa2c35047ff8521">compatibilityCheck</a> (int gID, int hID, std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *hConfig, std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *gConfig)</td></tr>
 <tr class="separator:ae484281e81309cc37aa2c35047ff8521"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c17df77976e780dfa52c6609fc26cbe" id="r_a2c17df77976e780dfa52c6609fc26cbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c17df77976e780dfa52c6609fc26cbe">printRoutingResults</a> (int y, std::ofstream &amp;positionedOutputFile, std::ofstream &amp;unpositionedOutputFile, std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *hConfig)</td></tr>
-<tr class="separator:a2c17df77976e780dfa52c6609fc26cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a435a7bec10a43db8d20388b761664842" id="r_a435a7bec10a43db8d20388b761664842"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a435a7bec10a43db8d20388b761664842">printRoutingResults</a> (int y, std::ofstream &amp;positionedOutputFile, std::ofstream &amp;unpositionedOutputFile, std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *hConfig, std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *gConfig)</td></tr>
+<tr class="separator:a435a7bec10a43db8d20388b761664842"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3845775f13652df81fd235f57fe6314c" id="r_a3845775f13652df81fd235f57fe6314c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3845775f13652df81fd235f57fe6314c">mandatoryFunCellConnections</a> (int gNumber, std::string FunCellName, <a class="el" href="UGRAMM_8h.html#a90e7fca315eb6fdfeba3e3f961876833">DirectedGraph</a> *G, std::ofstream &amp;positionedOutputFile, std::ofstream &amp;unpositionedOutputFile)</td></tr>
 <tr class="separator:a3845775f13652df81fd235f57fe6314c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67b15402403aef575c10409e3c452507" id="r_a67b15402403aef575c10409e3c452507"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67b15402403aef575c10409e3c452507">printPlacementResults</a> (int gNumber, std::string gName, <a class="el" href="UGRAMM_8h.html#a90e7fca315eb6fdfeba3e3f961876833">DirectedGraph</a> *G, std::ofstream &amp;positionedOutputFile, std::ofstream &amp;unpositionedOutputFile, std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *gConfig, <a class="el" href="UGRAMM_8h.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a> &amp;<a class="el" href="UGRAMM_8cpp.html#a35fec4469d9694288693656283e1a774">UgrammPragmaConfig</a>)</td></tr>
@@ -278,6 +278,8 @@ Variables</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">gType</td><td>The type of the device model node. [ALU, MemPort etc..] </td></tr>
     <tr><td class="paramname">hOpcode</td><td>The opcode required by the application node. [FMUL, FADD, INPUT, OUTPUT] </td></tr>
+    <tr><td class="paramname">hConfig</td><td>A map containing node configuration details of device-model graph. </td></tr>
+    <tr><td class="paramname">gConfig</td><td>A map containing node configuration details of device-model graph. </td></tr>
   </table>
   </dd>
 </dl>
@@ -505,8 +507,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a2c17df77976e780dfa52c6609fc26cbe" name="a2c17df77976e780dfa52c6609fc26cbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c17df77976e780dfa52c6609fc26cbe">&#9670;&#160;</a></span>printRoutingResults()</h2>
+<a id="a435a7bec10a43db8d20388b761664842" name="a435a7bec10a43db8d20388b761664842"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a435a7bec10a43db8d20388b761664842">&#9670;&#160;</a></span>printRoutingResults()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -529,7 +531,12 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *</td>          <td class="paramname"><span class="paramname"><em>hConfig</em></span>&#160;)</td>
+          <td class="paramtype">std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *</td>          <td class="paramname"><span class="paramname"><em>hConfig</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::map&lt; int, <a class="el" href="structNodeConfig.html">NodeConfig</a> &gt; *</td>          <td class="paramname"><span class="paramname"><em>gConfig</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
