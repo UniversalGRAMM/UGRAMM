@@ -9,12 +9,13 @@ import re
 from tabulate import tabulate  # Import tabulate for formatting tables
 
 # Parameters
-num_runs = 100
+num_runs = 1
 NR = 10
 NC = 10
 config_file = "../config.json"  # Update to remove space before `--config`
 command_to_run = "./../UGRAMM"
 pfac_mul = 1.1
+hfac_mul = 2
 
 def run_benchmark(seed, NR, NC, benchmark, config_file):
     # Construct the command as a list
@@ -22,6 +23,7 @@ def run_benchmark(seed, NR, NC, benchmark, config_file):
         command_to_run,
         "--drc_disable",
         "--pfac_mul", str(pfac_mul),
+        "--hfac_mul", str(hfac_mul),
         "--seed", str(seed),
         "--dfile", f"riken_{NR}_{NC}.dot",
         "--afile", benchmark,
