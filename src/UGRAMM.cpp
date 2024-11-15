@@ -21,6 +21,7 @@ float hfac_mul = 2;   //Multiplier for history congestion cost [defaults to 2]
 
 
 // Mapping related variables:
+int max_iter = 40;                      //Initializing maximum number of iterations of UGRAMM to 40 initially.
 std::vector<RoutingTree> *Trees;
 std::vector<std::list<int>> *Users;
 std::map<int, int> invUsers;
@@ -419,7 +420,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
     adjustHistoryCosts(G);
 
-    if (iterCount > maxIterations) // limit the iteration count to ~40 iterations!
+    if (iterCount > (max_iter-1)) // limit the iteration count to ~40 iterations!
     {
       UGRAMM->error("UGRAMM_FAILURE. OVERUSED: {} USED: {}", TO, totalUsed(G));
       done = true;
@@ -503,6 +504,7 @@ int main(int argc, char **argv)
       ("afile", po::value<std::string>(&applicationFile)->required(), "Application graph file [required]")
       ("config", po::value<std::string>(&configFile), "UGRAMM config file [optional]")
       ("drc_disable", po::bool_switch(&drc_disable), "disable DRC [optional]")
+      ("max_iter", po::value<int>(&max_iter), "Maximum number of iterations UGRAMM will run [optional; defaults to 40]" )
       ("pfac_mul", po::value<float>(&pfac_mul), "Multiplier for present congestion cost [optional; defaults to 1.1]")
       ("hfac_mul", po::value<float>(&hfac_mul), "Multiplier for history congestion cost [optional; defaults to 2]")
       ("drc_verbose_level", po::value<int>(&drc_verbose_level), "0: err [Default], 1: warn, 2: info, 3: debug [optional]");
@@ -534,6 +536,7 @@ int main(int argc, char **argv)
   UGRAMM->info("[CONFIG] verbose_level set to {}", verbose_level);
   UGRAMM->info("[CONFIG] dfile set to {}", deviceModelFile);
   UGRAMM->info("[CONFIG] afile set to {}", applicationFile);
+  UGRAMM->info("[CONFIG] max_iter set to {}", max_iter);
   UGRAMM->info("[CONFIG] pfac_mul set to {}", pfac_mul);
   UGRAMM->info("[CONFIG] hfac_mul set to {}", hfac_mul);
   UGRAMM->info("[CONFIG] drc is {} with verboisty level {}", drc_disable, drc_verbose_level);

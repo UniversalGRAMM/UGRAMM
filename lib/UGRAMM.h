@@ -109,6 +109,7 @@ struct RoutingTree {
 };
 
 // Routing related variables:
+extern int max_iter;
 extern std::vector<RoutingTree> *Trees;                 // routing trees for every node in H
 extern std::vector<std::list<int>> *Users;              // for every node in device model G track its users
 extern std::map<int, int> invUsers;                     // InvUsers, key = hID, value = current_mapped gID   
