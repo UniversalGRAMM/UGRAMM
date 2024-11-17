@@ -1,0 +1,221 @@
+====================================================
+============ Universal GRAMM (UGRAMM) ==============
+======= helper script: Device Model Generator ======
+====================================================
+
+Generating device model for the following CGRA configuration: 
+> Arch: RIKEN
+> NR: 8
+> NC: 8
+Creating RIKEN architecture!!
+
+
+pragma for the device model: 
+
+ /*
+{
+    "ALU" : ["FADD", "FMUL", "FSUB", "FDIV"],
+    "MEMPORT" : ["input", "output"],
+    "Constant" : ["const"]
+}
+*/
+    
+Found benchmark files:
+ - ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot
+ - ../Kernels/Conv_Balance/conv_nounroll_Any.dot
+ - ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot
+ - ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot
+ - ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot
+ - ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot
+ - ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot
+ - ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot
+
+Running benchmark for Any: ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot...
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 856067 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 1/10: Seed = 856067, Passed = True, Time = 0.7675s, Routing resources used = 11.979166 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 759690 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 2/10: Seed = 759690, Passed = False, Time = 9.2709s, Routing resources used = inf %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 862782 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 3/10: Seed = 862782, Passed = True, Time = 4.1174s, Routing resources used = 10.9375 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 763522 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 4/10: Seed = 763522, Passed = True, Time = 1.2398s, Routing resources used = 10.807291 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 359885 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 5/10: Seed = 359885, Passed = True, Time = 2.6442s, Routing resources used = 10.286459 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 426569 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 6/10: Seed = 426569, Passed = True, Time = 1.2712s, Routing resources used = 12.239584 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 585039 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 7/10: Seed = 585039, Passed = True, Time = 2.6835s, Routing resources used = 11.328125 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 371402 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 8/10: Seed = 371402, Passed = True, Time = 5.4632s, Routing resources used = 11.067709 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 58286 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 9/10: Seed = 58286, Passed = False, Time = 9.4843s, Routing resources used = inf %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 552735 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 10/10: Seed = 552735, Passed = True, Time = 0.7985s, Routing resources used = 12.369791 %
+
+Running benchmark for Any: ../Kernels/Conv_Balance/conv_nounroll_Any.dot...
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 856067 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 1/10: Seed = 856067, Passed = True, Time = 0.7544s, Routing resources used = 11.979166 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 759690 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 2/10: Seed = 759690, Passed = False, Time = 9.2090s, Routing resources used = inf %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 862782 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 3/10: Seed = 862782, Passed = True, Time = 4.0978s, Routing resources used = 10.9375 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 763522 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 4/10: Seed = 763522, Passed = True, Time = 1.2356s, Routing resources used = 10.807291 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 359885 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 5/10: Seed = 359885, Passed = True, Time = 2.7703s, Routing resources used = 10.286459 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 426569 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 6/10: Seed = 426569, Passed = True, Time = 1.2625s, Routing resources used = 12.239584 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 585039 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 7/10: Seed = 585039, Passed = True, Time = 2.7055s, Routing resources used = 11.328125 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 371402 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 8/10: Seed = 371402, Passed = True, Time = 5.5084s, Routing resources used = 11.067709 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 58286 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 9/10: Seed = 58286, Passed = False, Time = 9.3518s, Routing resources used = inf %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 552735 --dfile riken_8_8.dot --afile ../Kernels/Conv_Balance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 10/10: Seed = 552735, Passed = True, Time = 0.7978s, Routing resources used = 12.369791 %
+
+Running benchmark for Any: ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot...
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 856067 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 1/10: Seed = 856067, Passed = True, Time = 0.7808s, Routing resources used = 11.979166 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 759690 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 2/10: Seed = 759690, Passed = True, Time = 5.7935s, Routing resources used = 10.677084 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 862782 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 3/10: Seed = 862782, Passed = True, Time = 3.5757s, Routing resources used = 11.458334 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 763522 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 4/10: Seed = 763522, Passed = True, Time = 0.7535s, Routing resources used = 10.9375 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 359885 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 5/10: Seed = 359885, Passed = True, Time = 2.1971s, Routing resources used = 11.71875 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 426569 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 6/10: Seed = 426569, Passed = False, Time = 9.4140s, Routing resources used = inf %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 585039 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 7/10: Seed = 585039, Passed = True, Time = 1.2496s, Routing resources used = 11.067709 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 371402 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 8/10: Seed = 371402, Passed = True, Time = 8.7163s, Routing resources used = 10.807291 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 58286 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 9/10: Seed = 58286, Passed = False, Time = 9.1701s, Routing resources used = inf %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 552735 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 10/10: Seed = 552735, Passed = True, Time = 2.6772s, Routing resources used = 11.197916 %
+
+Running benchmark for Any: ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot...
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 856067 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 1/10: Seed = 856067, Passed = True, Time = 0.8006s, Routing resources used = 11.979166 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 759690 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 2/10: Seed = 759690, Passed = True, Time = 6.0165s, Routing resources used = 10.677084 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 862782 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 3/10: Seed = 862782, Passed = True, Time = 3.6974s, Routing resources used = 11.458334 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 763522 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 4/10: Seed = 763522, Passed = True, Time = 0.7728s, Routing resources used = 10.9375 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 359885 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 5/10: Seed = 359885, Passed = True, Time = 2.2709s, Routing resources used = 11.71875 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 426569 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 6/10: Seed = 426569, Passed = False, Time = 9.6568s, Routing resources used = inf %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 585039 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 7/10: Seed = 585039, Passed = True, Time = 1.2803s, Routing resources used = 11.067709 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 371402 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 8/10: Seed = 371402, Passed = True, Time = 9.0202s, Routing resources used = 10.807291 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 58286 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 9/10: Seed = 58286, Passed = False, Time = 9.2958s, Routing resources used = inf %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 552735 --dfile riken_8_8.dot --afile ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 10/10: Seed = 552735, Passed = True, Time = 2.6492s, Routing resources used = 11.197916 %
+
+Running benchmark for Any: ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot...
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 856067 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 1/10: Seed = 856067, Passed = True, Time = 0.4476s, Routing resources used = 6.5104165 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 759690 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 2/10: Seed = 759690, Passed = True, Time = 0.4633s, Routing resources used = 5.989583 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 862782 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 3/10: Seed = 862782, Passed = True, Time = 0.9225s, Routing resources used = 5.208333 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 763522 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 4/10: Seed = 763522, Passed = True, Time = 0.4437s, Routing resources used = 5.729167 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 359885 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 5/10: Seed = 359885, Passed = True, Time = 0.4452s, Routing resources used = 5.729167 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 426569 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 6/10: Seed = 426569, Passed = True, Time = 0.4476s, Routing resources used = 5.859375 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 585039 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 7/10: Seed = 585039, Passed = True, Time = 0.9749s, Routing resources used = 6.25 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 371402 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 8/10: Seed = 371402, Passed = True, Time = 0.4363s, Routing resources used = 6.3802085 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 58286 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 9/10: Seed = 58286, Passed = True, Time = 0.4945s, Routing resources used = 5.859375 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 552735 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 10/10: Seed = 552735, Passed = True, Time = 0.6946s, Routing resources used = 5.208333 %
+
+Running benchmark for Any: ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot...
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 856067 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 1/10: Seed = 856067, Passed = True, Time = 0.4524s, Routing resources used = 6.5104165 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 759690 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 2/10: Seed = 759690, Passed = True, Time = 0.4683s, Routing resources used = 5.989583 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 862782 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 3/10: Seed = 862782, Passed = True, Time = 0.9076s, Routing resources used = 5.208333 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 763522 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 4/10: Seed = 763522, Passed = True, Time = 0.4259s, Routing resources used = 5.729167 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 359885 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 5/10: Seed = 359885, Passed = True, Time = 0.4526s, Routing resources used = 5.729167 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 426569 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 6/10: Seed = 426569, Passed = True, Time = 0.4387s, Routing resources used = 5.859375 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 585039 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 7/10: Seed = 585039, Passed = True, Time = 0.9874s, Routing resources used = 6.25 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 371402 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 8/10: Seed = 371402, Passed = True, Time = 0.4235s, Routing resources used = 6.3802085 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 58286 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 9/10: Seed = 58286, Passed = True, Time = 0.4889s, Routing resources used = 5.859375 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 552735 --dfile riken_8_8.dot --afile ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot --config ../config.json --verbose_level 0
+Run 10/10: Seed = 552735, Passed = True, Time = 0.7113s, Routing resources used = 5.208333 %
+
+Running benchmark for Any: ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot...
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 856067 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 1/10: Seed = 856067, Passed = True, Time = 0.1608s, Routing resources used = 6.9010415 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 759690 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 2/10: Seed = 759690, Passed = True, Time = 1.8839s, Routing resources used = 5.208333 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 862782 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 3/10: Seed = 862782, Passed = True, Time = 0.1655s, Routing resources used = 7.1614585 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 763522 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 4/10: Seed = 763522, Passed = True, Time = 0.1618s, Routing resources used = 6.119792 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 359885 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 5/10: Seed = 359885, Passed = True, Time = 0.9605s, Routing resources used = 5.989583 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 426569 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 6/10: Seed = 426569, Passed = True, Time = 0.1646s, Routing resources used = 6.640625 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 585039 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 7/10: Seed = 585039, Passed = True, Time = 0.1548s, Routing resources used = 6.25 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 371402 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 8/10: Seed = 371402, Passed = True, Time = 0.9430s, Routing resources used = 5.729167 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 58286 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 9/10: Seed = 58286, Passed = True, Time = 0.1720s, Routing resources used = 6.25 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 552735 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot --config ../config.json --verbose_level 0
+Run 10/10: Seed = 552735, Passed = True, Time = 0.6902s, Routing resources used = 5.729167 %
+
+Running benchmark for Any: ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot...
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 856067 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 1/10: Seed = 856067, Passed = True, Time = 0.1515s, Routing resources used = 6.9010415 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 759690 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 2/10: Seed = 759690, Passed = True, Time = 1.8532s, Routing resources used = 5.208333 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 862782 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 3/10: Seed = 862782, Passed = True, Time = 0.1730s, Routing resources used = 7.1614585 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 763522 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 4/10: Seed = 763522, Passed = True, Time = 0.1747s, Routing resources used = 6.119792 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 359885 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 5/10: Seed = 359885, Passed = True, Time = 0.9479s, Routing resources used = 5.989583 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 426569 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 6/10: Seed = 426569, Passed = True, Time = 0.1630s, Routing resources used = 6.640625 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 585039 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 7/10: Seed = 585039, Passed = True, Time = 0.1586s, Routing resources used = 6.25 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 371402 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 8/10: Seed = 371402, Passed = True, Time = 0.9386s, Routing resources used = 5.729167 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 58286 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 9/10: Seed = 58286, Passed = True, Time = 0.1601s, Routing resources used = 6.25 %
+Running command: ./../UGRAMM --drc_disable --pfac_mul 2 --hfac_mul 1 --seed 552735 --dfile riken_8_8.dot --afile ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot --config ../config.json --verbose_level 0
+Run 10/10: Seed = 552735, Passed = True, Time = 0.6822s, Routing resources used = 5.729167 %
+
+Final Results:
++-------------------------------------------------------------------+------+-----------+--------------+---------------------------------+
+|                             Benchmark                             | Type | Pass Rate | Average Time | Average Routing Resources Usage |
++-------------------------------------------------------------------+------+-----------+--------------+---------------------------------+
+|       ../Kernels/Conv_Balance/conv_nounroll_Balance_Any.dot       | Any  |  80.00%   |   2.3732s    |             11.38%              |
+|           ../Kernels/Conv_Balance/conv_nounroll_Any.dot           | Any  |  80.00%   |   2.3915s    |             11.38%              |
+|    ../Kernels/Conv_nonBalance/conv_nounroll_nonBalance_Any.dot    | Any  |  80.00%   |   3.2180s    |             11.23%              |
+|         ../Kernels/Conv_nonBalance/conv_nounroll_Any.dot          | Any  |  80.00%   |   3.3135s    |             11.23%              |
+|      ../Kernels/Stencil_nonBalance/Stencil_nounroll_Any.dot       | Any  |  100.00%  |   0.5770s    |              5.87%              |
+| ../Kernels/Stencil_nonBalance/Stencil_nounroll_nonBalance_Any.dot | Any  |  100.00%  |   0.5757s    |              5.87%              |
+|        ../Kernels/Stencil_Balance/Stencil_nounroll_Any.dot        | Any  |  100.00%  |   0.5457s    |              6.20%              |
+|    ../Kernels/Stencil_Balance/Stencil_nounroll_Balance_Any.dot    | Any  |  100.00%  |   0.5403s    |              6.20%              |
++-------------------------------------------------------------------+------+-----------+--------------+---------------------------------+

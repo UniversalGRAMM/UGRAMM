@@ -234,7 +234,7 @@ void adjustHistoryCosts(DirectedGraph *G)
     temp = (temp >= 0) ? temp : 0;
     if (temp > 0)
     {
-      (*HistoryCosts)[i] = (*HistoryCosts)[i] + 1;
+      (*HistoryCosts)[i] = (*HistoryCosts)[i]; + 1;
     }
   }
 }
@@ -397,10 +397,62 @@ void depositRoute(int signal, std::list<int> *nodes)
 float calculate_cost (vertex_descriptor next)
 {
   /*
-    wPathFinder(g) = (1 + |S(g)|) × P × (1 + H(g))
-    where S(g) is as defined previously: the set of vertices of H that use g in their vertex model. P(PFac) is a scalar constant reflecting the penalty for overuse. We set P to one initially, and increase it geometrically by pfac_mult in each iteration (determined empirically). H(g) is the history term, initialized to zero for each vertex. After each iteration of the while loop in Algorithm 2, we increase H(g) by one for each overused vertex g ∈ G (i.e., where |S(g)| > 1).
+    wPathFinder(g) = (bn + hn) * pn
+    bn is the base cost for using the routing-segment [Can be controlled using the argument]
+    hn is the history congestion cost [Derived using (*HistoryCosts)]
+    - hn = prev_hn + (#shorts x hfac) 
+    pn is the present congestion cost [Derived using ((*Users)[next])]
+    - pn = (1 + #shorts) x pfac
   */
-  return (1 + (*HistoryCosts)[next]) * (1 + (*Users)[next].size() * PFac);
+  /*
+  float current_shorts_onNode = (*Users)[next].size();
+  float hn = (*HistoryCosts)[next] + (current_shorts_onNode * HFac); 
+  float pn = (1 + current_shorts_onNode) * PFac;
+
+  float nextCost = (base_cost + hn) * pn;
+  
+  //Printing the cost:
+  float old_cost = (1 + (*HistoryCosts)[next]) * (1 + (*Users)[next].size() * PFac);
+  //UGRAMM->info("[COST] old: {} || new: {}", old_cost, nextCost);
+  UGRAMM->info("[COST] history cost for {}", (*HistoryCosts)[next]);
+
+  //Update the history cost for next iteration:
+  //(*HistoryCosts)[next] = hn;
+  */
+
+  /*
+    COST FUNCTION IMPLEMENTATION
+    - b(n) * h(n) * p(n) 
+    - b(n) is the base cost
+    - h(n) is history congestion cost
+    - p(n) is present congestion cost
+    -> b(n)*h(n) is done instead of [b(n) + h(n)] for removing normalization..
+  */
+  
+  //Base cost is stored in `base_cost`
+
+  //Calculating present congestion cost:
+  // p(n) = 1 + max(0, [Occupancy(n) - Capacity(n)]xpfac)
+  // Occupacy of node n is determined by (*Users)[next].size()
+  // Capacity is considered to be 1.
+  // pfac is provided by user.
+  float pn = 1 + std::max(0.0f, (((*Users)[next].size() - 1)*PFac));
+
+  //Calculating history cost function:
+  float hn = 0.0;
+  if(iterCount == 1)
+  {
+    hn = 1.0;
+  }
+  else
+  {
+    hn = (*HistoryCosts)[next] + std::max(0.0f, (((*Users)[next].size() - 1)*HFac));
+  }
+
+  //Calculating final cost:
+  float final_cost = base_cost*pn*hn;
+
+  return (final_cost);
 }
 
 /**

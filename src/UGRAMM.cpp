@@ -14,11 +14,12 @@
 //-------------------------------------------------------------------//
 
 // Pathefinder cost parameters:
-float PFac = 1; // Congestion cost factor
-float HFac = 1; // History cost factor
+int iterCount = 0;
+float PFac = 1;       // Congestion cost factor
+float HFac = 1;       // History cost factor
 float pfac_mul = 1.1; //Multiplier for present congestion cost [defaults to 1.1]
 float hfac_mul = 2;   //Multiplier for history congestion cost [defaults to 2]
-
+float base_cost = 1;  //Base cost of using a wire-segment in Pathfinder!!
 
 // Mapping related variables:
 int max_iter = 40;                      //Initializing maximum number of iterations of UGRAMM to 40 initially.
@@ -367,7 +368,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
   bool done = false;
   bool success = false;
-  int iterCount = 0;
+  iterCount = 0;
 
   explored.reset();
   float frac;
@@ -418,6 +419,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
       }
     }
 
+    //OB [SKIPPED] :: adjustHistoryCosts(G);
     adjustHistoryCosts(G);
 
     if (iterCount > (max_iter-1)) // limit the iteration count to ~40 iterations!
@@ -507,6 +509,7 @@ int main(int argc, char **argv)
       ("max_iter", po::value<int>(&max_iter), "Maximum number of iterations UGRAMM will run [optional; defaults to 40]" )
       ("pfac_mul", po::value<float>(&pfac_mul), "Multiplier for present congestion cost [optional; defaults to 1.1]")
       ("hfac_mul", po::value<float>(&hfac_mul), "Multiplier for history congestion cost [optional; defaults to 2]")
+      ("base_cost", po::value<float>(&base_cost), "Base cost of using a wire-segment in Pathfinder [optional; defaults to 1]")
       ("drc_verbose_level", po::value<int>(&drc_verbose_level), "0: err [Default], 1: warn, 2: info, 3: debug [optional]");
 
   po::store(po::parse_command_line(argc, argv, desc), vm);

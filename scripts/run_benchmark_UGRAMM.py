@@ -9,13 +9,13 @@ import re
 from tabulate import tabulate  # Import tabulate for formatting tables
 
 # Parameters
-num_runs = 1
-NR = 10
-NC = 10
+num_runs = 10
+NR = 8
+NC = 8
 config_file = "../config.json"  # Update to remove space before `--config`
 command_to_run = "./../UGRAMM"
-pfac_mul = 1.1
-hfac_mul = 2
+pfac_mul = 2
+hfac_mul = 1
 
 def run_benchmark(seed, NR, NC, benchmark, config_file):
     # Construct the command as a list
@@ -51,7 +51,7 @@ def run_benchmark(seed, NR, NC, benchmark, config_file):
         if "UGRAMM_PASSED" in result.stdout.upper():
             return True, runtime, rrused 
         else:
-            return False, runtime,rrused
+            return False, runtime, float('inf')
 
     except subprocess.TimeoutExpired:
         print(f"Benchmark timed out with seed {seed}")
