@@ -130,8 +130,6 @@ extern float HFac;  //History cost factor
 extern std::shared_ptr<spdlog::logger>  UGRAMM;
 extern std::shared_ptr<spdlog::logger> drcLogger;
 
-extern std::vector<std::string> inPin;
-extern std::vector<std::string> outPin;
 
 
 //Setting the JSON type:

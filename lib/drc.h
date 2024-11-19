@@ -99,10 +99,12 @@ void applicationGraphDRC_CheckFloatingNodes(DirectedGraph *H, std::map<int, Node
  * Pin names used in the application DFG must follow the names defined in the  pragmas in GRAMM.cpp
  * 
  * @param H A pointer to the application graph.
+ * @param G A pointer to the device-model graph.
  * @param hConfig A map containing node configuration details of application graph.
+ * @param gConfig A map containing node configuration details of device-model graph.
  * @param errorDetected A pointer to a bool variable to indicate an DRC error is found.
  */
-void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected);
+void applicationGraphDRC_CheckPinNames(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, bool *errorDetected);
 
 
 /**

@@ -24,7 +24,7 @@ Arch=RIKEN #Harcoded, can be changed to ADRES
 afile=${4}
 cfile=${5}
 verbose_level=0 #Hardcoded, can be run with 0 -> info : 1-> debug : 2-> trace
-#drc_verbose_level=1 #Optional, can be run with 0 -> err [default] : 1-> warn : 2-> info 
+# drc_verbose_level=2 #Optional, can be run with 0 -> err [default] : 1-> warn : 2-> info 
 
 # To disable DRC, add the following flag "--drc_disable"
 # To set DRC verbose level, add the following flag "--drc_verbose_level [vebosity level]"
@@ -41,7 +41,7 @@ echo " "
 echo "---------------------Executing UGRAMM and producing mapping result in ordered_dot_output.dot & unpositioned_dot_output---------------------"
 dfile="scripts/riken_${NR}_${NC}.dot"
 echo "make && ./UGRAMM --seed $SEED --verbose_level $verbose_level --dfile $dfile --afile $afile --config $cfile" --drc_verbose_level 1
-make && ./UGRAMM --seed $1 --verbose_level $verbose_level --dfile $dfile --afile $afile --config $cfile
+make && ./UGRAMM --seed $1 --verbose_level $verbose_level --drc_verbose_level 0 --dfile $dfile --afile $afile --config $cfile
 
 
 

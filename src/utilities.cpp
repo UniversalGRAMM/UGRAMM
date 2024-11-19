@@ -292,14 +292,6 @@ void readApplicationGraphPragma(std::ifstream &applicationGraphFile, json &Ugram
     }
   }
 
-   // Step 4: Capitalize the inPin and outPin variables to that support accepted pin parameters
-   for (int i = 0; i < inPin.size(); i++){
-      inPin[i] = boost::to_upper_copy(inPin[i]);
-   }
-
-   for (int i = 0; i < outPin.size(); i++){
-      outPin[i] = boost::to_upper_copy(outPin[i]);
-   }
 }
 
 /**

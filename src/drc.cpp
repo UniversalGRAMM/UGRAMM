@@ -179,33 +179,64 @@ void applicationGraphDRC_CheckFloatingNodes(DirectedGraph *H, std::map<int, Node
 }
 
 
-void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfig> *hConfig, bool *errorDetected){
+void applicationGraphDRC_CheckPinNames(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hConfig, std::map<int, NodeConfig> *gConfig, bool *errorDetected){
   // Iterate over all the nodes of the device model graph and assign the type of nodes:
   for (int i = 0; i < num_vertices(*H); i++){
-    vertex_descriptor v = vertex(i, *H);
+    vertex_descriptor vH = vertex(i, *H);
 
     //Get the output edges for the application DFG nodes
     out_edge_iterator eo, eo_end;
-    boost::tie(eo, eo_end) = out_edges(v, *H);
+    boost::tie(eo, eo_end) = out_edges(vH, *H);
     for (; eo != eo_end; eo++){
-
+      
       //Finding the inputPin based on attribute given in the benchmark:
       std::string loadPinList = boost::get(&EdgeProperty::H_LoadPin, *H, *eo);
       std::string upperCaseloadPinList = boost::to_upper_copy(loadPinList);
-
       //Converting above string into set of strings:
-      std::set<std::string> temp_load;
+      std::vector<std::string> temp_load;
       boost::split(temp_load, upperCaseloadPinList, boost::is_any_of(","));
 
       // Convert the vector into a set to remove duplicates
       std::set<std::string> loadPinSet(temp_load.begin(), temp_load.end());
 
+      // Set flag to check if same loadPin exist in both application and device model graph
+      bool existanceLoadPinFlag = false;
+      // Set flag to check if any of the load pins in the application graph is not found in the device model graph
+      bool existanceAnyLoadPinFlag = false;
+
       for (const auto& s : loadPinSet) {
-        if (std::find(inPin.begin(), inPin.end(), s) == inPin.end()){
-          drcLogger->error(" load pin attribute {} for edge {} -> {} is not defined in inPin vector seen in UGRAMM.cpp", s, hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
-          *errorDetected  = true;
+        existanceLoadPinFlag = false;
+        //Check if the application pins are not found in the device model graph
+        for (int i = 0; i < num_vertices(*G); i++){
+          vertex_descriptor vG = vertex(i, *G);
+          //Check if the node in the device model graph is an input PinCell
+          if (((*gConfig)[i].Cell == "PINCELL") && (*gConfig)[i].Type == "IN"){
+            //drcLogger->error(" load pin attribute {} for edge {} -> {} is not defined in inPin vector seen in UGRAMM.cpp", s, hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+            std::string G_Name = boost::to_upper_copy(boost::get(&DotVertex::G_Name, *G, vG));
+            if (boost::algorithm::contains(G_Name, boost::to_upper_copy(s))){
+              existanceLoadPinFlag = true;
+              existanceAnyLoadPinFlag = true;
+              break;
+            }
+          }
+        }
+        if (!existanceLoadPinFlag) {
+          drcLogger->warn(" load pin attribute {} for edge {} -> {} is not defined as an input pin for the device model graph", s, hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
         }
       }
+
+      if (!existanceAnyLoadPinFlag){
+        std::string listOfPins = "(";
+        for (const auto& s : loadPinSet) {
+          listOfPins += s;
+          listOfPins += ",";
+        }
+        listOfPins.back() = ')';
+
+        drcLogger->error(" None of the load pin attributes {} listed in the application graph for edge {} -> {} is defined as an input pin for the device model graph", listOfPins, hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+        *errorDetected  = true;
+      }
+
 
 
       //Finding the outputPin based on attribute given in the benchmark:
@@ -213,18 +244,50 @@ void applicationGraphDRC_CheckPinNames(DirectedGraph *H, std::map<int, NodeConfi
       std::string upperCasedriverPinList = boost::to_upper_copy(driverPinList);
 
       //Converting above string into set of strings:
-      std::set<std::string> temp_driver;
+      std::vector<std::string> temp_driver;
       boost::split(temp_driver, upperCasedriverPinList, boost::is_any_of(","));
 
       // Convert the vector into a set to remove duplicates
       std::set<std::string> driverPinSet(temp_driver.begin(), temp_driver.end());
 
+      // Set flag to check if same driverPin exist in both application and device model graph
+      bool existanceDriverPinFlag = false;
+      // Set flag to check if any of the driver pins in the application graph is not found in the device model graph
+      bool existanceAnyDriverPinFlag = false;
+
       for (const auto& s : driverPinSet) {
-        if (std::find(outPin.begin(), outPin.end(), s) == outPin.end()){
-          drcLogger->error(" driver pin attribute {} for edge {} -> {} is not defined in outPin vector seen in UGRAMM.cpp", s, hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
-          *errorDetected  = true;
+        existanceDriverPinFlag = false;
+        //Check if the application pins are not found in the device model graph
+        for (int i = 0; i < num_vertices(*G); i++){
+          vertex_descriptor vG = vertex(i, *G);
+          //Check if the node in the device model graph is an input PinCell
+          if (((*gConfig)[i].Cell == "PINCELL") && (*gConfig)[i].Type == "OUT"){
+            //drcLogger->error(" load pin attribute {} for edge {} -> {} is not defined in inPin vector seen in UGRAMM.cpp", s, hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+            std::string G_Name = boost::to_upper_copy(boost::get(&DotVertex::G_Name, *G, vG));
+            if (boost::algorithm::contains(G_Name, boost::to_upper_copy(s))){
+              existanceDriverPinFlag = true;
+              existanceAnyDriverPinFlag = true;
+              break;
+            }
+          }
+        }
+        if (!existanceDriverPinFlag) {
+          drcLogger->warn(" load driver attribute {} for edge {} -> {} is not defined as an input pin for the device model graph", s, hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
         }
       }
+
+      if (!existanceAnyDriverPinFlag){
+        std::string listOfPins = "(";
+        for (const auto& s : driverPinSet) {
+          listOfPins += s;
+          listOfPins += ",";
+        }
+        listOfPins.back() = ')';
+
+        drcLogger->error(" None of the driver pin attributes {} listed in the application graph for edge {} -> {} is defined as an input pin for the device model graph", listOfPins, hNames[boost::source(*eo, *H)], hNames[boost::target(*eo, *H)]);
+        *errorDetected  = true;
+      }
+
 
     }
   }
@@ -388,7 +451,7 @@ double runDRC(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeConfig> *hCo
   //--------- Running DRC for the Application Model Graph -----------//
   //------ Please add any Application Model Graph DRC Rule Check Functions Below ------//
   applicationGraphDRC_CheckFloatingNodes(H, hConfig, &errorDetected);
-  applicationGraphDRC_CheckPinNames(H, hConfig, &errorDetected);
+  applicationGraphDRC_CheckPinNames(H, G, hConfig, gConfig, &errorDetected);
   //applicationGraphDRC_CheckApplicationDFGWeaklyConnected(H, hConfig, &errorDetected);
   applicationGraphDRC_CheckDeviceModelAttributes(H, hConfig, &errorDetected);
   applicationGraphDRC_CheckDupplicationInLockNodes(H, hConfig, &errorDetected);
