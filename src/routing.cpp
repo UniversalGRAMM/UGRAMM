@@ -224,20 +224,24 @@ int totalOveruse(DirectedGraph *G)
 }
 
 /**
- * Adjusts the history costs for the device model graph.
+ * Adjusts the history costs for the device model graph for the next iteartion.
 */
 void adjustHistoryCosts(DirectedGraph *G)
 {
   for (int i = 0; i < num_vertices(*G); i++)
-  {
-    int temp = (*Users)[i].size() - 1;
-    temp = (temp >= 0) ? temp : 0;
-    if (temp > 0)
+  { 
+    int occupation = (*Users)[i].size();
+    if(iterCount == 1)
     {
-      (*HistoryCosts)[i] = (*HistoryCosts)[i] + 1;
+      (*HistoryCosts)[i] = 1.0f;
+    }
+    else
+    {
+      (*HistoryCosts)[i] = (*HistoryCosts)[i] + std::max(0.0f, ((occupation - capacity)*HFac));
     }
   }
 }
+
 
 /**
  * Comparison function for sorting.
@@ -394,14 +398,56 @@ void depositRoute(int signal, std::list<int> *nodes)
 /*
   Calculate Pathfinder based cost
 */
-float calculate_cost (vertex_descriptor next)
+float calculate_cost (int next)
 {
   /*
-    wPathFinder(g) = (1 + |S(g)|) × P × (1 + H(g))
-    where S(g) is as defined previously: the set of vertices of H that use g in their vertex model. P(PFac) is a scalar constant reflecting the penalty for overuse. We set P to one initially, and increase it geometrically by pfac_mult in each iteration (determined empirically). H(g) is the history term, initialized to zero for each vertex. After each iteration of the while loop in Algorithm 2, we increase H(g) by one for each overused vertex g ∈ G (i.e., where |S(g)| > 1).
+    COST FUNCTION IMPLEMENTATION
+    - b(n) * h(n) * p(n) 
+    - b(n) is the base cost
+    - h(n) is history congestion cost
+    - p(n) is present congestion cost
   */
-  return (1 + (*HistoryCosts)[next]) * (1 + (*Users)[next].size() * PFac);
+  int occupation = (*Users)[next].size(); 
+  
+  //Calculating present congestion cost:
+  /*
+    p(n) = 1 + max(0, [Occupancy(n) + 1 - Capacity(n)]*PFac)
+    -> Occupacy of node n is determined by (*Users)[next].size()
+    -> Capacity is considered to be 1.
+    -> pfac is provided by user using pfac_mul.
+  */
+  float pn = 1.0f + std::max(0.0f, ((occupation + 1.0f - capacity)*PFac));
+
+  //Calculating history cost function:
+  /*
+    h(n) = 1 {for the first iteration}
+    h(n) = h_prev(n) + max(0, [Occupancy(n) - Capacity(n)]*HFac)
+    -> Occupacy of node n is determined by (*Users)[next].size()
+    -> Capacity is considered to be 1.
+    -> HFac is provided by user using hfac_mul.
+    -> h_prev(n) is determined using (*HistoryCosts)[next]
+  */
+  float hn = 0.0f;
+  if(iterCount == 1)
+  {
+    hn = 1.0f;
+  }
+  else
+  {
+    hn = (*HistoryCosts)[next] + std::max(0.0f, ((occupation - capacity)*HFac));
+  }
+
+  //Calculating final cost:
+  //Base cost is stored in `base_cost`
+  float final_cost = base_cost*pn*hn;
+
+  UGRAMM->trace("[COST - PFAC - {} ] pn = {} + Max[0, ({})*{}] = {}", PFac, 1.0f, (occupation - capacity), PFac, pn);
+  UGRAMM->trace("[COST - HFac - {} ] hn = {} + Max[0, ({})*{}] = {}", HFac, (*HistoryCosts)[next], (occupation - capacity), HFac, hn);
+  UGRAMM->trace("[COST] For {} :: Total_cost : {}", gNames[next], final_cost);
+
+  return (final_cost);
 }
+
 
 /**
  * Pathfinder approach for routing signal -> sink
@@ -588,13 +634,6 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
       exit(-1);
     }
 
-    //Routing tree should be empty for the current application-node (signal y) 
-    if((*Trees)[y].nodes.size() != 0)
-    {
-      UGRAMM->error("(routeSignal) For application node {}, the routing tree already has elements", hNames[y]);
-      printRouting(y);
-      exit(-1);
-    }
     //-------------------------------------------------------------//
 
      UGRAMM->debug("(routeSignal) ----------- ROUTE: {} -> {} -----------", hNames[y], hNames[load]);
@@ -639,8 +678,13 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     //    Adding outputPin in routing data structure:       //
     //(This is used as a starting point in route() function)//
     //------------------------------------------------------//
-    (*Users)[driverOutPin].push_back(y);
-    (*Trees)[y].nodes.push_back(driverOutPin);
+    // If the tree is already loaded that means this signal has fanout of more than 1, 
+    // so no need to repopulate the routing tree.
+    if((*Trees)[y].nodes.size() == 0)   
+    { 
+      (*Users)[driverOutPin].push_back(y);
+      (*Trees)[y].nodes.push_back(driverOutPin);
+    }
     //------------------------------------------------------//
 
     //----------------------------------------------------------------//

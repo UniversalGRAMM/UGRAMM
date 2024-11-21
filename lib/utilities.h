@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 
+#define VISUAL_SCALE  6.5                         //Steches the user defined co-ordinate space using this scale-factor
 #define FunCell_Visual_Enable   1
 #define PinCell_Visual_Enable   1
 #define RouteCell_Visual_Enable 0

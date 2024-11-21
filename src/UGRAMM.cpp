@@ -14,11 +14,13 @@
 //-------------------------------------------------------------------//
 
 // Pathefinder cost parameters:
-float PFac = 1; // Congestion cost factor
-float HFac = 1; // History cost factor
+int iterCount = 0;    //Number of iteartions pathfinder will run for. 
+float PFac = 1;       // Congestion cost factor
+float HFac = 1;       // History cost factor
 float pfac_mul = 1.1; //Multiplier for present congestion cost [defaults to 1.1]
-float hfac_mul = 2;   //Multiplier for history congestion cost [defaults to 2]
-
+float hfac_mul = 1;   //Multiplier for history congestion cost [defaults to 1]
+float base_cost = 1;  //Base cost of using a wire-segment in Pathfinder!!
+int capacity = 1;     //One wire can be routed via a segment in CGRA
 
 // Mapping related variables:
 int max_iter = 40;                      //Initializing maximum number of iterations of UGRAMM to 40 initially.
@@ -90,7 +92,10 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       chooseRand = (chooseRand + 1) % num_vertices(*G);
       if (compatibilityCheck(chooseRand, y, hConfig, gConfig))
       {
-        vertex_found = true;
+        if ((*Users)[chooseRand].size() == 0)
+        {
+          vertex_found = true;
+        }
       }
     }
 
@@ -146,7 +151,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       //------------------------------------------------------//
 
       // Cost and history costs are calculated for the FuncCell:
-      totalCosts[GID] += (1 + (*HistoryCosts)[GID]) * ((*Users)[GID].size() * PFac);
+      totalCosts[GID] += calculate_cost(GID);
 
       //Placement of the signal Y:
       totalCosts[GID] += routeSignal(G, H, y, gConfig, hConfig);
@@ -239,7 +244,7 @@ int findMinVertexModel(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, 
       //------------------------------------------------------//
 
       // Cost and history costs are calculated for the FuncCell:
-      totalCosts[i] += (1 + (*HistoryCosts)[i]) * ((*Users)[i].size() * PFac);
+      totalCosts[i] += calculate_cost(i);
 
       //Placement of the signal Y:
       totalCosts[i] += routeSignal(G, H, y, gConfig, hConfig);
@@ -367,7 +372,7 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
   bool done = false;
   bool success = false;
-  int iterCount = 0;
+  iterCount = 0;
 
   explored.reset();
   float frac;
@@ -420,6 +425,8 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
 
     adjustHistoryCosts(G);
 
+    PFac *= pfac_mul;    // adjust present congestion penalty
+
     if (iterCount > (max_iter-1)) // limit the iteration count to ~40 iterations!
     {
       UGRAMM->error("UGRAMM_FAILURE. OVERUSED: {} USED: {}", TO, totalUsed(G));
@@ -430,9 +437,6 @@ int findMinorEmbedding(DirectedGraph *H, DirectedGraph *G, std::map<int, NodeCon
     {
       return 1;
     }
-
-    PFac *= pfac_mul;    // adjust present congestion penalty
-    HFac *= hfac_mul ;   // adjust history of congestion penalty
 
   } // while !done
 
@@ -467,7 +471,7 @@ int main(int argc, char **argv)
   dp.property("load", boost::get(&EdgeProperty::H_LoadPin, H));            //--> [Required] Edge property describing the loadPin to use for the edge
   dp.property("driver", boost::get(&EdgeProperty::H_DriverPin, H));        //--> [Required] Edge property describing the driverPin to use for the edge
   dp.property("latency", boost::get(&DotVertex::H_Latency, H));            //--> [Optional] Contains for latency of the node --> check this as it needs to be between the edges
-  dp.property("width", boost::get(&DotVertex::H_Width, H));                //--> [Optional] Width of the application-node
+  dp.property("h_width", boost::get(&DotVertex::H_Width, H));              //--> [Optional] Width of the application-node
 
   //---------------- For [G] --> Device Model Graph --------------------//
   dp.property("G_Name", boost::get(&DotVertex::G_Name, G));               //--> [Required] Contains the unique name of the cell in the device model graph.
@@ -506,7 +510,8 @@ int main(int argc, char **argv)
       ("drc_disable", po::bool_switch(&drc_disable), "disable DRC [optional]")
       ("max_iter", po::value<int>(&max_iter), "Maximum number of iterations UGRAMM will run [optional; defaults to 40]" )
       ("pfac_mul", po::value<float>(&pfac_mul), "Multiplier for present congestion cost [optional; defaults to 1.1]")
-      ("hfac_mul", po::value<float>(&hfac_mul), "Multiplier for history congestion cost [optional; defaults to 2]")
+      ("hfac_mul", po::value<float>(&hfac_mul), "Multiplier for history congestion cost [optional; defaults to 1]")
+      ("base_cost", po::value<float>(&base_cost), "Base cost of using a wire-segment in Pathfinder [optional; defaults to 1]")
       ("drc_verbose_level", po::value<int>(&drc_verbose_level), "0: err [Default], 1: warn, 2: info, 3: debug [optional]");
 
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -530,6 +535,9 @@ int main(int argc, char **argv)
 
   // Seed setup:
   srand(seed_value);
+
+  //Hfac setup:
+  HFac = hfac_mul ;   // adjust history of congestion penalty
 
   // -------------------- Printing out the config received -------------//
   UGRAMM->info("[CONFIG] seed value set to {}", seed_value);

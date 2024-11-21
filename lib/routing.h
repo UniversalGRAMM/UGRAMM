@@ -188,7 +188,7 @@ void depositRoute(int signal, std::list<int> *nodes);
  * @param next Vertex for which to calculate the cost.
  * @return Calculated cost for the vertex.
  */
-float calculate_cost (vertex_descriptor next);
+float calculate_cost (int next);
 
 /**
  * Pathfinder approach for routing signal -> sink
