@@ -124,12 +124,13 @@ extern std::map<std::string, int> gNamesInv_FuncCell;   // Inverse map for getti
 extern std::bitset<100000> explored;
 
 //Pathefinder cost parameters:
-extern  int iterCount;
-extern float PFac;  //Congestion cost factor
-extern float HFac;  //History cost factor
+extern  int iterCount;  //Number of iteartions pathfinder will run for. 
+extern float PFac;      //Congestion cost factor
+extern float HFac;      //History cost factor
 extern float base_cost; //Base cost of using a wire-segment in Pathfinder!!
-extern float pfac_mul; //Multiplier for present congestion cost
-extern float hfac_mul; //Multiplier for history congestion cost
+extern float pfac_mul;  //Multiplier for present congestion cost
+extern float hfac_mul;  //Multiplier for history congestion cost
+extern int capacity;    //One wire can be routed via a segment in CGRA
 
 //Logger variable:
 extern std::shared_ptr<spdlog::logger>  UGRAMM;

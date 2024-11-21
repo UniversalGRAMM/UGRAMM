@@ -439,16 +439,15 @@ void mandatoryFunCellConnections(int gNumber, std::string FunCellName, DirectedG
 */
 void printPlacementResults(int gNumber, std::string gName, DirectedGraph *G, std::ofstream &positionedOutputFile, std::ofstream &unpositionedOutputFile, std::map<int, NodeConfig> *gConfig, json &UgrammPragmaConfig)
 {
-  int scale = 6;
   float G_VisualX;
   float G_VisualY;
 
   if (!boost::get(&DotVertex::G_VisualX, *G, gNumber).empty()){
-    G_VisualX = std::stof(boost::get(&DotVertex::G_VisualX, *G, gNumber)) * scale;
+    G_VisualX = std::stof(boost::get(&DotVertex::G_VisualX, *G, gNumber)) * VISUAL_SCALE;
   }
 
   if (!boost::get(&DotVertex::G_VisualY, *G, gNumber).empty()){
-    G_VisualY = std::stof(boost::get(&DotVertex::G_VisualY, *G, gNumber)) * scale;
+    G_VisualY = std::stof(boost::get(&DotVertex::G_VisualY, *G, gNumber)) * VISUAL_SCALE;
   }
 
   // Use for deciding the color of the FunCell based on the opcode

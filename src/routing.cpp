@@ -224,20 +224,24 @@ int totalOveruse(DirectedGraph *G)
 }
 
 /**
- * Adjusts the history costs for the device model graph.
+ * Adjusts the history costs for the device model graph for the next iteartion.
 */
 void adjustHistoryCosts(DirectedGraph *G)
 {
   for (int i = 0; i < num_vertices(*G); i++)
-  {
-    int temp = (*Users)[i].size() - 1;
-    temp = (temp >= 0) ? temp : 0;
-    if (temp > 0)
+  { 
+    int occupation = (*Users)[i].size();
+    if(iterCount == 1)
     {
-      (*HistoryCosts)[i] = (*HistoryCosts)[i]; + 1;
+      (*HistoryCosts)[i] = 1.0f;
+    }
+    else
+    {
+      (*HistoryCosts)[i] = (*HistoryCosts)[i] + std::max(0.0f, ((occupation - capacity)*HFac));
     }
   }
 }
+
 
 /**
  * Comparison function for sorting.
@@ -394,66 +398,56 @@ void depositRoute(int signal, std::list<int> *nodes)
 /*
   Calculate Pathfinder based cost
 */
-float calculate_cost (vertex_descriptor next)
+float calculate_cost (int next)
 {
-  /*
-    wPathFinder(g) = (bn + hn) * pn
-    bn is the base cost for using the routing-segment [Can be controlled using the argument]
-    hn is the history congestion cost [Derived using (*HistoryCosts)]
-    - hn = prev_hn + (#shorts x hfac) 
-    pn is the present congestion cost [Derived using ((*Users)[next])]
-    - pn = (1 + #shorts) x pfac
-  */
-  /*
-  float current_shorts_onNode = (*Users)[next].size();
-  float hn = (*HistoryCosts)[next] + (current_shorts_onNode * HFac); 
-  float pn = (1 + current_shorts_onNode) * PFac;
-
-  float nextCost = (base_cost + hn) * pn;
-  
-  //Printing the cost:
-  float old_cost = (1 + (*HistoryCosts)[next]) * (1 + (*Users)[next].size() * PFac);
-  //UGRAMM->info("[COST] old: {} || new: {}", old_cost, nextCost);
-  UGRAMM->info("[COST] history cost for {}", (*HistoryCosts)[next]);
-
-  //Update the history cost for next iteration:
-  //(*HistoryCosts)[next] = hn;
-  */
-
   /*
     COST FUNCTION IMPLEMENTATION
     - b(n) * h(n) * p(n) 
     - b(n) is the base cost
     - h(n) is history congestion cost
     - p(n) is present congestion cost
-    -> b(n)*h(n) is done instead of [b(n) + h(n)] for removing normalization..
   */
+  int occupation = (*Users)[next].size(); 
   
-  //Base cost is stored in `base_cost`
-
   //Calculating present congestion cost:
-  // p(n) = 1 + max(0, [Occupancy(n) - Capacity(n)]xpfac)
-  // Occupacy of node n is determined by (*Users)[next].size()
-  // Capacity is considered to be 1.
-  // pfac is provided by user.
-  float pn = 1 + std::max(0.0f, (((*Users)[next].size() - 1)*PFac));
+  /*
+    p(n) = 1 + max(0, [Occupancy(n) + 1 - Capacity(n)]*PFac)
+    -> Occupacy of node n is determined by (*Users)[next].size()
+    -> Capacity is considered to be 1.
+    -> pfac is provided by user using pfac_mul.
+  */
+  float pn = 1.0f + std::max(0.0f, ((occupation + 1.0f - capacity)*PFac));
 
   //Calculating history cost function:
-  float hn = 0.0;
+  /*
+    h(n) = 1 {for the first iteration}
+    h(n) = h_prev(n) + max(0, [Occupancy(n) - Capacity(n)]*HFac)
+    -> Occupacy of node n is determined by (*Users)[next].size()
+    -> Capacity is considered to be 1.
+    -> HFac is provided by user using hfac_mul.
+    -> h_prev(n) is determined using (*HistoryCosts)[next]
+  */
+  float hn = 0.0f;
   if(iterCount == 1)
   {
-    hn = 1.0;
+    hn = 1.0f;
   }
   else
   {
-    hn = (*HistoryCosts)[next] + std::max(0.0f, (((*Users)[next].size() - 1)*HFac));
+    hn = (*HistoryCosts)[next] + std::max(0.0f, ((occupation - capacity)*HFac));
   }
 
   //Calculating final cost:
+  //Base cost is stored in `base_cost`
   float final_cost = base_cost*pn*hn;
+
+  UGRAMM->trace("[COST - PFAC - {} ] pn = {} + Max[0, ({})*{}] = {}", PFac, 1.0f, (occupation - capacity), PFac, pn);
+  UGRAMM->trace("[COST - HFac - {} ] hn = {} + Max[0, ({})*{}] = {}", HFac, (*HistoryCosts)[next], (occupation - capacity), HFac, hn);
+  UGRAMM->trace("[COST] For {} :: Total_cost : {}", gNames[next], final_cost);
 
   return (final_cost);
 }
+
 
 /**
  * Pathfinder approach for routing signal -> sink
@@ -640,13 +634,6 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
       exit(-1);
     }
 
-    //Routing tree should be empty for the current application-node (signal y) 
-    if((*Trees)[y].nodes.size() != 0)
-    {
-      UGRAMM->error("(routeSignal) For application node {}, the routing tree already has elements", hNames[y]);
-      printRouting(y);
-      exit(-1);
-    }
     //-------------------------------------------------------------//
 
      UGRAMM->debug("(routeSignal) ----------- ROUTE: {} -> {} -----------", hNames[y], hNames[load]);
@@ -691,8 +678,13 @@ int routeSignal(DirectedGraph *G, DirectedGraph *H, int y, std::map<int, NodeCon
     //    Adding outputPin in routing data structure:       //
     //(This is used as a starting point in route() function)//
     //------------------------------------------------------//
-    (*Users)[driverOutPin].push_back(y);
-    (*Trees)[y].nodes.push_back(driverOutPin);
+    // If the tree is already loaded that means this signal has fanout of more than 1, 
+    // so no need to repopulate the routing tree.
+    if((*Trees)[y].nodes.size() == 0)   
+    { 
+      (*Users)[driverOutPin].push_back(y);
+      (*Trees)[y].nodes.push_back(driverOutPin);
+    }
     //------------------------------------------------------//
 
     //----------------------------------------------------------------//
