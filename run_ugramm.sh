@@ -8,8 +8,8 @@
 # $4 = Application graph
 # $5 = UGRAMM config JSON file
 
-# Check if the first argument is --help
-if [ "$1" == "--help" ]; then
+# Check if the first argument is --help or no arguments provided at all 
+if [ "$1" == "--help" ] || [ -z "$1" ]; then
   echo "This helper script will generate a specific CGRA device model file based on user input; Compile, and run UGRAMM with the generated device model file as input. It will also convert the output of UGRAMM into PNG format for easier debugging and visualization."
   echo "Usage: ./run_ugramm.sh [SEED] [NR] [NC] [APPLICATION_GRAPH] [CONFIG_FILE]"
   echo "Example: ./run_ugramm.sh 15 8 8 Kernels/Conv_Balance/conv_nounroll_Balance_Specific.dot config.json"

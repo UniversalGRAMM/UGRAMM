@@ -516,7 +516,7 @@ int main(int argc, char **argv)
 
   po::store(po::parse_command_line(argc, argv, desc), vm);
 
-  if (vm.count("help"))
+  if (vm.count("help") || (argc == 1)) //Even if no-arguments provided, print the description for UGRAMM.
   {
     std::cout << desc << std::endl;
     return 0;
