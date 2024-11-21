@@ -1,13 +1,9 @@
 var searchData=
 [
-  ['ugramm_0',['UGRAMM',['../UGRAMM_8cpp.html#ac3af9f6a5e0e8cd323b5a7fac1c56c37',1,'UGRAMM:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#ac3af9f6a5e0e8cd323b5a7fac1c56c37',1,'UGRAMM:&#160;UGRAMM.cpp']]],
-  ['ugramm_2ecpp_1',['UGRAMM.cpp',['../UGRAMM_8cpp.html',1,'']]],
-  ['ugramm_2eh_2',['UGRAMM.h',['../UGRAMM_8h.html',1,'']]],
-  ['ugrammconfig_3',['ugrammConfig',['../UGRAMM_8cpp.html#ae19f6f47f9dee274ab8f2837bf9e3112',1,'ugrammConfig:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#ae19f6f47f9dee274ab8f2837bf9e3112',1,'ugrammConfig:&#160;UGRAMM.cpp']]],
-  ['ugrammpragmaconfig_4',['UgrammPragmaConfig',['../UGRAMM_8cpp.html#a35fec4469d9694288693656283e1a774',1,'UgrammPragmaConfig:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#a35fec4469d9694288693656283e1a774',1,'UgrammPragmaConfig:&#160;UGRAMM.cpp']]],
-  ['undirectedgraph_5',['UnDirectedGraph',['../drc_8h.html#ab1a2d4da07872568b51a47bcf5773571',1,'drc.h']]],
-  ['unused_5fcell_5fcolor_6',['unused_cell_color',['../utilities_8cpp.html#a153cdc31f9e18aeb31779a2d6875862e',1,'unused_cell_color:&#160;utilities.cpp'],['../utilities_8h.html#a153cdc31f9e18aeb31779a2d6875862e',1,'unused_cell_color:&#160;utilities.cpp']]],
-  ['users_7',['Users',['../UGRAMM_8cpp.html#a2348c9169bfe28dbc59e3b669a82d140',1,'Users:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#a2348c9169bfe28dbc59e3b669a82d140',1,'Users:&#160;UGRAMM.cpp']]],
-  ['utilities_2ecpp_8',['utilities.cpp',['../utilities_8cpp.html',1,'']]],
-  ['utilities_2eh_9',['utilities.h',['../utilities_8h.html',1,'']]]
+  ['topoorder_0',['TopoOrder',['../UGRAMM_8cpp.html#af726fd04f3f6ec267666fcfcb8c44681',1,'TopoOrder:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#af726fd04f3f6ec267666fcfcb8c44681',1,'TopoOrder:&#160;UGRAMM.cpp']]],
+  ['totaloveruse_1',['totalOveruse',['../routing_8cpp.html#afb7c81444637d10798cb24184b8734df',1,'totalOveruse(DirectedGraph *G):&#160;routing.cpp'],['../routing_8h.html#afb7c81444637d10798cb24184b8734df',1,'totalOveruse(DirectedGraph *G):&#160;routing.cpp']]],
+  ['totalused_2',['totalUsed',['../routing_8cpp.html#aca56a3e4f458477ffd7ae9166e7a516d',1,'totalUsed(DirectedGraph *G):&#160;routing.cpp'],['../routing_8h.html#aca56a3e4f458477ffd7ae9166e7a516d',1,'totalUsed(DirectedGraph *G):&#160;routing.cpp']]],
+  ['traceback_3',['TraceBack',['../UGRAMM_8cpp.html#aeb50dcd7daa88318c052c3c0f8d4bc88',1,'TraceBack:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#aeb50dcd7daa88318c052c3c0f8d4bc88',1,'TraceBack:&#160;UGRAMM.cpp']]],
+  ['trees_4',['Trees',['../UGRAMM_8cpp.html#a307fa0b5af7973b2ed0fa8be3d35d210',1,'Trees:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#a307fa0b5af7973b2ed0fa8be3d35d210',1,'Trees:&#160;UGRAMM.cpp']]],
+  ['type_5',['Type',['../structNodeConfig.html#a3bcac227483bce4fb775c14009046868',1,'NodeConfig']]]
 ];

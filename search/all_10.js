@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['topoorder_0',['TopoOrder',['../UGRAMM_8cpp.html#af726fd04f3f6ec267666fcfcb8c44681',1,'TopoOrder:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#af726fd04f3f6ec267666fcfcb8c44681',1,'TopoOrder:&#160;UGRAMM.cpp']]],
-  ['totaloveruse_1',['totalOveruse',['../routing_8cpp.html#afb7c81444637d10798cb24184b8734df',1,'totalOveruse(DirectedGraph *G):&#160;routing.cpp'],['../routing_8h.html#afb7c81444637d10798cb24184b8734df',1,'totalOveruse(DirectedGraph *G):&#160;routing.cpp']]],
-  ['totalused_2',['totalUsed',['../routing_8cpp.html#aca56a3e4f458477ffd7ae9166e7a516d',1,'totalUsed(DirectedGraph *G):&#160;routing.cpp'],['../routing_8h.html#aca56a3e4f458477ffd7ae9166e7a516d',1,'totalUsed(DirectedGraph *G):&#160;routing.cpp']]],
-  ['traceback_3',['TraceBack',['../UGRAMM_8cpp.html#aeb50dcd7daa88318c052c3c0f8d4bc88',1,'TraceBack:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#aeb50dcd7daa88318c052c3c0f8d4bc88',1,'TraceBack:&#160;UGRAMM.cpp']]],
-  ['trees_4',['Trees',['../UGRAMM_8cpp.html#a307fa0b5af7973b2ed0fa8be3d35d210',1,'Trees:&#160;UGRAMM.cpp'],['../UGRAMM_8h.html#a307fa0b5af7973b2ed0fa8be3d35d210',1,'Trees:&#160;UGRAMM.cpp']]],
-  ['type_5',['Type',['../structNodeConfig.html#a3bcac227483bce4fb775c14009046868',1,'NodeConfig']]]
+  ['skipfullylockednodes_0',['skipFullyLockedNodes',['../UGRAMM_8h.html#a74b882e55672acdd97732bfdf5783635',1,'UGRAMM.h']]],
+  ['skipplacement_1',['skipPlacement',['../utilities_8cpp.html#ad2ce2bbc23468c8e6546408cf5a81b35',1,'skipPlacement(std::string hOpcode, json &amp;jsonParsed):&#160;utilities.cpp'],['../utilities_8h.html#ad2ce2bbc23468c8e6546408cf5a81b35',1,'skipPlacement(std::string hOpcode, json &amp;jsonParsed):&#160;utilities.cpp']]],
+  ['sortalgorithm_2',['sortAlgorithm',['../UGRAMM_8h.html#aee2f5ff71451b5b70972fce1aec48cc6',1,'UGRAMM.h']]],
+  ['sortlist_3',['sortList',['../routing_8cpp.html#a27709e3dad5dc45da2269de07b71ecb1',1,'sortList(int list[], int n, std::map&lt; int, NodeConfig &gt; *hConfig):&#160;routing.cpp'],['../routing_8h.html#a27709e3dad5dc45da2269de07b71ecb1',1,'sortList(int list[], int n, std::map&lt; int, NodeConfig &gt; *hConfig):&#160;routing.cpp']]],
+  ['string_5fremover_4',['string_remover',['../utilities_8cpp.html#a4243587ef0e4ba37f3c505cc850fbcef',1,'string_remover(std::string original_string, std::string toRemove):&#160;utilities.cpp'],['../utilities_8h.html#a4243587ef0e4ba37f3c505cc850fbcef',1,'string_remover(std::string original_string, std::string toRemove):&#160;utilities.cpp']]]
 ];

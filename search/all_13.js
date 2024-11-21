@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['weight_0',['weight',['../structEdgeProperty.html#a9feb1c5e452467dcf79bd419c095109f',1,'EdgeProperty']]],
-  ['width_1',['width',['../structNodeConfig.html#a4893c29bb128c93eae35aff497dec6b2',1,'NodeConfig']]],
-  ['widthcheck_2',['widthCheck',['../utilities_8cpp.html#ac81cdd62de98d09e41890ec55aa8b464',1,'widthCheck(int hWidth, int gWidth):&#160;utilities.cpp'],['../utilities_8h.html#ac81cdd62de98d09e41890ec55aa8b464',1,'widthCheck(int hWidth, int gWidth):&#160;utilities.cpp']]]
+  ['vertex_5fdescriptor_0',['vertex_descriptor',['../UGRAMM_8h.html#ae3c6dc430fd7453fd3c8e37db3bf727b',1,'UGRAMM.h']]],
+  ['vertex_5fiterator_1',['vertex_iterator',['../UGRAMM_8h.html#a791f92303f7352d28964f05901722b2f',1,'UGRAMM.h']]],
+  ['visual_5fscale_2',['VISUAL_SCALE',['../utilities_8h.html#a16bfa35e0df6fd332c07897ebf150e7e',1,'utilities.h']]]
 ];
